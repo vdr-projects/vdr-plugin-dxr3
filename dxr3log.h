@@ -25,6 +25,7 @@
 #include <fstream>
 #include <string>
 #include "dxr3singleton.h"
+#include "dxr3vdrincludes.h"
 
 // ==================================
 //!  A log class. 
@@ -32,6 +33,7 @@
 	With this nice util dxr3plugin generates and mange a log file. In this
 	file the developer/enduser can find informations and can find errors,
 	problems and ohter stuff.
+	The logging class is now thread-safe!
 */
 class cLog : public Singleton<cLog>
 {
@@ -41,31 +43,36 @@ public:
 	
 	~cLog()		{ Close(); }
 	
-	void SetForceFlush(const bool v)	{ m_ForeFlush = v; }
+	void SetForceFlush(const bool v)	{ Lock(); m_ForeFlush = v; Unlock(); }
 	bool GetForceFlush() const			{ return m_ForeFlush; }
 	
 	// write type data to log file.
 	template <class Type>
 	inline cLog& operator << ( Type item ) 
 	{
+		Lock();
 		if (m_LogOpen)
 		{
 			m_LogStream << item;
 			if (m_ForeFlush) m_LogStream.flush();
 		}
+		Unlock();
 		return *this;
 	}
 	inline cLog& operator << ( size_t item ) 
 	{
+		Lock();
 		if (m_LogOpen)
 		{
 			m_LogStream << (unsigned int)item;
 			if (m_ForeFlush) m_LogStream.flush();
 		}
+		Unlock();
 		return *this;
 	}
 	inline cLog& operator << ( bool item ) 
 	{
+		Lock();
 		if (m_LogOpen) 
 		{
 			if (item == true) 
@@ -78,6 +85,7 @@ public:
 			}
 			if (m_ForeFlush) m_LogStream.flush();
 		}
+		Unlock();
 		return *this;
 	}
 
@@ -88,6 +96,12 @@ private:
 
 	void Open(std::string Filename);	// with this function we open our logfile
 	void Close();						// with this function we close our logfile
+
+protected:
+    static cMutex* m_pMutex;				///< mutex
+
+    static void Lock()		{ cLog::m_pMutex->Lock(); }
+    static void Unlock()	{ cLog::m_pMutex->Unlock(); }
 };
 
 

@@ -230,7 +230,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - fixed dxr3osd_subpicutre.c - thanks to Paavo Hartikainen <pahartik@sci.fi>
 
 
-2004-0?-??: Version 0.2.3-pre3
+2004-??-??: Version 0.2.3-pre3
 
 - fixed output of anamorphic video, if tv aspect is configured to 16:9 in DVB setup menu 
   thanks Seppo Ingalsuo <seppo.ingalsuo@iki.fi>
@@ -255,3 +255,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - extended cDxr3MemcpyBench::Rdtsc(uint32_t config_flags)
   support for non x86 arch
   support for cpu's, which dont support rdtsc timing
+- logger now thread safe

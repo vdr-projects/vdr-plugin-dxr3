@@ -22,6 +22,9 @@
 #include "dxr3log.h"
 
 // ==================================
+cMutex* cLog::m_pMutex = new cMutex;
+
+// ==================================
 //! constructor
 cLog::cLog()
 {
