@@ -271,3 +271,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - added support for vdr-1.3.13
 - added a small patch, containing mainly Finnish translation updates but also a few other small ones
   thanks Ville Skyta <ville.skytta@iki.fi>
+- some little fixes in the dx3interface: if we cant open control fifo plugins retuns now correct error message

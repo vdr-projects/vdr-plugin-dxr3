@@ -61,6 +61,7 @@ static int Dxr3Open(const char *Name, int n, int Mode)
 	if (fd < 0)
 	{
 		cLog::Instance() << "Unable to open " << FileName << "\n";
+		return 0;
 	}
 	return fd;
 }
