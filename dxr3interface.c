@@ -750,6 +750,7 @@ void cDxr3Interface::ExternalReleaseDevices()
         if (m_fdSpu > -1) close(m_fdSpu);
         if (m_fdAudio > -1) close(m_fdAudio);
         m_fdControl = m_fdVideo = m_fdSpu = m_fdAudio = -1;
+        m_aspectRatio = UNKNOWN_ASPECT_RATIO;
 
         m_ExternalReleased = true;
         
