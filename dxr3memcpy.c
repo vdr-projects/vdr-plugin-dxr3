@@ -40,7 +40,7 @@
 //! our function pointer
 void *(* dxr3_memcpy)(void *to, const void *from, size_t len);
 
-#if defined(ARCH_X86) || defined(ARCH_X86_64)
+#if defined(__i386__) || defined(__x86_64__)
 // ==================================
 // for small memory blocks (<256 bytes) this version is faster
 #define small_memcpy(to,from,n)\
@@ -88,9 +88,6 @@ int d0, d1, d2;
 #define MMX1_MIN_LEN 0x800  /* 2K blocks */
 #define MIN_LEN 0x40  /* 64-byte blocks */
 
-
-// Test for GCC > 3.2.0
-#if GCC_VERSION > 30200
 
 // ==================================
 /* SSE note: i tried to move 128 bytes a time instead of 64 but it
@@ -307,13 +304,11 @@ static void * mmx2_memcpy(void * to, const void * from, size_t len)
   return retval;
 }
 
-#endif /*GCC_VERSION > 30200*/
-
 // ==================================
 static void *linux_kernel_memcpy(void *to, const void *from, size_t len) {
   return __memcpy(to,from,len);
 }
-#endif /*ARCH_X86/ARCH_X86_64*/
+#endif /* __i386__ || __x86_64__ */
 
 
 // ==================================
@@ -333,16 +328,13 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 	routine.cpu_require = 0;
 	m_methods.push_back(routine);
 
-	#if defined(ARCH_X86) || defined(ARCH_X86_64)
+#if defined(__i386__) || defined(__x86_64__)
 
 	// linux_kernel_memcpy
 	routine.name = "linux_kernel_memcpy()";
 	routine.function = linux_kernel_memcpy;
 	routine.cpu_require = 0;
 	m_methods.push_back(routine);
-
-	// Test for GCC > 3.2.0
-	#	if GCC_VERSION > 30200
 
 	// MMX optimized memcpy()
 	routine.name = "MMX optimized memcpy()";
@@ -356,7 +348,7 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 	routine.cpu_require = CC_MMXEXT;
 	m_methods.push_back(routine);
 
-	#		ifndef __FreeBSD__
+#ifndef __FreeBSD__
 
 	// SSE optimized memcpy()
 	routine.name = "SSE optimized memcpy()";
@@ -364,10 +356,8 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 	routine.cpu_require = CC_MMXEXT|CC_SSE;
 	m_methods.push_back(routine);
 
-	#		endif /*__FreeBSD__*/
-	#	endif /*GCC_VERSION > 30200*/
-	#endif /*ARCH_X86/ARCH_X86_64*/
-
+#endif /* not __FreeBSD__ */
+#endif /* __i386__ || __x86_64__ */
 
 	//
 	// run benchmarking
@@ -429,13 +419,13 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 //! needed for exact timing
 unsigned long long int cDxr3MemcpyBench::Rdtsc()
 {
-	#ifdef ARCH_X86
+#if defined(__i386__) || defined(__x86_64__)
 	unsigned long long int x;
 	__asm__ volatile (".byte 0x0f, 0x31" : "=A" (x));     
 	return x;
-	#else
+#else
 	/* FIXME: implement an equivalent for using optimized memcpy on other
             architectures */
 	return 0;
-	#endif
+#endif /* __i386__ || __x86_64__ */
 }
