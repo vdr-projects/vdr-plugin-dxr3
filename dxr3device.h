@@ -28,7 +28,6 @@
 #include "dxr3demuxdevice.h"
 #include "dxr3spudecoder.h"
 #include <string>
-using namespace std;
 
 // ==================================
 // our device :)
@@ -83,7 +82,7 @@ protected:
 	cDxr3DemuxDevice	m_DemuxDevice;
     bool				m_AC3Present;
     bool				m_CalledBySet;
-	string				m_strBuf;
+	std::string			m_strBuf;
 	int					m_Offset;
 
     //virtual bool SetPlayMode(ePlayMode PlayMode);
