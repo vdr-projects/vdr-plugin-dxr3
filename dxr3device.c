@@ -384,11 +384,20 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
     if (m_strBuf.length()) 
 	{
         m_strBuf.append((const char*)Data, Length);
-        retLength = m_DemuxDevice.DemuxPes((const uint8_t*)m_strBuf.data(), m_strBuf.length(), true);
+	if (m_PlayMode == pmAudioOnly) {
+	    retLength = m_DemuxDevice.DemuxAudioPes((const uint8_t*)m_strBuf.data(), m_strBuf.length());
+	} else {
+	    retLength = m_DemuxDevice.DemuxPes((const uint8_t*)m_strBuf.data(), m_strBuf.length(), true);
+	}
+    	 
     } 
 	else 
 	{
-        retLength = m_DemuxDevice.DemuxPes((const uint8_t*)Data, Length, true);
+	    if (m_PlayMode == pmAudioOnly) {
+		retLength = m_DemuxDevice.DemuxAudioPes((const uint8_t*)Data, Length);
+	    } else {
+		retLength = m_DemuxDevice.DemuxPes((const uint8_t*)Data, Length, true);
+	    }
     }
 	
     Length -= retLength;
