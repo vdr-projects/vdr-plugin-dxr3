@@ -243,6 +243,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
   (Christian Gmeiner, Paavo Hartikainen)
 - added many comments into source (Christian Gmeiner)
 - using doxygen for docs (Christian Gmeiner)
+- made path to microcode configurable in Makefile (Sascha Volkenandt)
 - extended cDxr3MemcpyBench::Rdtsc(uint32_t config_flags): support for
   non-x86 archs, support for cpu's, which dont support rdtsc timing
   (Christian Gmeiner)

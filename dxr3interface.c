@@ -864,19 +864,19 @@ void cDxr3Interface::UploadMicroCode()
 {
 	if (cDxr3ConfigData::Instance().GetDebug())
 	{
-		cLog::Instance() << "cDxr3Interface::UploadMicroCode: uploading...";
+		cLog::Instance() << "cDxr3Interface::UploadMicroCode: uploading from " << MICROCODE << "...";
 	}
 
     em8300_microcode_t em8300_microcode;    
-    const char* MICRO_CODE_FILE = "/usr/share/misc/em8300.uc";
     struct stat s;
 
 	// try to open it
-    int UCODE = open(MICRO_CODE_FILE, O_RDONLY);
+	// MICROCODE comes from makefile
+    int UCODE = open(MICROCODE, O_RDONLY);
     
     if (UCODE <0) 
 	{
-		cLog::Instance() << "Unable to open microcode file " << MICRO_CODE_FILE << " for reading\n";
+		cLog::Instance() << "Unable to open microcode file " << MICROCODE << " for reading\n";
         exit(1);
     }
 

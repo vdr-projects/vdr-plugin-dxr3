@@ -1,7 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.1.2.3 2005/03/14 14:02:54 scop Exp $
+# $Id: Makefile,v 1.1.2.4 2005/03/14 18:22:26 scop Exp $
 
 # The official name of this plugin.
 # This name will be used in the '-P...' option of VDR to load the plugin.
@@ -54,6 +54,9 @@ LIBS     = -L$(FFMDIR)/libavcodec -lavcodec -ljpeg
 DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"'
 DEFINES += -DSOCKET_CHMOD=0660
 DEFINES += -D_GNU_SOURCE
+
+# where is the microcode for the dxr3 located?
+DEFINES += -DMICROCODE=\"/usr/share/misc/em8300.uc\"
 
 ### The object files (add further files here):
 
