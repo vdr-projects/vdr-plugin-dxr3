@@ -94,6 +94,11 @@ public:
 	// helper functions for dxr3 main osd screen
 	void ResetHardware();
 
+	// set brightness/contrast/saturation
+	void SetBrightness(int value);
+	void SetContrast(int value);
+	void SetSaturation(int value);
+
 private:
 	// file handles
 	int m_fdControl;
@@ -102,21 +107,24 @@ private:
     int m_fdAudio;
 
 	// dxr3 clock
-	cDxr3SysClock* m_pClock;
+	cDxr3SysClock*	m_pClock;
 
-    uint32_t	m_audioChannelCount;
-    uint32_t	m_audioDataRate;
-    int			m_aspectDelayCounter;
-    uint32_t	m_aspectRatio;
-    uint32_t	m_horizontal;
-    uint32_t	m_audioSampleSize;
-    uint32_t	m_audioMode;
-	uint32_t	m_spuMode;
-    bool		m_ExternalReleased;	// is dxr3 used by e.g. mplayer?
-    int			m_volume;
-    bool		m_AudioActive;
-    bool		m_VideoActive;
-	bool		m_OverlayActive;
+    uint32_t		m_audioChannelCount;
+    uint32_t		m_audioDataRate;
+    int				m_aspectDelayCounter;
+    uint32_t		m_aspectRatio;
+    uint32_t		m_horizontal;
+    uint32_t		m_audioSampleSize;
+    uint32_t		m_audioMode;
+	uint32_t		m_spuMode;
+    bool			m_ExternalReleased;	// is dxr3 used by e.g. mplayer?
+    int				m_volume;
+    bool			m_AudioActive;
+    bool			m_VideoActive;
+	bool			m_OverlayActive;
+
+	// bcs
+	em8300_bcs_t	m_bcs;
 
 	// spu
 //    cDxr3InterfaceSpu		m_SpuInterface;

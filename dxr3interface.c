@@ -1,9 +1,9 @@
 #include <assert.h>
 #include <math.h>
 #include <sys/soundcard.h>
+
 #include "dxr3interface.h"
 #include "dxr3syncbuffer.h"
-
 #include "dxr3log.h"
 #include "dxr3configdata.h"
 
@@ -36,6 +36,7 @@ static int Dxr3Open(const char *Name, int n, int Mode)
 }
 
 // ==================================
+// constr.
 cDxr3Interface::cDxr3Interface()
 {
 	// open control stream
@@ -87,6 +88,16 @@ cDxr3Interface::cDxr3Interface()
 
 	// configure device based on settings
 	ConfigureDevice();
+
+	// get bcs values from driver
+	ioctl(m_fdControl, EM8300_IOCTL_GETBCS, &m_bcs);
+
+	if (cDxr3ConfigData::Instance().GetDebug())
+	{
+		cLog::Instance() << "DXR3: brightness: " << m_bcs.brightness << "\n"; 
+		cLog::Instance() << "DXR3: contrast: " << m_bcs.contrast << "\n"; 
+		cLog::Instance() << "DXR3: saturation: " << m_bcs.saturation << "\n"; 
+	}
 
     PlayBlackFrame();
     SetChannelCount(1);
@@ -213,7 +224,7 @@ void cDxr3Interface::SetAudioSpeed(uint32_t speed)
 		{
             if (m_audioMode != EM8300_AUDIOMODE_DIGITALAC3) 
 			{
-			    if(ioctl(m_fdAudio, SNDCTL_DSP_SPEED, &speed) < 0) 
+			    if (ioctl(m_fdAudio, SNDCTL_DSP_SPEED, &speed) < 0) 
 				{
 					cLog::Instance() << "cDxr3AbsDevice::SetAudioSpeed Unable to set dsp speed\n";
                 } 
@@ -1067,6 +1078,43 @@ void cDxr3Interface::ResetHardware()
 	cLog::Instance() << "cDxr3Interface: Resting DXR3 hardware\n";
     Resuscitation();
     Unlock();
+}
+
+// set brightness/contrast/saturation
+// ==================================
+// set brightness
+void cDxr3Interface::SetBrightness(int value)
+{
+	m_bcs.brightness = value;
+
+	if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) < 0) 
+	{
+		cLog::Instance() << "cDxr3Interface::SetBrightness: Unable to set brightness to " << value << "\n";
+	} 
+}
+
+// ==================================
+// set contrast
+void cDxr3Interface::SetContrast(int value)
+{
+	m_bcs.contrast = value;
+
+	if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) < 0) 
+	{
+		cLog::Instance() << "cDxr3Interface::SetContrast: Unable to set contrast to " << value << "\n";
+	} 
+}
+
+// ==================================
+// set saturation
+void cDxr3Interface::SetSaturation(int value)
+{
+	m_bcs.saturation = value;
+
+	if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) < 0) 
+	{
+		cLog::Instance() << "cDxr3Interface::SetSaturation: Unable to set saturation to " << value << "\n";
+	} 
 }
 
 // ==================================
