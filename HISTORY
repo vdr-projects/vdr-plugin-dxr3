@@ -239,7 +239,8 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - dxr3memcpy.c/h: fix to support older compilers like gcc-2.95
   Here i want to thanks  Marco Schlüßler very much for run compil tests, even he
   dont run the plugin :)
-- dxr3memcpy.c/h: should now compile on alpha and powerpc - thanks to Paavo Hartikainen <pahartik@sci.fi>
+- dxr3memcpy.c/h (bug #1000647)
+  should now compile on alpha and powerpc - thanks to Paavo Hartikainen <pahartik@sci.fi>
 - added many comments into source
 - using doxygen for docs
 - cDxr3Interface::ConfigureDevice(): we get now videomode from driver and set only a 
@@ -260,9 +261,10 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
   dropped software decoder
   added hardware decoder, so we make use of DVD-functions of the dxr3
 - checked Lock() and Unlock() in dxr3interface.c - hope everything is ok else contact me
-- using now std:: instead of namespace std;
+- using now std:: instead of namespace std;	- fixed bug #1044069
 - renamed dxr3interface_spu_encoder.h/c to dxr3spuencoder.h/c
 - removed log commands in dxr3outputthread.c
 - fixed #includes
   moved #include "dxr3osd.h" from dxr3interface.h to dxr3interface.c
   removed not needed #includes
+- fixed bug #1022810: Osd gets pink
