@@ -266,3 +266,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
   refreshed too often (Luca Olivetti, Ville Skyttä)
 - borrow better OSD scaling routines from the Xine plugin (Luca Olivetti)
 - improve original OSD scaler for small resolutions (#1014339, Luca Olivetti)
+- fix compilation with -fPIC, kudos to ffmpeg (Ville Skyttä)
