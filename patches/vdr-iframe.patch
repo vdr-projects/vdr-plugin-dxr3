@@ -1,0 +1,19 @@
+Workaround for I-frame display problems when cutting (still picture not
+updating) and/or fast forward/backward in some streams.
+Apply to: VDR sources
+More info: http://www.schluenss.de/history.html
+
+
+--- recording.c.orig	2005-02-12 12:17:47.000000000 +0200
++++ recording.c	2005-03-14 23:01:32.370785864 +0200
+@@ -1017,8 +1017,8 @@
+                   FileOffset = &index[Index].offset;
+                if (Length) {
+                   // all recordings end with a non-I_FRAME, so the following should be safe:
+-                  int fn = index[Index + 1].number;
+-                  int fo = index[Index + 1].offset;
++                  int fn = index[Index + 2].number;
++                  int fo = index[Index + 2].offset;
+                   if (fn == *FileNumber)
+                      *Length = fo - *FileOffset;
+                   else {

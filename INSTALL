@@ -20,3 +20,7 @@ Installation:
 - Call "make plugins" in the VDR root directory.
 - Make sure your DXR3 driver modules are loaded and ready to run.
 - Start VDR with "vdr -Pdxr3".
+
+Supplemental patches:
+
+- See the patches/ directory.
