@@ -1162,5 +1162,40 @@ void cDxr3Interface::SetSaturation(int value)
 	} 
 }
 
+// access registers
+// ==================================
+//! read a register
+long cDxr3Interface::ReadRegister(int registernum)
+{
+	em8300_register_t reg;
+	
+	reg.microcode_register = 0;
+	reg.reg = registernum;
+	reg.val = 0;
+	
+	ioctl(m_fdControl, EM8300_IOCTL_READREG, &reg);
+	return (reg.val);	
+}
+
+// ==================================
+//! write a register
+void cDxr3Interface::WriteRegister(int registernum, int val)
+{
+	em8300_register_t reg;
+	
+	reg.microcode_register = 0;
+	reg.reg = registernum;
+	reg.val = val;
+	ioctl(m_fdControl, EM8300_IOCTL_WRITEREG, &reg);
+}
+
+// maybe we should copy this routine into em8300 driver
+// ==================================
+// 
+void cDxr3Interface::Dxr3CopyYUVData(int pos, int *dst, int length)
+{
+	
+}
+
 // ==================================
 cMutex* cDxr3Interface::m_pMutex = new cMutex;
