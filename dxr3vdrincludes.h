@@ -25,6 +25,7 @@ using namespace std;
 #include <vdr/device.h>
 #include <vdr/status.h>
 #include <vdr/plugin.h>
+#include <vdr/audio.h>
 
 #ifdef __DXR3_UNDEF_STL_CONFIG_AFTERWARDS
 #undef __STL_CONFIG_H
