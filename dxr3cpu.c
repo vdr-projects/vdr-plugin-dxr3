@@ -101,7 +101,7 @@ cDxr3CPU::cDxr3CPU()
 	}
 
 	// print some infos about cpu
-	cLog::Instance() << "cpu vandor: " << m_Info.Vendor << "\n";
+	cLog::Instance() << "cpu vendor: " << m_Info.Vendor << "\n";
 	cLog::Instance() << "cpu extensions:\n";
 	cLog::Instance() << "mmx:      " << m_Info.MMX << "\n";
 	cLog::Instance() << "mmx-ext:  " << m_Info.MMXEXT << "\n";
