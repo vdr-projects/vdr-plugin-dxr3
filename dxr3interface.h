@@ -69,6 +69,7 @@ public:
     uint32_t GetSysClock() const;
     void SetPts(uint32_t pts);
     void SetSpuPts(uint32_t pts);
+    int64_t GetPts();
 
 	// state changes
 	void EnableSPU();
@@ -132,6 +133,7 @@ private:
     int m_fdVideo;		///< filehandle for video fifo of dxr3 card
     int m_fdAudio;		///< filehandle for audio fifo of dxr3 card
     int m_fdSpu;		///< filehandle for spu fifo of dxr3 card
+    uint32_t last_seen_pts;
 
 	// dxr3 clock
 	cDxr3SysClock*	m_pClock;	///< clock used for sync
