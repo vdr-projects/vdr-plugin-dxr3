@@ -58,14 +58,15 @@ static int Dxr3Open(const char *Name, int n, int Mode)
 
 // ==================================
 //! constructor
-cDxr3Interface::cDxr3Interface()
+cDxr3Interface::cDxr3Interface() :
+m_fdControl(-1), m_fdVideo(-1), m_fdAudio(-1), m_fdSpu(-1)
 {
 	// open control stream
 	m_fdControl = Dxr3Open("", cDxr3ConfigData::Instance().GetDxr3Card(), O_WRONLY | O_SYNC);
-	if (!m_fdControl)
+	if (m_fdControl < 0)
 	{
-		cLog::Instance() << "Unable to open the control stream!\n";
 		cLog::Instance() << "Please check if the dxr3 modules are loaded!\n";
+		exit(1);
 	}
 
 	// upload microcode to dxr3
@@ -77,9 +78,9 @@ cDxr3Interface::cDxr3Interface()
     m_fdSpu = Dxr3Open("_sp", cDxr3ConfigData::Instance().GetDxr3Card(), O_WRONLY | O_SYNC);
 
 	// everything ok?
-	if (!m_fdVideo || !m_fdAudio || !m_fdSpu)
+	if (m_fdVideo < 0 || m_fdAudio < 0 || m_fdSpu < 0)
 	{
-		cLog::Instance() << "Unable to open one of the 'mulitmedia' streams!\n";
+		cLog::Instance() << "Unable to open one of the 'multimedia' streams!\n";
 		exit(1);
 	}
 
@@ -132,19 +133,19 @@ cDxr3Interface::cDxr3Interface()
 cDxr3Interface::~cDxr3Interface()
 {
 	// close filehandles
-	if (m_fdControl)
+	if (m_fdControl > -1)
 	{
 		close(m_fdControl);
 	}
-    if (m_fdVideo)
+	if (m_fdVideo > -1)
 	{
 		close(m_fdVideo);
 	}
-	if (m_fdSpu)
+	if (m_fdSpu > -1)
 	{
 		close(m_fdSpu);
 	}
-	if (m_fdAudio)
+	if (m_fdAudio > -1)
 	{
 		close(m_fdAudio);
 	}
@@ -744,10 +745,10 @@ void cDxr3Interface::ExternalReleaseDevices()
 
     if (!m_ExternalReleased) 
 	{
-        if (m_fdControl > 0) close(m_fdControl);
-        if (m_fdVideo > 0) close(m_fdVideo);
-        if (m_fdSpu > 0) close(m_fdSpu);
-        if (m_fdAudio > 0) close(m_fdAudio);
+        if (m_fdControl > -1) close(m_fdControl);
+        if (m_fdVideo > -1) close(m_fdVideo);
+        if (m_fdSpu > -1) close(m_fdSpu);
+        if (m_fdAudio > -1) close(m_fdAudio);
         m_fdControl = m_fdVideo = m_fdSpu = m_fdAudio = -1;
 
         m_ExternalReleased = true;
@@ -828,7 +829,7 @@ void cDxr3Interface::ReOpenAudio()
  
 	if (!m_ExternalReleased) 
 	{
-        if (m_fdAudio > 0) 
+        if (m_fdAudio > -1)
 		{
             int bufsize = 0;
             ioctl(m_fdAudio, SNDCTL_DSP_GETODELAY, &bufsize);
@@ -837,8 +838,7 @@ void cDxr3Interface::ReOpenAudio()
             delete m_pClock;
             close(m_fdAudio);
             
-			m_fdAudio = open("/dev/em8300_ma-0", O_WRONLY | O_SYNC);
-
+            m_fdAudio = Dxr3Open("_ma", cDxr3ConfigData::Instance().GetDxr3Card(), O_WRONLY | O_SYNC);
                         
             uint32_t tmpAudioDataRate = m_audioDataRate;
             uint32_t tmpAudioChannelCount = m_audioChannelCount;
