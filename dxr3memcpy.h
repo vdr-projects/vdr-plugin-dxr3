@@ -69,7 +69,7 @@ struct memcpy_routine
 };
 
 // ==================================
-//! little class to to a nice benchmark
+//! Little class to do a nice benchmark
 /*
 	Whith this class we can get the fastest memcyp
 	methode for target computer.
