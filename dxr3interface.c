@@ -446,6 +446,7 @@ void cDxr3Interface::SetAspectRatio(uint32_t ratio)
     Lock();
 
     if (cDxr3ConfigData::Instance().GetForceLetterBox()) ratio = EM8300_ASPECTRATIO_16_9;
+	if (Setup.VideoFormat) ratio = EM8300_ASPECTRATIO_4_3;
 
 	if (!m_ExternalReleased && ratio != UNKNOWN_ASPECT_RATIO) 
 	{      

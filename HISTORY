@@ -228,3 +228,9 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - added Tools::WriteInfoToOsd(...) - now some infos like "Releasing devices" are show
   now on the osd again
 - fixed dxr3osd_subpicutre.c - thanks to Paavo Hartikainen <pahartik@sci.fi>
+
+
+2004-0?-??: Version 0.2.3-pre3
+
+- fixed output of anamorphic video, if tv aspect is configured to 16:9 in DVB setup menu 
+  thanks Seppo Ingalsuo <seppo.ingalsuo@iki.fi>
