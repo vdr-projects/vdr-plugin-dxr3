@@ -59,15 +59,6 @@
 */
 #define BUFSIZE 1024*1024
 
-enum {
-  MEMCPY_PROBE = 0,
-  MEMCPY_GLIBC,
-  MEMCPY_KERNEL,
-  MEMCPY_MMX,
-  MEMCPY_MMXEXT,
-  MEMCPY_SSE
-};
-
 // ==================================
 struct memcpy_routine
 {
