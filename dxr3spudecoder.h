@@ -21,7 +21,7 @@
 
 #ifndef _DXR3SPUDECODER_H_
 #define _DXR3SPUDECODER_H_
-
+ 
 #include "dxr3vdrincludes.h"
 #include <inttypes.h>
 
@@ -102,7 +102,11 @@ public:
     void setHighlight(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint32_t palette);
     void clearHighlight();
     void Empty();
+#if VDRVERSNUM >= 10318
+    void processSPU(uint32_t pts, uint8_t * buf, bool AllowedShow);
+#else
     void processSPU(uint32_t pts, uint8_t * buf);
+#endif
 
 	#if VDRVERSNUM >= 10311
     void Hide();
