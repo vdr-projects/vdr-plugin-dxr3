@@ -2,6 +2,7 @@
 * clean unneeded log entries
 * stillpicture
 * grab screenshot
+* add much more comments!
 * rewrite some parts of plugin like 
 	- demuxer
 	- palettemanger
@@ -14,3 +15,6 @@
 * optimice (is it worth to do?)
 	Rgb2YCrCb
 	YUV2Rgb
+
+* look at following parts
+	- dxr3unixserversocket
