@@ -37,7 +37,7 @@
 
 void *(* dxr3_memcpy)(void *to, const void *from, size_t len);
 
-#if defined(__i386__) // || defined(ARCH_X86_64)
+#ifdef __i386__
 // ==================================
 // for small memory blocks (<256 bytes) this version is faster
 #define small_memcpy(to,from,n) { register unsigned long int dummy; __asm__ __volatile__("rep; movsb":"=&D"(to), "=&S"(from), "=&c"(dummy) :"0" (to), "1" (from),"2" (n) : "memory"); }
@@ -308,7 +308,7 @@ static void * mmx2_memcpy(void * to, const void * from, size_t len)
 static void *linux_kernel_memcpy(void *to, const void *from, size_t len) {
   return __memcpy(to,from,len);
 }
-#endif /*ARCH_X86/ARCH_X86_64*/
+#endif /*__i386__*/
 
 
 // ==================================
@@ -328,7 +328,7 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 	routine.cpu_require = 0;
 	m_methods.push_back(routine);
 
-	#if defined(__i386__) //|| defined(ARCH_X86_64)
+	#ifdef __i386__
 
 	// linux_kernel_memcpy
 	routine.name = "linux_kernel_memcpy()";
@@ -357,7 +357,7 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 	m_methods.push_back(routine);
 
 	#	endif /*__FreeBSD__*/
-	#endif /*ARCH_X86/ARCH_X86_64*/
+	#endif /*__i386__*/
 
 
 	//
