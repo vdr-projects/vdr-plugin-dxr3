@@ -246,3 +246,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - added basic dolby digital interface
 - you can configure microcode path in Makefile - thanks to Sascha Volkenandt <sascha@akv-soft.de>
 - fixed DVBDIR and FFMDIR in Makefile - thanks to guys from www.vdr-wiki.de
+- you can set now logpath in makefile - thanks to Dr. Seltsam from www.vdr-portal.de
+  You should also run a linke like 
+  # find / -name "dxr3plugin.log" | xargs rm
+  because the pre2 seems to put this dxr3plugin.log random in some folders.
