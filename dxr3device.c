@@ -25,6 +25,7 @@
 #include "dxr3interface.h"
 #include "dxr3tools.h"
 #include "dxr3log.h"
+#include "dxr3osd.h"
 
 extern "C" 
 {
