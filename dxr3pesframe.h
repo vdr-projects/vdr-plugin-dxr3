@@ -91,7 +91,7 @@ public:
 public:    
     cDxr3PesFrame() : m_pesDataType(PES_UNKNOWN_DATA), m_bValid(false), m_pPesStart(0), m_pEsStart(0)
     , m_esLength(0), m_pts(0), m_videoFrameType(UNKNOWN_FRAME), m_aspectRatio(m_staticAspectRatio)
-    , m_horizontalSize(m_staticHorizontalSize), m_streamId(0), m_pNextStart(0), m_remainingLength(0)
+    , m_horizontalSize(m_staticHorizontalSize), m_verticalSize(m_staticVerticalSize), m_streamId(0), m_pNextStart(0), m_remainingLength(0)
     , m_offset(0) {};
     
     virtual ~cDxr3PesFrame()	{}
@@ -111,6 +111,7 @@ public:
     eVideoFrameType GetFrameType(void) const	{ assert(m_bValid); assert(m_pesDataType == PES_VIDEO_DATA); return m_videoFrameType;};
     uint32_t GetAspectRatio(void) const			{ assert(m_bValid); assert(m_pesDataType == PES_VIDEO_DATA); return m_aspectRatio;};
     uint32_t GetHorizontalSize(void) const		{ assert(m_bValid); assert(m_pesDataType == PES_VIDEO_DATA); return m_horizontalSize;};
+    uint32_t GetVerticalSize(void) const		{ assert(m_bValid); assert(m_pesDataType == PES_VIDEO_DATA); return m_verticalSize;};
     uint8_t GetStreamId(void) const				{ assert(m_bValid); assert(m_pesDataType == PES_VIDEO_DATA); return m_streamId;};
     int GetOffset(void) const					{ assert(m_bValid); return m_offset;};
 
@@ -132,6 +133,7 @@ protected:
 		m_videoFrameType = UNKNOWN_FRAME; 
 		m_aspectRatio = m_staticAspectRatio;
 		m_horizontalSize = m_staticHorizontalSize; 
+		m_verticalSize = m_staticVerticalSize;
 		m_streamId = 0; 
 		m_pNextStart = 0; 
 		m_remainingLength = 0;
@@ -148,6 +150,7 @@ protected:
     eVideoFrameType m_videoFrameType;
     uint32_t m_aspectRatio;
     uint32_t m_horizontalSize;
+    uint32_t m_verticalSize;
     uint8_t m_streamId;
 
     const uint8_t* m_pNextStart;
@@ -156,6 +159,7 @@ protected:
 
     static uint32_t m_staticAspectRatio;
     static uint32_t m_staticHorizontalSize;
+    static uint32_t m_staticVerticalSize;
 
 protected:
     static const uint32_t MAX_PES_HEADER_SIZE;

@@ -171,6 +171,7 @@ int cDxr3PesFrame::ExtractVideoData(cDxr3SafeArray<uint8_t> esFrame) throw (cDxr
                         break;
                 }
                 m_staticHorizontalSize = m_horizontalSize = (esFrame[i + 5] & 0xF0) >> 4 | esFrame[i + 4] << 4;
+                m_staticVerticalSize = m_verticalSize = ((esFrame[i + 5] & 0x0F) << 8) | (esFrame[i + 6]);
             }
         }
     }
@@ -245,5 +246,6 @@ bool cDxr3PesFrame::IsPesHeader(cDxr3SafeArray<uint8_t> header) throw (cDxr3Safe
 // ==================================
 uint32_t cDxr3PesFrame::m_staticAspectRatio = EM8300_ASPECTRATIO_4_3;
 uint32_t cDxr3PesFrame::m_staticHorizontalSize = 720;
+uint32_t cDxr3PesFrame::m_staticVerticalSize = 576;
 const uint32_t cDxr3PesFrame::MAX_PES_HEADER_SIZE = 184;
 

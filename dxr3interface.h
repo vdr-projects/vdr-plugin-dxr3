@@ -86,6 +86,8 @@ public:
 	void SetAspectRatio(uint32_t ratio);
 	uint32_t GetHorizontalSize() const			{ return m_horizontal; }
 	void SetHorizontalSize(uint32_t horizontal) { m_horizontal = horizontal;};
+	uint32_t GetVerticalSize() const			{ return m_vertical; }
+	void SetVerticalSize(uint32_t vertical) { m_vertical = vertical;};
 	
 	// play functions
     void SetPlayMode();
@@ -143,6 +145,7 @@ private:
     int				m_aspectDelayCounter;
     uint32_t		m_aspectRatio;			///< current used aspect ratio
     uint32_t		m_horizontal;			///< horizontal size of current videostream
+    uint32_t		m_vertical;			///< vertical size of current videostream
     uint32_t		m_audioSampleSize;		///< how big is the sample size for the current audiostream
     uint32_t		m_audioMode;
 	uint32_t		m_spuMode;

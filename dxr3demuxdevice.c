@@ -355,6 +355,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
                         bPlayedFrame = true;
                         // usleep(30000); // otherwise there is problem with audio (driver bug?)
                         m_dxr3Device.SetHorizontalSize(pesFrame.GetHorizontalSize());
+                        m_dxr3Device.SetVerticalSize(pesFrame.GetVerticalSize());
                         m_dxr3Device.PlayVideoFrame(pesFrame.GetEsStart(), (int) (pesFrame.GetEsLength()), m_ReUseFrame);
                         break;
 						
@@ -385,6 +386,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
 				else if (m_synchState == DXR3_DEMUX_VIDEO_SYNCHED || m_synchState == DXR3_DEMUX_SYNCHED) 
 				{
 					m_dxr3Device.SetHorizontalSize(pesFrame.GetHorizontalSize());
+					m_dxr3Device.SetVerticalSize(pesFrame.GetVerticalSize());
 					while(!Poll(100));
 					cFixedLengthFrame* pTempFrame = m_vBuf.Push(pesFrame.GetEsStart(), (int) (pesFrame.GetEsLength()), pts, ftVideo);
 					pTempFrame->SetAspectRatio(pesFrame.GetAspectRatio());
@@ -410,6 +412,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
 						vPts = pts;
 						
 						m_dxr3Device.SetHorizontalSize(pesFrame.GetHorizontalSize());
+						m_dxr3Device.SetVerticalSize(pesFrame.GetVerticalSize());
 						cFixedLengthFrame* pTempFrame = m_vBuf.Push(pesFrame.GetEsStart(), (int) (pesFrame.GetEsLength()), pts, ftVideo);
 						pTempFrame->SetAspectRatio(pesFrame.GetAspectRatio());
 						

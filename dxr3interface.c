@@ -101,6 +101,7 @@ cDxr3Interface::cDxr3Interface()
     m_ExternalReleased = false;
     m_volume = 255;
 	m_horizontal = 720;
+	m_vertical = 576;
     m_audioChannelCount = UNKNOWN_CHANNEL_COUNT;
     m_audioDataRate = 0;
     m_audioSampleSize = 0;
@@ -815,6 +816,7 @@ void cDxr3Interface::PlayBlackFrame()
         if (write(m_fdVideo, blackframe, blackframeLength) < 0) Resuscitation();        
     }
     m_horizontal = 720;
+    m_vertical = 576;
     
     Unlock();
 }
