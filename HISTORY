@@ -262,9 +262,10 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - removed explicit linking with zlib (Christian Gmeiner)
 - compiles now with 3.4.x gcc's (Christian Gmeiner, Ville Skyttä)
 - use $CXX for generating dependencies instead of hardcoded g++ (Ville Skyttä)
-- added descriptions to audio and video output threads (Ville Skyttä)
+- added descriptions to audio and video output threads
+  (#1112673, Ville Skyttä)
 - fixed audio and video thread deletion in demux device destructor
-  (Ville Skyttä)
+  (#1112674, Ville Skyttä)
 - made "all" the default target in Makefile (Ville Skyttä)
 - assume SSE support implies MMXEXT support, this enables optimized
   memcpy routines on more systems (Ville Skyttä)
