@@ -1,12 +1,6 @@
 Known problems, bugs, and workarounds for this driver:
 ------------------------------------------------------
 
-* After invoking the "Reset DXR3 hardware" function, or after playing
-  something with the MPlayer plugin, OSD goes pink.
-  Workaround: none known, need to restart VDR to restore sanity.
-  May sometimes be restored back to normal after some operations, but no
-  way to reliably reproduce/ find out what "fixes" it has been found.
-
 * No sound with the MP3 plugin with VDR >= 1.3.18.
   Workaround: compile the MP3 plugin with OSS support, configure it to use
   something else than the DXR3 for output (see the --dsp option), and set
@@ -41,6 +35,9 @@ Known problems, bugs, and workarounds for this driver:
 
 * The TVOnscreen plugin's OSD is a mess, positioning errors etc.
   Workaround: use TVOnscreen < 0.6.0.  0.5.2 works fine for me (Ville).
+
+* After invoking the "Reset DXR3 hardware" function, OSD goes pink
+  until it's hidden and shown again.
 
 Other TODOs:
 ------------

@@ -22,6 +22,7 @@ public:
 
     void AddColor(int color);
     void RemoveColor(int color);
+    void Clear();
     int GetCount();
     int operator[](int index);
     int GetIndex(int color);

@@ -113,3 +113,9 @@ uint32_t* cDxr3PaletteManager::GetPalette()
     
     return m_pal;
 } 
+
+// ==================================
+void cDxr3PaletteManager::Clear()
+{
+    memset(m_users, 0, sizeof(int) * MAX_COLORS);
+}

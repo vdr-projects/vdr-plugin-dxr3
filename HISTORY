@@ -278,3 +278,5 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - improve original OSD scaler for small resolutions (#1014339, Luca Olivetti)
 - fix compilation with -fPIC, kudos to ffmpeg (Ville Skyttä)
 - eliminate some compiler warnings (Ville Skyttä)
+- fix OSD going pink after returning from the MPlayer plugin
+  (Ville Skyttä, Martin Cap)

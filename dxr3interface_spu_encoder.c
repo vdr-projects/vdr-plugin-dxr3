@@ -449,6 +449,7 @@ int cSPUEncoder::Cmd(OSD_Command cmd, int color, int x0, int y0, int x1, int y1,
 
 		// This should be done in cSPUEncoder::cSPUEncoder
 
+		m_palManager.Clear();
 		return 0;
 		break;
 
