@@ -1,5 +1,6 @@
 * check Lock() and Unlock() in dxr3interface.c
 * set bcs
+* clean unneeded log entries
 * stillpicture
 * grab screenshot
 * rewrite some parts of plugin like 
@@ -10,3 +11,6 @@
 * osd via
 	- ffmpeg
 	- vga overlay
+
+* optimice (is it worth to do?)
+	Rgb2YCrCb
