@@ -240,6 +240,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - dxr3memcpy.c/h: should now compile on alpha and powerpc
 - added support for VDR 1.3.13 and later - thanks to Luca Olivetti and others
 - removed -lz from makefile
+- compiles now with 3.4.x gcc's
 - use $CXX for generating dependencies instead of hardcoded g++
 - added descriptions to audio and video output threads
 - fixed audio and video thread deletion in demux device destructor
