@@ -35,7 +35,7 @@ const int ZEROBUFFER_SIZE = 4096;
 uint8_t zerobuffer[ZEROBUFFER_SIZE] = {0};
 
 // ==================================
-// helper function to generate name
+//! helper function to generate name
 static const char *Dxr3Name(const char *Name, int n)
 {
 	static char buffer[PATH_MAX];
@@ -44,7 +44,7 @@ static const char *Dxr3Name(const char *Name, int n)
 }
 
 // ==================================
-// helper function to open the card #n
+//! helper function to open the card #n
 static int Dxr3Open(const char *Name, int n, int Mode)
 {
 	const char *FileName = Dxr3Name(Name, n);
@@ -58,7 +58,7 @@ static int Dxr3Open(const char *Name, int n, int Mode)
 }
 
 // ==================================
-// constr.
+//! constructor
 cDxr3Interface::cDxr3Interface()
 {
 	// open control stream
@@ -72,7 +72,7 @@ cDxr3Interface::cDxr3Interface()
 	// upload microcode to dxr3
 	UploadMicroCode();
 
-	// open 'multimedia' streams
+	///< open 'multimedia' streams
     m_fdVideo = Dxr3Open("_mv", cDxr3ConfigData::Instance().GetDxr3Card(), O_WRONLY | O_SYNC);
     m_fdAudio = Dxr3Open("_ma", cDxr3ConfigData::Instance().GetDxr3Card(), O_WRONLY | O_SYNC);
     m_fdSpu = Dxr3Open("_sp", cDxr3ConfigData::Instance().GetDxr3Card(), O_WRONLY | O_SYNC);
@@ -84,8 +84,10 @@ cDxr3Interface::cDxr3Interface()
 		exit(1);
 	}
 
+	// create clock
 	m_pClock = new cDxr3SysClock(m_fdControl, m_fdVideo, m_fdSpu);
 
+	// everything ok?
 	if (!m_pClock)
 	{
 		cLog::Instance() << "Unable to allocate memory for m_pClock in cDxr3Interface\n";
@@ -126,6 +128,7 @@ cDxr3Interface::cDxr3Interface()
 }
 
 // ==================================
+//! destructor
 cDxr3Interface::~cDxr3Interface()
 {
 	// close filehandles
@@ -166,7 +169,7 @@ void cDxr3Interface::Stop()
 
 // audio
 // ==================================
-// set audio-output to analog
+//! set audio-output to analog
 void cDxr3Interface::SetAudioAnalog()
 {
     int ioval = 0;
@@ -190,7 +193,7 @@ void cDxr3Interface::SetAudioAnalog()
 }
 
 // ==================================
-// set audio-output to digital pcm
+//! set audio-output to digital pcm
 void cDxr3Interface::SetAudioDigitalPCM()
 {
     int ioval = 0;
@@ -215,7 +218,7 @@ void cDxr3Interface::SetAudioDigitalPCM()
 }
 
 // ==================================
-// set audio-output to digital ac3
+//! set audio-output to digital ac3
 void cDxr3Interface::SetAudioDigitalAC3()
 {
     if (m_audioMode != EM8300_AUDIOMODE_DIGITALAC3) 
@@ -238,6 +241,7 @@ void cDxr3Interface::SetAudioDigitalAC3()
 }
 
 // ==================================
+//! set audiosepeed
 void cDxr3Interface::SetAudioSpeed(uint32_t speed)
 {
     if (m_audioDataRate != speed && speed != UNKNOWN_DATA_RATE) 
@@ -257,6 +261,7 @@ void cDxr3Interface::SetAudioSpeed(uint32_t speed)
 }
 
 // ==================================
+//! set nummber of channels
 void cDxr3Interface::SetChannelCount(uint32_t count)
 {
     if (m_audioChannelCount != count && count != UNKNOWN_CHANNEL_COUNT) 
@@ -276,6 +281,7 @@ void cDxr3Interface::SetChannelCount(uint32_t count)
 }
 
 // ==================================
+//! set audio sample size
 void cDxr3Interface::SetAudioSampleSize(uint32_t sampleSize) 
 {
     if (!m_ExternalReleased) 
@@ -333,7 +339,7 @@ void cDxr3Interface::SetSpuPts(uint32_t pts)
 
 // state changes
 // ==================================
-// enable subpicture proeccesing of the dxr3
+//! enable subpicture processing of the dxr3
 void cDxr3Interface::EnableSPU()
 {
     int ioval = 0;
@@ -352,7 +358,7 @@ void cDxr3Interface::EnableSPU()
 }
 
 // ==================================
-// disable subpicture proeccesing of the dxr3
+//! disable subpicture proeccesing of the dxr3
 void cDxr3Interface::DisableSPU()
 {
     int ioval = 0;
@@ -371,7 +377,7 @@ void cDxr3Interface::DisableSPU()
 }
 
 // ==================================
-// disable audio output of dxr3
+//! disable audio output of dxr3
 void cDxr3Interface::DisableAudio()
 { 
 	m_AudioActive = false;
@@ -387,7 +393,7 @@ void cDxr3Interface::DisableAudio()
 }
 
 // ==================================
-// enable overlay mode of the dxr3
+//! enable overlay mode of the dxr3
 void cDxr3Interface::EnableOverlay()
 {
 	// first we check, if it is enable yet
@@ -441,7 +447,7 @@ void cDxr3Interface::EnableOverlay()
 }
 
 // ==================================
-// disable overlay mode of the dxr3
+//! disable overlay mode of the dxr3
 void cDxr3Interface::DisanleOverlay()
 {
 	// is it allready disabled
@@ -453,7 +459,7 @@ void cDxr3Interface::DisanleOverlay()
 
 // set/get functions
 // ==================================
-// get aspect ratio
+//! get aspect ratio
 uint32_t cDxr3Interface::GetAspectRatio() const
 {
     int ioval = 0;
@@ -472,6 +478,7 @@ uint32_t cDxr3Interface::GetAspectRatio() const
 }
 
 // ==================================
+//! set aspectratio
 void cDxr3Interface::SetAspectRatio(uint32_t ratio) 
 {
     static int requestCounter = 0;
@@ -513,7 +520,7 @@ void cDxr3Interface::SetAspectRatio(uint32_t ratio)
 
 // play functions
 // ==================================
-// set playing mode and start sync engine
+//! set playing mode and start sync engine
 void cDxr3Interface::SetPlayMode()
 {
     em8300_register_t reg;
@@ -720,8 +727,8 @@ void cDxr3Interface::PlayAudioLpcmFrame(uint8_t* pBuf, int length)
 
 // external device access
 // ==================================
-// release devices, so mplayer-plugin, for instance,
-// can access the dxr3
+//! release devices, so mplayer-plugin, for instance,
+//! can access the dxr3
 void cDxr3Interface::ExternalReleaseDevices()
 {
     Lock();
@@ -744,7 +751,7 @@ void cDxr3Interface::ExternalReleaseDevices()
 }
 
 // ==================================
-// reopen devices for using in the dxr3 plugin
+//! reopen devices for using in the dxr3 plugin
 void cDxr3Interface::ExternalReopenDevices()
 {
     Lock();
@@ -785,7 +792,7 @@ void cDxr3Interface::ExternalReopenDevices()
 
 // tools
 // ==================================
-// play blackframe on tv
+//! play blackframe on tv
 void cDxr3Interface::PlayBlackFrame()
 {
     extern char blackframe[];
@@ -844,7 +851,7 @@ cOsdBase* cDxr3Interface::NewOsd(int x, int y)
 #endif
 
 // ==================================
-// uploadroutine for microcode
+//! uploadroutine for microcode
 void cDxr3Interface::UploadMicroCode()
 {
 	if (cDxr3ConfigData::Instance().GetDebug())
@@ -855,6 +862,8 @@ void cDxr3Interface::UploadMicroCode()
     em8300_microcode_t em8300_microcode;    
     const char* MICRO_CODE_FILE = "/usr/share/misc/em8300.uc";
     struct stat s;
+
+	// try to open it
     int UCODE = open(MICRO_CODE_FILE, O_RDONLY);
     
     if (UCODE <0) 
@@ -897,6 +906,8 @@ void cDxr3Interface::UploadMicroCode()
 		delete [] (char*) em8300_microcode.ucode;
         exit(1);
     }
+
+	// free memory to avoid memory leak
     delete [] (char*) em8300_microcode.ucode;
 
 	if (cDxr3ConfigData::Instance().GetDebug())
@@ -906,7 +917,7 @@ void cDxr3Interface::UploadMicroCode()
 }
 
 // ==================================
-// config and setup device via ioctl calls
+//! config and setup device via ioctl calls
 void cDxr3Interface::ConfigureDevice()
 {
 	uint32_t videomode = 0;
@@ -956,7 +967,7 @@ void cDxr3Interface::ConfigureDevice()
 }
 
 // ==================================
-// reset whole hardware
+//! reset whole hardware
 void cDxr3Interface::Resuscitation() 
 {
     time_t startt = time(&startt);
@@ -983,6 +994,7 @@ void cDxr3Interface::Resuscitation()
 }
 
 // ==================================
+//! pcm resampling funtcion
 void cDxr3Interface::ResampleVolume(short* pcmbuf, int size)
 {
     if (m_volume == 0) 
@@ -1093,7 +1105,7 @@ void cDxr3Interface::SetPalette(unsigned int *pal)
 
 // helper functions for dxr3 main osd screen
 // ==================================
-// reset dxr3 card
+//! reset dxr3 card
 void cDxr3Interface::ResetHardware()
 {
 	Lock();
@@ -1104,7 +1116,7 @@ void cDxr3Interface::ResetHardware()
 
 // set brightness/contrast/saturation
 // ==================================
-// set brightness
+//! set brightness
 void cDxr3Interface::SetBrightness(int value)
 {
 	m_bcs.brightness = value;
@@ -1116,7 +1128,7 @@ void cDxr3Interface::SetBrightness(int value)
 }
 
 // ==================================
-// set contrast
+//! set contrast
 void cDxr3Interface::SetContrast(int value)
 {
 	m_bcs.contrast = value;
@@ -1128,7 +1140,7 @@ void cDxr3Interface::SetContrast(int value)
 }
 
 // ==================================
-// set saturation
+//! set saturation
 void cDxr3Interface::SetSaturation(int value)
 {
 	m_bcs.saturation = value;

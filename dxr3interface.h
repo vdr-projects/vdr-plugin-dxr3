@@ -39,7 +39,12 @@
 class cFixedLengthFrame;
 
 // ==================================
-// interafce to dxr3-card
+//! interafce to dxr3-card
+/*!
+	cDxr3Interface is the interface to the dxr3
+	driver and so to the card,
+	so this is the layer between plugin and driver.
+*/
 class cDxr3Interface : public Singleton<cDxr3Interface>
 {
 public:
@@ -123,30 +128,30 @@ public:
 
 private:
 	// file handles
-	int m_fdControl;
-    int m_fdVideo;
-    int m_fdSpu;
-    int m_fdAudio;
+	int m_fdControl;	///< filehandle for contol fifo of dxr3 card
+    int m_fdVideo;		///< filehandle for video fifo of dxr3 card
+    int m_fdAudio;		///< filehandle for audio fifo of dxr3 card
+    int m_fdSpu;		///< filehandle for spu fifo of dxr3 card
 
 	// dxr3 clock
-	cDxr3SysClock*	m_pClock;
+	cDxr3SysClock*	m_pClock;	///< clock used for sync
 
-    uint32_t		m_audioChannelCount;
-    uint32_t		m_audioDataRate;
+    uint32_t		m_audioChannelCount;	///< how many channles has the current audiostream
+    uint32_t		m_audioDataRate;		///< which rate is used for the current audiostream
     int				m_aspectDelayCounter;
-    uint32_t		m_aspectRatio;
-    uint32_t		m_horizontal;
-    uint32_t		m_audioSampleSize;
+    uint32_t		m_aspectRatio;			///< current used aspect ratio
+    uint32_t		m_horizontal;			///< horizontal size of current videostream
+    uint32_t		m_audioSampleSize;		///< how big is the sample size for the current audiostream
     uint32_t		m_audioMode;
 	uint32_t		m_spuMode;
     bool			m_ExternalReleased;	// is dxr3 used by e.g. mplayer?
-    int				m_volume;
-    bool			m_AudioActive;
-    bool			m_VideoActive;
-	bool			m_OverlayActive;
+    int				m_volume;				///< volumevalue (0...255)
+    bool			m_AudioActive;			///< is audio active?
+    bool			m_VideoActive;			///< is video active?
+	bool			m_OverlayActive;		///< is overlay active?
 
 	// bcs
-	em8300_bcs_t	m_bcs;
+	em8300_bcs_t	m_bcs;					///< BrightnessContrastSaturation values
 
 	// spu
 //    cDxr3InterfaceSpu		m_SpuInterface;
@@ -157,7 +162,7 @@ private:
 	void Resuscitation();
 
 protected:
-    static cMutex* m_pMutex;
+    static cMutex* m_pMutex;				///< mutex for dxr3interface
 
     static void Lock()		{ cDxr3Interface::m_pMutex->Lock(); }
     static void Unlock()	{ cDxr3Interface::m_pMutex->Unlock(); }
