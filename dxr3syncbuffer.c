@@ -54,8 +54,8 @@ cFixedLengthFrame::~cFixedLengthFrame()
 // ! setup our frame
 void cFixedLengthFrame::Init(uint32_t lenght)
 {
-	m_length = length;
-	m_pData = new uint8_t[length];
+	m_length = lenght;
+	m_pData = new uint8_t[lenght];
 
 	// allocation ok?
 	if (!m_pData)
@@ -125,7 +125,7 @@ cDxr3SyncBuffer::cDxr3SyncBuffer(int frameCount, int frameLength, cDxr3Interface
 	// init our new m_pBuffer;
 	for (int i = 0; i < frameCount; i++)
 	{
-		m_pBuffer[i].Init(frameLenght);
+		m_pBuffer[i].Init(frameLength);
 	}
 
 	// set some default values

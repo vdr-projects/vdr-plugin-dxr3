@@ -39,10 +39,10 @@ const uint32_t UNKNOWN_ASPECT_RATIO = 0xFFFFFFFF;
 class cFixedLengthFrame 
 {    
 public: 
-    explicit cFixedLengthFrame();
+    cFixedLengthFrame();
     ~cFixedLengthFrame();
    
-	void Init(uint32_t lenght);
+    void Init(uint32_t lenght);
 
     void CopyFrame(const uint8_t* pStart, int length, uint32_t pts, eFrameType type);
     uint8_t* GetData(void);
@@ -74,7 +74,7 @@ protected:
     static uint32_t m_staticAudioDataRate;
     
 private:
-    cFixedLengthFrame(); // you are not allowed to use this constructor
+//    cFixedLengthFrame(); // you are not allowed to use this constructor
     cFixedLengthFrame(cFixedLengthFrame&); // no copy constructor
         
 };
