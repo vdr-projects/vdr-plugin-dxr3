@@ -146,7 +146,7 @@ void cDxr3AudioDecoder::Decode(const uint8_t* buf, int length, uint32_t pts, cDx
             if (m_Codec.codec_context.sample_rate != m_Rate) 
 			{
 				cLog::Instance() << "cDxr3AudioDecoder::Decode Sample rate = " << m_Codec.codec_context.sample_rate << "\n";
-                if (rate != -1) throw UNEXPECTED_PARAMETER_CHANGE;
+                if (m_Rate != -1) throw UNEXPECTED_PARAMETER_CHANGE;
                 m_Rate = m_Codec.codec_context.sample_rate;
             }
             if (m_Codec.codec_context.channels != m_Channels+1 ) 
@@ -157,9 +157,9 @@ void cDxr3AudioDecoder::Decode(const uint8_t* buf, int length, uint32_t pts, cDx
             }
             if (out_size) 
 			{
-                cFixedLengthFrame* pTempFrame = aBuf.Push(PcmBuf, out_size, pts);
-                pTempFrame->SetChannelCount(channels);
-                pTempFrame->SetDataRate(rate);
+                cFixedLengthFrame* pTempFrame = aBuf.Push(m_PcmBuf, out_size, pts);
+                pTempFrame->SetChannelCount(m_Channels);
+                pTempFrame->SetDataRate(m_Rate);
             }
             length -= len;
             buf += len;

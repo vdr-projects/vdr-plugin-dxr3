@@ -83,7 +83,7 @@ public:
 
 	// some little helpers to save some writing
 	int GetDebugLow() const								{ return (m_Debug && !m_DebugLevel); }
-	int GetDebugEverything() const						{ if (m_Debug && !m_DebugLeevel) { return 1; } else { return 0; } }
+	int GetDebugEverything() const						{ if (m_Debug && !m_DebugLevel) { return 1; } else { return 0; } }
 
 	int GetBrightness() const							{ return m_Brightness; }
 	int SetBrightness(int value)						{ return m_Brightness = value; }
