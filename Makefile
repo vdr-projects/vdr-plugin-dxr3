@@ -1,7 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.1.2.10 2005/03/30 21:22:48 scop Exp $
+# $Id: Makefile,v 1.1.2.11 2005/04/05 18:54:01 scop Exp $
 
 # The official name of this plugin.
 # This name will be used in the '-P...' option of VDR to load the plugin.
@@ -60,7 +60,7 @@ DEFINES += -DUSE_XINE_SCALER
 ### The object files (add further files here):
 
 OBJS = $(PLUGIN).o dxr3multichannelaudio.o dxr3sysclock.o dxr3colormanager.o dxr3syncbuffer.o dxr3audiodecoder.o \
-dxr3blackframe.o dxr3palettemanager.o dxr3nextpts.o dxr3pesframe.o dxr3demuxdevice.o dxr3configdata.o \
+dxr3blackframe.o dxr3nextpts.o dxr3pesframe.o dxr3demuxdevice.o dxr3configdata.o \
 dxr3log.o dxr3ffmpeg.o dxr3interface_spu_encoder.o dxr3i18n.o \
 dxr3interface.o dxr3device.o dxr3outputthread.o dxr3osd.o dxr3osd_subpicture.o dxr3spudecoder.o \
 dxr3cpu.o dxr3memcpy.o

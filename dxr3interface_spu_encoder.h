@@ -33,7 +33,6 @@
 #include <stdlib.h>
 #include <linux/dvb/osd.h>
 #include "dxr3vdrincludes.h"
-#include "dxr3palettemanager.h"
 #include "dxr3colormanager.h"
 #include "dxr3interface.h"
 #include "dxr3singleton.h"
@@ -138,7 +137,7 @@ private:
 	void CalculateActiveOsdArea();
 
 	sOSD_Window			m_windows[8];
-	cDxr3PaletteManager m_palManager;
+	cPalette		m_palManager; // name for hysterical raisins ;)
 	cColorManager*		m_ColorManager;
 	encodedata			m_encodeddata;
     int					m_lastwindow;

@@ -45,6 +45,7 @@ ToDo:
 #include <signal.h>
 #include <string>
 #include <vdr/plugin.h>
+#include "dxr3tools.h"
 
 namespace XineScaler
 {
@@ -268,6 +269,8 @@ cSPUEncoder::cSPUEncoder()
 
 	// set active area to 0
 	//m_x0 = m_x1 = m_y0 = m_y1 = 0;
+	// 16 Colors max.
+	m_palManager.SetBpp(4);
 }
 
 // ==================================
@@ -310,6 +313,7 @@ int cSPUEncoder::Cmd(OSD_Command cmd, int color, int x0, int y0, int x1, int y1,
 		break;
 
 	case OSD_SetPalette:
+	{
 		// Spu->Cmd(OSD_SetPalette, 0, NumColors - 1, 0, 0, 0, Colors);
 		// (firstcolor{color},lastcolor{x0},data)
 		// Set a number of entries in the palette
@@ -328,23 +332,18 @@ int cSPUEncoder::Cmd(OSD_Command cmd, int color, int x0, int y0, int x1, int y1,
 
 		for (int x = color, i = 0; x <= x0; x++,i++) 
 		{
-			m_palManager.AddColor((int)*col & 0xFFFFFF);
-
-			idx = m_palManager.GetIndex((int)*col & 0xFFFFFF);
-			if (m_palManager.HasChanged()) 
-			{
-				cDxr3Interface::Instance().SetPalette(m_palManager.GetPalette());
-			}
-
+			idx = m_palManager.Index(Tools::Rgb2YCrCb(*col & 0x00FFFFFF));
 			opacity = ((*col & 0xFF000000) >> 24) * 0xF / 0xFF;
 			m_windows[m_lastwindow].colors[i] = (opacity << 4) | idx;
 			m_windows[m_lastwindow].opacity[i] = opacity;
 			col++;
 		}
+		int colors = 0;
+		cDxr3Interface::Instance().SetPalette((unsigned int*)m_palManager.Colors(colors));
 
 		return 0;
 		break;
-
+	}
 	case OSD_SetBlock:
 		// (x0,y0,x1,y1,increment{color},data)
 		// fills pixels x0,y0 through  x1,y1 with the content of data[]
@@ -389,18 +388,7 @@ int cSPUEncoder::Cmd(OSD_Command cmd, int color, int x0, int y0, int x1, int y1,
 
 	case OSD_Close:
 		// clear colors from palettemanager
-
-	#if VDRVERSNUM >= 10307
-		if ((col = (tColor*)m_windows[m_lastwindow].colors) != NULL) 
-	#else
-		if ((col = (eDvbColor*)m_windows[m_lastwindow].colors) != NULL) 
-	#endif
-			{
-			for (size_t i = 0; i < m_windows[m_lastwindow].NumColors; ++i) 
-			{
-				m_palManager.RemoveColor((int)(col[i]) & 0xFFFFFF);
-			}
-		}
+		m_palManager.Reset();
 
 		// clear osd
 		for (size_t i = m_windows[m_lastwindow].y0; i <= m_windows[m_lastwindow].y1; ++i) 
@@ -449,7 +437,6 @@ int cSPUEncoder::Cmd(OSD_Command cmd, int color, int x0, int y0, int x1, int y1,
 
 		// This should be done in cSPUEncoder::cSPUEncoder
 
-		m_palManager.Clear();
 		return 0;
 		break;
 
