@@ -269,3 +269,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
   removed not needed #includes
 - fixed bug #1022810: Osd gets pink
 - added support for vdr-1.3.13
+- added -fPIC in CXXFLAGS to support amd64 processors
