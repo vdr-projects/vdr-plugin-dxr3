@@ -243,3 +243,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - cDxr3Interface::ConfigureDevice(): we get now videomode from driver and set only a 
   new one, if the wanted one is different to the driver defaults one.
 - added functions to read and write registers directly with the plugin
+- added basic dolby digital interface
