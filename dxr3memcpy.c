@@ -31,21 +31,13 @@
  *
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
 #include "dxr3log.h"
 #include "dxr3cpu.h"
 #include "dxr3memcpy.h"
 
-
 void *(* dxr3_memcpy)(void *to, const void *from, size_t len);
 
-
-//#if defined(ARCH_X86) || defined(ARCH_X86_64)
-
-#ifndef _MSC_VER
+#if defined(ARCH_X86) || defined(ARCH_X86_64)
 // ==================================
 // for small memory blocks (<256 bytes) this version is faster
 #define small_memcpy(to,from,n)\
@@ -318,9 +310,7 @@ static void * mmx2_memcpy(void * to, const void * from, size_t len)
 static void *linux_kernel_memcpy(void *to, const void *from, size_t len) {
   return __memcpy(to,from,len);
 }
-#endif /* _MSC_VER */
-//#endif /* ARCH_X86 */
-
+#endif /*ARCH_X86/ARCH_X86_64*/
 
 
 // ==================================
@@ -340,9 +330,7 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 	routine.cpu_require = 0;
 	m_methods.push_back(routine);
 
-//	#ifdef ARCH_X86
-
-//	cLog::Instance() << "test\n";
+	#if defined(ARCH_X86) || defined(ARCH_X86_64)
 
 	// linux_kernel_memcpy
 	routine.name = "linux_kernel_memcpy()";
@@ -351,7 +339,7 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 	m_methods.push_back(routine);
 
 	// Test for GCC > 3.2.0
-	#if GCC_VERSION > 30200
+	#	if GCC_VERSION > 30200
 
 	// MMX optimized memcpy()
 	routine.name = "MMX optimized memcpy()";
@@ -365,7 +353,7 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 	routine.cpu_require = CC_MMXEXT;
 	m_methods.push_back(routine);
 
-	#	ifndef __FreeBSD__
+	#		ifndef __FreeBSD__
 
 	// SSE optimized memcpy()
 	routine.name = "SSE optimized memcpy()";
@@ -373,10 +361,9 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 	routine.cpu_require = CC_MMXEXT|CC_SSE;
 	m_methods.push_back(routine);
 
-	#	endif /*__FreeBSD__*/
-	#endif /*GCC_VERSION > 30200*/
-
-//	#endif /*ARCH_X86*/
+	#		endif /*__FreeBSD__*/
+	#	endif /*GCC_VERSION > 30200*/
+	#endif /*ARCH_X86/ARCH_X86_64*/
 
 
 	//
@@ -439,13 +426,13 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 // neede for exact timing
 unsigned long long int cDxr3MemcpyBench::Rdtsc()
 {
-//	#ifdef ARCH_X86
+	#ifdef ARCH_X86
 	unsigned long long int x;
 	__asm__ volatile (".byte 0x0f, 0x31" : "=A" (x));     
 	return x;
-//	#else
+	#else
 	/* FIXME: implement an equivalent for using optimized memcpy on other
             architectures */
-//	return 0;
-//	#endif
+	return 0;
+	#endif
 }
