@@ -79,7 +79,7 @@ bool cDxr3Ffmepg::OpenCodec(struct Dxr3Codec& Codec)
 }
 
 // ==================================
-// close codec
+//! close codec
 void cDxr3Ffmepg::CloseCodec(struct Dxr3Codec& Codec)
 {
     if (Codec.Open) 
