@@ -42,12 +42,12 @@
 //! our function pointer
 void *(* dxr3_memcpy)(void *to, const void *from, size_t len);
 
-#ifdef __i386__
+#if defined(__i386__) || defined(__x86_64__)
 // ==================================
 // for small memory blocks (<256 bytes) this version is faster
 #define small_memcpy(to,from,n) { register unsigned long int dummy; __asm__ __volatile__("rep; movsb":"=&D"(to), "=&S"(from), "=&c"(dummy) :"0" (to), "1" (from),"2" (n) : "memory"); }
 /*
-// -- dosn't compile with 2.95 gcc --
+// -- doesn't compile with 2.95 gcc --
 #define small_memcpy(to,from,n)\
 {\
 register unsigned long int dummy;\
@@ -313,7 +313,7 @@ static void * mmx2_memcpy(void * to, const void * from, size_t len)
 static void *linux_kernel_memcpy(void *to, const void *from, size_t len) {
   return __memcpy(to,from,len);
 }
-#endif /*__i386__*/
+#endif /* __i386__ || __x86_64__ */
 
 
 // ==================================
@@ -333,7 +333,7 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 	routine.cpu_require = 0;
 	m_methods.push_back(routine);
 
-	#ifdef __i386__
+#if defined(__i386__) || defined(__x86_64__)
 
 	// linux_kernel_memcpy
 	routine.name = "linux_kernel_memcpy()";
@@ -353,7 +353,7 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 	routine.cpu_require = CC_MMXEXT;
 	m_methods.push_back(routine);
 
-	#	ifndef __FreeBSD__
+#ifndef __FreeBSD__
 
 	// SSE optimized memcpy()
 	routine.name = "SSE optimized memcpy()";
@@ -361,9 +361,8 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 	routine.cpu_require = CC_MMXEXT|CC_SSE;
 	m_methods.push_back(routine);
 
-	#	endif /*__FreeBSD__*/
-	#endif /*__i386__*/
-
+#endif /* not __FreeBSD__ */
+#endif /* __i386__ || __x86_64__ */
 
 	//
 	// run benchmarking
@@ -423,9 +422,9 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 
 // ==================================
 //! needed for exact timing
-#ifdef __i386__
 unsigned long long int cDxr3MemcpyBench::Rdtsc(uint32_t config_flags)
 {
+#if defined(__i386__) || defined(__x86_64__)
 	// we need rdtsc support
 	if (config_flags && CC_MMX)
 	{
@@ -437,12 +436,8 @@ unsigned long long int cDxr3MemcpyBench::Rdtsc(uint32_t config_flags)
 	{
 		return times(NULL);
 	}
-
-}
 #else
-unsigned long long int cDxr3MemcpyBench::Rdtsc(uint32_t config_flags)
-{
 	struct tms tp;
 	return times(&tp);
+#endif /* __i386__ || __x86_64__ */
 }
-#endif
