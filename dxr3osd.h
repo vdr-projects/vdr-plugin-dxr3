@@ -2,7 +2,7 @@
 #define _DXR3_OSD_H_
 
 #include "dxr3vdrincludes.h"
-#include "dxr3spuencoder.h"
+#include "dxr3interface_spu_encoder.h"
 
 #if VDRVERSNUM >= 10307
 

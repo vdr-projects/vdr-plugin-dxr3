@@ -32,14 +32,14 @@ const int AUDIO_OFFSET = 4500;
 // ================================== 
 
 // ================================== 
-// constr.
+//! constructor
 cDxr3OutputThread::cDxr3OutputThread(cDxr3Interface& dxr3Device, cDxr3SyncBuffer& buffer) :
 cThread(), m_dxr3Device(dxr3Device), m_buffer(buffer), m_bStopThread(false), m_bNeedResync(false)
 {
 }
 
 // ================================== 
-// send stop signal
+//! send stop signal
 void cDxr3OutputThread::SetStopSignal() 
 {
     Lock();
@@ -48,7 +48,7 @@ void cDxr3OutputThread::SetStopSignal()
 }
 
 // ==================================
-// was stop signal send?
+//! was stop signal send?
 bool cDxr3OutputThread::GetStopSignal() 
 {
     bool ret = false;
@@ -60,7 +60,7 @@ bool cDxr3OutputThread::GetStopSignal()
 }
 
 // ==================================
-// constr.
+//! constr.
 cDxr3AudioOutThread::cDxr3AudioOutThread(cDxr3Interface& dxr3Device, cDxr3SyncBuffer& buffer) :
 cDxr3OutputThread(dxr3Device, buffer) 
 {
@@ -70,7 +70,7 @@ cDxr3OutputThread(dxr3Device, buffer)
 }
 
 // ==================================
-// thread action
+//! thread action
 void cDxr3AudioOutThread::Action() 
 { 
     bool resync = false;
@@ -175,7 +175,7 @@ void cDxr3AudioOutThread::Action()
 }
 
 // ==================================
-// constr.
+//! constr.
 cDxr3VideoOutThread::cDxr3VideoOutThread(cDxr3Interface& dxr3Device, cDxr3SyncBuffer& buffer) :
 cDxr3OutputThread(dxr3Device, buffer) 
 {
@@ -185,7 +185,7 @@ cDxr3OutputThread(dxr3Device, buffer)
 }
 
 // ==================================
-// thread action
+//! thread action
 void cDxr3VideoOutThread::Action() 
 {
     uint32_t pts = 0;
