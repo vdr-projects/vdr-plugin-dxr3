@@ -86,7 +86,7 @@ private:
 };
 
 // ==================================
-// optimized/fast memcpy
+//! optimized/fast memcpy
 extern void *(* dxr3_memcpy)(void *to, const void *from, size_t len);
 
 #endif /*_DXR3MEMCPY_H_*/
