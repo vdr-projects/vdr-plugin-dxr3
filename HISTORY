@@ -274,6 +274,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - removed explicit linking with zlib (Christian Gmeiner)
 - compiles now with 3.4.x gcc's (Christian Gmeiner, Ville Skyttä)
 - use $CXX for generating dependencies instead of hardcoded g++ (Ville Skyttä)
+- made "all" the default target in Makefile (Ville Skyttä)
 - assume SSE support implies MMXEXT support, this enables optimized
   memcpy routines on more systems (Ville Skyttä)
 - fix compilation with -fPIC, kudos to ffmpeg (Ville Skyttä)
