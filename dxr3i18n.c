@@ -21,6 +21,8 @@
 
 #include "dxr3i18n.h"
 
+const char *i18n_name = 0;
+
 const tI18nPhrase Phrases[] = {
 	{
 		"DXR3",
