@@ -13,4 +13,8 @@ cDxr3ConfigData::cDxr3ConfigData()
 	m_menuMode = SUBPICTURE;
 	m_debug = 1;
 	m_debuglevel = 0;
+
+	m_brightness	= 500;
+	m_contrast		= 500;
+	m_saturation	= 500;
 }

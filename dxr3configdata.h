@@ -62,15 +62,27 @@ public:
 	int GetDebugLow() const								{ return (m_debug && !m_debuglevel); }
 	int GetDebugEverything() const						{ if (m_debug == 1 && m_debuglevel == 0) { return 1; } else { return 0; } }
 
+	int GetBrightness() const							{ return m_brightness; }
+	int SetBrightness(int value)						{ return m_brightness = value; }
+	int GetContrast() const								{ return m_contrast; }
+	int SetContrast(int value)							{ return m_contrast = value; }
+	int GetSaturation() const							{ return m_saturation; }
+	int SetSaturation(int value)						{ return m_saturation = value; }
+
 protected:
-    int UseDigitalOut;
-    int Dxr3Card;
-    int ForceLetterBox;
-    int Ac3OutPut;
-    eVideoMode m_videoMode;
-    eMenuMode m_menuMode;
-	int m_debug;
+    eVideoMode	m_videoMode;
+    eMenuMode	m_menuMode;
+
+    int	UseDigitalOut;
+    int	Dxr3Card;
+    int	ForceLetterBox;
+    int	Ac3OutPut;
+
+	int	m_debug;
 	int m_debuglevel;
+	int m_brightness;
+	int m_contrast;
+	int m_saturation;
 };
 
 #endif /*_DXR3_CONFIGDATA_H_*/
