@@ -32,47 +32,42 @@
 #include "dxr3log.h"
 
 // ==================================
-//!  Decode given audiostream in usable audioformat
-/*!
-	Here we can decode lpcm, ac3 and pcm to useable
-	bitstream for ffmpeg. ffmpeg will convert
-	the datastream into mp2.
-*/
+// decode audio to mp2 or use DD :)
 class cDxr3AudioDecoder 
 {
 public:
     cDxr3AudioDecoder();
     ~cDxr3AudioDecoder();
 
-    void Init();
+    void Init(void); // init in const?                                
 
     void Decode(const uint8_t* buf, int length, uint32_t pts, cDxr3SyncBuffer &aBuf);
     void DecodeLpcm(const uint8_t* buf, int length, uint32_t pts, cDxr3SyncBuffer &aBuf);
     void DecodeAc3Dts(const uint8_t* pPes, const uint8_t* buf, int length, uint32_t pts, cDxr3SyncBuffer &aBuf);
 
-    int GetRate() const			{ return m_Rate; }
-    int GetChannelCount() const { return m_Channels; }
-    int GetFrameSize() const	{ return m_FrameSize; }
-    void Reset()				{ m_AC3dtsDecoder.Clear(); m_RBuf.Clear(); }
+    int GetRate(void) const			{ return rate; }
+    int GetChannelCount(void) const { return channels; }
+    int GetFrameSize(void) const	{ return frameSize; }
+    void Reset(void)				{ ac3dtsDecoder.Clear(); rbuf.Clear(); }
     
 private:
     bool HeadCheck(unsigned long head);
     
-	struct Dxr3Codec m_Codec;
+	struct Dxr3Codec Codec;
 
-    cRingBufferFrame m_RBuf;
-    cMultichannelAudio m_AC3dtsDecoder;
+    cRingBufferFrame rbuf;
+    cMultichannelAudio ac3dtsDecoder;
     
-    bool m_AudioSynched;
-    bool m_DecoderOpened;
-    uint8_t m_LastHeader[4];
-    int m_Rate;
-    int m_Channels;
-    uint32_t m_FrameSize;
-    uint8_t m_PcmBuf[AVCODEC_MAX_AUDIO_FRAME_SIZE];
-    int m_Volume;
-    bool m_FoundHeader;
-    bool m_DecodeAudio;
+    bool audioSynched;
+    bool decoderOpened;
+    uint8_t lastHeader[4];
+    int rate;
+    int channels;
+    uint32_t frameSize;
+    uint8_t pcmbuf[AVCODEC_MAX_AUDIO_FRAME_SIZE];
+    int volume;
+    bool foundHeader;
+    bool decodeAudio;
 
     cDxr3AudioDecoder(cDxr3AudioDecoder&); // no copy constructor
 };

@@ -28,14 +28,10 @@
 #include "dxr3demuxdevice.h"
 #include "dxr3spudecoder.h"
 #include <string>
-//using namespace std;
+using namespace std;
 
 // ==================================
 // our device :)
-/*!
-	cDxr3Device is the interface for VDR devices.
-	Is is the part, which VDR "talks" with our plugin.
-*/
 class cDxr3Device : public cDevice, public Singleton<cDxr3Device>
 {
 public:
@@ -58,11 +54,7 @@ public:
 	virtual void StillPicture(const uchar *Data, int Length);
 	virtual bool Poll(cPoller &Poller, int TimeoutMs = 0);
 	virtual int PlayVideo(const uchar *Data, int Length);
-#if VDRVERSNUM >= 10318
-	virtual int PlayAudio(const uchar *Data, int Length);
-#else
 	virtual void PlayAudio(const uchar *Data, int Length);
-#endif
 
 	// addition functions
 	virtual bool GrabImage(const char *FileName, bool Jpeg = true, int Quality = -1, int SizeX = -1, int SizeY = -1);
@@ -83,7 +75,7 @@ protected:
 	cDxr3DemuxDevice	m_DemuxDevice;
     bool				m_AC3Present;
     bool				m_CalledBySet;
-	std::string			m_strBuf;
+	string				m_strBuf;
 	int					m_Offset;
 
     //virtual bool SetPlayMode(ePlayMode PlayMode);

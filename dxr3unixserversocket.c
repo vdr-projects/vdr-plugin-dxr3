@@ -32,12 +32,13 @@
 #include "dxr3interface.h"
 #include "dxr3log.h"
 
+using namespace std;
+
 #ifndef SOCKET_CHMOD
 #define SOCKET_CHMOD 0660
 #endif
 
 // ==================================
-//! constructor
 cDxr3UnixServerSocket::cDxr3UnixServerSocket(const char* pFileName, int backlog) 
 {
     m_bConnected = false;
@@ -145,12 +146,12 @@ void cDxr3StartStopSocket::SendStatus()
 {
     if (cDxr3Interface::Instance().IsExternalReleased()) 
 	{
-		std::string res("CloseDxr3DeviceRsp\n");
+        string res("CloseDxr3DeviceRsp\n");
         write(m_fdConnectionSocket, res.c_str(), res.size());
     } 
 	else 
 	{
-        std::string res("OpenDxr3DeviceRsp\n");
+        string res("OpenDxr3DeviceRsp\n");
         write(m_fdConnectionSocket, res.c_str(), res.size());
     }
 }
@@ -160,26 +161,26 @@ void cDxr3StartStopSocket::ProcessMessage(void)
 {
     cLog::Instance() << "cDxr3StartStopSocket::ProcessMessage Rec: " << (const char*) m_msg << "\n";
     
-    if (std::string((const char*)m_msg) == std::string("OpenDxr3DeviceCmd")) 
+    if (string((const char*)m_msg) == string("OpenDxr3DeviceCmd")) 
 	{
         cDxr3Interface::Instance().ExternalReopenDevices();
         SendStatus();
     } 
-	else if (std::string((const char*)m_msg) == std::string("CloseDxr3DeviceCmd")) 
+	else if (string((const char*)m_msg) == string("CloseDxr3DeviceCmd")) 
 	{
         cDxr3Interface::Instance().ExternalReleaseDevices();
         SendStatus();
     }
-	else if (std::string((const char*)m_msg) == std::string("StatusDxr3DeviceCmd")) 
+	else if (string((const char*)m_msg) == string("StatusDxr3DeviceCmd")) 
 	{
         SendStatus();
     } 
-	else if (std::string((const char *)m_msg) == std::string("SaveDxr3DeviceCmd")) 
+	else if (string((const char *)m_msg) == string("SaveDxr3DeviceCmd")) 
 	{
         m_bSavedState = cDxr3Interface::Instance().IsExternalReleased();
         SendStatus();
     } 
-	else if (std::string((const char *)m_msg) == std::string("RestoreDxr3DeviceCmd")) 
+	else if (string((const char *)m_msg) == string("RestoreDxr3DeviceCmd")) 
 	{
         if (m_bSavedState) 
 		{
@@ -193,7 +194,7 @@ void cDxr3StartStopSocket::ProcessMessage(void)
     } 
 	else 
 	{
-        std::string res("Error\n");
+        string res("Error\n");
         write(m_fdConnectionSocket, res.c_str(), res.size());
     }
 }    

@@ -31,7 +31,7 @@
 #include "dxr3log.h"
 
 // ==================================
-//! constructor
+// constr.
 cDxr3DemuxDevice::cDxr3DemuxDevice(cDxr3Interface& dxr3Device) :
 m_dxr3Device(dxr3Device),
 m_aBuf(AUDIO_MAX_BUFFER_SIZE, AUIDO_MAX_FRAME_SIZE, m_dxr3Device), 
