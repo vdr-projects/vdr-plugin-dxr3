@@ -26,7 +26,7 @@
 #include <string>
 #include <algorithm>
 #include <vector>
-using namespace std;
+//using namespace std;
 
 #ifndef __STL_CONFIG_H
 #define __STL_CONFIG_H

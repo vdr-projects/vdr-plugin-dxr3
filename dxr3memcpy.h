@@ -82,7 +82,7 @@ public:
 private:
 	unsigned long long int Rdtsc();
 
-	vector<memcpy_routine>	m_methods;	///< a std::vector with all methodes
+	std::vector<memcpy_routine>	m_methods;	///< a std::vector with all methodes
 };
 
 // ==================================
