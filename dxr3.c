@@ -3,7 +3,7 @@
 *
 * See the README file for copyright information and how to reach the author.
 *
-* $Id: dxr3.c,v 1.1.2.1 2005/03/14 11:03:36 scop Exp $
+* $Id: dxr3.c,v 1.1.2.2 2005/03/14 18:58:29 scop Exp $
 */
 
 
@@ -145,15 +145,17 @@ bool cPluginDxr3::ProcessArgs(int argc, char *argv[])
 // ==================================
 bool cPluginDxr3::Start() 
 {
-    RegisterI18n(Phrases);
     return true;
 }
 
 // ==================================
 bool cPluginDxr3::Initialize() 
 {
+	RegisterI18n(Phrases);
+
 	new cDxr3CPU();
 	cDxr3Device::Instance();
+
     return true;
 }    
 
