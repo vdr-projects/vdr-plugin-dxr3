@@ -261,7 +261,8 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
   so we make use of DVD-functions of the dxr3 (Christian Gmeiner)
 - checked Lock() and Unlock() in dxr3interface.c - hope everything is ok
   else contact me (Christian Gmeiner)
-- using now std:: instead of namespace std (bug #1044069, Christian Gmeiner)
+- using now std::string instead of namespace std
+  (bug #1044069, Christian Gmeiner)
 - renamed dxr3interface_spu_encoder.h/c to dxr3spuencoder.h/c
   (Christian Gmeiner)
 - removed extra log commands in dxr3outputthread.c (Christian Gmeiner)
