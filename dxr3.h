@@ -1,20 +1,6 @@
 #ifndef _DXR3_H_
 #define _DXR3_H_
 
-const char* menuVideoModes[] = 
-{
-    "PAL",
-	"PAL60",
-    "NTSC"
-};
-
-// debug modes
-const char* menuDebugModes[] = 
-{
-	"Low",
-	"Everything"
-};
-
 // color setting bar
 static const char *SettingBar[] =
 {
@@ -69,6 +55,8 @@ private:
 	int newVideoMode;
 	int newDebug;
 	int newDebugLevel;
+	const char *menuVideoModes[3];
+	const char *menuDebugModes[2];
 };
 
 
