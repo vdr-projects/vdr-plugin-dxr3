@@ -21,395 +21,39 @@
 
 #include "dxr3i18n.h"
 
-const char *i18n_name = 0;
-
 const tI18nPhrase Phrases[] = {
 	{
-		"DXR3", // English
-		"DXR3", // Deutsch
+		"DXR3",
+		"DXR3",
 		"", // Slovenski
 		"", // Italiano
 		"", // Nederlands
 		"", // Português
 		"", // Français
 		"", // Norsk
-		"DXR3", // suomi
+		"DXR3-toiminnot",
 		"", // Polski
 		"", // Español
-		"", // Ellinika
+		"", // ÅëëçíéêÜ (Greek)
 		"", // Svenska
-		"", // Romaneste
+		"", // Românã
 		"", // Magyar
-		"", // Catala
+		"", // Català
 #if VDRVERSNUM > 10302
-		"", // Russian
+		"", // ÀãááÚØÙ (Russian)
 # if VDRVERSNUM > 10307
-		"", // Croatian
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
 # endif
 #endif
 	},
 	{
-		"DXR3 Adjustment", // English
-		"DXR3 Einstellungen", // Deutsch
-		"", // Slovenski
-		"", // Italiano
-		"", // Nederlands
-		"", // Português
-		"", // Français
-		"", // Norsk
-		"DXR3-säätimet", // suomi
-		"", // Polski
-		"", // Español
-		"", // Ellinika
-		"", // Svenska
-		"", // Romaneste
-		"", // Magyar
-		"", // Catala
-#if VDRVERSNUM > 10302
-		"", // Russian
-# if VDRVERSNUM > 10307
-		"", // Croatian
-# endif
-#endif
-	},
-	{
-		"Digital audio output", // English
-		"Digitaler Audioausgang", // Deutsch
-		"", // Slovenski
-		"", // Italiano
-		"", // Nederlands
-		"", // Português
-		"", // Français
-		"", // Norsk
-		"Digitaalinen audio-ulostulo", // suomi
-		"", // Polski
-		"", // Español
-		"", // Ellinika
-		"", // Svenska
-		"", // Romaneste
-		"", // Magyar
-		"", // Catala
-#if VDRVERSNUM > 10302
-		"", // Russian
-# if VDRVERSNUM > 10307
-		"", // Croatian
-# endif
-#endif
-	},
-	{
-		"DXR3 card", // English
-		"DXR3 Karte", // Deutsch
-		"", // Slovenski
-		"", // Italiano
-		"", // Nederlands
-		"", // Português
-		"", // Français
-		"", // Norsk
-		"DXR3-kortti", // suomi
-		"", // Polski
-		"", // Español
-		"", // Ellinika
-		"", // Svenska
-		"", // Romaneste
-		"", // Magyar
-		"", // Catala
-#if VDRVERSNUM > 10302
-		"", // Russian
-# if VDRVERSNUM > 10307
-		"", // Croatian
-# endif
-#endif
-	},
-	{
-		"DXR3 video mode", // English
-		"DXR3 Videomodus", // Deutsch
-		"", // Slovenski
-		"", // Italiano
-		"", // Nederlands
-		"", // Português
-		"", // Français
-		"", // Norsk
-		"DXR3-näyttötila", // suomi
-		"", // Polski
-		"", // Español
-		"", // Ellinika
-		"", // Svenska
-		"", // Romaneste
-		"", // Magyar
-		"", // Catala
-#if VDRVERSNUM > 10302
-		"", // Russian
-# if VDRVERSNUM > 10307
-		"", // Croatian
-# endif
-#endif
-	},
-	{
-		"Reset DXR3 hardware", // English
-		"Reset DXR3 Hardware", // Deutsch
-		"", // Slovenski
-		"", // Italiano
-		"", // Nederlands
-		"", // Português
-		"", // Français
-		"", // Norsk
-		"Alusta DXR3-laitteisto", // suomi
-		"", // Polski
-		"", // Español
-		"", // Ellinika
-		"", // Svenska
-		"", // Romaneste
-		"", // Magyar
-		"", // Catala
-#if VDRVERSNUM > 10302
-		"", // Russian
-# if VDRVERSNUM > 10307
-		"", // Croatian
-# endif
-#endif
-	},
-	{
-		"Toggle Force Letterbox", // English
-		"Letterbox erzwingen", // Deutsch
-		"", // Slovenski
-		"", // Italiano
-		"", // Nederlands
-		"", // Português
-		"", // Français
-		"", // Norsk
-		"Vaihda letterbox-näyttötilan pakotus päälle/pois", // suomi
-		"", // Polski
-		"", // Español
-		"", // Ellinika
-		"", // Svenska
-		"", // Romaneste
-		"", // Magyar
-		"", // Catala
-#if VDRVERSNUM > 10302
-		"", // Russian
-# if VDRVERSNUM > 10307
-		"", // Croatian
-# endif
-#endif
-	},
-	{
-		"Analog Output", // English
-		"Analoge Ausgabe", // Deutsch
-		"", // Slovenski
-		"", // Italiano
-		"", // Nederlands
-		"", // Português
-		"", // Français
-		"", // Norsk
-		"Kytke analoginen audio-ulostulo", // suomi
-		"", // Polski
-		"", // Español
-		"", // Ellinika
-		"", // Svenska
-		"", // Romaneste
-		"", // Magyar
-		"", // Catala
-#if VDRVERSNUM > 10302
-		"", // Russian
-# if VDRVERSNUM > 10307
-		"", // Croatian
-# endif
-#endif
-	},
-	{
-		"AC3 output on", // English
-		"AC3 Ausgabe Ein", // Deutsch
-		"", // Slovenski
-		"", // Italiano
-		"", // Nederlands
-		"", // Português
-		"", // Français
-		"", // Norsk
-		"AC3-ulostulo päällä", // suomi
-		"", // Polski
-		"", // Español
-		"", // Ellinika
-		"", // Svenska
-		"", // Romaneste
-		"", // Magyar
-		"", // Catala
-#if VDRVERSNUM > 10302
-		"", // Russian
-# if VDRVERSNUM > 10307
-		"", // Croatian
-# endif
-#endif
-	},
-	{
-		"AC3 output off", // English
-		"AC3 Ausgabe Aus", // Deutsch
-		"", // Slovenski
-		"", // Italiano
-		"", // Nederlands
-		"", // Português
-		"", // Français
-		"", // Norsk
-		"AC3-ulostulo pois", // suomi
-		"", // Polski
-		"", // Español
-		"", // Ellinika
-		"", // Svenska
-		"", // Romaneste
-		"", // Magyar
-		"", // Catala
-#if VDRVERSNUM > 10302
-		"", // Russian
-# if VDRVERSNUM > 10307
-		"", // Croatian
-# endif
-#endif
-	},
-	{
-		"Digital output", // English
-		"Digitaler Ausgang", // Deutsch
-		"", // Slovenski
-		"", // Italiano
-		"", // Nederlands
-		"", // Português
-		"", // Français
-		"", // Norsk
-		"Kytke digitaalinen audio-ulostulo", // suomi
-		"", // Polski
-		"", // Español
-		"", // Ellinika
-		"", // Svenska
-		"", // Romaneste
-		"", // Magyar
-		"", // Catala
-#if VDRVERSNUM > 10302
-		"", // Russian
-# if VDRVERSNUM > 10307
-		"", // Croatian
-# endif
-#endif
-	},
-	{
-		"DXR3: Releasing devices", // English
-		"DXR3: Releasing Devices", // Deutsch
-		"", // Slovenski
-		"", // Italiano
-		"", // Nederlands
-		"", // Português
-		"", // Français
-		"", // Norsk
-		"DXR3: vapautetaan laitteet", // suomi
-		"", // Polski
-		"", // Español
-		"", // Ellinika
-		"", // Svenska
-		"", // Romaneste
-		"", // Magyar
-		"", // Catala
-#if VDRVERSNUM > 10302
-		"", // Russian
-# if VDRVERSNUM > 10307
-		"", // Croatian
-# endif
-#endif
-	},
-	{
-		"Color settings", // English
-		"Farbeinstellungen", // Deutsch
-		"", // Slovenski
-		"", // Italiano
-		"", // Nederlands
-		"", // Português
-		"", // Français
-		"", // Norsk
-		"Väriasetukset", // suomi
-		"", // Polski
-		"", // Español
-		"", // Ellinika
-		"", // Svenska
-		"", // Romaneste
-		"", // Magyar
-		"", // Catala
-#if VDRVERSNUM > 10302
-		"", // Russian
-# if VDRVERSNUM > 10307
-		"", // Croatian
-# endif
-#endif
-	},
-	{
-		"Brightness", // English
-		"Helligkeit", // Deutsch
-		"", // Slovenski
-		"", // Italiano
-		"", // Nederlands
-		"", // Português
-		"", // Français
-		"", // Norsk
-		"Kirkkaus", // suomi
-		"", // Polski
-		"", // Español
-		"", // Ellinika
-		"", // Svenska
-		"", // Romaneste
-		"", // Magyar
-		"", // Catala
-#if VDRVERSNUM > 10302
-		"", // Russian
-# if VDRVERSNUM > 10307
-		"", // Croatian
-# endif
-#endif
-	},
-	{
-		"Contrast", // English
-		"Kontrast", // Deutsch
-		"", // Slovenski
-		"", // Italiano
-		"", // Nederlands
-		"", // Português
-		"", // Français
-		"", // Norsk
-		"Kontrasti", // suomi
-		"", // Polski
-		"", // Español
-		"", // Ellinika
-		"", // Svenska
-		"", // Romaneste
-		"", // Magyar
-		"", // Catala
-#if VDRVERSNUM > 10302
-		"", // Russian
-# if VDRVERSNUM > 10307
-		"", // Croatian
-# endif
-#endif
-	},
-	{
-		"Saturation", // English
-		"Sättigung", // Deutsch
-		"", // Slovenski
-		"", // Italiano
-		"", // Nederlands
-		"", // Português
-		"", // Français
-		"", // Norsk
-		"Värikylläisyys", // suomi
-		"", // Polski
-		"", // Español
-		"", // Ellinika
-		"", // Svenska
-		"", // Romaneste
-		"", // Magyar
-		"", // Catala
-#if VDRVERSNUM > 10302
-		"", // Russian
-# if VDRVERSNUM > 10307
-		"", // Croatian
-# endif
-#endif
-	},
-	{
-		"Debug mode", // English
+		"Hardware MPEG decoder",
 		"", // Deutsch
 		"", // Slovenski
 		"", // Italiano
@@ -417,23 +61,569 @@ const tI18nPhrase Phrases[] = {
 		"", // Português
 		"", // Français
 		"", // Norsk
-		"Debug-tila", // suomi
+		"MPEG-purkukortti",
 		"", // Polski
 		"", // Español
-		"", // Ellinika
+		"", // ÅëëçíéêÜ (Greek)
 		"", // Svenska
-		"", // Romaneste
+		"", // Românã
 		"", // Magyar
-		"", // Catala
+		"", // Català
 #if VDRVERSNUM > 10302
-		"", // Russian
+		"", // ÀãááÚØÙ (Russian)
 # if VDRVERSNUM > 10307
-		"", // Croatian
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
 # endif
 #endif
 	},
 	{
-		"Debug level", // English
+		"DXR3 Adjustment",
+		"DXR3 Einstellungen",
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"DXR3-toiminnot",
+		"", // Polski
+		"", // Español
+		"", // ÅëëçíéêÜ (Greek)
+		"", // Svenska
+		"", // Românã
+		"", // Magyar
+		"", // Català
+#if VDRVERSNUM > 10302
+		"", // ÀãááÚØÙ (Russian)
+# if VDRVERSNUM > 10307
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
+# endif
+#endif
+	},
+	{
+		"Digital audio output",
+		"Digitaler Audioausgang",
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"Digitaalinen audioulostulo",
+		"", // Polski
+		"", // Español
+		"", // ÅëëçíéêÜ (Greek)
+		"", // Svenska
+		"", // Românã
+		"", // Magyar
+		"", // Català
+#if VDRVERSNUM > 10302
+		"", // ÀãááÚØÙ (Russian)
+# if VDRVERSNUM > 10307
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
+# endif
+#endif
+	},
+	{
+		"Card number",
+		"Karte",
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"Kortin järjestysnumero",
+		"", // Polski
+		"", // Español
+		"", // ÅëëçíéêÜ (Greek)
+		"", // Svenska
+		"", // Românã
+		"", // Magyar
+		"", // Català
+#if VDRVERSNUM > 10302
+		"", // ÀãááÚØÙ (Russian)
+# if VDRVERSNUM > 10307
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
+# endif
+#endif
+	},
+	{
+		"Video mode",
+		"Videomodus",
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"Näyttötila",
+		"", // Polski
+		"", // Español
+		"", // ÅëëçíéêÜ (Greek)
+		"", // Svenska
+		"", // Românã
+		"", // Magyar
+		"", // Català
+#if VDRVERSNUM > 10302
+		"", // ÀãááÚØÙ (Russian)
+# if VDRVERSNUM > 10307
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
+# endif
+#endif
+	},
+	{
+		"PAL",
+		"PAL",
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"PAL",
+		"", // Polski
+		"", // Español
+		"", // ÅëëçíéêÜ (Greek)
+		"", // Svenska
+		"", // Românã
+		"", // Magyar
+		"", // Català
+#if VDRVERSNUM > 10302
+		"", // ÀãááÚØÙ (Russian)
+# if VDRVERSNUM > 10307
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
+# endif
+#endif
+	},
+	{
+		"PAL60",
+		"PAL60",
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"PAL60",
+		"", // Polski
+		"", // Español
+		"", // ÅëëçíéêÜ (Greek)
+		"", // Svenska
+		"", // Românã
+		"", // Magyar
+		"", // Català
+#if VDRVERSNUM > 10302
+		"", // ÀãááÚØÙ (Russian)
+# if VDRVERSNUM > 10307
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
+# endif
+#endif
+	},
+	{
+		"NTSC",
+		"NTSC",
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"NTSC",
+		"", // Polski
+		"", // Español
+		"", // ÅëëçíéêÜ (Greek)
+		"", // Svenska
+		"", // Românã
+		"", // Magyar
+		"", // Català
+#if VDRVERSNUM > 10302
+		"", // ÀãááÚØÙ (Russian)
+# if VDRVERSNUM > 10307
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
+# endif
+#endif
+	},
+	{
+		"Reset DXR3 hardware",
+		"Reset DXR3 Hardware",
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"Palauta kortti alkutilaan",
+		"", // Polski
+		"", // Español
+		"", // ÅëëçíéêÜ (Greek)
+		"", // Svenska
+		"", // Românã
+		"", // Magyar
+		"", // Català
+#if VDRVERSNUM > 10302
+		"", // ÀãááÚØÙ (Russian)
+# if VDRVERSNUM > 10307
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
+# endif
+#endif
+	},
+	{
+		"Toggle force letterbox",
+		"Letterbox erzwingen",
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"Letterbox-näyttötilan pakotus päälle/pois",
+		"", // Polski
+		"", // Español
+		"", // ÅëëçíéêÜ (Greek)
+		"", // Svenska
+		"", // Românã
+		"", // Magyar
+		"", // Català
+#if VDRVERSNUM > 10302
+		"", // ÀãááÚØÙ (Russian)
+# if VDRVERSNUM > 10307
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
+# endif
+#endif
+	},
+	{
+		"Switch to analog audio output",
+		"Analoge Ausgabe",
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"Kytke analoginen audioulostulo",
+		"", // Polski
+		"", // Español
+		"", // ÅëëçíéêÜ (Greek)
+		"", // Svenska
+		"", // Românã
+		"", // Magyar
+		"", // Català
+#if VDRVERSNUM > 10302
+		"", // ÀãááÚØÙ (Russian)
+# if VDRVERSNUM > 10307
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
+# endif
+#endif
+	},
+	{
+		"AC3 output on",
+		"AC3 Ausgabe Ein",
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"AC3-ulostulo päälle",
+		"", // Polski
+		"", // Español
+		"", // ÅëëçíéêÜ (Greek)
+		"", // Svenska
+		"", // Românã
+		"", // Magyar
+		"", // Català
+#if VDRVERSNUM > 10302
+		"", // ÀãááÚØÙ (Russian)
+# if VDRVERSNUM > 10307
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
+# endif
+#endif
+	},
+	{
+		"AC3 output off",
+		"AC3 Ausgabe Aus",
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"AC3-ulostulo pois",
+		"", // Polski
+		"", // Español
+		"", // ÅëëçíéêÜ (Greek)
+		"", // Svenska
+		"", // Românã
+		"", // Magyar
+		"", // Català
+#if VDRVERSNUM > 10302
+		"", // ÀãááÚØÙ (Russian)
+# if VDRVERSNUM > 10307
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
+# endif
+#endif
+	},
+	{
+		"Switch to digital audio output",
+		"Digitaler Ausgang",
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"Kytke digitaalinen audioulostulo",
+		"", // Polski
+		"", // Español
+		"", // ÅëëçíéêÜ (Greek)
+		"", // Svenska
+		"", // Românã
+		"", // Magyar
+		"", // Català
+#if VDRVERSNUM > 10302
+		"", // ÀãááÚØÙ (Russian)
+# if VDRVERSNUM > 10307
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
+# endif
+#endif
+	},
+	{
+		"DXR3: releasing devices",
+		"DXR3: Releasing Devices",
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"DXR3: vapautetaan laitteet",
+		"", // Polski
+		"", // Español
+		"", // ÅëëçíéêÜ (Greek)
+		"", // Svenska
+		"", // Românã
+		"", // Magyar
+		"", // Català
+#if VDRVERSNUM > 10302
+		"", // ÀãááÚØÙ (Russian)
+# if VDRVERSNUM > 10307
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
+# endif
+#endif
+	},
+	{
+		"Color settings",
+		"Farbeinstellungen",
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"Väriasetukset",
+		"", // Polski
+		"", // Español
+		"", // ÅëëçíéêÜ (Greek)
+		"", // Svenska
+		"", // Românã
+		"", // Magyar
+		"", // Català
+#if VDRVERSNUM > 10302
+		"", // ÀãááÚØÙ (Russian)
+# if VDRVERSNUM > 10307
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
+# endif
+#endif
+	},
+	{
+		"Brightness",
+		"Helligkeit",
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"Kirkkaus",
+		"", // Polski
+		"", // Español
+		"", // ÅëëçíéêÜ (Greek)
+		"", // Svenska
+		"", // Românã
+		"", // Magyar
+		"", // Català
+#if VDRVERSNUM > 10302
+		"", // ÀãááÚØÙ (Russian)
+# if VDRVERSNUM > 10307
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
+# endif
+#endif
+	},
+	{
+		"Contrast",
+		"Kontrast",
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"Kontrasti",
+		"", // Polski
+		"", // Español
+		"", // ÅëëçíéêÜ (Greek)
+		"", // Svenska
+		"", // Românã
+		"", // Magyar
+		"", // Català
+#if VDRVERSNUM > 10302
+		"", // ÀãááÚØÙ (Russian)
+# if VDRVERSNUM > 10307
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
+# endif
+#endif
+	},
+	{
+		"Saturation",
+		"Sättigung",
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"Värikylläisyys",
+		"", // Polski
+		"", // Español
+		"", // ÅëëçíéêÜ (Greek)
+		"", // Svenska
+		"", // Românã
+		"", // Magyar
+		"", // Català
+#if VDRVERSNUM > 10302
+		"", // ÀãááÚØÙ (Russian)
+# if VDRVERSNUM > 10307
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
+# endif
+#endif
+	},
+	{
+		"Debug mode",
 		"", // Deutsch
 		"", // Slovenski
 		"", // Italiano
@@ -441,18 +631,114 @@ const tI18nPhrase Phrases[] = {
 		"", // Português
 		"", // Français
 		"", // Norsk
-		"Debug-taso", // suomi
+		"Debug-tila",
 		"", // Polski
 		"", // Español
-		"", // Ellinika
+		"", // ÅëëçíéêÜ (Greek)
 		"", // Svenska
-		"", // Romaneste
+		"", // Românã
 		"", // Magyar
-		"", // Catala
+		"", // Català
 #if VDRVERSNUM > 10302
-		"", // Russian
+		"", // ÀãááÚØÙ (Russian)
 # if VDRVERSNUM > 10307
-		"", // Croatian
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
+# endif
+#endif
+	},
+	{
+		"Debug level",
+		"", // Deutsch
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"Debug-taso",
+		"", // Polski
+		"", // Español
+		"", // ÅëëçíéêÜ (Greek)
+		"", // Svenska
+		"", // Românã
+		"", // Magyar
+		"", // Català
+#if VDRVERSNUM > 10302
+		"", // ÀãááÚØÙ (Russian)
+# if VDRVERSNUM > 10307
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
+# endif
+#endif
+	},
+	{
+		"low",
+		"", // Deutsch
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"alhainen",
+		"", // Polski
+		"", // Español
+		"", // ÅëëçíéêÜ (Greek)
+		"", // Svenska
+		"", // Românã
+		"", // Magyar
+		"", // Català
+#if VDRVERSNUM > 10302
+		"", // ÀãááÚØÙ (Russian)
+# if VDRVERSNUM > 10307
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
+# endif
+#endif
+	},
+	{
+		"everything",
+		"", // Deutsch
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"kaikki",
+		"", // Polski
+		"", // Español
+		"", // ÅëëçíéêÜ (Greek)
+		"", // Svenska
+		"", // Românã
+		"", // Magyar
+		"", // Català
+#if VDRVERSNUM > 10302
+		"", // ÀãááÚØÙ (Russian)
+# if VDRVERSNUM > 10307
+		"", // Hrvatski
+#  if VDRVERSNUM > 10312
+		"", // Eesti
+#   if VDRVERSNUM > 10315
+		"", // Dansk
+#   endif
+#  endif
 # endif
 #endif
 	},

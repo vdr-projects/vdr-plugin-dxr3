@@ -1,57 +1,7 @@
 #ifndef _DXR3_H_
 #define _DXR3_H_
 
-const char* menuVideoModes[] = 
-{
-    "PAL",
-	"PAL60",
-    "NTSC"
-};
-
-// debug modes
-const char* menuDebugModes[] = 
-{
-	"Low",
-	"Everything"
-};
-
-// color setting bar
-static const char *SettingBar[] =
-{
-	"[................................]",
-	"[|...............................]",
-	"[||..............................]",
-	"[|||.............................]",
-	"[||||............................]",
-	"[|||||...........................]",
-	"[||||||..........................]",
-	"[|||||||.........................]",
-	"[||||||||........................]",
-	"[|||||||||.......................]",
-	"[||||||||||......................]",
-	"[|||||||||||.....................]",
-	"[||||||||||||....................]",
-	"[|||||||||||||...................]",
-	"[||||||||||||||..................]",
-	"[|||||||||||||||.................]",
-	"[||||||||||||||||................]",
-	"[|||||||||||||||||...............]",
-	"[||||||||||||||||||..............]",
-	"[|||||||||||||||||||.............]",
-	"[||||||||||||||||||||............]",
-	"[|||||||||||||||||||||...........]",
-	"[||||||||||||||||||||||..........]",
-	"[|||||||||||||||||||||||.........]",
-	"[||||||||||||||||||||||||........]",
-	"[|||||||||||||||||||||||||.......]",
-	"[||||||||||||||||||||||||||......]",
-	"[|||||||||||||||||||||||||||.....]",
-	"[||||||||||||||||||||||||||||....]",
-	"[|||||||||||||||||||||||||||||...]",
-	"[||||||||||||||||||||||||||||||..]",
-	"[|||||||||||||||||||||||||||||||.]"
-	"[||||||||||||||||||||||||||||||||]"	// 32 x |
-};
+// --- cMenuSetupDxr3 -------------------------------------------------------
 
 // ==================================
 // setup screen
@@ -69,6 +19,8 @@ private:
 	int newVideoMode;
 	int newDebug;
 	int newDebugLevel;
+	const char *menuVideoModes[3];
+	const char *menuDebugModes[2];
 };
 
 
@@ -80,14 +32,6 @@ enum eDxr3OsdItem
     DXR3_DIGITAL_OUT,
     DXR3_ANALOG_OUT,
     DXR3_AC3_OUT
-};
-
-// ==================================
-enum eDxr3ColorItem 
-{
-	DXR3_BRIGHTNESS,
-	DXR3_CONTRAST,
-	DXR3_SATURATION
 };
 
 // ==================================
@@ -105,59 +49,48 @@ protected:
 };
 
 // ==================================
-// used to change color settings
-class cDxr3OsdColorItem : public cMenuEditItem 
-{
-public:
-	cDxr3OsdColorItem(const char* text, eDxr3ColorItem item);
-	virtual eOSState ProcessKey(eKeys Key);
-
-protected:
-	eDxr3ColorItem	m_item;
-	int				m_value;
-	int				m_min;
-	int				m_max;
-
-	virtual void Set();
-};
-
-/*
-// ==================================
-// used to change color settings
-class cDxr3OsdColorItem : public cOsdItem//cMenuEditItem
-{
-public:    
-    cDxr3OsdColorItem(const char* text, eDxr3ColorItem item);
-
-	cDxr3OsdColorItem::~cDxr3OsdColorItem()
-	{
-		free(m_name);
-		free(m_caption);
-	}
-
-	eOSState ProcessKey(eKeys Key);
-
-protected:
-	eDxr3ColorItem	m_item;
-	int				m_value;
-	int				m_min;
-	int				m_max;
-	char*			m_caption;
-	char*			m_name;
-
-	void Set();
-	void SetValue(const char *Value);
-};
-*/
-
-// ==================================
 // main screen
 class cDxr3OsdMenu : public cOsdMenu 
 {
 public:
-    cDxr3OsdMenu();
+    cDxr3OsdMenu(): cOsdMenu(tr("DXR3 Adjustment"))
+	{
+        Clear();
+        SetHasHotkeys();
+        Add(new cDxr3OsdItem(hk(tr("Reset DXR3 hardware")), DXR3_RESET_HARDWARE));        
+        Add(new cDxr3OsdItem(hk(tr("Toggle force letterbox")), DXR3_FORCE_LETTER_BOX));
 
-	int b,c,s;
+		if (cDxr3ConfigData::Instance().GetUseDigitalOut())
+		{
+			Add(new cDxr3OsdItem(hk(tr("Switch to analog audio output")), DXR3_ANALOG_OUT));
+		}
+		else
+		{
+			Add(new cDxr3OsdItem(hk(tr("Switch to digital audio output")), DXR3_DIGITAL_OUT));
+		}
+/*		
+        if (cDxr3ConfigData::Instance().GetUseDigitalOut()) 
+		{
+			Add(new cDxr3OsdItem(hk("Analog output"), DXR3_ANALOG_OUT));
+
+            if (cDxr3ConfigData::Instance().GetAc3OutPut()) 
+			{
+                Add(new cDxr3OsdItem(hk(tr("AC3 output off")), DXR3_AC3_OUT));
+            } 
+			else 
+			{
+                if (cDxr3Interface::Instance().IsAc3Present()) 
+				{
+                    Add(new cDxr3OsdItem(hk(tr("AC3 output on")), DXR3_AC3_OUT));
+                }
+            }
+        } 
+		else 
+		{
+            Add(new cDxr3OsdItem(hk(tr("Switch to digital audio output")), DXR3_DIGITAL_OUT));
+        }
+		*/
+    }
 };
 
 #endif /*_DXR3_H_*/

@@ -1,31 +1,8 @@
-/*
- * dxr3devide.c
- *
- * Copyright (C) 2002-2004 Kai Möller
- * Copyright (C) 2004 Christian Gmeiner
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public License
- * as published by the Free Software Foundation; either version 2.1
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- */
-
 #include "dxr3device.h"
 #include "dxr3configdata.h"
 #include "dxr3interface.h"
 #include "dxr3tools.h"
 #include "dxr3log.h"
-#include "dxr3osd.h"
 
 extern "C" 
 {
@@ -33,7 +10,6 @@ extern "C"
 }
 
 // ==================================
-//! constructor
 cDxr3Device::cDxr3Device() : m_DemuxDevice(cDxr3Interface::Instance())
 {
     m_Offset = 0;
@@ -62,7 +38,6 @@ void cDxr3Device::MakePrimaryDevice(bool On)
 
 // replaying
 // ==================================
-//! does we have an mpeg2 devocer?
 bool cDxr3Device::HasDecoder() const
 {
 	// sure we have one ;)
@@ -70,7 +45,6 @@ bool cDxr3Device::HasDecoder() const
 }
 
 // ==================================
-//! can we replay vdr recordings?
 bool cDxr3Device::CanReplay() const
 {
 	// also sure...
@@ -114,7 +88,7 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
 
 	if (PlayMode == pmExtern_THIS_SHOULD_BE_AVOIDED) 
 	{
-		Tools::WriteInfoToOsd(tr("DXR3: Releasing devices"));
+		Tools::WriteInfoToOsd(tr("DXR3: releasing devices"));
         cDxr3Interface::Instance().ExternalReleaseDevices();
 	} 
 	else 
@@ -235,7 +209,7 @@ void cDxr3Device::TrickSpeed(int Speed)
 }
 
 // ==================================
-//! clear our demux buffer
+// clear our demux buffer
 void cDxr3Device::Clear()
 {
     m_DemuxDevice.Clear();
@@ -244,17 +218,16 @@ void cDxr3Device::Clear()
 }
 
 // ==================================
-//! play a recording
+// play a recording
 void cDxr3Device::Play()
 {
     m_DemuxDevice.SetReplayMode();
     m_Offset = 0;
-	///< free buffer
     m_strBuf.erase(m_strBuf.begin(), m_strBuf.end());  
 }
 
 // ==================================
-//! puts the device into "freeze frame" mode
+// puts the device into "freeze frame" mode
 void cDxr3Device::Freeze()
 {
 	m_DemuxDevice.SetTrickMode(DXR3_FREEZE);
@@ -267,7 +240,7 @@ void cDxr3Device::Mute()
 }
 
 // ==================================
-//! displays the given I-frame as a still picture.
+// displays the given I-frame as a still picture.
 void cDxr3Device::StillPicture(const uchar *Data, int Length)
 {
 	m_DemuxDevice.StillPicture(Data, Length);
@@ -280,7 +253,7 @@ bool cDxr3Device::Poll(cPoller &Poller, int TimeoutMs)
 }
 
 // ==================================
-//! actually plays the given data block as video
+// actually plays the given data block as video
 int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 {
     int retLength = 0;
@@ -338,23 +311,16 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 
 // ==================================
 // plays additional audio streams, like Dolby Digital
-#if VDRVERSNUM >= 10318
-	int cDxr3Device::PlayAudio(const uchar *Data, int Length)
-#else
-	void cDxr3Device::PlayAudio(const uchar *Data, int Length)
-#endif
+void cDxr3Device::PlayAudio(const uchar *Data, int Length)
 {
     int retLength = 0;
-#if VDRVERSNUM >= 10318
-		int origLength = Length;
-#endif    
-
-#if VDRVERSNUM < 10307
+    
+	#if VDRVERSNUM < 10307
     if (!m_AC3Present) 
 	{
         Interface->Write(Interface->Width() / 2, 0, "AC3", clrRed);
     }	
-#endif
+	#endif
 
     m_AC3Present = true;
 	
@@ -362,12 +328,7 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 		m_DemuxDevice.GetTrickState() == DXR3_FREEZE) || cDxr3Interface::Instance().IsExternalReleased()) 
 	{
         //usleep(1000000);
-
-#if VDRVERSNUM >= 10318
-		return 0;
-#else
-		return;
-#endif
+        return;
     }
 
     if (m_strBuf.length()) 
@@ -393,15 +354,11 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
             m_strBuf.append((const char*)(Data + retLength), Length);
         }
     }
-
-#if VDRVERSNUM >= 10318
-		return origLength;
-#endif
 }
 
 // addition functions
 // ==================================
-//! capture a single frame as an image
+// capture a single frame as an image
 bool cDxr3Device::GrabImage(const char *FileName, bool Jpeg, int Quality, int SizeX, int SizeY)
 {
 	int w = SizeX;
@@ -418,7 +375,7 @@ bool cDxr3Device::GrabImage(const char *FileName, bool Jpeg, int Quality, int Si
 	{
 		if (Jpeg) 
 		{
-			///< write JPEG file:
+			// write JPEG file:
 			struct jpeg_compress_struct cinfo;
 			struct jpeg_error_mgr jerr;
 			cinfo.err = jpeg_std_error(&jerr);
@@ -446,7 +403,7 @@ bool cDxr3Device::GrabImage(const char *FileName, bool Jpeg, int Quality, int Si
 		}
 		else 
 		{
-			///< write PNM file:
+			// write PNM file:
 			if (fprintf(f, "P6\n%d\n%d\n255\n", w, h) < 0 ||	fwrite(Data, w * h * 3, 1, f) < 0) 
 			{
 				LOG_ERROR_STR(FileName);
@@ -474,9 +431,13 @@ void cDxr3Device::SetVideoFormat(bool VideoFormat16_9)
 }
 
 // ==================================
-//! sets volume for audio output
+// sets volume for audio output
 void cDxr3Device::SetVolumeDevice(int Volume)
 {
+	if (cDxr3ConfigData::Instance().GetDebug())
+	{
+		cLog::Instance() << "change volume to " << Volume << " \n";
+	}
 	cDxr3Interface::Instance().SetVolume(Volume);
 }
 
@@ -484,8 +445,17 @@ void cDxr3Device::SetVolumeDevice(int Volume)
 // get spudecoder
 cSpuDecoder *cDxr3Device::GetSpuDecoder(void)
 {
+	if (cDxr3ConfigData::Instance().GetDebug())
+	{
+		cLog::Instance() << "cDxr3Device::GetSpuDecoder";
+	}
+
 	if (!m_spuDecoder && IsPrimaryDevice())
 	{
+		if (cDxr3ConfigData::Instance().GetDebug())
+		{
+			cLog::Instance() << "cDxr3Device::GetSpuDecoder: ok";
+		}
 		m_spuDecoder = new cDxr3SpuDecoder();
 	}
 	return m_spuDecoder;

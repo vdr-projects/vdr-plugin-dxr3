@@ -3,7 +3,7 @@
 *
 * See the README file for copyright information and how to reach the author.
 *
-* $Id: dxr3.c,v 1.2 2004/09/18 00:11:11 austriancoder Exp $
+* $Id: dxr3.c,v 1.1.2.1 2005/03/14 11:03:36 scop Exp $
 */
 
 
@@ -12,14 +12,14 @@
 #include "dxr3syncbuffer.h"
 #include "dxr3configdata.h"
 #include "dxr3interface.h"
-#include "dxr3i18n.h"
-#include "dxr3cpu.h"
-#include "dxr3dolbydigital.h"
 #include "dxr3.h"
+#include "dxr3i18n.h"
 
 static const char *VERSION        = "0.2.3-pre3-cvs";
-static const char *DESCRIPTION    = "DXR3-MPEG decoder plugin";
+static const char *DESCRIPTION    = "Hardware MPEG decoder";
 static const char *MAINMENUENTRY  = "DXR3";
+
+#include "dxr3cpu.h"
 
 // ==================================
 // 'message-handler' for the main screen
@@ -64,262 +64,23 @@ eOSState cDxr3OsdItem::ProcessKey(eKeys Key)
 }
 
 // ==================================
-// special osd item to change color settings
-cDxr3OsdColorItem::cDxr3OsdColorItem(const char* Name, eDxr3ColorItem item)
-:cMenuEditItem(Name), m_item(item)
-{
-	m_value = 0;
-	m_min = 0;
-	m_max = 32;
-
-	// get vale from setup.conf
-	switch (m_item)
-	{
-	case DXR3_BRIGHTNESS:
-		m_value = cDxr3ConfigData::Instance().GetBrightness();
-		break;
-
-	case DXR3_CONTRAST:
-		m_value = cDxr3ConfigData::Instance().GetContrast();
-		break;
-
-	case DXR3_SATURATION:
-		m_value = cDxr3ConfigData::Instance().GetSaturation();
-		break;
-	};
-
-	Set();
-}
-
-// ==================================
-// react to keypresses
-eOSState cDxr3OsdColorItem::ProcessKey(eKeys Key)
-{
-	eOSState state = cMenuEditItem::ProcessKey(Key);
-	
-	if (state == osUnknown) 
-	{
-		int newValue = m_value;
-		Key = NORMALKEY(Key);
-		switch (Key) 
-		{
-		case kNone: break;
-		case k0 ... k9:
-            if (fresh) 
-			{
-				m_value = 0;
-				fresh = false;
-			}
-            newValue = m_value * 10 + (Key - k0);
-            break;
-		case kLeft: // TODO might want to increase the delta if repeated quickly?
-            newValue = m_value - 1;
-            fresh = true;
-            break;
-		case kRight:
-            newValue = m_value + 1;
-            fresh = true;
-            break;
-		default:
-            if (m_value < m_min) { m_value = m_min; Set(); }
-            if (m_value > m_max) { m_value = m_max; Set(); }
-            return state;
-		}
-		if ((!fresh || m_min <= newValue) && newValue <= m_max) 
-		{
-			m_value = newValue;
-			Set();
-        }
-		state = osContinue;
-	}
-	return state;
-}
-
-// ==================================
-// set caption and call hardware ioctl's
-void cDxr3OsdColorItem::Set()
-{
-	// real value with rounding
-	int realValue = int(m_value * 31.25);
-	
-	char buf[16];
-	snprintf(buf, sizeof(buf), "%s", "Hallo");
-	SetValue(buf);
-}
-
-/*
-// ==================================
-// special osd item to change color settings
-cDxr3OsdColorItem::cDxr3OsdColorItem(const char* Name, eDxr3ColorItem item)
-:cOsdItem(Name), m_item(item)
-{
-	// get vale from setup.conf
-	switch (m_item)
-	{
-	case DXR3_BRIGHTNESS:
-		m_value = cDxr3ConfigData::Instance().GetBrightness();
-		break;
-
-	case DXR3_CONTRAST:
-		m_value = cDxr3ConfigData::Instance().GetContrast();
-		break;
-
-	case DXR3_SATURATION:
-		m_value = cDxr3ConfigData::Instance().GetSaturation();
-		break;
-	};
-
-	// allowed values: 0 - 32
-	m_min = 0;
-	m_max = 32;
-
-	m_name = strdup(Name);
-	m_caption = NULL;
-
-	Set();
-}
-
-// ==================================
-// set caption and call hardware ioctl's
-void cDxr3OsdColorItem::Set()
-{
-/*
-	SetValue(SettingBar[m_value]);
-
-	// real value with rounding
-	int realValue = int(m_value * 31.25);
-
-	switch (m_item)
-	{
-	case DXR3_BRIGHTNESS:
-		cDxr3Interface::Instance().SetBrightness(realValue);
-		cDxr3ConfigData::Instance().SetBrightness(m_value);
-		break;
-
-	case DXR3_CONTRAST:
-		cDxr3Interface::Instance().SetContrast(realValue);
-		cDxr3ConfigData::Instance().SetContrast(m_value);
-		break;
-
-	case DXR3_SATURATION:
-		cDxr3Interface::Instance().SetSaturation(realValue);
-		cDxr3ConfigData::Instance().SetSaturation(m_value);
-		break;
-	};
-*//*
-}
-
-// ==================================
-void cDxr3OsdColorItem::SetValue(const char *Value)
-{
-/*
-	free(m_caption);
-	m_caption = strdup(Value);
-	char *buffer = NULL;
-	asprintf(&buffer, "%s:\t%s", m_name, m_caption);
-	SetText(buffer, false);
-	cStatus::MsgOsdCurrentItem(buffer);
-*//*
-}
-
-// ==================================
-// react to keypresses
-eOSState cDxr3OsdColorItem::ProcessKey(eKeys Key)
-{
-/*
-	eOSState state = osUnknown;
-	
-	if (state == osUnknown) 
-	{
-		int newValue = m_value;
-		Key = NORMALKEY(Key);
-		
-		switch (Key) 
-		{
-		case kNone: 
-			break;
-			
-		case k0 ... k9:
-            if (fresh) 
-			{
-				m_value = 0;
-				fresh = false;
-            }
-            newValue = m_value * 10 + (Key - k0);
-            break;
-			
-		case kLeft: // TODO might want to increase the delta if repeated quickly?
-            newValue = m_value - 1;
-            fresh = true;
-            break;
-			
-		case kRight:
-            newValue = m_value + 1;
-            fresh = true;
-            break;
-			
-		default:
-            if (m_value < m_min) { m_value = m_min; Set(); }
-            if (m_value > m_max) { m_value = m_max; Set(); }
-            return state;
-		}
-		
-		if ((!fresh || m_min <= newValue) && newValue <= m_max) 
-		{
-			m_value = newValue;
-			Set();
-        }
-		state = osContinue;
-	}
-	return state;
-*/
-//}
-
-
-// ==================================
-// the main menu of the plugin
-cDxr3OsdMenu::cDxr3OsdMenu() : cOsdMenu(tr("DXR3 Adjustment"))
-{
-	b = 0;
-	c = 10;
-	s = 0;
-
-	Clear();
-	SetHasHotkeys();
-	Add(new cDxr3OsdItem(tr("Reset DXR3 Hardware"), DXR3_RESET_HARDWARE));        
-	Add(new cDxr3OsdItem(tr("Toggle Force LetterBox"), DXR3_FORCE_LETTER_BOX));
-
-	// switch between differen output modes
-	if (cDxr3ConfigData::Instance().GetUseDigitalOut())
-	{
-		Add(new cDxr3OsdItem(tr("Analog Output"), DXR3_ANALOG_OUT));
-	}
-	else
-	{
-		Add(new cDxr3OsdItem(tr("Digital Output"), DXR3_DIGITAL_OUT));
-	}
-
-	//SettingBar
-	Add(new cDxr3OsdColorItem(tr("Brightness"), DXR3_BRIGHTNESS));
-//	Add(new cMenuEditStraItem(tr("Brightness"),	&b, 33, SettingBar));
-//	Add(new cMenuEditStraItem(tr("Contrast"),	&c, 33, SettingBar));
-//	Add(new cMenuEditStraItem(tr("Saturation"),	&s, 33, SettingBar));
-}
-
-
-// ==================================
 // setup menu
 cMenuSetupDxr3::cMenuSetupDxr3(void)
 {
 	newUseDigitalOut = cDxr3ConfigData::Instance().GetUseDigitalOut();
 	Add(new cMenuEditBoolItem(tr("Digital audio output"), &newUseDigitalOut));
 	newDxr3Card = cDxr3ConfigData::Instance().GetDxr3Card();
-	Add(new cMenuEditIntItem(tr("DXR3 card"), &newDxr3Card));
+	Add(new cMenuEditIntItem(tr("Card number"), &newDxr3Card));
 	newVideoMode = (int) cDxr3ConfigData::Instance().GetVideoMode();
-	Add(new cMenuEditStraItem(tr("DXR3 video mode"), &newVideoMode, 3, menuVideoModes));
+	menuVideoModes[0] = tr("PAL");
+	menuVideoModes[1] = tr("PAL60");
+	menuVideoModes[2] = tr("NTSC");
+	Add(new cMenuEditStraItem(tr("Video mode"), &newVideoMode, 3, menuVideoModes));
 	newDebug = (int) cDxr3ConfigData::Instance().GetDebug();
 	Add(new cMenuEditBoolItem(tr("Debug mode"), &newDebug));
 	newDebugLevel = (int) cDxr3ConfigData::Instance().GetDebugLevel();
+	menuDebugModes[0] = tr("low");
+	menuDebugModes[1] = tr("everything");
 	Add(new cMenuEditStraItem(tr("Debug level"), &newDebugLevel, 2, menuDebugModes));
 }
 
@@ -327,11 +88,11 @@ cMenuSetupDxr3::cMenuSetupDxr3(void)
 // save menu values
 void cMenuSetupDxr3::Store(void)
 {  
-	SetupStore("UseDigitalOut",		cDxr3ConfigData::Instance().SetUseDigitalOut(newUseDigitalOut));
-	SetupStore("Dxr3Card",			cDxr3ConfigData::Instance().SetDxr3Card(newDxr3Card));
-	SetupStore("Dxr3VideoMode",		cDxr3ConfigData::Instance().SetVideoMode((eVideoMode) newVideoMode));
-	SetupStore("Dxr3Debug",			cDxr3ConfigData::Instance().SetDebug(newDebug));
-	SetupStore("Dxr3DebugLevel",	cDxr3ConfigData::Instance().SetDebugLevel(newDebugLevel));
+	SetupStore("UseDigitalOut", cDxr3ConfigData::Instance().SetUseDigitalOut(newUseDigitalOut));
+	SetupStore("Dxr3Card",      cDxr3ConfigData::Instance().SetDxr3Card(newDxr3Card));
+	SetupStore("Dxr3VideoMode", cDxr3ConfigData::Instance().SetVideoMode((eVideoMode) newVideoMode));
+	SetupStore("Dxr3Debug", cDxr3ConfigData::Instance().SetDebug(newDebug));
+	SetupStore("Dxr3DebugLevel", cDxr3ConfigData::Instance().SetDebugLevel(newDebugLevel));
 }
 
 // ==================================
@@ -343,7 +104,7 @@ public:
 	cPluginDxr3();    
 	~cPluginDxr3();
 	const char *Version()			{ return VERSION; }
-	const char *Description()		{ return DESCRIPTION; }
+	const char *Description()		{ return tr(DESCRIPTION); }
 	const char *CommandLineHelp();
 	bool ProcessArgs(int argc, char *argv[]);
 	bool Initialize();
@@ -384,18 +145,15 @@ bool cPluginDxr3::ProcessArgs(int argc, char *argv[])
 // ==================================
 bool cPluginDxr3::Start() 
 {
-	new cDxr3DolbyDigital();
+    RegisterI18n(Phrases);
     return true;
 }
 
 // ==================================
 bool cPluginDxr3::Initialize() 
 {
-	RegisterI18n(Phrases);
-
 	new cDxr3CPU();
 	cDxr3Device::Instance();
-
     return true;
 }    
 
@@ -419,9 +177,6 @@ bool cPluginDxr3::SetupParse(const char *Name, const char *Value)
 	if (!strcasecmp(Name, "Dxr3Debug"))			{ cDxr3ConfigData::Instance().SetDebug(atoi(Value));      return true; }
 	if (!strcasecmp(Name, "Dxr3VideoMode"))		{ cDxr3ConfigData::Instance().SetVideoMode((eVideoMode) atoi(Value)); return true;}
 	if (!strcasecmp(Name, "Dxr3DebugLevel"))	{ cDxr3ConfigData::Instance().SetDebugLevel(atoi(Value)); return true;}
-	if (!strcasecmp(Name, "Dxr3Contrast"))		{ cDxr3ConfigData::Instance().SetContrast(atoi(Value)); return true;}
-	if (!strcasecmp(Name, "Dxr3Brightness"))	{ cDxr3ConfigData::Instance().SetBrightness(atoi(Value)); return true;}
-	if (!strcasecmp(Name, "Dxr3Saturation"))	{ cDxr3ConfigData::Instance().SetSaturation(atoi(Value)); return true;}
 	
 	return false;
 }
