@@ -133,7 +133,7 @@ int cSPUEncoder::Cmd(OSD_Command cmd, int color, int x0, int y0, int x1, int y1,
 		break;
 
 	case OSD_Close:
-		// clear colors from plattemanager
+		// clear colors from palettemanager
 
 		// set windows position to 0
 		m_windows[m_lastwindow].x0 = 0;
@@ -148,7 +148,7 @@ int cSPUEncoder::Cmd(OSD_Command cmd, int color, int x0, int y0, int x1, int y1,
 		break;
 
 	case OSD_Clear:
-		// Sets all pixel to color 0
+		// Sets all pixels to color 0
 		// returns 0 on success
 
 		// This should be done in cSPUEncoder::cSPUEncoder
