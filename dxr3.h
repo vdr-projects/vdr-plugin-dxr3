@@ -1,7 +1,6 @@
 #ifndef _DXR3_H_
 #define _DXR3_H_
 
-// --- cMenuSetupDxr3 -------------------------------------------------------
 const char* menuVideoModes[] = 
 {
     "PAL",
@@ -14,6 +13,44 @@ const char* menuDebugModes[] =
 {
 	"Low",
 	"Everything"
+};
+
+// color setting bar
+static const char *SettingBar[] =
+{
+	"[................................]",
+	"[|...............................]",
+	"[||..............................]",
+	"[|||.............................]",
+	"[||||............................]",
+	"[|||||...........................]",
+	"[||||||..........................]",
+	"[|||||||.........................]",
+	"[||||||||........................]",
+	"[|||||||||.......................]",
+	"[||||||||||......................]",
+	"[|||||||||||.....................]",
+	"[||||||||||||....................]",
+	"[|||||||||||||...................]",
+	"[||||||||||||||..................]",
+	"[|||||||||||||||.................]",
+	"[||||||||||||||||................]",
+	"[|||||||||||||||||...............]",
+	"[||||||||||||||||||..............]",
+	"[|||||||||||||||||||.............]",
+	"[||||||||||||||||||||............]",
+	"[|||||||||||||||||||||...........]",
+	"[||||||||||||||||||||||..........]",
+	"[|||||||||||||||||||||||.........]",
+	"[||||||||||||||||||||||||........]",
+	"[|||||||||||||||||||||||||.......]",
+	"[||||||||||||||||||||||||||......]",
+	"[|||||||||||||||||||||||||||.....]",
+	"[||||||||||||||||||||||||||||....]",
+	"[|||||||||||||||||||||||||||||...]",
+	"[||||||||||||||||||||||||||||||..]",
+	"[|||||||||||||||||||||||||||||||.]"
+	"[||||||||||||||||||||||||||||||||]"	// 32 x |
 };
 
 // ==================================
@@ -46,6 +83,14 @@ enum eDxr3OsdItem
 };
 
 // ==================================
+enum eDxr3ColorItem 
+{
+	DXR3_BRIGHTNESS,
+	DXR3_CONTRAST,
+	DXR3_SATURATION
+};
+
+// ==================================
 // osd item
 class cDxr3OsdItem : public cOsdItem 
 {
@@ -60,48 +105,59 @@ protected:
 };
 
 // ==================================
+// used to change color settings
+class cDxr3OsdColorItem : public cMenuEditItem 
+{
+public:
+	cDxr3OsdColorItem(const char* text, eDxr3ColorItem item);
+	virtual eOSState ProcessKey(eKeys Key);
+
+protected:
+	eDxr3ColorItem	m_item;
+	int				m_value;
+	int				m_min;
+	int				m_max;
+
+	virtual void Set();
+};
+
+/*
+// ==================================
+// used to change color settings
+class cDxr3OsdColorItem : public cOsdItem//cMenuEditItem
+{
+public:    
+    cDxr3OsdColorItem(const char* text, eDxr3ColorItem item);
+
+	cDxr3OsdColorItem::~cDxr3OsdColorItem()
+	{
+		free(m_name);
+		free(m_caption);
+	}
+
+	eOSState ProcessKey(eKeys Key);
+
+protected:
+	eDxr3ColorItem	m_item;
+	int				m_value;
+	int				m_min;
+	int				m_max;
+	char*			m_caption;
+	char*			m_name;
+
+	void Set();
+	void SetValue(const char *Value);
+};
+*/
+
+// ==================================
 // main screen
 class cDxr3OsdMenu : public cOsdMenu 
 {
 public:
-    cDxr3OsdMenu(): cOsdMenu("DXR3 Adjustment") 
-	{
-        Clear();
-        SetHasHotkeys();
-        Add(new cDxr3OsdItem(hk("Reset DXR3 Hardware"), DXR3_RESET_HARDWARE));        
-        Add(new cDxr3OsdItem(hk("Toggle Force LetterBox"), DXR3_FORCE_LETTER_BOX));
+    cDxr3OsdMenu();
 
-		if (cDxr3ConfigData::Instance().GetUseDigitalOut())
-		{
-			Add(new cDxr3OsdItem(hk("Analog Output"), DXR3_ANALOG_OUT));
-		}
-		else
-		{
-			Add(new cDxr3OsdItem(hk("Digital Output"), DXR3_DIGITAL_OUT));
-		}
-/*		
-        if (cDxr3ConfigData::Instance().GetUseDigitalOut()) 
-		{
-			Add(new cDxr3OsdItem(hk("Analog Output"), DXR3_ANALOG_OUT));
-
-            if (cDxr3ConfigData::Instance().GetAc3OutPut()) 
-			{
-                Add(new cDxr3OsdItem(hk("AC3 Output Off"), DXR3_AC3_OUT));
-            } 
-			else 
-			{
-                if (cDxr3Interface::Instance().IsAc3Present()) 
-				{
-                    Add(new cDxr3OsdItem(hk("AC3 Output On"), DXR3_AC3_OUT));
-                }
-            }
-        } 
-		else 
-		{
-            Add(new cDxr3OsdItem(hk("Digital Output"), DXR3_DIGITAL_OUT));
-        }
-		*/
-    }
+	int b,c,s;
 };
 
 #endif /*_DXR3_H_*/
