@@ -33,7 +33,7 @@ const tI18nPhrase Phrases[] = {
 		"", // Português
 		"", // Français
 		"", // Norsk
-		"", // Suomi
+		"DXR3", // suomi
 		"", // Polski
 		"", // Español
 		"", // Ellinika
@@ -57,7 +57,7 @@ const tI18nPhrase Phrases[] = {
 		"", // Português
 		"", // Français
 		"", // Norsk
-		"", // Suomi
+		"DXR3-säätimet", // suomi
 		"", // Polski
 		"", // Español
 		"", // Ellinika
@@ -81,7 +81,7 @@ const tI18nPhrase Phrases[] = {
 		"", // Português
 		"", // Français
 		"", // Norsk
-		"", // Suomi
+		"Digitaalinen audio-ulostulo", // suomi
 		"", // Polski
 		"", // Español
 		"", // Ellinika
@@ -105,7 +105,7 @@ const tI18nPhrase Phrases[] = {
 		"", // Português
 		"", // Français
 		"", // Norsk
-		"", // Suomi
+		"DXR3-kortti", // suomi
 		"", // Polski
 		"", // Español
 		"", // Ellinika
@@ -129,7 +129,7 @@ const tI18nPhrase Phrases[] = {
 		"", // Português
 		"", // Français
 		"", // Norsk
-		"", // Suomi
+		"DXR3-näyttötila", // suomi
 		"", // Polski
 		"", // Español
 		"", // Ellinika
@@ -153,7 +153,7 @@ const tI18nPhrase Phrases[] = {
 		"", // Português
 		"", // Français
 		"", // Norsk
-		"", // Suomi
+		"Alusta DXR3-laitteisto", // suomi
 		"", // Polski
 		"", // Español
 		"", // Ellinika
@@ -169,15 +169,15 @@ const tI18nPhrase Phrases[] = {
 #endif
 	},
 	{
-		"Toggle Force LetterBox", // English
-		"LetterBox erzwingen", // Deutsch
+		"Toggle Force Letterbox", // English
+		"Letterbox erzwingen", // Deutsch
 		"", // Slovenski
 		"", // Italiano
 		"", // Nederlands
 		"", // Português
 		"", // Français
 		"", // Norsk
-		"", // Suomi
+		"Vaihda letterbox-näyttötilan pakotus päälle/pois", // suomi
 		"", // Polski
 		"", // Español
 		"", // Ellinika
@@ -201,7 +201,7 @@ const tI18nPhrase Phrases[] = {
 		"", // Português
 		"", // Français
 		"", // Norsk
-		"", // Suomi
+		"Kytke analoginen audio-ulostulo", // suomi
 		"", // Polski
 		"", // Español
 		"", // Ellinika
@@ -225,7 +225,7 @@ const tI18nPhrase Phrases[] = {
 		"", // Português
 		"", // Français
 		"", // Norsk
-		"", // Suomi
+		"AC3-ulostulo päällä", // suomi
 		"", // Polski
 		"", // Español
 		"", // Ellinika
@@ -249,7 +249,7 @@ const tI18nPhrase Phrases[] = {
 		"", // Português
 		"", // Français
 		"", // Norsk
-		"", // Suomi
+		"AC3-ulostulo pois", // suomi
 		"", // Polski
 		"", // Español
 		"", // Ellinika
@@ -273,7 +273,7 @@ const tI18nPhrase Phrases[] = {
 		"", // Português
 		"", // Français
 		"", // Norsk
-		"", // Suomi
+		"Kytke digitaalinen audio-ulostulo", // suomi
 		"", // Polski
 		"", // Español
 		"", // Ellinika
@@ -297,7 +297,7 @@ const tI18nPhrase Phrases[] = {
 		"", // Português
 		"", // Français
 		"", // Norsk
-		"", // Suomi
+		"DXR3: vapautetaan laitteet", // suomi
 		"", // Polski
 		"", // Español
 		"", // Ellinika
@@ -313,7 +313,7 @@ const tI18nPhrase Phrases[] = {
 #endif
 	},
 	{
-		"Colorsettings", // English
+		"Color settings", // English
 		"Farbeinstellungen", // Deutsch
 		"", // Slovenski
 		"", // Italiano
@@ -321,7 +321,7 @@ const tI18nPhrase Phrases[] = {
 		"", // Português
 		"", // Français
 		"", // Norsk
-		"", // Suomi
+		"Väriasetukset", // suomi
 		"", // Polski
 		"", // Español
 		"", // Ellinika
@@ -345,7 +345,7 @@ const tI18nPhrase Phrases[] = {
 		"", // Português
 		"", // Français
 		"", // Norsk
-		"", // Suomi
+		"Kirkkaus", // suomi
 		"", // Polski
 		"", // Español
 		"", // Ellinika
@@ -369,7 +369,7 @@ const tI18nPhrase Phrases[] = {
 		"", // Português
 		"", // Français
 		"", // Norsk
-		"", // Suomi
+		"Kontrasti", // suomi
 		"", // Polski
 		"", // Español
 		"", // Ellinika
@@ -393,7 +393,55 @@ const tI18nPhrase Phrases[] = {
 		"", // Português
 		"", // Français
 		"", // Norsk
-		"", // Suomi
+		"Värikylläisyys", // suomi
+		"", // Polski
+		"", // Español
+		"", // Ellinika
+		"", // Svenska
+		"", // Romaneste
+		"", // Magyar
+		"", // Catala
+#if VDRVERSNUM > 10302
+		"", // Russian
+# if VDRVERSNUM > 10307
+		"", // Croatian
+# endif
+#endif
+	},
+	{
+		"Debug mode", // English
+		"", // Deutsch
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"Debug-tila", // suomi
+		"", // Polski
+		"", // Español
+		"", // Ellinika
+		"", // Svenska
+		"", // Romaneste
+		"", // Magyar
+		"", // Catala
+#if VDRVERSNUM > 10302
+		"", // Russian
+# if VDRVERSNUM > 10307
+		"", // Croatian
+# endif
+#endif
+	},
+	{
+		"Debug level", // English
+		"", // Deutsch
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"Debug-taso", // suomi
 		"", // Polski
 		"", // Español
 		"", // Ellinika
