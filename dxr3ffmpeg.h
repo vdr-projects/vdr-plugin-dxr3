@@ -25,7 +25,7 @@
 extern "C" 
 {
 	#include <avcodec.h>
-};
+}
 
 #include <string.h> 
 #include "dxr3singleton.h"
