@@ -141,7 +141,7 @@ static void * sse_memcpy(void * to, const void * from, size_t len)
         "movntps %%xmm1, 16(%1)\n"
         "movntps %%xmm2, 32(%1)\n"
         "movntps %%xmm3, 48(%1)\n"
-        :: "r" (from), "r" (to) : "memory");
+        : : "r" (from), "r" (to) : "memory");
         ((const unsigned char *)from)+=64;
         ((unsigned char *)to)+=64;
       }
@@ -164,15 +164,15 @@ static void * sse_memcpy(void * to, const void * from, size_t len)
         "movntps %%xmm1, 16(%1)\n"
         "movntps %%xmm2, 32(%1)\n"
         "movntps %%xmm3, 48(%1)\n"
-        :: "r" (from), "r" (to) : "memory");
+        : : "r" (from), "r" (to) : "memory");
         ((const unsigned char *)from)+=64;
         ((unsigned char *)to)+=64;
       }
     /* since movntq is weakly-ordered, a "sfence"
      * is needed to become ordered again. */
-    __asm__ __volatile__ ("sfence":::"memory");
+    __asm__ __volatile__ ("sfence": : :"memory");
     /* enables to use FPU */
-    __asm__ __volatile__ ("emms":::"memory");
+    __asm__ __volatile__ ("emms": : :"memory");
   }
   /*
    *	Now do the tail of the block
@@ -220,11 +220,11 @@ static void * mmx_memcpy(void * to, const void * from, size_t len)
       "movq %%mm5, 40(%1)\n"
       "movq %%mm6, 48(%1)\n"
       "movq %%mm7, 56(%1)\n"
-      :: "r" (from), "r" (to) : "memory");
+      : : "r" (from), "r" (to) : "memory");
       ((const unsigned char *)from)+=64;
       ((unsigned char *)to)+=64;
     }
-    __asm__ __volatile__ ("emms":::"memory");
+    __asm__ __volatile__ ("emms": : :"memory");
   }
   /*
    *	Now do the tail of the block
@@ -252,7 +252,7 @@ static void * mmx2_memcpy(void * to, const void * from, size_t len)
     "   prefetchnta 224(%0)\n"
     "   prefetchnta 256(%0)\n"
     "   prefetchnta 288(%0)\n"
-    :: "r" (from) );
+    : : "r" (from) );
 
   if(len >= MIN_LEN)
   {
@@ -288,14 +288,14 @@ static void * mmx2_memcpy(void * to, const void * from, size_t len)
       "movntq %%mm5, 40(%1)\n"
       "movntq %%mm6, 48(%1)\n"
       "movntq %%mm7, 56(%1)\n"
-      :: "r" (from), "r" (to) : "memory");
+      : : "r" (from), "r" (to) : "memory");
       ((const unsigned char *)from)+=64;
       ((unsigned char *)to)+=64;
     }
      /* since movntq is weakly-ordered, a "sfence"
      * is needed to become ordered again. */
     __asm__ __volatile__ ("sfence":::"memory");
-    __asm__ __volatile__ ("emms":::"memory");
+    __asm__ __volatile__ ("emms": : :"memory");
   }
   /*
    *	Now do the tail of the block
