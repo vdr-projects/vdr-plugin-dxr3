@@ -49,7 +49,11 @@ public:
 	void Hide(); 
 	void Draw(); 
 	bool IsVisible()	{ return m_visible; } 
-	void processSPU(uint32_t pts, uint8_t * buf); 
+#if VDRVERSNUM >= 10318
+	void processSPU(uint32_t pts, uint8_t * buf, bool AllowedShow);
+#else
+	void processSPU(uint32_t pts, uint8_t * buf);
+#endif
 
 private:
 	cDxr3Interface&	m_Interface;	///< interface to dxr3 driver

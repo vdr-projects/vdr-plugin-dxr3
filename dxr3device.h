@@ -58,7 +58,11 @@ public:
 	virtual void StillPicture(const uchar *Data, int Length);
 	virtual bool Poll(cPoller &Poller, int TimeoutMs = 0);
 	virtual int PlayVideo(const uchar *Data, int Length);
+#if VDRVERSNUM >= 10318
+	virtual int PlayAudio(const uchar *Data, int Length);
+#else
 	virtual void PlayAudio(const uchar *Data, int Length);
+#endif
 
 	// addition functions
 	virtual bool GrabImage(const char *FileName, bool Jpeg = true, int Quality = -1, int SizeX = -1, int SizeY = -1);

@@ -29,7 +29,11 @@ cDxr3SpuDecoder::cDxr3SpuDecoder() : m_Interface(cDxr3Interface::Instance()), m_
 
 // ==================================
 // ! send spu data to dxr3
-void cDxr3SpuDecoder::processSPU(uint32_t pts, uint8_t * buf) 
+#if VDRVERSNUM >= 10318
+void cDxr3SpuDecoder::processSPU(uint32_t pts, uint8_t * buf, bool AllowedShow)
+#else
+void cDxr3SpuDecoder::processSPU(uint32_t pts, uint8_t * buf)
+#endif
 {
 	// size are the first two bits of buf
 	// size = (buf[0] << 8) + buf[1]
