@@ -5,10 +5,15 @@
 #define MAXNUMWINDOWS 7 // OSD windows are counted 1...7
 
 // ==================================
-//! constructor
 cDxr3SubpictureOsd::cDxr3SubpictureOsd(int Left, int Top) : cOsd(Left, Top)
 {
 	shown = false;
+#if VDRVERSNUM >= 10318
+	last = new cTimeMs();
+	last->Set(-FLUSHRATE);
+#else
+	last = time_ms() - FLUSHRATE;
+#endif
 	Spu = &cSPUEncoder::Instance();
 
 	// must clear all windows here to avoid flashing effects - doesn't work if done
@@ -33,6 +38,9 @@ cDxr3SubpictureOsd::~cDxr3SubpictureOsd()
 			Spu->Cmd(OSD_Close);
 		}
 	}
+#if VDRVERSNUM >= 10318
+	delete last;
+#endif
 }
 
 // ==================================
@@ -49,8 +57,7 @@ eOsdError cDxr3SubpictureOsd::CanHandleAreas(const tArea *Areas, int NumAreas)
 		
 		for (int i = 0; i < NumAreas; i++) 
 		{
-			// at the moment we dont support 256 color palette
-			if (Areas[i].bpp != 1 && Areas[i].bpp != 2 && Areas[i].bpp != 4/* && Areas[i].bpp != 8*/)
+			if (Areas[i].bpp != 1 && Areas[i].bpp != 2 && Areas[i].bpp != 4 && Areas[i].bpp != 8)
 			{
 				return oeBppNotSupported;
 			}
@@ -79,6 +86,14 @@ void cDxr3SubpictureOsd::RestoreRegion()
 // ==================================
 void cDxr3SubpictureOsd::Flush()
 {
+#if VDRVERSNUM >= 10318
+	if (last->Elapsed()<FLUSHRATE) return;
+	last->Set();
+#else
+	if (time_ms()-last<FLUSHRATE) return;
+	last = time_ms();
+#endif
+
 	cBitmap *Bitmap;
 	
 	for (int i = 0; (Bitmap = GetBitmap(i)) != NULL; i++) 
