@@ -26,8 +26,7 @@
 
 #include "dxr3interface.h"
 #include "dxr3syncbuffer.h"
-#include "dxr3log.h"
-#include "dxr3configdata.h"
+#include "dxr3osd.h"
 
 // ==================================
 const int LPCM_HEADER_LENGTH = 7;

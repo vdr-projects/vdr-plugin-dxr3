@@ -263,3 +263,6 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - using now std:: instead of namespace std;
 - renamed dxr3interface_spu_encoder.h/c to dxr3spuencoder.h/c
 - removed log commands in dxr3outputthread.c
+- fixed #includes
+  moved #include "dxr3osd.h" from dxr3interface.h to dxr3interface.c
+  removed not needed #include ""

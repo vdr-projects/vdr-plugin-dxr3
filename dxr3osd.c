@@ -26,10 +26,7 @@
 #include <sys/unistd.h>
 
 #include "dxr3vdrincludes.h"
-#include "dxr3interface.h"
-
 #include "dxr3osd.h"
-//#include "dxr3interface_spu_encoder.h"
 
 #if VDRVERSNUM >= 10307
 
