@@ -128,6 +128,7 @@ cDxr3Interface::cDxr3Interface()
 }
 
 // ==================================
+//! destructor
 cDxr3Interface::~cDxr3Interface()
 {
 	// close filehandles
@@ -171,8 +172,8 @@ void cDxr3Interface::Stop()
 //! set audio-output to analog
 void cDxr3Interface::SetAudioAnalog()
 {
-    int ioval = 0;
     Lock();
+    int ioval = 0;
 
     if (!m_ExternalReleased && m_audioMode != EM8300_AUDIOMODE_ANALOG) 
 	{
@@ -195,9 +196,9 @@ void cDxr3Interface::SetAudioAnalog()
 //! set audio-output to digital pcm
 void cDxr3Interface::SetAudioDigitalPCM()
 {
-    int ioval = 0;
     Lock();
-
+    int ioval = 0;
+	
     if (!m_ExternalReleased && m_audioMode != EM8300_AUDIOMODE_DIGITALPCM) 
 	{
         int prevMode = m_audioMode;
@@ -220,10 +221,11 @@ void cDxr3Interface::SetAudioDigitalPCM()
 //! set audio-output to digital ac3
 void cDxr3Interface::SetAudioDigitalAC3()
 {
+	Lock();
+
     if (m_audioMode != EM8300_AUDIOMODE_DIGITALAC3) 
 	{
 	    int ioval = 0;
-		Lock();
 
 		if (!m_ExternalReleased && m_audioMode != EM8300_AUDIOMODE_DIGITALAC3) 
 		{
@@ -234,15 +236,17 @@ void cDxr3Interface::SetAudioDigitalAC3()
 			}
 			ReOpenAudio();
 		}
-		
-		Unlock();
     }
+
+	Unlock();
 }
 
 // ==================================
 //! set audiosepeed
 void cDxr3Interface::SetAudioSpeed(uint32_t speed)
 {
+	Lock();
+
     if (m_audioDataRate != speed && speed != UNKNOWN_DATA_RATE) 
 	{
         if (!m_ExternalReleased) 
@@ -257,12 +261,16 @@ void cDxr3Interface::SetAudioSpeed(uint32_t speed)
         }
         m_audioDataRate = speed;
     }
+
+	Unlock();
 }
 
 // ==================================
 //! set nummber of channels
 void cDxr3Interface::SetChannelCount(uint32_t count)
 {
+	Lock();
+
     if (m_audioChannelCount != count && count != UNKNOWN_CHANNEL_COUNT) 
 	{
         if (!m_ExternalReleased) 
@@ -277,12 +285,16 @@ void cDxr3Interface::SetChannelCount(uint32_t count)
         }
         m_audioChannelCount = count;
     }
+
+	Unlock();
 }
 
 // ==================================
 //! set audio sample size
 void cDxr3Interface::SetAudioSampleSize(uint32_t sampleSize) 
 {
+	Lock();
+
     if (!m_ExternalReleased) 
 	{
         if (ioctl(m_fdAudio, SNDCTL_DSP_SAMPLESIZE, sampleSize)) 
@@ -290,42 +302,58 @@ void cDxr3Interface::SetAudioSampleSize(uint32_t sampleSize)
             cLog::Instance() <<"cDxr3AbsDevice::SetAudioSampleSize Unable to set audio sample size\n";
         }
     }
-    m_audioSampleSize = sampleSize;                              
+    m_audioSampleSize = sampleSize;   
+	
+	Unlock();
 }
 
 // clock
 // ==================================
 void cDxr3Interface::SetSysClock(uint32_t scr) 
 {
+	Lock();
+
     if (!m_ExternalReleased) 
 	{    
         m_pClock->SetSysClock(scr);
     }
+
+	Unlock();
 }
 
 // ==================================
 uint32_t cDxr3Interface::GetSysClock() const 
 {
+	Lock();
+
     uint32_t ret = 0;
     if (!m_ExternalReleased) 
 	{
         ret = m_pClock->GetSysClock();
-    }    
+    }
+	
+	Unlock();
     return ret;
 }
 
 // ==================================
 void cDxr3Interface::SetPts(uint32_t pts) 
 {
+	Lock();
+
     if (!m_ExternalReleased) 
 	{    
         m_pClock->SetPts(pts);
     }
+
+	Unlock();
 }
 
 // ==================================
 void cDxr3Interface::SetSpuPts(uint32_t pts) 
 {
+	Lock();
+
     pts = pts >> 1;    
     if (!m_ExternalReleased) 
 	{
@@ -334,15 +362,17 @@ void cDxr3Interface::SetSpuPts(uint32_t pts)
             m_pClock->SetSpuPts(pts);
         }
     }
+
+	Unlock();
 }
 
 // state changes
 // ==================================
-//! enable subpicture proeccesing of the dxr3
+//! enable subpicture processing of the dxr3
 void cDxr3Interface::EnableSPU()
 {
-    int ioval = 0;
     Lock();
+    int ioval = 0;
 
     if (!m_ExternalReleased && m_spuMode != EM8300_SPUMODE_ON) 
 	{    
@@ -360,8 +390,9 @@ void cDxr3Interface::EnableSPU()
 //! disable subpicture proeccesing of the dxr3
 void cDxr3Interface::DisableSPU()
 {
-    int ioval = 0;
     Lock();
+
+    int ioval = 0;
 
     if (!m_ExternalReleased && m_spuMode != EM8300_SPUMODE_OFF) 
 	{    
@@ -379,6 +410,8 @@ void cDxr3Interface::DisableSPU()
 //! disable audio output of dxr3
 void cDxr3Interface::DisableAudio()
 { 
+	Lock();
+	
 	m_AudioActive = false;
 
 	// we wirte zero buffers to dxr3
@@ -389,12 +422,15 @@ void cDxr3Interface::DisableAudio()
         if (write(m_fdAudio, zerobuffer, ZEROBUFFER_SIZE) < 0) Resuscitation();
         if (write(m_fdAudio, zerobuffer, ZEROBUFFER_SIZE) < 0) Resuscitation();
     }
+	Unlock();
 }
 
 // ==================================
 //! enable overlay mode of the dxr3
 void cDxr3Interface::EnableOverlay()
 {
+	Lock();
+
 	// first we check, if it is enable yet
 	if (m_OverlayActive)
 	{
@@ -443,17 +479,23 @@ void cDxr3Interface::EnableOverlay()
 	}
 
 	m_OverlayActive = true;
+	
+	Unlock();
 }
 
 // ==================================
 //! disable overlay mode of the dxr3
 void cDxr3Interface::DisanleOverlay()
 {
+	Lock();
+
 	// is it allready disabled
 	if (!m_OverlayActive)
 	{
 		return;
 	}
+	
+	Unlock();
 }
 
 // set/get functions
@@ -461,8 +503,8 @@ void cDxr3Interface::DisanleOverlay()
 //! get aspect ratio
 uint32_t cDxr3Interface::GetAspectRatio() const
 {
-    int ioval = 0;
     Lock();
+    int ioval = 0;
     
     if (!m_ExternalReleased) 
 	{
@@ -480,9 +522,9 @@ uint32_t cDxr3Interface::GetAspectRatio() const
 //! set aspectratio
 void cDxr3Interface::SetAspectRatio(uint32_t ratio) 
 {
-    static int requestCounter = 0;
-    
     Lock();
+	
+    static int requestCounter = 0;
 
     if (cDxr3ConfigData::Instance().GetForceLetterBox()) ratio = EM8300_ASPECTRATIO_16_9;
 	if (Setup.VideoFormat) ratio = EM8300_ASPECTRATIO_4_3;
@@ -522,10 +564,10 @@ void cDxr3Interface::SetAspectRatio(uint32_t ratio)
 //! set playing mode and start sync engine
 void cDxr3Interface::SetPlayMode()
 {
+    Lock();
+
     em8300_register_t reg;
     int ioval;
-
-    Lock();
 
     if (!m_ExternalReleased) 
 	{
@@ -555,8 +597,9 @@ void cDxr3Interface::SetPlayMode()
 // ==================================
 void cDxr3Interface::Pause()
 {
-    int ioval = EM8300_PLAYMODE_PAUSED;
     Lock();
+
+    int ioval = EM8300_PLAYMODE_PAUSED;
 
     if (!m_ExternalReleased) 
 	{    
@@ -571,8 +614,9 @@ void cDxr3Interface::Pause()
 // ==================================
 void cDxr3Interface::SingleStep()
 {
-    int ioval = EM8300_PLAYMODE_SINGLESTEP;
     Lock();
+	
+	int ioval = EM8300_PLAYMODE_SINGLESTEP;
 
     if (!m_ExternalReleased) 
 	{    
@@ -587,13 +631,13 @@ void cDxr3Interface::SingleStep()
 // ==================================
 void cDxr3Interface::PlayVideoFrame(cFixedLengthFrame* pFrame, int times)
 {
+	Lock();
+
     int written = 0;
     int count = 0;
 
     if (m_VideoActive) 
 	{
-        Lock();
-
         if (!m_ExternalReleased) 
 		{
 			for (int i = 0; i < times; i++)
@@ -617,23 +661,30 @@ void cDxr3Interface::PlayVideoFrame(cFixedLengthFrame* pFrame, int times)
 				written = 0;
 			}
         }
-
-        Unlock();
-
         SetAspectRatio(pFrame->GetAspectRatio());
     }
+
+	Unlock();
 }
 
 // ==================================
 void cDxr3Interface::PlayVideoFrame(const uint8_t* pBuf, int length, int times)
 {
     Lock();
+
+	int written = 0;
     
     if (!m_ExternalReleased) 
 	{
 		for (int i = 0; i < times; i++)
 		{
-			if (write(m_fdVideo, pBuf, length) < 0) Resuscitation();
+		//	if (write(m_fdVideo, pBuf, length) < 0) Resuscitation();
+
+			if ((written = write(m_fdVideo, pBuf, length) < 0)) Resuscitation();
+			if (written != length) 
+			{
+				cLog::Instance() << "cDxr3Interface::PlayVideoFrame(uint8_t* pBuf, int length): Not written = " << length - written << "\n";
+			}
 		}
     }
     
@@ -643,32 +694,31 @@ void cDxr3Interface::PlayVideoFrame(const uint8_t* pBuf, int length, int times)
 // ==================================
 void cDxr3Interface::PlayAudioFrame(cFixedLengthFrame* pFrame)
 {
-
-	// XXX: Call this only with we are not in external mode?
+	Lock();
 
     if (m_AudioActive) 
 	{
-        Lock();
-
         SetAudioSpeed(pFrame->GetDataRate());
         SetChannelCount(pFrame->GetChannelCount());
 
         if (!m_ExternalReleased) 
 		{
+			int size = pFrame->GetCount();
 			if (!cDxr3ConfigData::Instance().GetAc3OutPut()) ResampleVolume((short*)pFrame->GetData(), pFrame->GetCount());
-            write(m_fdAudio, pFrame->GetData(), pFrame->GetCount());
-        }
 
-        Unlock();
+            write(m_fdAudio, pFrame->GetData(), size);
+        }
     }
+	Unlock();
 }
 
 // ==================================
 void cDxr3Interface::PlayAudioFrame(uint8_t* pBuf, int length)
 {
-    int written = 0;
     Lock();
 
+    int written = 0;
+	
     if (!m_ExternalReleased) 
 	{
         if (!cDxr3ConfigData::Instance().GetAc3OutPut()) ResampleVolume((short*)pBuf, length);
@@ -679,12 +729,15 @@ void cDxr3Interface::PlayAudioFrame(uint8_t* pBuf, int length)
 			cLog::Instance() << "cDxr3Interface::PlayAudioFrame(uint8_t* pBuf, int length): Not written = " << length - written << "\n";
 		}
     }
+
     Unlock();
 }
 
 // ==================================
 void cDxr3Interface::PlayAudioLpcmFrame(uint8_t* pBuf, int length)
 {
+	Lock();
+
     if (length > (LPCM_HEADER_LENGTH + 2)) 
 	{
         uint8_t* pFrame = new uint8_t[length - LPCM_HEADER_LENGTH];
@@ -722,6 +775,8 @@ void cDxr3Interface::PlayAudioLpcmFrame(uint8_t* pBuf, int length)
         PlayAudioFrame(pFrame, length - LPCM_HEADER_LENGTH);
         delete[] pFrame;
     }
+
+	Unlock();
 }
 
 // external device access
@@ -793,12 +848,12 @@ void cDxr3Interface::ExternalReopenDevices()
 // ==================================
 //! play blackframe on tv
 void cDxr3Interface::PlayBlackFrame()
-{
-    extern char blackframe[];
-    extern int blackframeLength;
-    
+{  
     Lock();
-    
+ 
+    extern char blackframe[];
+    extern int blackframeLength;	
+
     if (!m_ExternalReleased) 
 	{   
         if (write(m_fdVideo, blackframe, blackframeLength) < 0) Resuscitation();
@@ -853,6 +908,8 @@ cOsdBase* cDxr3Interface::NewOsd(int x, int y)
 //! uploadroutine for microcode
 void cDxr3Interface::UploadMicroCode()
 {
+	Lock();
+
 	if (cDxr3ConfigData::Instance().GetDebug())
 	{
 		cLog::Instance() << "cDxr3Interface::UploadMicroCode: uploading...";
@@ -913,12 +970,16 @@ void cDxr3Interface::UploadMicroCode()
 	{
 		cLog::Instance() << "...done\n";
 	}
+	
+	Unlock();
 }
 
 // ==================================
 //! config and setup device via ioctl calls
 void cDxr3Interface::ConfigureDevice()
 {
+	Lock();
+
 	// get videomode from driver
 	uint32_t videomode_from_driver = 0;
 
@@ -975,12 +1036,16 @@ void cDxr3Interface::ConfigureDevice()
 			cLog::Instance() << "cDxr3Interface::ConfigureDevice: Audiomode = Analog\n";
 		}
 	}
+
+	Unlock();
 }
 
 // ==================================
 //! reset whole hardware
 void cDxr3Interface::Resuscitation() 
 {
+	Lock();
+	
     time_t startt = time(&startt);
     time_t endt = 0;
     m_ExternalReleased = true;
@@ -1002,12 +1067,16 @@ void cDxr3Interface::Resuscitation()
     }
 
     ConfigureDevice();
+
+	Unlock();
 }
 
 // ==================================
 //! pcm resampling funtcion
 void cDxr3Interface::ResampleVolume(short* pcmbuf, int size)
 {
+	Lock();
+
     if (m_volume == 0) 
 	{
         memset(pcmbuf, 0, size);  
@@ -1021,11 +1090,15 @@ void cDxr3Interface::ResampleVolume(short* pcmbuf, int size)
 			pcmbuf[i] = (((int)pcmbuf[i]) * factor) / 65536;
         }
     }
+
+	Unlock();
 }
 
 // ==================================
 void cDxr3Interface::ClearOsd()
 {
+	Lock();
+
     encodedata ed;
     int controlstart= 0;
     int x1 = 0;
@@ -1063,6 +1136,8 @@ void cDxr3Interface::ClearOsd()
         WriteSpu((const uint8_t*) &ed, (int) ed.count);
         ClearButton();
     }
+	
+	Unlock();
 }
 
 // ==================================
@@ -1081,6 +1156,8 @@ void cDxr3Interface::WriteSpu(const uint8_t* pBuf, int length)
 // ==================================
 void cDxr3Interface::SetButton(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint32_t palette)
 {
+	Lock();
+
     em8300_button_t button;
 
     button.color = palette >> 16;
@@ -1091,11 +1168,15 @@ void cDxr3Interface::SetButton(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t e
     button.right = ex;
 
     ioctl(m_fdSpu, EM8300_IOCTL_SPU_BUTTON, &button);
+
+	Unlock();
 }
 
 // ==================================
 void cDxr3Interface::ClearButton()
 {
+	Lock();
+
     em8300_button_t button;
 
     button.color = 0;
@@ -1106,12 +1187,18 @@ void cDxr3Interface::ClearButton()
     button.right = 2;
 
     ioctl(m_fdSpu, EM8300_IOCTL_SPU_BUTTON, &button);
+
+	Unlock();
 }
 
 // ==================================
 void cDxr3Interface::SetPalette(unsigned int *pal)
 {
+	Lock();
+
 	ioctl(m_fdSpu, EM8300_IOCTL_SPU_SETPALETTE, (uint8_t*)pal);
+
+	Unlock();
 }
 
 // helper functions for dxr3 main osd screen
@@ -1120,8 +1207,10 @@ void cDxr3Interface::SetPalette(unsigned int *pal)
 void cDxr3Interface::ResetHardware()
 {
 	Lock();
+
 	cLog::Instance() << "cDxr3Interface: Resting DXR3 hardware\n";
     Resuscitation();
+
     Unlock();
 }
 
@@ -1130,36 +1219,47 @@ void cDxr3Interface::ResetHardware()
 //! set brightness
 void cDxr3Interface::SetBrightness(int value)
 {
+	Lock();
+
 	m_bcs.brightness = value;
 
 	if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) < 0) 
 	{
 		cLog::Instance() << "cDxr3Interface::SetBrightness: Unable to set brightness to " << value << "\n";
 	} 
+
+	Unlock();
 }
 
 // ==================================
 //! set contrast
 void cDxr3Interface::SetContrast(int value)
 {
+	Lock();
+
 	m_bcs.contrast = value;
 
 	if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) < 0) 
 	{
 		cLog::Instance() << "cDxr3Interface::SetContrast: Unable to set contrast to " << value << "\n";
 	} 
+
+	Unlock();
 }
 
 // ==================================
 //! set saturation
 void cDxr3Interface::SetSaturation(int value)
 {
+	Lock();
+
 	m_bcs.saturation = value;
 
 	if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) < 0) 
 	{
 		cLog::Instance() << "cDxr3Interface::SetSaturation: Unable to set saturation to " << value << "\n";
 	} 
+	Unlock();
 }
 
 // access registers
@@ -1167,6 +1267,8 @@ void cDxr3Interface::SetSaturation(int value)
 //! read a register
 long cDxr3Interface::ReadRegister(int registernum)
 {
+	Lock();
+
 	em8300_register_t reg;
 	
 	reg.microcode_register = 0;
@@ -1174,19 +1276,25 @@ long cDxr3Interface::ReadRegister(int registernum)
 	reg.val = 0;
 	
 	ioctl(m_fdControl, EM8300_IOCTL_READREG, &reg);
-	return (reg.val);	
+	return (reg.val);
+	
+	Unlock();
 }
 
 // ==================================
 //! write a register
 void cDxr3Interface::WriteRegister(int registernum, int val)
 {
+	Lock();
+
 	em8300_register_t reg;
 	
 	reg.microcode_register = 0;
 	reg.reg = registernum;
 	reg.val = val;
 	ioctl(m_fdControl, EM8300_IOCTL_WRITEREG, &reg);
+	
+	Unlock();
 }
 
 // ==================================

@@ -1,4 +1,3 @@
-* check Lock() and Unlock() in dxr3interface.c
 * set bcs
 * clean unneeded log entries
 * stillpicture
