@@ -32,9 +32,15 @@ const int DXR3_MAX_VIDEO_FRAME_LENGTH = 4096;
 const int DXR3_MAX_AUDIO_FRAME_LENGTH = 4096;
 
 // ==================================
-//! constructor
-cFixedLengthFrame::cFixedLengthFrame() : 
-m_count(0), m_length(0), m_pts(0), m_type(ftUnknown) {
+cFixedLengthFrame::cFixedLengthFrame(uint32_t length) : 
+m_count(0), m_length(length), m_pts(0), m_type(ftUnknown) {
+
+	m_pData = new uint8_t[length];
+	if (!m_pData)
+	{
+		cLog::Instance() << "Failed to allocate memory in cFixedLengthFrame (m_pData) - will stop now";
+		exit(1);		
+	}
 
     m_audioChannelCount = UNKNOWN_CHANNEL_COUNT;
     m_audioDataRate = UNKNOWN_DATA_RATE;
@@ -47,21 +53,6 @@ cFixedLengthFrame::~cFixedLengthFrame()
 	if (m_pData)
 	{
 		delete[] m_pData;
-	}
-}
-
-// ==================================
-// ! setup our frame
-void cFixedLengthFrame::Init(uint32_t lenght)
-{
-	m_length = lenght;
-	m_pData = new uint8_t[lenght];
-
-	// allocation ok?
-	if (!m_pData)
-	{
-		cLog::Instance() << "Failed to allocate memory in cFixedLengthFrame (m_pData) - will stop now";
-		exit(1);		
 	}
 }
 
@@ -109,26 +100,19 @@ uint32_t cFixedLengthFrame::m_staticAudioChannelCount = 0;
 uint32_t cFixedLengthFrame::m_staticAudioDataRate = 0;
 
 
+
+
 // ==================================
-//! constructor
 cDxr3SyncBuffer::cDxr3SyncBuffer(int frameCount, int frameLength, cDxr3Interface& dxr3Device) : cRingBuffer(frameCount, true), m_dxr3Device(dxr3Device) 
 {
-    m_pBuffer = new cFixedLengthFrame[frameCount];
+    m_pBuffer = new cFixedLengthFrame[frameCount](frameLength);
 
-	// got we a valid m_pBuffer?
 	if (!m_pBuffer)
 	{
 		cLog::Instance() << "Failed to allocate memory in cDxr3SyncBuffer (m_pBuffer) - will stop now";
 		exit(1);
 	}
 
-	// init our new m_pBuffer;
-	for (int i = 0; i < frameCount; i++)
-	{
-		m_pBuffer[i].Init(frameLength);
-	}
-
-	// set some default values
     m_count = 0;
     m_nextFree = 0;
     m_next = 0;
