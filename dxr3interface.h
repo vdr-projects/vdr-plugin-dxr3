@@ -134,7 +134,7 @@ private:
     int m_fdVideo;		///< filehandle for video fifo of dxr3 card
     int m_fdAudio;		///< filehandle for audio fifo of dxr3 card
     int m_fdSpu;		///< filehandle for spu fifo of dxr3 card
-    uint32_t last_seen_pts;
+    uint32_t m_lastSeenPts;
 
 	// dxr3 clock
 	cDxr3SysClock*	m_pClock;	///< clock used for sync
