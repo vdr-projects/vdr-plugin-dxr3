@@ -292,7 +292,7 @@ void cDxr3Interface::SetAudioSampleSize(uint32_t sampleSize)
             cLog::Instance() <<"cDxr3AbsDevice::SetAudioSampleSize Unable to set audio sample size\n";
         }
     }
-    m_audioSampleSize = sampleSize;                              
+    m_audioSampleSize = sampleSize;   
 }
 
 // clock
@@ -312,7 +312,7 @@ uint32_t cDxr3Interface::GetSysClock() const
     if (!m_ExternalReleased) 
 	{
         ret = m_pClock->GetSysClock();
-    }    
+    }
     return ret;
 }
 
@@ -689,6 +689,7 @@ void cDxr3Interface::PlayAudioFrame(uint8_t* pBuf, int length)
 			cLog::Instance() << "cDxr3Interface::PlayAudioFrame(uint8_t* pBuf, int length): Not written = " << length - written << "\n";
 		}
     }
+
     Unlock();
 }
 
@@ -1119,8 +1120,10 @@ void cDxr3Interface::SetPalette(unsigned int *pal)
 void cDxr3Interface::ResetHardware()
 {
 	Lock();
+
 	cLog::Instance() << "cDxr3Interface: Resting DXR3 hardware\n";
     Resuscitation();
+
     Unlock();
 }
 
