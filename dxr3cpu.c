@@ -32,7 +32,7 @@ cDxr3CPU::cDxr3CPU()
 	unsigned long eax,ebx,edx,unused;
 	
 	// readout the vendor
-	cpuid(0,eax,ebx,unused,edx);
+	Cpuid(0,eax,ebx,unused,edx);
 	
 	// set Vendor to ""
 	memset(m_Info.Vendor, 0, 16);
@@ -45,7 +45,7 @@ cDxr3CPU::cDxr3CPU()
 	
 	// check the features
 	// could we get the needed infos?
-	if (cpuid(1,eax,ebx,unused,edx))
+	if (Cpuid(1,eax,ebx,unused,edx))
 	{
 		m_Info.MMX = ((edx & 1<<23) != 0);
 		m_Info.SSE = ((edx & 1<<25) != 0);
@@ -55,7 +55,7 @@ cDxr3CPU::cDxr3CPU()
 		
 		// 3DNow is a litle bit harder to read out
 		// We read the ext. CPUID level 0x80000000
-		if (cpuid(0x80000000,eax,ebx,unused,edx))
+		if (Cpuid(0x80000000,eax,ebx,unused,edx))
 		{
 			// now in eax there is the max. supported extended CPUID level
 			// we check if theres an extended CPUID level support
@@ -63,7 +63,7 @@ cDxr3CPU::cDxr3CPU()
 			{
 				// If we can access the extended CPUID level 0x80000001 we get the
 				// edx register
-				if (cpuid(0x80000001,eax,ebx,unused,edx))
+				if (Cpuid(0x80000001,eax,ebx,unused,edx))
 				{
 					// Now we can mask some AMD specific cpu extensions
 					// 22 ... Extended MMX_MultimediaExtensions
@@ -120,7 +120,7 @@ bool cDxr3CPU::CheckCPUIDPresence()
 
 // ==================================
 //! cpuid function
-bool cDxr3CPU::cpuid(unsigned long function, unsigned long& out_eax, unsigned long& out_ebx, unsigned long& out_ecx, unsigned long& out_edx)
+bool cDxr3CPU::Cpuid(unsigned long function, unsigned long& out_eax, unsigned long& out_ebx, unsigned long& out_ecx, unsigned long& out_edx)
 {
 	asm("cpuid": "=a" (out_eax), "=b" (out_ebx), "=c" (out_ecx), "=d" (out_edx) : "a" (function));
 	return true;

@@ -98,7 +98,7 @@ private:
 	bool CheckCPUIDPresence();
 
 	// main function to get cpu(s) features
-	bool cpuid(unsigned long function, unsigned long& out_eax, unsigned long& out_ebx, unsigned long& out_ecx, unsigned long& out_edx);
+	bool Cpuid(unsigned long function, unsigned long& out_eax, unsigned long& out_ebx, unsigned long& out_ecx, unsigned long& out_edx);
 	
 	CPUInformation m_Info;
 };
