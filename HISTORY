@@ -245,3 +245,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - added functions to read and write registers directly with the plugin
 - added basic dolby digital interface
 - you can configure microcode path in Makefile - thanks to Sascha Volkenandt <sascha@akv-soft.de>
+- fixed DVBDIR and FFMDIR in Makefile - thanks to guys from www.vdr-wiki.de
