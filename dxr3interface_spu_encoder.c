@@ -27,6 +27,7 @@
 */
 
 #include "dxr3interface_spu_encoder.h"
+#include "dxr3tools.h"
 
 /*
 ToDo:
@@ -45,7 +46,6 @@ ToDo:
 #include <signal.h>
 #include <string>
 #include <vdr/plugin.h>
-#include "dxr3tools.h"
 
 namespace XineScaler
 {
