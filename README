@@ -1,14 +1,16 @@
 This is a "plugin" for the Video Disk Recorder (VDR).
 
-Written by:             	Kai Moeller <dxr3_av@schluenss.de>, Stefan Schluenss <dxr3_osd@schluenss.de>
-			     		Christian Gmeiner <christian at visual-page.de>
+Written by:                   Kai Moeller <dxr3_av@schluenss.de>,
+                              Stefan Schluenss <dxr3_osd@schluenss.de>,
+                              Christian Gmeiner <christian at visual-page.de>,
+                              ...and numerous others, see CONTRIBUTORS.
 
-Project's homepage:          	http://sourceforge.net/projects/dxr3plugin/
+Project's home page:          http://sourceforge.net/projects/dxr3plugin/
 
-Latest version available at: 	0.2.3-pre2
+Latest version available at:  See project home page
 
-Description:                 	DXR3/Hollywod+ MPEG decoder card plugin which allows using such a
-                             	card as primary interface for VDR.
+Description:                  DXR3/Hollywood+ MPEG decoder card plugin which
+                              allows using such a card as primary interface
+                              for VDR.
 
-
-For installation guide reade INSTALL.
+For installation instructions, see INSTALL.
