@@ -276,6 +276,17 @@ void cDxr3Device::StillPicture(const uchar *Data, int Length)
 // ==================================
 bool cDxr3Device::Poll(cPoller &Poller, int TimeoutMs)
 {
+	if ((m_DemuxDevice.GetDemuxMode() == DXR3_DEMUX_TRICK_MODE &&
+	     m_DemuxDevice.GetTrickState() == DXR3_FREEZE) ||
+	    cDxr3Interface::Instance().IsExternalReleased())
+	{
+#if VDRVERSNUM >= 10314
+		cCondWait::SleepMs(TimeoutMs);
+#else
+		usleep(TimeoutMs * 1000);
+#endif
+		return false;
+	}
 	return m_DemuxDevice.Poll(TimeoutMs); // Poller.Poll(TimeoutMs);
 }
 
