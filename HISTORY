@@ -240,3 +240,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - dxr3memcpy.c/h: should now compile on alpha and powerpc
 - fixed i18n, and improved Finnish translations and some others
 - removed -lz from makefile
+- use $CXX for generating dependencies instead of hardcoded g++
