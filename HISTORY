@@ -269,14 +269,14 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
   dxr3interface.c, removed not needed #includes (Christian Gmeiner)
 - fixed OSD getting pink (bug #1022810, Christian Gmeiner)
 - added support for VDR 1.3.13 and later (Luca Olivetti, Peter Dittmann)
-- fixed audio and video thread deletion in demux device destructor
-  (Ville Skyttä)
 - if we cant open control fifo, plugin now returns a correct error message
   (Christian Gmeiner)
 - removed explicit linking with zlib (Christian Gmeiner)
 - compiles now with 3.4.x gcc's (Christian Gmeiner, Ville Skyttä)
 - use $CXX for generating dependencies instead of hardcoded g++ (Ville Skyttä)
 - added descriptions to audio and video output threads (Ville Skyttä)
+- fixed audio and video thread deletion in demux device destructor
+  (Ville Skyttä)
 - made "all" the default target in Makefile (Ville Skyttä)
 - assume SSE support implies MMXEXT support, this enables optimized
   memcpy routines on more systems (Ville Skyttä)
