@@ -25,8 +25,32 @@ const char *i18n_name = 0;
 
 const tI18nPhrase Phrases[] = {
 	{
-		"DXR3 plugin", // English
-		"DXR3 Plugin", // Deutsch
+		"DXR3", // English
+		"DXR3", // Deutsch
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"", // Suomi
+		"", // Polski
+		"", // Español
+		"", // Ellinika
+		"", // Svenska
+		"", // Romaneste
+		"", // Magyar
+		"", // Catala
+#if VDRVERSNUM > 10302
+		"", // Russian
+# if VDRVERSNUM > 10307
+		"", // Croatian
+# endif
+#endif
+	},
+	{
+		"DXR3 Adjustment", // English
+		"DXR3 Einstellungen", // Deutsch
 		"", // Slovenski
 		"", // Italiano
 		"", // Nederlands
@@ -288,6 +312,101 @@ const tI18nPhrase Phrases[] = {
 # endif
 #endif
 	},
+	{
+		"Colorsettings", // English
+		"Farbeinstellungen", // Deutsch
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"", // Suomi
+		"", // Polski
+		"", // Español
+		"", // Ellinika
+		"", // Svenska
+		"", // Romaneste
+		"", // Magyar
+		"", // Catala
+#if VDRVERSNUM > 10302
+		"", // Russian
+# if VDRVERSNUM > 10307
+		"", // Croatian
+# endif
+#endif
+	},
+	{
+		"Brightness", // English
+		"Helligkeit", // Deutsch
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"", // Suomi
+		"", // Polski
+		"", // Español
+		"", // Ellinika
+		"", // Svenska
+		"", // Romaneste
+		"", // Magyar
+		"", // Catala
+#if VDRVERSNUM > 10302
+		"", // Russian
+# if VDRVERSNUM > 10307
+		"", // Croatian
+# endif
+#endif
+	},
+	{
+		"Contrast", // English
+		"Kontrast", // Deutsch
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"", // Suomi
+		"", // Polski
+		"", // Español
+		"", // Ellinika
+		"", // Svenska
+		"", // Romaneste
+		"", // Magyar
+		"", // Catala
+#if VDRVERSNUM > 10302
+		"", // Russian
+# if VDRVERSNUM > 10307
+		"", // Croatian
+# endif
+#endif
+	},
+	{
+		"Saturation", // English
+		"Sättigung", // Deutsch
+		"", // Slovenski
+		"", // Italiano
+		"", // Nederlands
+		"", // Português
+		"", // Français
+		"", // Norsk
+		"", // Suomi
+		"", // Polski
+		"", // Español
+		"", // Ellinika
+		"", // Svenska
+		"", // Romaneste
+		"", // Magyar
+		"", // Catala
+#if VDRVERSNUM > 10302
+		"", // Russian
+# if VDRVERSNUM > 10307
+		"", // Croatian
+# endif
+#endif
+	},
 	{ NULL }
 };
-
