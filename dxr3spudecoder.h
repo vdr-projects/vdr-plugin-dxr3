@@ -41,6 +41,7 @@ public:
 	
 	int setTime(uint32_t pts); 
 	
+	cSpuDecoder::eScaleMode getScaleMode(void);
 	void setScaleMode(cSpuDecoder::eScaleMode ScaleMode); 
 	void setPalette(uint32_t * pal);
 	void setHighlight(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint32_t palette); 

@@ -42,6 +42,13 @@ void cDxr3SpuDecoder::processSPU(uint32_t pts, uint8_t * buf)
 } 
 
 // ==================================
+// ! get scalemode - needed only to compile with VDR >= 1.3.22
+cSpuDecoder::eScaleMode cDxr3SpuDecoder::getScaleMode(void)
+{
+	return eSpuNormal; // XXX: what... but this is unused in VDR <= 1.3.23
+}
+
+// ==================================
 // ! set scalemode - not needed
 void cDxr3SpuDecoder::setScaleMode(cSpuDecoder::eScaleMode ScaleMode) 
 {
