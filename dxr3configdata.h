@@ -39,19 +39,19 @@ public:
     cDxr3ConfigData();
 	~cDxr3ConfigData()	{}
 
-    int GetUseDigitalOut() const						{ return UseDigitalOut; }
-    int SetUseDigitalOut(int value)						{ return UseDigitalOut = value; }
-    int GetDxr3Card() const								{ return Dxr3Card; }
-    int SetDxr3Card(int value)							{ return Dxr3Card = value; }
-    int GetForceLetterBox()	const						{ return ForceLetterBox; }
-    int SetForceLetterBox(int value)					{ return ForceLetterBox = value; }
-    int GetAc3OutPut() const							{ return Ac3OutPut; }
-    int SetAc3OutPut(int value)							{ return Ac3OutPut = value;}
+    int GetUseDigitalOut() const						{ return m_digitaloutputt; }
+    int SetUseDigitalOut(int value)						{ return m_digitaloutput = value; }
+    int GetDxr3Card() const								{ return m_card; }
+    int SetDxr3Card(int value)							{ return m_card = value; }
+    int GetForceLetterBox()	const						{ return m_forceletterbox; }
+    int SetForceLetterBox(int value)					{ return m_forceletterbox = value; }
+    int GetAc3OutPut() const							{ return m_ac3output; }
+    int SetAc3OutPut(int value)							{ return m_ac3output = value;}
 
-    eVideoMode GetVideoMode() const						{ return m_videoMode;}
-    eVideoMode SetVideoMode(eVideoMode videoMode)		{ return m_videoMode = videoMode;}
-    eMenuMode GetMenuMode()	const						{ return m_menuMode; }
-    eMenuMode SetMenuMode(eMenuMode menuMode)			{ return m_menuMode = menuMode; }
+    eVideoMode GetVideoMode() const						{ return m_videomode;}
+    eVideoMode SetVideoMode(eVideoMode videoMode)		{ return m_videomode = videoMode;}
+    eMenuMode GetMenuMode()	const						{ return m_menumode; }
+    eMenuMode SetMenuMode(eMenuMode menuMode)			{ return m_menumode = menuMode; }
 
 	int GetDebug() const								{ return m_debug; }
 	int SetDebug(int value)								{ return m_debug = value; }
@@ -60,7 +60,7 @@ public:
 
 	// some little helpers to save some writing
 	int GetDebugLow() const								{ return (m_debug && !m_debuglevel); }
-	int GetDebugEverything() const						{ if (m_debug == 1 && m_debuglevel == 0) { return 1; } else { return 0; } }
+	int GetDebugEverything() const						{ if (m_debug && !m_debuglevel) { return 1; } else { return 0; } }
 
 	int GetBrightness() const							{ return m_brightness; }
 	int SetBrightness(int value)						{ return m_brightness = value; }
@@ -70,15 +70,14 @@ public:
 	int SetSaturation(int value)						{ return m_saturation = value; }
 
 protected:
-    eVideoMode	m_videoMode;
-    eMenuMode	m_menuMode;
+    eVideoMode	m_videomode;
+    eMenuMode	m_menumode;
 
-    int	UseDigitalOut;
-    int	Dxr3Card;
-    int	ForceLetterBox;
-    int	Ac3OutPut;
-
-	int	m_debug;
+	int m_digitaloutput;
+	int m_ac3output;
+	int m_card;
+	int m_forceletterbox;
+	int m_debug;
 	int m_debuglevel;
 	int m_brightness;
 	int m_contrast;
