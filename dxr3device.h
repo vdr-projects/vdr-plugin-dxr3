@@ -1,5 +1,5 @@
 /*
- * dxr3devide.h
+ * dxr3device.h
  *
  * Copyright (C) 2002-2004 Kai Möller
  * Copyright (C) 2004 Christian Gmeiner
