@@ -27,6 +27,7 @@
 namespace Tools
 {
 	// ==================================
+	//! convert Rgb to CrCb
 	inline unsigned int Rgb2YCrCb(unsigned long rgb) 
 	{
 		float Y,U,V;
@@ -47,6 +48,7 @@ namespace Tools
 	}
 
 	// ==================================
+	//! convert YUV to Rgb
 	inline unsigned int YUV2Rgb(unsigned int yuv_color)
 	{
 		int Y, Cb, Cr;
@@ -60,12 +62,7 @@ namespace Tools
 		Ey = (Y - 16);
 		Epb = (Cb - 128);
 		Epr = (Cr - 128);
-		/* ITU-R 709
-		Eg = (298*Ey - 55*Epb - 137*Epr)/256;
-		Eb = (298*Ey + 543*Epb)/256;
-		Er = (298*Ey + 460*Epr)/256;
-		*/
-		/* FCC ~= mediaLib */
+
 		Eg = (298 * Ey - 100 * Epb - 208 * Epr) / 256;
 		Eb = (298 * Ey + 516 * Epb) / 256;
 		Er = (298 * Ey + 408 * Epr) / 256;
@@ -89,6 +86,7 @@ namespace Tools
 	}
 
 	// ==================================
+	//! write a string via vdr to OSD
 	inline void WriteInfoToOsd(string x)
 	{
 		#if VDRVERSNUM <= 10306

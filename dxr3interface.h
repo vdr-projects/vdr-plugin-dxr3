@@ -18,6 +18,11 @@ class cFixedLengthFrame;
 
 // ==================================
 // interafce to dxr3-card
+/*!
+	cDxr3Interface is the interface to the dxr3
+	driver and so to the card,
+	so this is the layer between plugin and driver.
+*/
 class cDxr3Interface : public Singleton<cDxr3Interface>
 {
 public:
@@ -125,9 +130,6 @@ private:
 
 	// bcs
 	em8300_bcs_t	m_bcs;
-
-	// spu
-//    cDxr3InterfaceSpu		m_SpuInterface;
 
 	void UploadMicroCode();
 	void ConfigureDevice();

@@ -40,6 +40,7 @@ cLog::cLog(std::string Filename)
 }
 
 // ==================================
+//! open log file
 void cLog::Open(std::string Filename)
 {
 	m_LogStream.open(Filename.c_str());
@@ -47,6 +48,7 @@ void cLog::Open(std::string Filename)
 }
 	
 // ==================================
+//! close log file
 void cLog::Close()
 {
 	if (m_LogOpen)
