@@ -141,7 +141,7 @@ private:
 	void WriteRegister(int registernum, int val);
 
 	// maybe we should copy this routine into em8300 driver
-	void Dxr3CopyYUVData(int pos, int *dst, int length);
+	char Dxr3CopyYUVData(int pos, int *dst, int length);
 
 protected:
     static cMutex* m_pMutex;				///< mutex for dxr3interface

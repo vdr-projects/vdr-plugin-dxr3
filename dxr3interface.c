@@ -1191,10 +1191,63 @@ void cDxr3Interface::WriteRegister(int registernum, int val)
 
 // maybe we should copy this routine into em8300 driver
 // ==================================
-// 
-void cDxr3Interface::Dxr3CopyYUVData(int pos, int *dst, int length)
+//! It appears that the follow routine copies length bytes to memory pointed to
+//! by dst. 
+//! Most likely, pos contains some kind of buffer offset.
+char cDxr3Interface::Dxr3CopyYUVData(int pos, int *dst, int length)
 {
+	int l1;
+
+	for (l1 = 0x1000; (l1) ;--l1) 
+	{
+		if (ReadRegister(0x1c1a) == 0)
+			break;
+	}
+
+	if (l1 == 0) 
+	{
+		//printf("Borked!\n");
+		exit(0);
+	}
+
+	WriteRegister(0x1c50, 8);
+	WriteRegister(0x1c51, pos & 0xffff);
+	WriteRegister(0x1c52, pos >>16);
+	WriteRegister(0x1c53, length);
+	WriteRegister(0x1c54, length);
+	WriteRegister(0x1c55, 0);
+	WriteRegister(0x1c56, 1);
+	WriteRegister(0x1c57, 1);
+	WriteRegister(0x1c58, pos & 0xffff);
+	WriteRegister(0x1c59, 0);
+	WriteRegister(0x1c5a, 1);
 	
+	int l2 = 0;
+	for( l2=0; l2 < (length>>2) ; ++l2) 
+	{
+		*dst++ = ReadRegister(0x11800);
+	}
+
+	switch( length % 4 ) 
+	{
+	    case 3:
+		*dst++ = ReadRegister(0x11000);
+			break;
+	    case 2:
+		*dst++ = ReadRegister(0x10800);
+			break;
+	    case 1:
+		*dst++ = ReadRegister(0x10000);
+			break;
+	}
+	
+	for (l1 = 0x1000; (l1) ; --l1) 
+	{
+		if (ReadRegister(0x1c1a) == 0)
+			return 1;
+	}
+	
+	return 0;	
 }
 
 // ==================================
