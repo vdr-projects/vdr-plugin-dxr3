@@ -260,3 +260,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - improved GetSTC(): fixes DVB subtitles sync problems (Mikko Tuumanen)
 - limit OSD flush rate: prevents OSD from going berserk due to being
   refreshed too often (Luca Olivetti, Ville Skyttä)
+- improve OSD scaler for small resolutions (#1014339, Luca Olivetti)
