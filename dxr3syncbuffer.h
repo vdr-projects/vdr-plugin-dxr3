@@ -39,9 +39,11 @@ const uint32_t UNKNOWN_ASPECT_RATIO = 0xFFFFFFFF;
 class cFixedLengthFrame 
 {    
 public: 
-    explicit cFixedLengthFrame(uint32_t length);
+    explicit cFixedLengthFrame();
     ~cFixedLengthFrame();
    
+	void Init(uint32_t lenght);
+
     void CopyFrame(const uint8_t* pStart, int length, uint32_t pts, eFrameType type);
     uint8_t* GetData(void);
     int GetCount(void);

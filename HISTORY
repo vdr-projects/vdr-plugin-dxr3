@@ -230,7 +230,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - fixed dxr3osd_subpicutre.c - thanks to Paavo Hartikainen <pahartik@sci.fi>
 
 
-2004-??-??: Version 0.2.3-pre3
+2005-??-??: Version 0.2.3-pre3
 
 - fixed output of anamorphic video, if tv aspect is configured to 16:9 in DVB setup menu 
   thanks Seppo Ingalsuo <seppo.ingalsuo@iki.fi>
@@ -272,3 +272,5 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - added a small patch, containing mainly Finnish translation updates but also a few other small ones
   thanks Ville Skyta <ville.skytta@iki.fi>
 - some little fixes in the dx3interface: if we cant open control fifo plugins retuns now correct error message
+- removed -lz from makefile
+- compiles now with 3.4.x gcc's
