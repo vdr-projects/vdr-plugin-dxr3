@@ -27,15 +27,15 @@
 cDxr3ConfigData::cDxr3ConfigData() 
 {
 	// set default values
-	m_digitaloutput = 0;
-	m_ac3output = 0;
-	m_card = 0;
-	m_forceletterbox = 0;
-    m_videomode = PAL;
-	m_menumode = SUBPICTURE;
-	m_debug = 1;
-	m_debuglevel = 0;
-	m_brightness	= 500;
-	m_contrast		= 500;
-	m_saturation	= 500;
+	m_Digitaloutput = 0;
+	m_AC3output = 0;
+	m_Card = 0;
+	m_ForceLetterbox = 0;
+    m_VideoMode = PAL;
+	m_MenuMode = SUBPICTURE;
+	m_Debug = 1;
+	m_DebugLevel = 0;
+	m_Brightness	= 500;
+	m_Contrast		= 500;
+	m_Saturation	= 500;
 }
