@@ -237,6 +237,8 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - rewrote i18n support
 - fixed void cDxr3Interface::SetAudioDigitalPCM() - thanks to Stephan Skrodzki <skrodzki@contcast.de> for patch
 - dxr3memcpy.c/h: fix to support older compilers like gcc-2.95
+  Here i want to thanks  Marco Schlüßler very much for run compil tests, even he
+  dont uses the plugin :)
 - dxr3memcpy.c/h: should now compile on alpha and powerpc - thanks to Paavo Hartikainen <pahartik@sci.fi>
 - added many comments into source
 - using doxygen for docs
