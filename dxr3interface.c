@@ -881,7 +881,7 @@ void cDxr3Interface::ReOpenAudio()
  
 	if (!m_ExternalReleased) 
 	{
-        if (m_fdAudio > -1) 
+        if (m_fdAudio > -1)
 		{
             int bufsize = 0;
             ioctl(m_fdAudio, SNDCTL_DSP_GETODELAY, &bufsize);
