@@ -3,8 +3,6 @@
 *
 * Copyright (C) 2004 Christian Gmeiner
 *
-* Taken from Nesseia-Renderengine Copyright (C) 2003-2004 Christian Gmeiner
-*
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU Lesser General Public License
 * as published by the Free Software Foundation; either version 2.1
