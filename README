@@ -1,0 +1,14 @@
+This is a "plugin" for the Video Disk Recorder (VDR).
+
+Written by:                  Kai Moeller <dxr3_av@schluenss.de>, Stefan Schluenss <dxr3_osd@schluenss.de>
+							 Christian Gmeiner <christian at visual-page.de>
+
+Project's homepage:          http://www.schluenss.de/DXR3.html
+
+Latest version available at: see homepage
+
+See the file COPYING for license information.
+
+Description:                 DXR3/Hollywod+ MPEG decoder card plugin which allows using such a
+                             card as primary interface for VDR.
+
