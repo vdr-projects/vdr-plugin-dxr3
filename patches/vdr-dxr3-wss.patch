@@ -1,0 +1,42 @@
+Wide screen signaling (WSS) patch for vdr-dxr3 by Seppo Ingalsuo.
+Apply to: vdr-dxr3 plugin sources
+More info: http://thread.gmane.org/gmane.linux.vdr/17095
+Note: you'll probably want to apply em8300-adv7170-wss.patch too
+  in order to get support for this functionality in the driver.
+
+
+--- dxr3interface.c.orig	2005-03-23 00:09:56.000000000 +0200
++++ dxr3interface.c	2005-03-23 01:02:42.543440845 +0200
+@@ -534,16 +534,30 @@
+     Lock();
+ 	
+     static int requestCounter = 0;
++    int wssmode;
++    int aspect;
+ 
+     if (cDxr3ConfigData::Instance().GetForceLetterBox()) ratio = EM8300_ASPECTRATIO_16_9;
+-	if (Setup.VideoFormat) ratio = EM8300_ASPECTRATIO_4_3;
+ 
+ 	if (!m_ExternalReleased && ratio != UNKNOWN_ASPECT_RATIO) 
+ 	{      
+ 		if (ratio != m_aspectRatio && requestCounter > 50) 
+ 		{
++            if (Setup.VideoFormat)
++            {
++                aspect = EM8300_ASPECTRATIO_4_3;
++#ifdef EM8300_IOCTL_SET_WSS
++                if (ratio == EM8300_ASPECTRATIO_16_9)
++                    wssmode = EM8300_WSS_16_9;
++                else
++                    wssmode = EM8300_WSS_OFF;
++                ioctl(m_fdControl, EM8300_IOCTL_SET_WSS, &wssmode);
++#endif
++            }
++            else
++                aspect = ratio;
+             requestCounter = 0;
+-            if (ioctl(m_fdControl, EM8300_IOCTL_SET_ASPECTRATIO, &ratio) < 0) 
++            if (ioctl(m_fdControl, EM8300_IOCTL_SET_ASPECTRATIO, &aspect) < 0) 
+ 			{
+ 				cLog::Instance() << "cDxr3AbsDevice::SetAspectRatio Unable to set aspect ratio\n";
+             } 
