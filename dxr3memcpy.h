@@ -57,6 +57,11 @@
 // size of buffer for benchmark
 #define BUFSIZE 1024*1024
 
+// get gcc version
+#define GCC_VERSION (__GNUC__ * 10000 \
+                     + __GNUC_MINOR__ * 100 \
+                     + __GNUC_PATCHLEVEL__)
+
 enum {
   MEMCPY_PROBE = 0,
   MEMCPY_GLIBC,

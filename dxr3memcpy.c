@@ -93,6 +93,10 @@ int d0, d1, d2;
 #define MMX1_MIN_LEN 0x800  /* 2K blocks */
 #define MIN_LEN 0x40  /* 64-byte blocks */
 
+
+// Test for GCC > 3.2.0
+#if GCC_VERSION > 30200
+
 // ==================================
 /* SSE note: i tried to move 128 bytes a time instead of 64 but it
 didn't make any measureable difference. i'm using 64 for the sake of
@@ -256,7 +260,7 @@ static void * mmx2_memcpy(void * to, const void * from, size_t len)
     "   prefetchnta 224(%0)\n"
     "   prefetchnta 256(%0)\n"
     "   prefetchnta 288(%0)\n"
-    : : "r" (from) );
+    :: "r" (from) );
 
   if(len >= MIN_LEN)
   {
@@ -308,6 +312,8 @@ static void * mmx2_memcpy(void * to, const void * from, size_t len)
   return retval;
 }
 
+#endif /*GCC_VERSION > 30200*/
+
 // ==================================
 static void *linux_kernel_memcpy(void *to, const void *from, size_t len) {
   return __memcpy(to,from,len);
@@ -344,6 +350,9 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 	routine.cpu_require = 0;
 	m_methods.push_back(routine);
 
+	// Test for GCC > 3.2.0
+	#if GCC_VERSION > 30200
+
 	// MMX optimized memcpy()
 	routine.name = "MMX optimized memcpy()";
 	routine.function = mmx_memcpy;
@@ -356,7 +365,7 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 	routine.cpu_require = CC_MMXEXT;
 	m_methods.push_back(routine);
 
-	#ifndef __FreeBSD__
+	#	ifndef __FreeBSD__
 
 	// SSE optimized memcpy()
 	routine.name = "SSE optimized memcpy()";
@@ -364,7 +373,8 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 	routine.cpu_require = CC_MMXEXT|CC_SSE;
 	m_methods.push_back(routine);
 
-	#endif /*__FreeBSD__*/
+	#	endif /*__FreeBSD__*/
+	#endif /*GCC_VERSION > 30200*/
 
 //	#endif /*ARCH_X86*/
 
