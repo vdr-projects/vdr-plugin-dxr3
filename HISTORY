@@ -249,4 +249,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - you can set now logpath in makefile
   You should also run a linke like 
   # find / -name "dxr3plugin.log" | xargs rm
-  because the pre2 seems to put this dxr3plugin.log random in some folders  - reporded by Dr. Seltsam from www.vdr-portal.de
+  because the pre2 seems to put this dxr3plugin.log random in some folders  - reporded by Martin Dauskardt <md001@gmx.de>
