@@ -34,6 +34,15 @@ const int ZEROBUFFER_SIZE = 4096;
 uint8_t zerobuffer[ZEROBUFFER_SIZE] = {0};
 
 // ==================================
+//! default spu palette
+static unsigned default_palette[16] =
+{
+	0xe18080, 0x2b8080, 0x847b9c, 0x51ef5a, 0x7d8080, 0xb48080, 
+	0xa910a5, 0x6addca, 0xd29210, 0x1c76b8, 0x50505a, 0x30b86d, 
+	0x5d4792, 0x3dafa5, 0x718947, 0xeb8080
+};
+
+// ==================================
 //! helper function to generate name
 static const char *Dxr3Name(const char *Name, int n)
 {
@@ -60,15 +69,6 @@ static int Dxr3Open(const char *Name, int n, int Mode)
 //! constructor
 cDxr3Interface::cDxr3Interface()
 {
-	// default spu palette
-	default_palette =
-	{
-		0xe18080, 0x2b8080, 0x847b9c, 0x51ef5a, 0x7d8080, 0xb48080, 
-		0xa910a5, 0x6addca, 0xd29210, 0x1c76b8, 0x50505a, 0x30b86d, 
-		0x5d4792, 0x3dafa5, 0x718947, 0xeb8080
-	};
-
-
 	// open control stream
 	m_fdControl = Dxr3Open("", cDxr3ConfigData::Instance().GetDxr3Card(), O_WRONLY | O_SYNC);
 	if (!m_fdControl)
@@ -1148,7 +1148,7 @@ void cDxr3Interface::ClearOsd()
 	Unlock();
 
 	// prevent osd to get pink
-	SetPalette(&default_palette);	// ok here? Has its own un/lock
+	SetPalette(default_palette);	// ok here? Has its own un/lock
 }
 
 // ==================================

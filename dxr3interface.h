@@ -152,8 +152,6 @@ private:
 	// bcs
 	em8300_bcs_t	m_bcs;					///< BrightnessContrastSaturation values
 
-	unsigned default_palette[16];
-
 	void UploadMicroCode();
 	void ConfigureDevice();
 	void ResampleVolume(short* pcmbuf, int size);
