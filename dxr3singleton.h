@@ -23,8 +23,11 @@
 #define _DXR3_SINGLETON_H_
 	
 // ==================================
-// This template makes it easy to make
-// global things
+//!  A singleton template. 
+/*!
+	Is a nice solution to use only
+	one instance of a class.
+*/
 template<typename T>
 class Singleton
 {
