@@ -457,7 +457,9 @@ bool cDxr3Device::GrabImage(const char *FileName, bool Jpeg, int Quality, int Si
 		else 
 		{
 			///< write PNM file:
-			if (fprintf(f, "P6\n%d\n%d\n255\n", w, h) < 0 ||	fwrite(Data, w * h * 3, 1, f) < 0) 
+                	size_t n = 1;
+			if (fprintf(f, "P6\n%d\n%d\n255\n", w, h) < 0 ||
+			    fwrite(Data, w * h * 3, n, f) < n)
 			{
 				LOG_ERROR_STR(FileName);
 			}

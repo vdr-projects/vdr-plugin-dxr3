@@ -396,19 +396,19 @@ int cSPUEncoder::Cmd(OSD_Command cmd, int color, int x0, int y0, int x1, int y1,
 		if ((col = (eDvbColor*)m_windows[m_lastwindow].colors) != NULL) 
 	#endif
 			{
-			for (int i = 0; i < m_windows[m_lastwindow].NumColors; ++i) 
+			for (size_t i = 0; i < m_windows[m_lastwindow].NumColors; ++i) 
 			{
 				m_palManager.RemoveColor((int)(col[i]) & 0xFFFFFF);
 			}
 		}
 
 		// clear osd
-		for (int i = m_windows[m_lastwindow].y0; i <= m_windows[m_lastwindow].y1; ++i) 
+		for (size_t i = m_windows[m_lastwindow].y0; i <= m_windows[m_lastwindow].y1; ++i) 
 		{
 			cp = &OSD_Screen[i*OSDWIDTH + m_windows[m_lastwindow].x0];
 			if ((cp+m_windows[m_lastwindow].x1-m_windows[m_lastwindow].x0+1) < &OSD_Screen[OSDWIDTH * OSDHEIGHT-1])
 			{
-				for (int xx=0; xx <= (m_windows[m_lastwindow].x1-m_windows[m_lastwindow].x0); xx++) 
+				for (size_t xx=0; xx <= (m_windows[m_lastwindow].x1-m_windows[m_lastwindow].x0); xx++) 
 				{
 					*(cp+xx) = 0x00;
 				}
