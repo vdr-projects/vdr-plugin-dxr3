@@ -247,6 +247,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - made log dir configurable in Makefile (Christian Gmeiner, Martin Dauskardt)
   You may also want to search and remove files called "dxr3plugin.log" as the
   old plugin wrote them into the current working directory.
+- better default directories in Makefile (Christian Gmeiner, vdr-wiki.de folks)
 - extended cDxr3MemcpyBench::Rdtsc(uint32_t config_flags): support for
   non-x86 archs, support for cpu's, which dont support rdtsc timing
   (Christian Gmeiner)

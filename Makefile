@@ -1,7 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.1.2.7 2005/03/14 22:21:07 scop Exp $
+# $Id: Makefile,v 1.1.2.8 2005/03/19 21:50:51 scop Exp $
 
 # The official name of this plugin.
 # This name will be used in the '-P...' option of VDR to load the plugin.
@@ -20,18 +20,11 @@ CXXFLAGS = -O2 -Wall -Woverloaded-virtual
 
 ### The directory environment:
 
-##DVBDIR = ../../../../DVB
-##VDRDIR = ../../..
-##LIBDIR = ../../lib
-##TMPDIR = /tmp
-##FFMDIR = ../../../../ffmpeg
-### LIBMP3DIR = /usr/lib
-
-DVBDIR = /usr/src/linux
-VDRDIR = /usr/include/vdr
-LIBDIR = /usr/lib
+DVBDIR = ../../../DVB
+VDRDIR = ../../..
+LIBDIR = ../../lib
 TMPDIR = /tmp
-FFMDIR = /usr/include/ffmpeg
+FFMDIR = /usr/local/include/ffmpeg
 EM8300 = /usr/include
 
 ### Allow user defined options to overwrite defaults:
