@@ -1,7 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.1.2.4 2005/03/14 18:22:26 scop Exp $
+# $Id: Makefile,v 1.1.2.5 2005/03/14 18:48:34 scop Exp $
 
 # The official name of this plugin.
 # This name will be used in the '-P...' option of VDR to load the plugin.
@@ -57,6 +57,9 @@ DEFINES += -D_GNU_SOURCE
 
 # where is the microcode for the dxr3 located?
 DEFINES += -DMICROCODE=\"/usr/share/misc/em8300.uc\"
+
+# where should we write our log?
+DEFINES += -DLOGPATH=\"/video/\"	# note: path must end with /
 
 ### The object files (add further files here):
 

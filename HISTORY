@@ -244,6 +244,9 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - added many comments into source (Christian Gmeiner)
 - using doxygen for docs (Christian Gmeiner)
 - made path to microcode configurable in Makefile (Sascha Volkenandt)
+- made log dir configurable in Makefile (Christian Gmeiner, Martin Dauskardt)
+  You may also want to search and remove files called "dxr3plugin.log" as the
+  old plugin wrote them into the current working directory.
 - extended cDxr3MemcpyBench::Rdtsc(uint32_t config_flags): support for
   non-x86 archs, support for cpu's, which dont support rdtsc timing
   (Christian Gmeiner)

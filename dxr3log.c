@@ -28,7 +28,11 @@ cLog::cLog()
 	m_LogOpen = false;
 	m_ForeFlush = true;
 	
-	Open("dxr3plugin.log");
+	std::string Filename;
+	Filename = LOGPATH;
+	Filename += "dxr3plugin.log";
+
+	Open(Filename);
 }
 
 // ==================================
