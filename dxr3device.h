@@ -28,7 +28,6 @@
 #include "dxr3demuxdevice.h"
 #include "dxr3spudecoder.h"
 #include <string>
-//using namespace std;
 
 // ==================================
 // our device :)
