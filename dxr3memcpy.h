@@ -88,7 +88,7 @@ public:
 	cDxr3MemcpyBench(uint32_t config_flags = 0);
 
 private:
-	unsigned long long int rdtsc();
+	unsigned long long int Rdtsc();
 
 	vector<memcpy_routine>	m_methods;
 };

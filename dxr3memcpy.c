@@ -408,13 +408,13 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 		}
 
 		// count 100 runs of the memcpy function
-		t = rdtsc();
+		t = Rdtsc();
 		for	(j = 0; j < 50; j++) 
 		{
 			m_methods[i].function(buf2,buf1,BUFSIZE);
 			m_methods[i].function(buf1,buf2,BUFSIZE);
 		}     
-		t = rdtsc() - t;
+		t = Rdtsc() - t;
 
 		m_methods[i].time = t;
 
@@ -435,10 +435,9 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 	free(buf2);
 }
 
-
 // ==================================
 // neede for exact timing
-unsigned long long int cDxr3MemcpyBench::rdtsc()
+unsigned long long int cDxr3MemcpyBench::Rdtsc()
 {
 //	#ifdef ARCH_X86
 	unsigned long long int x;
