@@ -259,5 +259,5 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - rewrote cDxr3SpuDecoder
   dropped software decoder
   added hardware decoder, so we make use of DVD-functions of the dxr3
-  kicked out YUV2Rgb - as we dont need it any more
 - checked Lock() and Unlock() in dxr3interface.c - hope everything is ok else contact me
+- using now std:: instead of namespace std;

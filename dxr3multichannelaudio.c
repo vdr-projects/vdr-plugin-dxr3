@@ -114,7 +114,7 @@ void cAudioEncapsulator::NewFrame(uchar PTSflags, const uchar *PTSdata)
     }
   static const int ptslen[] = { 0,0,PTS_SIZE,PTS_SIZE*2 };
   const int plen = ptslen[PTSflags];
-  int len = min(totalSize, MAX_FRAMECOUNT);
+  int len = std::min(totalSize, MAX_FRAMECOUNT);
   ED("NewFrame: totalSize=%d frameCount=%d PTSflags=%d",totalSize,len,PTSflags);
   totalSize -= len;
   ED(" new totalSize=%d\n",totalSize);
@@ -176,7 +176,7 @@ void cAudioEncapsulator::PutData(const uchar *data, int len)
   if(!muteData) {
     if(!frameData) DEBUG("PutData() without frame\n");
     while (frameData && len > 0) {
-      int l = min(len,frameCount);
+		int l = std::min(len,frameCount);
       if(data) {
         memcpy(frameData,data,l);
         data += l;
@@ -327,7 +327,7 @@ void cAudioEncapsulator::Decode(const uchar *data, int len, uchar PTSflags, int 
           }
         }
       else { // unfortunaly buffer is not empty, so continue with buffering until sync found
-        int need=min(SYNC_SIZE-have,len-used);
+        int need=std::min(SYNC_SIZE-have,len-used);
         if (need) {
           memcpy(&syncBuff[have],&data[used],need);
           have += need; used += need; ptsDelay -= need;
@@ -347,7 +347,7 @@ void cAudioEncapsulator::Decode(const uchar *data, int len, uchar PTSflags, int 
         }
       }
     else { // we have a header sync and are copying data
-      int need = min(length-have,len-used);
+      int need = std::min(length-have,len-used);
       if(need) {
         ED("Decode: writing %d\n",need);
         PutData(&data[used],need);

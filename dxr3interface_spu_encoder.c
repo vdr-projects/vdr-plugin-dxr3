@@ -227,10 +227,10 @@ void cSPUEncoder::CalculateActiveOsdArea()
 	// calculate
 	for (int i = 0; i < 8; i++)
 	{
-		m_active_osd.x0 = max(m_active_osd.x0, m_windows[i].x0);
-		m_active_osd.x1 = max(m_active_osd.x1, m_windows[i].y0);
-		m_active_osd.y0 = max(m_active_osd.y0, m_windows[i].x1);
-		m_active_osd.y1 = max(m_active_osd.y1, m_windows[i].y1);
+		m_active_osd.x0 = std::max(m_active_osd.x0, m_windows[i].x0);
+		m_active_osd.x1 = std::max(m_active_osd.x1, m_windows[i].y0);
+		m_active_osd.y0 = std::max(m_active_osd.y0, m_windows[i].x1);
+		m_active_osd.y1 = std::max(m_active_osd.y1, m_windows[i].y1);
 	}
 
 	cLog::Instance() << "OSD x0: " << m_active_osd.x0 << "\n";

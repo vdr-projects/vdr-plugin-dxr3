@@ -62,7 +62,7 @@
 // ==================================
 struct memcpy_routine
 {
-	string name;	///< name of memcpy methode
+	std::string name;	///< name of memcpy methode
 	void *(* function)(void *to, const void *from, size_t len);	///< our memcopy methode
 	unsigned long long time;	///< needed time for banchmark
 	uint32_t cpu_require;		///< caps from dxr3cpu.h
