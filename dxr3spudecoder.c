@@ -303,6 +303,13 @@ void cDxr3SpuDecoder::processSPU(uint32_t pts, uint8_t * buf)
 }
 
 // ==================================
+// ! get scalemode
+cSpuDecoder::eScaleMode cDxr3SpuDecoder::getScaleMode(void)
+{
+    return scaleMode;
+}
+
+// ==================================
 // ! set scalemode
 void cDxr3SpuDecoder::setScaleMode(cSpuDecoder::eScaleMode ScaleMode)
 {
