@@ -79,7 +79,7 @@ cDxr3CPU::cDxr3CPU()
 	// fill cabs
 	if (m_Info.MMX)
 	{
-		m_Info.caps = CC_MMX;
+		m_Info.caps |= CC_MMX;
 	}
 
 	if (m_Info.MMXEXT)
