@@ -234,7 +234,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 
 - fixed output of anamorphic video, if tv aspect is configured to 16:9 in DVB setup menu 
   thanks Seppo Ingalsuo <seppo.ingalsuo@iki.fi>
-- rewrote i18n support
+- rewrote i18n support, improved Finnish translation and other bits
 - fixed void cDxr3Interface::SetAudioDigitalPCM() - thanks to Stephan Skrodzki <skrodzki@contcast.de> for patch
 - dxr3memcpy.c/h: fix to support older compilers like gcc-2.95
   Here i want to thanks  Marco Schlüßler very much for run compil tests, even he
@@ -268,10 +268,8 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
   moved #include "dxr3osd.h" from dxr3interface.h to dxr3interface.c
   removed not needed #includes
 - fixed bug #1022810: Osd gets pink
-- added a small patch, containing mainly Finnish translation updates but also a few other small ones
-  thanks Ville Skyttä <ville.skytta@iki.fi>
+- added support for VDR 1.3.13 and later - thanks to Luca Olivetti and others
 - some little fixes in the dx3interface: if we cant open control fifo plugins retuns now correct error message
 - removed -lz from makefile
 - compiles now with 3.4.x gcc's
-- added support for vdr-1.3.18 - thanks to Luca Olivetti <luca@ventoso.org>
 - use $CXX for generating dependencies instead of hardcoded g++
