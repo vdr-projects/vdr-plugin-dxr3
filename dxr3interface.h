@@ -139,6 +139,9 @@ private:
 	// access registers
 	long ReadRegister(int registernum);
 	void WriteRegister(int registernum, int val);
+	
+	// grab screen
+	void GrabScreen(int w, int h, char** buf);
 
 	// maybe we should copy this routine into em8300 driver
 	char Dxr3CopyYUVData(int pos, int *dst, int length);
