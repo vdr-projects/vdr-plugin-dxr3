@@ -1,7 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.14 2005/03/22 16:34:20 scop Exp $
+# $Id: Makefile,v 1.15 2005/03/23 21:39:47 scop Exp $
 
 # The official name of this plugin.
 # This name will be used in the '-P...' option of VDR to load the plugin.
@@ -38,7 +38,7 @@ VDRVERSION = $(shell grep 'define VDRVERSION ' $(VDRDIR)/config.h | awk '{ print
 ### The name of the distribution archive:
 
 ARCHIVE = $(PLUGIN)-$(VERSION)
-PACKAGE = vdr-$(ARCHIVE)
+PACKAGE = $(shell echo vdr-$(ARCHIVE) | sed -e 's/cvs$$/cvs'`date +%Y%m%d`/)
 
 ### Includes and Defines (add further entries here):
 
