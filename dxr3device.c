@@ -339,9 +339,9 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 // ==================================
 // plays additional audio streams, like Dolby Digital
 #if VDRVERSNUM >= 10318
-	int PlayAudio(const uchar *Data, int Length)
+	int cDxr3Device::PlayAudio(const uchar *Data, int Length)
 #else
-	void PlayAudio(const uchar *Data, int Length)
+	void cDxr3Device::PlayAudio(const uchar *Data, int Length)
 #endif
 {
     int retLength = 0;
@@ -349,12 +349,12 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 		int origLength = Length;
 #endif    
 
-	#if VDRVERSNUM < 10307
+#if VDRVERSNUM < 10307
     if (!m_AC3Present) 
 	{
         Interface->Write(Interface->Width() / 2, 0, "AC3", clrRed);
     }	
-	#endif
+#endif
 
     m_AC3Present = true;
 	
