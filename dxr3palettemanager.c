@@ -21,7 +21,7 @@ cDxr3PaletteManager::cDxr3PaletteManager()
 {
     memset(m_colors, 0, sizeof(int) * MAX_COLORS);
     memset(m_users, 0, sizeof(int) * MAX_COLORS);
-    memset(m_pal, 0, sizeof(int) * MAX_COLORS);
+    memset(m_pal, 0, sizeof(uint32_t) * MAX_COLORS);
     m_changed = false;
 };
 
