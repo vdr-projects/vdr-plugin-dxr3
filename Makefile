@@ -1,7 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.1.2.2 2005/03/14 11:21:29 scop Exp $
+# $Id: Makefile,v 1.1.2.3 2005/03/14 14:02:54 scop Exp $
 
 # The official name of this plugin.
 # This name will be used in the '-P...' option of VDR to load the plugin.
@@ -63,6 +63,10 @@ dxr3log.o dxr3ffmpeg.o dxr3interface_spu_encoder.o dxr3i18n.o \
 dxr3interface.o dxr3device.o dxr3outputthread.o dxr3osd.o dxr3osd_subpicture.o dxr3spudecoder.o dxr3unixserversocket.o \
 dxr3cpu.o dxr3memcpy.o
 
+### Default target:
+
+all: libvdr-$(PLUGIN).so
+
 ### Implicit rules:
 
 %.o: %.c
@@ -78,8 +82,6 @@ $(DEPFILE): Makefile
 -include $(DEPFILE)
 
 ### Targets:
-
-all: libvdr-$(PLUGIN).so
 
 libvdr-$(PLUGIN).so: $(OBJS)
 	$(CXX) $(CXXFLAGS) -shared $(OBJS) $(LIBS) -o $@
