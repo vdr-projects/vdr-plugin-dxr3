@@ -34,7 +34,11 @@ class cDxr3DolbyDigital : public cAudio, private cThread
 {
 public:
 	cDxr3DolbyDigital()	{}
+#if VDRVERSNUM > 10320
+	virtual void Play(const uchar *Data, int Length, uchar Id);
+#else
 	virtual void Play(const uchar *Data, int Length);
+#endif
 	virtual void Mute(bool On);
 	virtual void Clear();
 

@@ -25,7 +25,12 @@
 
 // ==================================
 //! play
+#if VDRVERSNUM > 10320
+void cDxr3DolbyDigital::Play(const uchar *Data, int Length, uchar Id)
+// TODO: this fixes the build, but according to reports, there's no audio.
+#else
 void cDxr3DolbyDigital::Play(const uchar *Data, int Length)
+#endif
 {
 	if (cDxr3ConfigData::Instance().GetUseDigitalOut())
 	{
