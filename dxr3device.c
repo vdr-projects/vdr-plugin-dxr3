@@ -490,10 +490,6 @@ void cDxr3Device::SetVideoFormat(bool VideoFormat16_9)
 //! sets volume for audio output
 void cDxr3Device::SetVolumeDevice(int Volume)
 {
-	if (cDxr3ConfigData::Instance().GetDebug())
-	{
-		cLog::Instance() << "change volume to " << Volume << " \n";
-	}
 	cDxr3Interface::Instance().SetVolume(Volume);
 }
 
@@ -501,17 +497,8 @@ void cDxr3Device::SetVolumeDevice(int Volume)
 // get spudecoder
 cSpuDecoder *cDxr3Device::GetSpuDecoder(void)
 {
-	if (cDxr3ConfigData::Instance().GetDebug())
-	{
-		cLog::Instance() << "cDxr3Device::GetSpuDecoder";
-	}
-
 	if (!m_spuDecoder && IsPrimaryDevice())
 	{
-		if (cDxr3ConfigData::Instance().GetDebug())
-		{
-			cLog::Instance() << "cDxr3Device::GetSpuDecoder: ok";
-		}
 		m_spuDecoder = new cDxr3SpuDecoder();
 	}
 	return m_spuDecoder;
