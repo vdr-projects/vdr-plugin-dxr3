@@ -39,7 +39,7 @@
 class cFixedLengthFrame;
 
 // ==================================
-// interafce to dxr3-card
+//! interafce to dxr3-card
 /*!
 	cDxr3Interface is the interface to the dxr3
 	driver and so to the card,
