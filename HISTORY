@@ -245,3 +245,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - added descriptions to audio and video output threads
 - fixed audio and video thread deletion in demux device destructor
 - made "all" the default target in Makefile
+- assume SSE support implies MMXEXT support

@@ -76,6 +76,9 @@ cDxr3CPU::cDxr3CPU()
 		}
 	}
 
+	// MPlayer, Xine-lib, Transcode: SSE implies MMXEXT
+	m_Info.MMXEXT = m_Info.MMXEXT || m_Info.SSE;
+
 	// fill cabs
 	if (m_Info.MMX)
 	{
