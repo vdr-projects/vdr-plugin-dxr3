@@ -33,7 +33,6 @@
 #include "dxr3log.h"
 #include "dxr3configdata.h"
 #include "dxr3sysclock.h"
-#include "dxr3osd.h"
 
 // ==================================
 class cFixedLengthFrame;
