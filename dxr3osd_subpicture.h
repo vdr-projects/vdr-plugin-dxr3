@@ -19,8 +19,8 @@
 class cDxr3SubpictureOsd : public cOsd
 {
 private:
-	cSPUEncoder* Spu;
-	bool shown;
+	cSPUEncoder* Spu;	///< interface to cSPUEncoder
+	bool shown;			///< is the osd shown?
 #if VDRVERSNUM >= 10318
 	cTimeMs *last;
 #else

@@ -5,6 +5,7 @@
 #define MAXNUMWINDOWS 7 // OSD windows are counted 1...7
 
 // ==================================
+//! constructor
 cDxr3SubpictureOsd::cDxr3SubpictureOsd(int Left, int Top) : cOsd(Left, Top)
 {
 	shown = false;
