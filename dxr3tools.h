@@ -48,44 +48,6 @@ namespace Tools
 	}
 
 	// ==================================
-	//! convert YUV to Rgb
-	inline unsigned int YUV2Rgb(unsigned int yuv_color)
-	{
-		int Y, Cb, Cr;
-		int Ey, Epb, Epr;
-		int Eg, Eb, Er;
-		
-		Y = (yuv_color >> 16) & 0xff;
-		Cb = (yuv_color) & 0xff;
-		Cr = (yuv_color >> 8) & 0xff;
-		
-		Ey = (Y - 16);
-		Epb = (Cb - 128);
-		Epr = (Cr - 128);
-
-		Eg = (298 * Ey - 100 * Epb - 208 * Epr) / 256;
-		Eb = (298 * Ey + 516 * Epb) / 256;
-		Er = (298 * Ey + 408 * Epr) / 256;
-		
-		if (Eg > 255)
-			Eg = 255;
-		if (Eg < 0)
-			Eg = 0;
-		
-		if (Eb > 255)
-			Eb = 255;
-		if (Eb < 0)
-			Eb = 0;
-		
-		if (Er > 255)
-			Er = 255;
-		if (Er < 0)
-			Er = 0;
-		
-		return Eb | (Eg << 8) | (Er << 16);
-	}
-
-	// ==================================
 	//! write a string via vdr to OSD
 	inline void WriteInfoToOsd(string x)
 	{

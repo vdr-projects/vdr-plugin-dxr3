@@ -256,3 +256,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
   support for non x86 arch
   support for cpu's, which dont support rdtsc timing
 - logger now thread safe
+- rewrote cDxr3SpuDecoder
+  dropped software decoder
+  added hardware decoder, so we make use of DVD-functions of the dxr3
+  kicked out YUV2Rgb - as we dont need it any more
