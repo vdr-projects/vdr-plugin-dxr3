@@ -239,8 +239,8 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - fixed void cDxr3Interface::SetAudioDigitalPCM() (Stephan Skrodzki)
 - dxr3memcpy.c/h: fix to support older compilers like gcc-2.95
   (Christian Gmeiner, Marco Schlüßler)
-- dxr3memcpy.c/h: should now compile on alpha and powerpc
-  (Christian Gmeiner, Paavo Hartikainen)
+- dxr3memcpy.c/h: should now compile on alpha and powerpcc
+  (bug #1000647, Christian Gmeiner, Paavo Hartikainen)
 - added many comments into source (Christian Gmeiner)
 - using doxygen for docs (Christian Gmeiner)
 - made path to microcode configurable in Makefile (Sascha Volkenandt)
@@ -252,7 +252,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
   non-x86 archs, support for cpu's, which dont support rdtsc timing
   (Christian Gmeiner)
 - added support for VDR 1.3.13 and later (Luca Olivetti, Peter Dittmann)
-- removed -lz from makefile (Christian Gmeiner)
+- removed explicit linking with zlib (Christian Gmeiner)
 - compiles now with 3.4.x gcc's (Christian Gmeiner, Ville Skyttä)
 - use $CXX for generating dependencies instead of hardcoded g++ (Ville Skyttä)
 - added descriptions to audio and video output threads (Ville Skyttä)
