@@ -3,7 +3,7 @@
 *
 * See the README file for copyright information and how to reach the author.
 *
-* $Id: dxr3.c,v 1.2 2004/09/18 00:11:11 austriancoder Exp $
+* $Id: dxr3.c,v 1.3 2005/03/22 07:52:40 scop Exp $
 */
 
 
@@ -17,7 +17,7 @@
 #include "dxr3dolbydigital.h"
 #include "dxr3.h"
 
-static const char *VERSION        = "0.2.3-pre3-cvs";
+static const char *VERSION        = "0.3.0-cvs";
 static const char *DESCRIPTION    = "DXR3-MPEG decoder plugin";
 static const char *MAINMENUENTRY  = "DXR3";
 
