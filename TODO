@@ -1,3 +1,50 @@
+Known problems, bugs, and workarounds for this driver:
+------------------------------------------------------
+
+* After invoking the "Reset DXR3 hardware" function, or after playing
+  something with the MPlayer plugin, OSD goes pink.
+  Workaround: none known, need to restart VDR to restore sanity.
+  May sometimes be restored back to normal after some operations, but no
+  way to reliably reproduce/ find out what "fixes" it has been found.
+
+* No sound with the MP3 plugin with VDR >= 1.3.18.
+  Workaround: compile the MP3 plugin with OSS support, configure it to use
+  something else than the DXR3 for output (see the --dsp option), and set
+  the output mode to OSS in the VDR OSD menus.  (Yes, this means that
+  you'll need a sound card of some kind in addition to the DXR3, suxx.)
+  Workaround 2: use VDR < 1.3.18.
+
+* The MP3 plugin's "show live TV" option while playing stuff doesn't work.
+  Workaround: none known, but the black screen isn't that bad if you
+  make the MP3 progress stuff/playlist visible...
+
+* No sound with the DVD plugin with VDR >= 1.3.18.
+  Workaround: use the MPlayer plugin to play DVDs.
+  Workaround 2: use VDR < 1.3.18.
+
+* VCD plugin does not work.
+  Workaround: use the MPlayer plugin to play VCDs.
+
+* VDR crashes at exit.
+  Workaround: none known.  Unless you want to try to debug it (which you're
+  most welcome to do, obviously!), you probably don't want core dumps all
+  over your disk.  Disable them with eg. "ulimit -c 0" in the environment
+  you run VDR in.
+
+* When cutting recordings from some channels, the still picture is stuck
+  and won't move when you press 4 or 6 to fine tune the cutmarks.
+  Workaround: see vdr-iframe.patch in the patches/ directory.
+
+* If the TV aspect ratio does not automatically adjust according to the
+  video stream, and you have a ADV7170-based DXR3 and a PAL system, see
+  em8300-adv7170-wss.patch and vdr-dxr3-wss.patch in the patches/ dir.
+
+* The TVOnscreen plugin's OSD is a mess, positioning errors etc.
+  Workaround: use TVOnscreen < 0.6.0.  0.5.2 works fine for me (Ville).
+
+Other TODOs:
+------------
+
 * set bcs
 * clean unneeded log entries
 * stillpicture
@@ -18,5 +65,3 @@
 
 * look at following parts
 	- dxr3unixserversocket
-
-* check VCD Plugin
