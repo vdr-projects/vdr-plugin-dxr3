@@ -1120,7 +1120,7 @@ void cDxr3Interface::ResetHardware()
 {
 	Lock();
 
-	cLog::Instance() << "cDxr3Interface: Resting DXR3 hardware\n";
+	cLog::Instance() << "cDxr3Interface: Resetting DXR3 hardware\n";
     Resuscitation();
 
     Unlock();
