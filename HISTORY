@@ -251,8 +251,8 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - extended cDxr3MemcpyBench::Rdtsc(uint32_t config_flags): support for
   non-x86 archs, support for cpu's, which dont support rdtsc timing
   (Christian Gmeiner)
-- using now std::string instead of namespace std
-  (bug #1044069, Christian Gmeiner)
+- use std:: instead of namespace std
+  (bug #1044069, Christian Gmeiner, Ville Skyttä)
 - removed extra log commands in dxr3outputthread.c (Christian Gmeiner)
 - fixed #includes: moved #include "dxr3osd.h" from dxr3interface.h to
   dxr3interface.c, removed not needed #includes (Christian Gmeiner)

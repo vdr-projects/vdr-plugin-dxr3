@@ -176,7 +176,7 @@ void cAudioEncapsulator::PutData(const uchar *data, int len)
   if(!muteData) {
     if(!frameData) DEBUG("PutData() without frame\n");
     while (frameData && len > 0) {
-		int l = std::min(len,frameCount);
+      int l = std::min(len,frameCount);
       if(data) {
         memcpy(frameData,data,l);
         data += l;

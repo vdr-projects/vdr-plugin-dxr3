@@ -92,7 +92,7 @@ namespace Tools
 
 	// ==================================
 	//! write a string via vdr to OSD
-	inline void WriteInfoToOsd(string x)
+	inline void WriteInfoToOsd(std::string x)
 	{
 		#if VDRVERSNUM <= 10306
 			Interface->Info(x.c_str());

@@ -110,7 +110,7 @@ void cDxr3AudioDecoder::Decode(const uint8_t* buf, int length, uint32_t pts, cDx
             if ((buf[i+2] & 0xFC) != (lastHeader[2] & 0xFC)) 
 			{
 				cLog::Instance() << "cDxr3AudioDecoder::Decode Found different audio header -> init\n";
-                cLog::Instance() << "cDxr3AduioDecoder::Decode Old header 0x" << hex << *((uint32_t*) lastHeader) << " new header 0x" << *((uint32_t*) (buf+i))<< dec << "\n";
+                cLog::Instance() << "cDxr3AudioDecoder::Decode Old header 0x" << std::hex << *((uint32_t*) lastHeader) << " new header 0x" << *((uint32_t*) (buf+i)) << std::dec << "\n";
 
                 Init();
                 lastHeader[0] = buf[i];
@@ -255,7 +255,7 @@ void cDxr3AudioDecoder::DecodeAc3Dts(const uint8_t* pPes, const uint8_t* buf, in
 
             for (int i = 0; i < pFrame->Count() - pesHeaderLength - LPCM_HEADER_LENGTH; i += 2) 
 			{
-                swap(pData[i], pData[i + 1]);
+                std::swap(pData[i], pData[i + 1]);
             }
         
             aBuf.Push(pFrame->Data() + pesHeaderLength + LPCM_HEADER_LENGTH, pFrame->Count() - pesHeaderLength - 7, tempPes.GetPts());
