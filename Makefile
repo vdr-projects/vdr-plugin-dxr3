@@ -1,7 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.5 2004/09/18 12:49:02 austriancoder Exp $
+# $Id: Makefile,v 1.6 2004/10/10 21:31:21 austriancoder Exp $
 
 # The official name of this plugin.
 # This name will be used in the '-P...' option of VDR to load the plugin.
@@ -58,7 +58,7 @@ DEFINES += -DLOGPATH=\"/video/\"	# note: path must end with /
 
 OBJS = $(PLUGIN).o dxr3multichannelaudio.o dxr3sysclock.o dxr3colormanager.o dxr3syncbuffer.o dxr3audiodecoder.o \
 dxr3blackframe.o dxr3palettemanager.o dxr3nextpts.o dxr3pesframe.o dxr3demuxdevice.o dxr3configdata.o \
-dxr3log.o dxr3ffmpeg.o dxr3interface_spu_encoder.o dxr3i18n.o \
+dxr3log.o dxr3ffmpeg.o dxr3spuencoder.o dxr3i18n.o \
 dxr3interface.o dxr3device.o dxr3outputthread.o dxr3osd.o dxr3osd_subpicture.o dxr3spudecoder.o dxr3unixserversocket.o \
 dxr3cpu.o dxr3memcpy.o dxr3dolbydigital.o
 

@@ -261,3 +261,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
   added hardware decoder, so we make use of DVD-functions of the dxr3
 - checked Lock() and Unlock() in dxr3interface.c - hope everything is ok else contact me
 - using now std:: instead of namespace std;
+- renamed dxr3interface_spu_encoder.h/c to dxr3spuencoder.h/c
