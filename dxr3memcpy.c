@@ -34,7 +34,12 @@
 #include "dxr3log.h"
 #include "dxr3cpu.h"
 #include "dxr3memcpy.h"
+#include <sys/times.h>
+#include <limits.h>
 
+
+// ==================================
+//! our function pointer
 void *(* dxr3_memcpy)(void *to, const void *from, size_t len);
 
 #ifdef __i386__
@@ -54,7 +59,7 @@ __asm__ __volatile__(\
 }
 */
 // ==================================
-// linux kernel __memcpy (from: /include/asm/string.h)
+//! linux kernel __memcpy (from: /include/asm/string.h)
 static __inline__ void * __memcpy (
 			       void * to,
 			       const void * from,
@@ -312,7 +317,7 @@ static void *linux_kernel_memcpy(void *to, const void *from, size_t len) {
 
 
 // ==================================
-// constr.
+//! constr.
 cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 {	
 	//
@@ -389,13 +394,13 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 		}
 
 		// count 100 runs of the memcpy function
-		t = Rdtsc();
+		t = Rdtsc(config_flags);
 		for	(j = 0; j < 50; j++) 
 		{
 			m_methods[i].function(buf2,buf1,BUFSIZE);
 			m_methods[i].function(buf1,buf2,BUFSIZE);
 		}     
-		t = Rdtsc() - t;
+		t = Rdtsc(config_flags) - t;
 
 		m_methods[i].time = t;
 
@@ -417,16 +422,27 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 }
 
 // ==================================
-// neede for exact timing
-unsigned long long int cDxr3MemcpyBench::Rdtsc()
+//! needed for exact timing
+#ifdef __i386__
+unsigned long long int cDxr3MemcpyBench::Rdtsc(uint32_t config_flags)
 {
-	#ifdef __i386__
-	unsigned long long int x;
-	__asm__ volatile (".byte 0x0f, 0x31" : "=A" (x));     
-	return x;
-	#else
-	/* FIXME: implement an equivalent for using optimized memcpy on other
-            architectures */
-	return 0;
-	#endif
+	// we need rdtsc support
+	if (config_flags && CC_MMX)
+	{
+		unsigned long long int x;
+		__asm__ volatile (".byte 0x0f, 0x31" : "=A" (x));     
+		return x;
+	}
+	else
+	{
+		return times(NULL);
+	}
+
 }
+#else
+unsigned long long int cDxr3MemcpyBench::Rdtsc(uint32_t config_flags)
+{
+	struct tms tp;
+	return times(&tp);
+}
+#endif

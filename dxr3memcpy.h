@@ -80,7 +80,7 @@ public:
 	cDxr3MemcpyBench(uint32_t config_flags = 0);
 
 private:
-	unsigned long long int Rdtsc();
+	unsigned long long int Rdtsc(uint32_t config_flags);
 
 	std::vector<memcpy_routine>	m_methods;	///< a std::vector with all methodes
 };

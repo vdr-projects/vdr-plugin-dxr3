@@ -238,7 +238,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - fixed void cDxr3Interface::SetAudioDigitalPCM() - thanks to Stephan Skrodzki <skrodzki@contcast.de> for patch
 - dxr3memcpy.c/h: fix to support older compilers like gcc-2.95
   Here i want to thanks  Marco Schlüßler very much for run compil tests, even he
-  dont uses the plugin :)
+  dont run the plugin :)
 - dxr3memcpy.c/h: should now compile on alpha and powerpc - thanks to Paavo Hartikainen <pahartik@sci.fi>
 - added many comments into source
 - using doxygen for docs
@@ -252,3 +252,6 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
   You should also run a linke like 
   # find / -name "dxr3plugin.log" | xargs rm
   because the pre2 seems to put this dxr3plugin.log random in some folders  - reporded by Martin Dauskardt <md001@gmx.de>
+- extended cDxr3MemcpyBench::Rdtsc(uint32_t config_flags)
+  support for non x86 arch
+  support for cpu's, which dont support rdtsc timing
