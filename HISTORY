@@ -240,3 +240,5 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - dxr3memcpy.c/h: should now compile on alpha and powerpc
 - added many comments into source
 - using doxygen for docs
+- cDxr3Interface::ConfigureDevice(): we get now videomode from driver and set only a 
+  new one, if the wanted one is different to the driver defaults one.

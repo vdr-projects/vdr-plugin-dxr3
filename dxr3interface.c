@@ -919,9 +919,17 @@ void cDxr3Interface::UploadMicroCode()
 //! config and setup device via ioctl calls
 void cDxr3Interface::ConfigureDevice()
 {
-	uint32_t videomode = 0;
+	// get videomode from driver
+	uint32_t videomode_from_driver = 0;
+
+	if (ioctl(m_fdControl, EM8300_IOCTL_GET_VIDEOMODE, &videomode_from_driver) == -1)
+	{
+		cLog::Instance() << "Unable to get videomode\n";
+        exit(1);
+	}
 
 	// set video mode
+	uint32_t videomode = 0;
 	if (cDxr3ConfigData::Instance().GetVideoMode() == PAL)
 	{
 		videomode = EM8300_VIDEOMODE_PAL;
@@ -947,12 +955,16 @@ void cDxr3Interface::ConfigureDevice()
 		}
 	}
 
-	// make ioctl
-    if (ioctl(m_fdControl, EM8300_IOCTL_SET_VIDEOMODE, &videomode) == -1) 
+	// are the two videmodes different?
+	if (videomode_from_driver != videomode)
 	{
-		cLog::Instance() << "Unable to set videomode\n";
-        exit(1);
-    }
+		// make ioctl
+		if (ioctl(m_fdControl, EM8300_IOCTL_SET_VIDEOMODE, &videomode) == -1) 
+		{
+			cLog::Instance() << "Unable to set videomode\n";
+			exit(1);
+		}
+	}
 
 	// set audio mode
 	if (!cDxr3ConfigData::Instance().GetUseDigitalOut())
