@@ -37,6 +37,7 @@
 #include "dxr3osd_subpicture.h"
 
 // ==================================
+// ! create osd at (Left, Top)
 cOsd *cDxr3OsdProvider::CreateOsd(int Left, int Top)
 {
 //	if (cDxr3ConfigData::Instance().GetMenuMode() == (eMenuMode)SUBPICTURE)
