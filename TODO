@@ -1,0 +1,14 @@
+* check Lock() and Unlock() in dxr3interface.c
+* set bcs
+* stillpicture
+* grab screenshot
+* dolby digital
+* comment source very well with support for doxygen
+* rewrite some parts of plugin like 
+	- demuxer
+	- palettemanger
+	- colormanger
+	- spuencoder
+* osd via
+	- ffmpeg
+	- vga overlay
