@@ -29,9 +29,6 @@ Known problems, bugs, and workarounds for this driver:
 * The TVOnscreen plugin's OSD is a mess, positioning errors etc.
   Workaround: use TVOnscreen < 0.6.0.  0.5.2 works fine for me (Ville).
 
-* After invoking the "Reset DXR3 hardware" function, OSD goes pink
-  until it's hidden and shown again.
-
 Other TODOs:
 ------------
 
