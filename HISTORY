@@ -276,3 +276,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - use $CXX for generating dependencies instead of hardcoded g++ (Ville Skyttä)
 - assume SSE support implies MMXEXT support, this enables optimized
   memcpy routines on more systems (Ville Skyttä)
+- fix compilation with -fPIC, kudos to ffmpeg (Ville Skyttä)

@@ -125,6 +125,13 @@ bool cDxr3CPU::CheckCPUIDPresence()
 //! cpuid function
 bool cDxr3CPU::Cpuid(unsigned long function, unsigned long& out_eax, unsigned long& out_ebx, unsigned long& out_ecx, unsigned long& out_edx)
 {
-	asm("cpuid": "=a" (out_eax), "=b" (out_ebx), "=c" (out_ecx), "=d" (out_edx) : "a" (function));
+	// This works with PIC/non-PIC, from ffmpeg (libavcodec/i386/cputest.c)
+	__asm __volatile					\
+	  ("movl %%ebx, %%esi\n\t"				\
+	   "cpuid\n\t"						\
+	   "xchgl %%ebx, %%esi"					\
+	   : "=a" (out_eax), "=S" (out_ebx),			\
+	     "=c" (out_ecx), "=d" (out_edx)			\
+	   : "0" (function));
 	return true;
 }
