@@ -280,3 +280,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - eliminate some compiler warnings (Ville Skyttä)
 - fix OSD going pink after returning from the MPlayer plugin
   (Ville Skyttä, Martin Cap)
+- remove unused dxr3unixserversocket.* from 0.2.x (Ville Skyttä)

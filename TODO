@@ -59,6 +59,3 @@ Other TODOs:
 * optimize (is it worth it?)
 	Rgb2YCrCb
 	YUV2Rgb
-
-* look at following parts
-	- dxr3unixserversocket
