@@ -34,20 +34,12 @@
 #include "dxr3log.h"
 #include "dxr3cpu.h"
 #include "dxr3memcpy.h"
-#include <sys/times.h>
-#include <limits.h>
 
-
-// ==================================
-//! our function pointer
 void *(* dxr3_memcpy)(void *to, const void *from, size_t len);
 
-#ifdef __i386__
+#if defined(ARCH_X86) || defined(ARCH_X86_64)
 // ==================================
 // for small memory blocks (<256 bytes) this version is faster
-#define small_memcpy(to,from,n) { register unsigned long int dummy; __asm__ __volatile__("rep; movsb":"=&D"(to), "=&S"(from), "=&c"(dummy) :"0" (to), "1" (from),"2" (n) : "memory"); }
-/*
-// -- dosn't compile with 2.95 gcc --
 #define small_memcpy(to,from,n)\
 {\
 register unsigned long int dummy;\
@@ -57,9 +49,9 @@ __asm__ __volatile__(\
   :"0" (to), "1" (from),"2" (n)\
   : "memory");\
 }
-*/
+
 // ==================================
-//! linux kernel __memcpy (from: /include/asm/string.h)
+// linux kernel __memcpy (from: /include/asm/string.h)
 static __inline__ void * __memcpy (
 			       void * to,
 			       const void * from,
@@ -93,6 +85,9 @@ int d0, d1, d2;
 #define MMX1_MIN_LEN 0x800  /* 2K blocks */
 #define MIN_LEN 0x40  /* 64-byte blocks */
 
+
+// Test for GCC > 3.2.0
+#if GCC_VERSION > 30200
 
 // ==================================
 /* SSE note: i tried to move 128 bytes a time instead of 64 but it
@@ -146,9 +141,9 @@ static void * sse_memcpy(void * to, const void * from, size_t len)
         "movntps %%xmm1, 16(%1)\n"
         "movntps %%xmm2, 32(%1)\n"
         "movntps %%xmm3, 48(%1)\n"
-        : : "r" (from), "r" (to) : "memory");
-        ((const unsigned char *)from)+=64;
-        ((unsigned char *)to)+=64;
+        :: "r" (from), "r" (to) : "memory");
+        from = ((const unsigned char *)from) + 64;
+        to = ((unsigned char *)to) + 64;
       }
     else
       /*
@@ -169,15 +164,15 @@ static void * sse_memcpy(void * to, const void * from, size_t len)
         "movntps %%xmm1, 16(%1)\n"
         "movntps %%xmm2, 32(%1)\n"
         "movntps %%xmm3, 48(%1)\n"
-        : : "r" (from), "r" (to) : "memory");
-        ((const unsigned char *)from)+=64;
-        ((unsigned char *)to)+=64;
+        :: "r" (from), "r" (to) : "memory");
+        from = ((const unsigned char *)from) + 64;
+        to = ((unsigned char *)to) + 64;
       }
     /* since movntq is weakly-ordered, a "sfence"
      * is needed to become ordered again. */
-    __asm__ __volatile__ ("sfence": : :"memory");
+    __asm__ __volatile__ ("sfence":::"memory");
     /* enables to use FPU */
-    __asm__ __volatile__ ("emms": : :"memory");
+    __asm__ __volatile__ ("emms":::"memory");
   }
   /*
    *	Now do the tail of the block
@@ -225,11 +220,11 @@ static void * mmx_memcpy(void * to, const void * from, size_t len)
       "movq %%mm5, 40(%1)\n"
       "movq %%mm6, 48(%1)\n"
       "movq %%mm7, 56(%1)\n"
-      : : "r" (from), "r" (to) : "memory");
-      ((const unsigned char *)from)+=64;
-      ((unsigned char *)to)+=64;
+      :: "r" (from), "r" (to) : "memory");
+      from = ((const unsigned char *)from) + 64;
+      to = ((unsigned char *)to) + 64;
     }
-    __asm__ __volatile__ ("emms": : :"memory");
+    __asm__ __volatile__ ("emms":::"memory");
   }
   /*
    *	Now do the tail of the block
@@ -257,7 +252,7 @@ static void * mmx2_memcpy(void * to, const void * from, size_t len)
     "   prefetchnta 224(%0)\n"
     "   prefetchnta 256(%0)\n"
     "   prefetchnta 288(%0)\n"
-    : : "r" (from) );
+    :: "r" (from) );
 
   if(len >= MIN_LEN)
   {
@@ -293,14 +288,14 @@ static void * mmx2_memcpy(void * to, const void * from, size_t len)
       "movntq %%mm5, 40(%1)\n"
       "movntq %%mm6, 48(%1)\n"
       "movntq %%mm7, 56(%1)\n"
-      : : "r" (from), "r" (to) : "memory");
-      ((const unsigned char *)from)+=64;
-      ((unsigned char *)to)+=64;
+      :: "r" (from), "r" (to) : "memory");
+      from = ((const unsigned char *)from) + 64;
+      to = ((unsigned char *)to) + 64;
     }
      /* since movntq is weakly-ordered, a "sfence"
      * is needed to become ordered again. */
-    __asm__ __volatile__ ("sfence": : :"memory");
-    __asm__ __volatile__ ("emms": : :"memory");
+    __asm__ __volatile__ ("sfence":::"memory");
+    __asm__ __volatile__ ("emms":::"memory");
   }
   /*
    *	Now do the tail of the block
@@ -309,15 +304,17 @@ static void * mmx2_memcpy(void * to, const void * from, size_t len)
   return retval;
 }
 
+#endif /*GCC_VERSION > 30200*/
+
 // ==================================
 static void *linux_kernel_memcpy(void *to, const void *from, size_t len) {
   return __memcpy(to,from,len);
 }
-#endif /*__i386__*/
+#endif /*ARCH_X86/ARCH_X86_64*/
 
 
 // ==================================
-//! constr.
+// constr.
 cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 {	
 	//
@@ -333,13 +330,16 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 	routine.cpu_require = 0;
 	m_methods.push_back(routine);
 
-	#ifdef __i386__
+	#if defined(ARCH_X86) || defined(ARCH_X86_64)
 
 	// linux_kernel_memcpy
 	routine.name = "linux_kernel_memcpy()";
 	routine.function = linux_kernel_memcpy;
 	routine.cpu_require = 0;
 	m_methods.push_back(routine);
+
+	// Test for GCC > 3.2.0
+	#	if GCC_VERSION > 30200
 
 	// MMX optimized memcpy()
 	routine.name = "MMX optimized memcpy()";
@@ -353,7 +353,7 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 	routine.cpu_require = CC_MMXEXT;
 	m_methods.push_back(routine);
 
-	#	ifndef __FreeBSD__
+	#		ifndef __FreeBSD__
 
 	// SSE optimized memcpy()
 	routine.name = "SSE optimized memcpy()";
@@ -361,8 +361,9 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 	routine.cpu_require = CC_MMXEXT|CC_SSE;
 	m_methods.push_back(routine);
 
-	#	endif /*__FreeBSD__*/
-	#endif /*__i386__*/
+	#		endif /*__FreeBSD__*/
+	#	endif /*GCC_VERSION > 30200*/
+	#endif /*ARCH_X86/ARCH_X86_64*/
 
 
 	//
@@ -394,13 +395,13 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 		}
 
 		// count 100 runs of the memcpy function
-		t = Rdtsc(config_flags);
+		t = Rdtsc();
 		for	(j = 0; j < 50; j++) 
 		{
 			m_methods[i].function(buf2,buf1,BUFSIZE);
 			m_methods[i].function(buf1,buf2,BUFSIZE);
 		}     
-		t = Rdtsc(config_flags) - t;
+		t = Rdtsc() - t;
 
 		m_methods[i].time = t;
 
@@ -422,27 +423,16 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 }
 
 // ==================================
-//! needed for exact timing
-#ifdef __i386__
-unsigned long long int cDxr3MemcpyBench::Rdtsc(uint32_t config_flags)
+// neede for exact timing
+unsigned long long int cDxr3MemcpyBench::Rdtsc()
 {
-	// we need rdtsc support
-	if (config_flags && CC_MMX)
-	{
-		unsigned long long int x;
-		__asm__ volatile (".byte 0x0f, 0x31" : "=A" (x));     
-		return x;
-	}
-	else
-	{
-		return times(NULL);
-	}
-
+	#ifdef ARCH_X86
+	unsigned long long int x;
+	__asm__ volatile (".byte 0x0f, 0x31" : "=A" (x));     
+	return x;
+	#else
+	/* FIXME: implement an equivalent for using optimized memcpy on other
+            architectures */
+	return 0;
+	#endif
 }
-#else
-unsigned long long int cDxr3MemcpyBench::Rdtsc(uint32_t config_flags)
-{
-	struct tms tp;
-	return times(&tp);
-}
-#endif
