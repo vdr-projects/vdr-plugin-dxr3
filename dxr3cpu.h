@@ -28,18 +28,18 @@
 #include "dxr3singleton.h"
 
 // ==================================
-// all possible cabs
+//! all possible cabs
 enum Cpu_cabs
 {
-	CC_MMX		= 0x80000000,
-	CC_3DNOW	= 0x40000000,
-	CC_MMXEXT	= 0x20000000,
-	CC_SSE		= 0x10000000,
-	CC_SSE2		= 0x08000000
+	CC_MMX		= 0x80000000,	///< Value for mmx
+	CC_3DNOW	= 0x40000000,	///< Value for 3dnow
+	CC_MMXEXT	= 0x20000000,	///< Value for mmx ext
+	CC_SSE		= 0x10000000,	///< Value for sse
+	CC_SSE2		= 0x08000000	///< Value for sse2
 };
 
 // ==================================
-// Easy and fast access to all infos
+//! easy and fast access to all infos
 struct CPUInformation
 {
 	CPUInformation()
@@ -56,28 +56,28 @@ struct CPUInformation
 		AMD64Bit	= false;
 	}
 	
-	char Vendor[16];
+	char Vendor[16];	///< vendorname
 	
-	bool AMD;		// is it an AMD CPU?
-	bool INTEL;		// is it an Intel CPU?
-	bool MMX;		// is MMX-Technology supported?
-	bool MMXEXT;	// are Extended MMX_MultimediaExtensions supported?
-	bool SSE;		// is SSE-Technology supported?
-	bool SSE2;		// is SSE2-Technology supported?
-	bool Now;		// is 3DNow-Technology supported?
-	bool RDTSC;		// is RDTSC-Technology supported?
-	bool HT;		// is HyperThreading supported?
-	bool AMD64Bit;	// is it a 64 bit machine?
+	bool AMD;			///< is it an AMD CPU?
+	bool INTEL;			///< is it an Intel CPU?
+	bool MMX;			///< is MMX-Technology supported?
+	bool MMXEXT;		///< are Extended MMX_MultimediaExtensions supported?
+	bool SSE;			///< is SSE-Technology supported?
+	bool SSE2;			///< is SSE2-Technology supported?
+	bool Now;			///< is 3DNow-Technology supported?
+	bool RDTSC;			///< is RDTSC-Technology supported?
+	bool HT;			///< is HyperThreading supported?
+	bool AMD64Bit;		///< is it a 64 bit machine?
 
-	uint32_t caps;	// all features represanted as caps
+	uint32_t caps;		///< all features represanted as caps
 };
 
 // ==================================
 //!  Grab some infos about the cpu(s)
 /*!
-If you want to know what the cpu of the
-target machine can do, this class is for you :)
-It is used intern for the math and memcpy part.
+	If you want to know what the cpu of the
+	target machine can do, this class is for you :)
+	It is used intern for the math and memcpy part.
 */
 class cDxr3CPU : public Singleton<cDxr3CPU>
 {
