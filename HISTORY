@@ -239,3 +239,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - dxr3memcpy.c/h: fix to support older compilers like gcc-2.95
 - dxr3memcpy.c/h: should now compile on alpha and powerpc
 - fixed i18n, and improved Finnish translations and some others
+- removed -lz from makefile
