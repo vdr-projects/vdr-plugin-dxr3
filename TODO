@@ -2,8 +2,6 @@
 * set bcs
 * stillpicture
 * grab screenshot
-* dolby digital
-* comment source very well with support for doxygen
 * rewrite some parts of plugin like 
 	- demuxer
 	- palettemanger
