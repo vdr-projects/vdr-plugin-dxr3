@@ -74,7 +74,6 @@ cDxr3Interface::cDxr3Interface()
 	m_fdControl = Dxr3Open("", cDxr3ConfigData::Instance().GetDxr3Card(), O_WRONLY | O_SYNC);
 	if (!m_fdControl)
 	{
-		cLog::Instance() << "Unable to open the control stream!\n";
 		cLog::Instance() << "Please check if the dxr3 modules are loaded!\n";
 		exit(1);
 	}
