@@ -280,4 +280,5 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - made "all" the default target in Makefile (Ville Skyttä)
 - assume SSE support implies MMXEXT support, this enables optimized
   memcpy routines on more systems (Ville Skyttä)
+- avoid hang in pause mode with VDR >= 1.3.18 (Luca Olivetti)
 - fix compilation with -fPIC, kudos to ffmpeg (Ville Skyttä)
