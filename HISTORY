@@ -239,7 +239,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - fixed void cDxr3Interface::SetAudioDigitalPCM() (Stephan Skrodzki)
 - dxr3memcpy.c/h: fix to support older compilers like gcc-2.95
   (Christian Gmeiner, Marco Schlüßler)
-- dxr3memcpy.c/h: should now compile on alpha and powerpcc
+- dxr3memcpy.c/h: should now compile on alpha and powerpc
   (bug #1000647, Christian Gmeiner, Paavo Hartikainen)
 - added many comments into source (Christian Gmeiner)
 - using doxygen for docs (Christian Gmeiner)
