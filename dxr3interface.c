@@ -75,6 +75,7 @@ cDxr3Interface::cDxr3Interface()
 	{
 		cLog::Instance() << "Unable to open the control stream!\n";
 		cLog::Instance() << "Please check if the dxr3 modules are loaded!\n";
+		exit(1);
 	}
 
 	// upload microcode to dxr3
@@ -920,7 +921,7 @@ void cDxr3Interface::UploadMicroCode()
 
 	if (cDxr3ConfigData::Instance().GetDebug())
 	{
-		cLog::Instance() << "cDxr3Interface::UploadMicroCode: uploading...";
+		cLog::Instance() << "cDxr3Interface::UploadMicroCode: uploading from " << MICROCODE << "...";
 	}
 
     em8300_microcode_t em8300_microcode;    
