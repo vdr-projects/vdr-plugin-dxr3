@@ -54,7 +54,9 @@
 #include "dxr3vdrincludes.h"
 
 // ==================================
-// size of buffer for benchmark
+/*! \def BUFSIZE
+    \brief size of buffers for benchmark :)
+*/
 #define BUFSIZE 1024*1024
 
 enum {
@@ -76,7 +78,11 @@ struct memcpy_routine
 };
 
 // ==================================
-// little class to to a nice benchmark
+//! little class to to a nice benchmark
+/*
+	Whith this class we can get the fastest memcyp
+	methode for target computer.
+*/
 class cDxr3MemcpyBench
 {
 public:

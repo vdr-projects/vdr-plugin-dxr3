@@ -19,7 +19,7 @@ const int AUDIO_OFFSET = 4500;
 // ================================== 
 
 // ================================== 
-// constr.
+//! constructor
 cDxr3OutputThread::cDxr3OutputThread(cDxr3Interface& dxr3Device, cDxr3SyncBuffer& buffer) :
 cThread(), m_dxr3Device(dxr3Device), m_buffer(buffer), m_bStopThread(false), m_bNeedResync(false)
 {

@@ -16,6 +16,7 @@
 #include "dxr3tools.h"
 
 // ================================== 
+//! constructor
 cDxr3PaletteManager::cDxr3PaletteManager() 
 {
     memset(m_colors, 0, sizeof(int) * MAX_COLORS);

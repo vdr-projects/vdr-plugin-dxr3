@@ -64,7 +64,13 @@ struct sOSD_Window
 // used to get active osd area
 struct sRectal
 {
-	sRectal() : x0(0), x1(0), y0(0), y1(0)		{}
+	sRectal() { Reset(); }
+
+	void Reset()
+	{
+		x0 = x1 = y0 = y1 = 0;
+	}
+
 
 	size_t x0;
 	size_t x1;
@@ -95,14 +101,56 @@ private:
 };
 
 // ==================================
+class cSPUEncoder : public Singleton<cSPUEncoder>
+{
+public:
+	cSPUEncoder();
+    ~cSPUEncoder() {}
+
+	int Cmd(OSD_Command cmd, int color = 0, int x0 = 0, int y0 = 0, int x1 = 0, int y1 = 0, const void *data = 0);
+
+private:
+	void CopyBlockIntoOSD(int linewidth, int x0,int y0, int x1, int y1, u_char *data);
+
+	void CalculateActiveOsdArea();
+
+
+	sOSD_Window		m_windows[8];
+    size_t			m_lastwindow;
+
+	// 'active' osd area
+	sRectal			m_active_osd;
+
+	// our osd :)
+	u_char			m_OSD[OSDWIDTH * OSDHEIGHT];
+};
+
+/*
+
+// ==================================
 struct  pixbuf
 {
 	int x, y;
 	u_int rgb[4];
 	u_char* pixels;
 };
-
+*/
 // ==================================
+/*
+
+dxr3interface.c: In member function `void cDxr3Interface::ClearOsd()':
+dxr3interface.c:984: error: `encodedata' undeclared (first use this function)
+dxr3interface.c:984: error: (Each undeclared identifier is reported only once
+   for each function it appears in.)
+dxr3interface.c:984: error: parse error before `;' token
+dxr3interface.c:987: error: `ed' undeclared (first use this function)
+make: *** [dxr3interface.o] Error 1
+
+
+  !!Fix this!!
+
+*/
+
 struct encodedata
 {
 	u_char data[DATASIZE];
@@ -110,7 +158,7 @@ struct encodedata
 	int oddstart;
 	int nibblewaiting;
 };
-
+/*
 // ==================================
 class cSPUEncoder : public Singleton<cSPUEncoder>
 {
@@ -149,5 +197,7 @@ private:
 	// 'active' osd sizes
 	sRectal				m_active_osd;
 };
+
+*/
 
 #endif /*_DXR3_INTERFACE_SPU_ENCODER_*/

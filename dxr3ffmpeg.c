@@ -20,11 +20,11 @@
  */
 
 #include "dxr3ffmpeg.h"
-
 #include "dxr3configdata.h"
 #include "dxr3log.h"
 
 // ==================================
+//! constructor
 cDxr3Ffmepg::cDxr3Ffmepg()
 {
 	avcodec_init();
@@ -32,6 +32,7 @@ cDxr3Ffmepg::cDxr3Ffmepg()
 }
 
 // ==================================
+//! look if Codec is supported by ffmpeg
 bool cDxr3Ffmepg::FindCodec(struct Dxr3Codec& Codec)
 {
 	// find codec
@@ -39,6 +40,7 @@ bool cDxr3Ffmepg::FindCodec(struct Dxr3Codec& Codec)
 
 	if (!Codec.codec) 
 	{
+		// codec is't supported by ffmpeg
 		if (cDxr3ConfigData::Instance().GetDebug())
 		{
 			cLog::Instance() << "cDxr3Ffmepg::OpenCodec(struct Dxr3Codec& Codec) codec not found (" << Codec.id << ")\n";
@@ -53,6 +55,7 @@ bool cDxr3Ffmepg::FindCodec(struct Dxr3Codec& Codec)
 }
 
 // ==================================
+//! try to open Codec
 bool cDxr3Ffmepg::OpenCodec(struct Dxr3Codec& Codec)
 {
 	// try to open codec
@@ -60,6 +63,7 @@ bool cDxr3Ffmepg::OpenCodec(struct Dxr3Codec& Codec)
 
 	if (result < 0) 
 	{
+		// we could not open codec
 		if (cDxr3ConfigData::Instance().GetDebug())
 		{
 			cLog::Instance() << "cDxr3Ffmepg::OpenCodec(struct Dxr3Codec& Codec) coudnt open codec (" << Codec.id << ")\n";
@@ -75,6 +79,7 @@ bool cDxr3Ffmepg::OpenCodec(struct Dxr3Codec& Codec)
 }
 
 // ==================================
+// close codec
 void cDxr3Ffmepg::CloseCodec(struct Dxr3Codec& Codec)
 {
     if (Codec.Open) 

@@ -11,6 +11,7 @@
 
 // ==================================
 // decode audio to mp2 or use DD :)
+
 class cDxr3AudioDecoder 
 {
 public:

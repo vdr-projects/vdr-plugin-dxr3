@@ -31,19 +31,26 @@ extern "C"
 #include "dxr3singleton.h"
 
 // ==================================
-// a codec used by this plugin
+//! a codec used by this plugin
 struct Dxr3Codec
 {
 	Dxr3Codec() : Open(false) {}
 
-    AVCodec* codec;
-    AVCodecContext codec_context;
-	enum CodecID id;
-	bool Open;
+    AVCodec* codec;					///< ffmpeg's AVCodec
+    AVCodecContext codec_context;	///< ffmpeg's AVCodecContext
+	enum CodecID id;				///< id's from ffmpeg - like CODEC_ID_MP2
+	bool Open;						///< is codec open?
 };
 
 // ==================================
 // class to work with ffmpeg
+/*!
+	With cDxr3Ffmepg you can easily handle as many
+	codecs as you want.
+	At the moment we need this only for
+	the audiodecoder, but in future i want to use
+	it for ohter nice stuff :)
+*/
 class cDxr3Ffmepg : public Singleton<cDxr3Ffmepg> 
 {
 public:

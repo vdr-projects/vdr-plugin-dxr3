@@ -26,12 +26,12 @@
 #include "dxr3singleton.h"
 
 // ==================================
-// possible video modes
+//! possible video modes
 enum eVideoMode 
 {
-	PAL = 0,
-	PAL60,
-    NTSC
+	PAL = 0,	///< use PAL as videomode
+	PAL60,		///< use PAL60 as videomode
+    NTSC		///< use NTSC as videomode 
 }; 
 
 // ==================================
@@ -43,16 +43,19 @@ enum eMenuMode
 }; 
 
 // ==================================
-// possible debug levels
+//! possible debug levels
 enum eDebugLevel
 {
-	LOW = 0,
-	EVERYTHING
+	LOW = 0,		///< only log basic warings and errors
+	EVERYTHING		///< log everything - note logfile can become very big
 };
 
 // ==================================
-// global interface to access all config
-// datas of this plugin
+//! global interface to access all config datas of this plugin
+/*
+	With this singleton you can access very easy all possible
+	config settings of the plugin.
+*/
 class cDxr3ConfigData : public Singleton<cDxr3ConfigData>
 {
 public:
@@ -90,18 +93,18 @@ public:
 	int SetSaturation(int value)						{ return m_saturation = value; }
 
 protected:
-    eVideoMode	m_videomode;
-    eMenuMode	m_menumode;
+    eVideoMode	m_videomode;///< videomode value
+    eMenuMode	m_menumode;	///< menumode value
 
-	int m_digitaloutput;
-	int m_ac3output;
-	int m_card;
-	int m_forceletterbox;
-	int m_debug;
-	int m_debuglevel;
-	int m_brightness;
-	int m_contrast;
-	int m_saturation;
+	int m_digitaloutput;	///< digitaloutput value
+	int m_ac3output;		///< ac3output value
+	int m_card;				///< card value
+	int m_forceletterbox;	///< forcebox value
+	int m_debug;			///< debug value
+	int m_debuglevel;		///< debug level value
+	int m_brightness;		///< brightness value
+	int m_contrast;			///< contrast value
+	int m_saturation;		///< saturation value
 };
 
 #endif /*_DXR3_CONFIGDATA_H_*/

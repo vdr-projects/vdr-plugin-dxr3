@@ -56,6 +56,7 @@
 #include <string.h>
 
 // ==================================
+//! constructor
 cColorManager::cColorManager()
 {
 	NrOfRegions = 0;

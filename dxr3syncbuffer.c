@@ -32,6 +32,7 @@ const int DXR3_MAX_VIDEO_FRAME_LENGTH = 4096;
 const int DXR3_MAX_AUDIO_FRAME_LENGTH = 4096;
 
 // ==================================
+//! constructor
 cFixedLengthFrame::cFixedLengthFrame(uint32_t length) : 
 m_count(0), m_length(length), m_pts(0), m_type(ftUnknown) {
 
@@ -103,6 +104,7 @@ uint32_t cFixedLengthFrame::m_staticAudioDataRate = 0;
 
 
 // ==================================
+//! constructor
 cDxr3SyncBuffer::cDxr3SyncBuffer(int frameCount, int frameLength, cDxr3Interface& dxr3Device) : cRingBuffer(frameCount, true), m_dxr3Device(dxr3Device) 
 {
     m_pBuffer = new cFixedLengthFrame[frameCount](frameLength);

@@ -22,7 +22,7 @@ public:
 class cDxr3Osd : public cOsdBase 
 {
 private:
-    cSPUEncoder* Spu;
+    cSPUEncoder* Spu;	///< interface to cSPUEncoder
 
 	bool SetWindow(cWindow*);
 

@@ -35,7 +35,7 @@ ToDo:
 const int LPCM_HEADER_LENGTH = 7;
 
 // ==================================
-// constr.
+//! constructor
 cDxr3AudioDecoder::cDxr3AudioDecoder() : rbuf(50000), ac3dtsDecoder(&rbuf) 
 {
     decoderOpened = false;
@@ -50,7 +50,7 @@ cDxr3AudioDecoder::cDxr3AudioDecoder() : rbuf(50000), ac3dtsDecoder(&rbuf)
 };
 
 // ==================================
-// deconst.
+//! deconst.
 cDxr3AudioDecoder::~cDxr3AudioDecoder() 
 {
 	// close codec, if it is open
@@ -58,7 +58,7 @@ cDxr3AudioDecoder::~cDxr3AudioDecoder()
 };
 
 // ==================================
-// (re)init ffmpeg codec
+//! (re)init ffmpeg codec
 void cDxr3AudioDecoder::Init() 
 {
 	// (re)init codec
@@ -71,9 +71,6 @@ void cDxr3AudioDecoder::Init()
 		decoderOpened = true;
 		foundHeader = false;
 		decodeAudio = true;
-
-		//lastHeader[0] = 0xFF;
-		//lastHeader[1] = lastHeader[2] = lastHeader[3] = 0;
 	}
 	else
 	{
@@ -82,7 +79,7 @@ void cDxr3AudioDecoder::Init()
 }
 
 // ==================================
-// decode given buffer
+//! decode given buffer
 void cDxr3AudioDecoder::Decode(const uint8_t* buf, int length, uint32_t pts, cDxr3SyncBuffer &aBuf) 
 {
 	if (!decoderOpened)
@@ -189,7 +186,7 @@ void cDxr3AudioDecoder::Decode(const uint8_t* buf, int length, uint32_t pts, cDx
 }
 
 // ==================================
-// decode lpcm
+//! decode lpcm
 void cDxr3AudioDecoder::DecodeLpcm(const uint8_t* buf, int length, uint32_t pts, cDxr3SyncBuffer &aBuf) 
 {
     if (length > (LPCM_HEADER_LENGTH + 2)) 
@@ -234,7 +231,7 @@ void cDxr3AudioDecoder::DecodeLpcm(const uint8_t* buf, int length, uint32_t pts,
 }
 
 // ==================================
-// decode ac3
+//! decode ac3
 void cDxr3AudioDecoder::DecodeAc3Dts(const uint8_t* pPes, const uint8_t* buf, int length, uint32_t pts, cDxr3SyncBuffer &aBuf) 
 {
     int headerLength = (int) (buf - pPes);
@@ -265,7 +262,7 @@ void cDxr3AudioDecoder::DecodeAc3Dts(const uint8_t* pPes, const uint8_t* buf, in
 }    
 
 // ==================================
-// checking routine
+//! checking routine
 bool cDxr3AudioDecoder::HeadCheck(unsigned long head) 
 {
     bool retval = false;

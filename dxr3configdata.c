@@ -23,9 +23,10 @@
 #include "dxr3configdata.h"
 
 // ==================================
-// constr.
+//! constructor
 cDxr3ConfigData::cDxr3ConfigData() 
 {
+	// set default values
 	m_digitaloutput = 0;
 	m_ac3output = 0;
 	m_card = 0;

@@ -22,6 +22,7 @@
 #include "dxr3log.h"
 
 // ==================================
+//! constructor
 cLog::cLog()
 {
 	m_LogOpen = false;
@@ -31,6 +32,7 @@ cLog::cLog()
 }
 
 // ==================================
+//! constructor with filename
 cLog::cLog(std::string Filename)
 {
 	m_LogOpen = false;

@@ -26,7 +26,7 @@
 #include "dxr3memcpy.h"
 
 // ==================================
-// const.
+//! constructor
 cDxr3CPU::cDxr3CPU()
 {
 	unsigned long eax,ebx,edx,unused;
@@ -111,7 +111,7 @@ cDxr3CPU::cDxr3CPU()
 }
 
 // ==================================
-// does the cpu support cpuid instructions
+//! does the cpu support cpuid instructions
 bool cDxr3CPU::CheckCPUIDPresence()
 {
 	// todo
@@ -119,7 +119,7 @@ bool cDxr3CPU::CheckCPUIDPresence()
 }
 
 // ==================================
-// cpuid function
+//! cpuid function
 bool cDxr3CPU::cpuid(unsigned long function, unsigned long& out_eax, unsigned long& out_ebx, unsigned long& out_ecx, unsigned long& out_edx)
 {
 	asm("cpuid": "=a" (out_eax), "=b" (out_ebx), "=c" (out_ecx), "=d" (out_edx) : "a" (function));

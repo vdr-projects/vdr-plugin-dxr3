@@ -10,6 +10,7 @@ extern "C"
 }
 
 // ==================================
+//! constructor
 cDxr3Device::cDxr3Device() : m_DemuxDevice(cDxr3Interface::Instance())
 {
     m_Offset = 0;
@@ -38,6 +39,7 @@ void cDxr3Device::MakePrimaryDevice(bool On)
 
 // replaying
 // ==================================
+//! does we have an mpeg2 devocer?
 bool cDxr3Device::HasDecoder() const
 {
 	// sure we have one ;)
@@ -45,6 +47,7 @@ bool cDxr3Device::HasDecoder() const
 }
 
 // ==================================
+//! can we replay vdr recordings?
 bool cDxr3Device::CanReplay() const
 {
 	// also sure...
@@ -209,7 +212,7 @@ void cDxr3Device::TrickSpeed(int Speed)
 }
 
 // ==================================
-// clear our demux buffer
+//! clear our demux buffer
 void cDxr3Device::Clear()
 {
     m_DemuxDevice.Clear();
@@ -218,16 +221,17 @@ void cDxr3Device::Clear()
 }
 
 // ==================================
-// play a recording
+//! play a recording
 void cDxr3Device::Play()
 {
     m_DemuxDevice.SetReplayMode();
     m_Offset = 0;
+	///< free buffer
     m_strBuf.erase(m_strBuf.begin(), m_strBuf.end());  
 }
 
 // ==================================
-// puts the device into "freeze frame" mode
+//! puts the device into "freeze frame" mode
 void cDxr3Device::Freeze()
 {
 	m_DemuxDevice.SetTrickMode(DXR3_FREEZE);
@@ -240,7 +244,7 @@ void cDxr3Device::Mute()
 }
 
 // ==================================
-// displays the given I-frame as a still picture.
+//! displays the given I-frame as a still picture.
 void cDxr3Device::StillPicture(const uchar *Data, int Length)
 {
 	m_DemuxDevice.StillPicture(Data, Length);
@@ -253,7 +257,7 @@ bool cDxr3Device::Poll(cPoller &Poller, int TimeoutMs)
 }
 
 // ==================================
-// actually plays the given data block as video
+//! actually plays the given data block as video
 int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 {
     int retLength = 0;
@@ -358,7 +362,7 @@ void cDxr3Device::PlayAudio(const uchar *Data, int Length)
 
 // addition functions
 // ==================================
-// capture a single frame as an image
+//! capture a single frame as an image
 bool cDxr3Device::GrabImage(const char *FileName, bool Jpeg, int Quality, int SizeX, int SizeY)
 {
 	int w = SizeX;
@@ -375,7 +379,7 @@ bool cDxr3Device::GrabImage(const char *FileName, bool Jpeg, int Quality, int Si
 	{
 		if (Jpeg) 
 		{
-			// write JPEG file:
+			///< write JPEG file:
 			struct jpeg_compress_struct cinfo;
 			struct jpeg_error_mgr jerr;
 			cinfo.err = jpeg_std_error(&jerr);
@@ -403,7 +407,7 @@ bool cDxr3Device::GrabImage(const char *FileName, bool Jpeg, int Quality, int Si
 		}
 		else 
 		{
-			// write PNM file:
+			///< write PNM file:
 			if (fprintf(f, "P6\n%d\n%d\n255\n", w, h) < 0 ||	fwrite(Data, w * h * 3, 1, f) < 0) 
 			{
 				LOG_ERROR_STR(FileName);
@@ -431,7 +435,7 @@ void cDxr3Device::SetVideoFormat(bool VideoFormat16_9)
 }
 
 // ==================================
-// sets volume for audio output
+//! sets volume for audio output
 void cDxr3Device::SetVolumeDevice(int Volume)
 {
 	if (cDxr3ConfigData::Instance().GetDebug())

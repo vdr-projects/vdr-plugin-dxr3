@@ -18,6 +18,7 @@ using namespace std;
 #endif
 
 // ==================================
+//! constructor
 cDxr3UnixServerSocket::cDxr3UnixServerSocket(const char* pFileName, int backlog) 
 {
     m_bConnected = false;

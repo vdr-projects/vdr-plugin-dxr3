@@ -58,10 +58,10 @@ static int Dxr3Open(const char *Name, int n, int Mode)
 }
 
 // ==================================
-//! constr.
+//! constructor
 cDxr3Interface::cDxr3Interface()
 {
-	///< open control stream
+	// open control stream
 	m_fdControl = Dxr3Open("", cDxr3ConfigData::Instance().GetDxr3Card(), O_WRONLY | O_SYNC);
 	if (!m_fdControl)
 	{
@@ -69,7 +69,7 @@ cDxr3Interface::cDxr3Interface()
 		cLog::Instance() << "Please check if the dxr3 modules are loaded!\n";
 	}
 
-	///< upload microcode to dxr3
+	// upload microcode to dxr3
 	UploadMicroCode();
 
 	///< open 'multimedia' streams
@@ -77,24 +77,24 @@ cDxr3Interface::cDxr3Interface()
     m_fdAudio = Dxr3Open("_ma", cDxr3ConfigData::Instance().GetDxr3Card(), O_WRONLY | O_SYNC);
     m_fdSpu = Dxr3Open("_sp", cDxr3ConfigData::Instance().GetDxr3Card(), O_WRONLY | O_SYNC);
 
-	///< everything ok?
+	// everything ok?
 	if (!m_fdVideo || !m_fdAudio || !m_fdSpu)
 	{
 		cLog::Instance() << "Unable to open one of the 'mulitmedia' streams!\n";
 		exit(1);
 	}
 
-	///< create clock
+	// create clock
 	m_pClock = new cDxr3SysClock(m_fdControl, m_fdVideo, m_fdSpu);
 
-	///< everything ok?
+	// everything ok?
 	if (!m_pClock)
 	{
 		cLog::Instance() << "Unable to allocate memory for m_pClock in cDxr3Interface\n";
 		exit(1);
 	}
 
-	///< set default values
+	// set default values
     m_AudioActive = false;
     m_VideoActive = false; 
 	m_OverlayActive = false;
@@ -105,15 +105,15 @@ cDxr3Interface::cDxr3Interface()
     m_audioDataRate = 0;
     m_audioSampleSize = 0;
 
-	///< default value 9 = unused value
+	// default value 9 = unused value
     m_audioMode =  9;
 	m_aspectRatio = UNKNOWN_ASPECT_RATIO;
 	m_spuMode = EM8300_SPUMODE_OFF;
 
-	///< configure device based on settings
+	// configure device based on settings
 	ConfigureDevice();
 
-	///< get bcs values from driver
+	// get bcs values from driver
 	ioctl(m_fdControl, EM8300_IOCTL_GETBCS, &m_bcs);
 
 	if (cDxr3ConfigData::Instance().GetDebug())
@@ -130,7 +130,7 @@ cDxr3Interface::cDxr3Interface()
 // ==================================
 cDxr3Interface::~cDxr3Interface()
 {
-	///< close filehandles
+	// close filehandles
 	if (m_fdControl)
 	{
 		close(m_fdControl);
@@ -148,7 +148,7 @@ cDxr3Interface::~cDxr3Interface()
 		close(m_fdAudio);
 	}
 
-	///< free some memory
+	// free some memory
 	if (m_pClock)
 	{
 		delete m_pClock;
@@ -862,7 +862,7 @@ void cDxr3Interface::UploadMicroCode()
     const char* MICRO_CODE_FILE = "/usr/share/misc/em8300.uc";
     struct stat s;
 
-	///< try to open it
+	// try to open it
     int UCODE = open(MICRO_CODE_FILE, O_RDONLY);
     
     if (UCODE <0) 
@@ -877,7 +877,7 @@ void cDxr3Interface::UploadMicroCode()
         exit(1);
     }
 
-	///< read microcode
+	// read microcode
     em8300_microcode.ucode = new char[s.st_size];
     if (em8300_microcode.ucode == NULL) 
 	{
@@ -888,7 +888,7 @@ void cDxr3Interface::UploadMicroCode()
     if (read(UCODE,em8300_microcode.ucode,s.st_size) < 1) 
 	{
 		cLog::Instance() << "Unable to read data from microcode file\n";
-		///< free memory to avoid memory leak
+		// free memory to avoid memory leak
 		delete [] (char*) em8300_microcode.ucode;
 		exit(1);
     }
@@ -897,14 +897,16 @@ void cDxr3Interface::UploadMicroCode()
 
     em8300_microcode.ucode_size = s.st_size;
 
-	///< upload it
+	// upload it
     if( ioctl(m_fdControl, EM8300_IOCTL_INIT, &em8300_microcode) == -1) 
 	{
 		cLog::Instance() << "Microcode upload to failed!! \n";
-		///< free memory to avoid memory leak
+		// free memory to avoid memory leak
 		delete [] (char*) em8300_microcode.ucode;
         exit(1);
     }
+
+	// free memory to avoid memory leak
     delete [] (char*) em8300_microcode.ucode;
 
 	if (cDxr3ConfigData::Instance().GetDebug())
@@ -919,7 +921,7 @@ void cDxr3Interface::ConfigureDevice()
 {
 	uint32_t videomode = 0;
 
-	///< set video mode
+	// set video mode
 	if (cDxr3ConfigData::Instance().GetVideoMode() == PAL)
 	{
 		videomode = EM8300_VIDEOMODE_PAL;
@@ -945,14 +947,14 @@ void cDxr3Interface::ConfigureDevice()
 		}
 	}
 
-	///< make ioctl
+	// make ioctl
     if (ioctl(m_fdControl, EM8300_IOCTL_SET_VIDEOMODE, &videomode) == -1) 
 	{
 		cLog::Instance() << "Unable to set videomode\n";
         exit(1);
     }
 
-	///< set audio mode
+	// set audio mode
 	if (!cDxr3ConfigData::Instance().GetUseDigitalOut())
 	{
 		SetAudioAnalog();

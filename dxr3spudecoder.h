@@ -16,6 +16,7 @@ typedef struct sDxr3SpuPalDescr
 } aDxr3SpuPalDescr[4];
 
 // ==================================
+//! describes a rectal
 struct sDxr3SpuRect 
 {
     int x1, y1;

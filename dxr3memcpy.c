@@ -40,6 +40,9 @@ void *(* dxr3_memcpy)(void *to, const void *from, size_t len);
 #if defined(ARCH_X86) || defined(ARCH_X86_64)
 // ==================================
 // for small memory blocks (<256 bytes) this version is faster
+#define small_memcpy(to,from,n) { register unsigned long int dummy; __asm__ __volatile__("rep; movsb":"=&D"(to), "=&S"(from), "=&c"(dummy) :"0" (to), "1" (from),"2" (n) : "memory"); }
+/*
+// -- dosn't compile with 2.95 gcc --
 #define small_memcpy(to,from,n)\
 {\
 register unsigned long int dummy;\
@@ -49,7 +52,7 @@ __asm__ __volatile__(\
   :"0" (to), "1" (from),"2" (n)\
   : "memory");\
 }
-
+*/
 // ==================================
 // linux kernel __memcpy (from: /include/asm/string.h)
 static __inline__ void * __memcpy (

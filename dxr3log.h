@@ -82,12 +82,12 @@ public:
 	}
 
 private:
-	std::ofstream	m_LogStream;
-	bool			m_LogOpen;
-	bool			m_ForeFlush;
-	
+	std::ofstream	m_LogStream;	///< Our logstream
+	bool			m_LogOpen;		///< Is log open?
+	bool			m_ForeFlush;	///< Do we want to flush log everytime?
+
 	void Open(std::string Filename);	// with this function we open our logfile
-	void Close();				// with this function we close our logfile
+	void Close();						// with this function we close our logfile
 };
 
 

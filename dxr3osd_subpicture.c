@@ -5,6 +5,7 @@
 #define MAXNUMWINDOWS 7 // OSD windows are counted 1...7
 
 // ==================================
+//! constructor
 cDxr3SubpictureOsd::cDxr3SubpictureOsd(int Left, int Top) : cOsd(Left, Top)
 {
 	shown = false;
@@ -48,7 +49,8 @@ eOsdError cDxr3SubpictureOsd::CanHandleAreas(const tArea *Areas, int NumAreas)
 		
 		for (int i = 0; i < NumAreas; i++) 
 		{
-			if (Areas[i].bpp != 1 && Areas[i].bpp != 2 && Areas[i].bpp != 4 && Areas[i].bpp != 8)
+			// at the moment we dont support 256 color palette
+			if (Areas[i].bpp != 1 && Areas[i].bpp != 2 && Areas[i].bpp != 4/* && Areas[i].bpp != 8*/)
 			{
 				return oeBppNotSupported;
 			}
