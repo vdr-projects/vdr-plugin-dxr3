@@ -275,3 +275,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - removed -lz from makefile
 - compiles now with 3.4.x gcc's
 - added support for vdr-1.3.18 - thanks to Luca Olivetti <luca@ventoso.org>
+- use $CXX for generating dependencies instead of hardcoded g++
