@@ -1223,19 +1223,21 @@ char cDxr3Interface::Dxr3CopyYUVData(int pos, int *dst, int length)
 	WriteRegister(0x1c5a, 1);
 	
 	int l2 = 0;
-	for( l2=0; l2 < (length>>2) ; ++l2) 
+	for (l2=0; l2 < (length>>2) ; ++l2) 
 	{
 		*dst++ = ReadRegister(0x11800);
 	}
 
-	switch( length % 4 ) 
+	switch (length % 4) 
 	{
 	    case 3:
 		*dst++ = ReadRegister(0x11000);
 			break;
+
 	    case 2:
 		*dst++ = ReadRegister(0x10800);
 			break;
+
 	    case 1:
 		*dst++ = ReadRegister(0x10000);
 			break;
