@@ -346,6 +346,12 @@ uint32_t cDxr3Interface::GetSysClock() const
 }
 
 // ==================================
+int64_t cDxr3Interface::GetPts()
+{
+    return m_lastSeenPts << 1;
+}
+
+// ==================================
 void cDxr3Interface::SetPts(uint32_t pts) 
 {
 	Lock();
@@ -671,6 +677,8 @@ void cDxr3Interface::PlayVideoFrame(cFixedLengthFrame* pFrame, int times)
 			}
         }
         SetAspectRatio(pFrame->GetAspectRatio());
+        uint32_t pts = pFrame->GetPts();
+        if (pts > 0) m_lastSeenPts = pts;
     }
 
 	Unlock();
