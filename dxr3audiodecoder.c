@@ -109,7 +109,7 @@ void cDxr3AudioDecoder::Decode(const uint8_t* buf, int length, uint32_t pts, cDx
             if ((buf[i+2] & 0xFC) != (m_LastHeader[2] & 0xFC)) 
 			{
 				cLog::Instance() << "cDxr3AudioDecoder::Decode Found different audio header -> init\n";
-                cLog::Instance() << "cDxr3AduioDecoder::Decode Old header 0x" << std::hex << *((uint32_t*) m_LastHeader) << " new header 0x" << *((uint32_t*) (buf+i))<< std::dec << "\n";
+                cLog::Instance() << "cDxr3AudioDecoder::Decode Old header 0x" << std::hex << *((uint32_t*) m_LastHeader) << " new header 0x" << *((uint32_t*) (buf+i)) << std::dec << "\n";
 
                 Init();
                 m_LastHeader[0] = buf[i];
