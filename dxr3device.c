@@ -290,7 +290,7 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 	{
 		// Why is here so a huge time waster?
         //usleep(1000000);
-        return 0;
+        return -1;
     }
 
     if (m_strBuf.length()) 
