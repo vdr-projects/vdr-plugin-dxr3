@@ -59,7 +59,7 @@ public:
     cDxr3ConfigData();
 	~cDxr3ConfigData()	{}
 
-    int GetUseDigitalOut() const						{ return m_digitaloutputt; }
+    int GetUseDigitalOut() const						{ return m_digitaloutput; }
     int SetUseDigitalOut(int value)						{ return m_digitaloutput = value; }
     int GetDxr3Card() const								{ return m_card; }
     int SetDxr3Card(int value)							{ return m_card = value; }
