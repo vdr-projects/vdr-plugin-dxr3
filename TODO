@@ -12,7 +12,7 @@
 	- ffmpeg
 	- vga overlay
 
-* optimice (is it worth to do?)
+* optimize (is it worth it?)
 	Rgb2YCrCb
 	YUV2Rgb
 
