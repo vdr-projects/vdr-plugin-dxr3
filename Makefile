@@ -1,7 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.1.2.6 2005/03/14 20:48:42 scop Exp $
+# $Id: Makefile,v 1.1.2.7 2005/03/14 22:21:07 scop Exp $
 
 # The official name of this plugin.
 # This name will be used in the '-P...' option of VDR to load the plugin.
@@ -60,6 +60,10 @@ DEFINES += -DMICROCODE=\"/usr/share/misc/em8300.uc\"
 
 # where should we write our log?
 DEFINES += -DLOGPATH=\"/video/\"	# note: path must end with /
+
+# use OSD scaler borrowed from the Xine plugin?
+# comment this out to use the traditional vdr-dxr3 scaler
+DEFINES += -DUSE_XINE_SCALER
 
 ### The object files (add further files here):
 

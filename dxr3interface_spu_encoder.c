@@ -34,6 +34,187 @@ ToDo:
 */
 
 
+#ifdef USE_XINE_SCALER
+/*=======================================================================
+ *
+ * Scaling functions taken from the xine plugin
+ * 
+ */
+ 
+#include <math.h>
+#include <signal.h>
+#include <string>
+#include <vdr/plugin.h>
+
+namespace XineScaler
+{
+
+  template <const int yInc = 1, class T = int>
+    class cBresenham
+  {
+    const int m_dx;
+    const int m_dy;
+    
+    int m_eps;    
+    T m_y;
+    
+  public:
+    cBresenham(const int dy, const int dx, const int eps, T const y0 = 0)
+      : m_dx(dx)
+      , m_dy(dy)
+      , m_eps(eps - m_dx)
+      , m_y(y0)
+    {
+    }
+
+    int eps() const
+    {
+      return m_eps;
+    }
+    
+    T step()
+    {
+      m_eps += m_dy;
+
+      while (m_eps >= 0)
+      {
+        m_eps -= m_dx;
+
+        m_y += yInc;
+      }
+
+      return m_y;
+    }
+
+    T step(int n)
+    {
+      if (n <= 0)
+        return m_y;
+      
+      while (--n > 0)
+        step();
+
+      return step();
+    }
+
+    T stepRelative(int n = 1)
+    {
+      T const y = m_y;
+      
+      return step(n) - y;
+    }
+  };
+
+  static uint8_t *ScaleBitmapLQ(const uint8_t *src, uint8_t *dest, int x0, int y0, int w, int h, int ws, int hs, int x1, int y1, int w1, int h1, const uint8_t transparentIndex)
+  {
+    uint8_t *const screen = new uint8_t[ OSDHEIGHT * OSDWIDTH ];
+    {
+      int x1 = x0 + w;
+      int y1 = y0 + h;
+      int x2 = OSDWIDTH;
+      int y2 = OSDHEIGHT;
+
+      if (x1 > x2)
+        x1 = x2;
+
+      if (y1 > y2)
+        y1 = y2;
+
+      uint8_t *dst = screen;
+
+      for (int y = 0; y < y0; y++)
+      {
+        for (int x = 0; x < x2; x++)
+          *dst++ = transparentIndex;
+      }
+
+      for (int y = y0; y < y1; y++)
+      {
+        for (int x = 0; x < x0; x++)
+          *dst++ = transparentIndex;
+
+        for (int x = x0; x < x1; x++)
+          *dst++ = *src++;
+
+        for (int x = x1; x < x2; x++)
+          *dst++ = transparentIndex;
+      }
+
+      for (int y = y1; y < y2; y++)
+      {
+        for (int x = 0; x < x2; x++)
+          *dst++ = transparentIndex;
+      }
+    }
+    
+    uint8_t *scaled = dest; //new uint8_t[ hs * ws ];
+    {
+      int x2 = x1 + w1;
+      int y2 = y1 + h1;
+
+      if (x2 > ws)
+      {
+        x2 = ws;
+
+        w1 = x2 - x1;
+        if (w1 < 0)
+          w1 = 0;
+      }
+
+      if (y2 > hs)
+      {
+        y2 = hs;
+
+        h1 = y2 - y1;
+        if (h1 < 0)
+          h1 = 0;
+      }
+
+      cBresenham<OSDWIDTH, uint8_t *> yyBh(2 * OSDHEIGHT, 2 * hs, hs, screen);
+      uint8_t *screen0 = yyBh.step(y1); //(((2 * y1 + 1) * OSDHEIGHT / hs) / 2);
+
+      cBresenham<> xxBh0(2 * OSDWIDTH, 2 * ws, ws);
+      xxBh0.step(x1); //(((2 * x1 + 1) * OSDWIDTH / ws) / 2);
+
+      uint8_t *scaled0 = scaled + y1 * OSDWIDTH; //ws; ******
+      
+      for (int y = y1; y < y2; y++)
+      {
+        cBresenham<> xxBh(xxBh0);
+        int xxx = xxBh.step(0); //(((2 * x1 + 1) * OSDWIDTH / ws) / 2);
+
+        uint8_t *screen00 = screen0 + xxx;
+
+        uint8_t *scaled00 = scaled0 + x1;
+        
+        for (int x = x1; x < x2; x++)
+        {
+          *scaled00++ = *screen00;
+
+          screen00 += xxBh.stepRelative();
+        }
+
+        scaled0 += OSDWIDTH; //ws; *******
+
+        screen0 = yyBh.step();
+      }
+    }
+
+    delete [] screen;
+
+    return scaled;
+  }
+
+};
+
+/*=======================================================================
+ *
+ * End of scaling functions taken from the xine plugin
+ * 
+ */
+#endif /* USE_XINE_SCALER */
+
+
 // ==================================
 // dec.
 cSpuData::~cSpuData()
@@ -341,12 +522,19 @@ void cSPUEncoder::EncodePixelbufRle(int x, int y, int w, int h, u_char *inbuf, i
     pb.x = w;
     pb.y = h;
 
+#ifdef USE_XINE_SCALER
+    int ws = cDxr3Interface::Instance().GetHorizontalSize();
+    int hs = cDxr3Interface::Instance().GetVerticalSize();
+    if (ws < 720 || hs < 576 )
+        inbuf = XineScaler::ScaleBitmapLQ(inbuf, OSD_Screen2, 0, 0, OSDWIDTH, OSDHEIGHT, ws, hs, 0, 0, ws, hs, 0 /* clrTransparent */);
+#else
     if (cDxr3Interface::Instance().GetHorizontalSize() < 700) 
 	{
         double fac = (double)OSDWIDTH / (double)OSDWIDTH2;
         ScaleOSD(fac, inbuf,10);
         inbuf = OSD_Screen2;
     }
+#endif /* USE_XINE_SCALER */
 
     m_ColorManager = new cColorManager();
 
@@ -374,6 +562,7 @@ void cSPUEncoder::EncodePixelbufRle(int x, int y, int w, int h, u_char *inbuf, i
     delete m_ColorManager;
 }
 
+#ifndef USE_XINE_SCALER
 // ==================================
 void cSPUEncoder::ScaleOSD(double fac, unsigned char* buf, unsigned char NumColors)
 {
@@ -431,6 +620,7 @@ void cSPUEncoder::ScaleOSD(double fac, unsigned char* buf, unsigned char NumColo
     }
     }
 }
+#endif /* not USE_XINE_SCALER */
 
 // ==================================
 // taken from mplayer (spuenc.c)
