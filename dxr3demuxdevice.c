@@ -72,14 +72,14 @@ m_vBuf(VIDEO_MAX_BUFFER_SIZE, VIDEO_MAX_FRAME_SIZE, m_dxr3Device)
 // deconstr.
 cDxr3DemuxDevice::~cDxr3DemuxDevice() 
 {
-	if (!m_pVideoThread)
+	if (m_pVideoThread)
 	{
 		delete m_pVideoThread;
 	}
 
-	if (!m_pVideoThread)
+	if (m_pAudioThread)
 	{
-		delete m_pVideoThread;
+		delete m_pAudioThread;
 	}
 }
 
