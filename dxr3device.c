@@ -88,7 +88,7 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
 
 	if (PlayMode == pmExtern_THIS_SHOULD_BE_AVOIDED) 
 	{
-		Tools::WriteInfoToOsd("Dxr3: Releasing devices\n");
+		Tools::WriteInfoToOsd(tr("DXR3: Releasing devices"));
         cDxr3Interface::Instance().ExternalReleaseDevices();
 	} 
 	else 

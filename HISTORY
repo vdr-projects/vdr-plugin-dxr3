@@ -234,3 +234,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 
 - fixed output of anamorphic video, if tv aspect is configured to 16:9 in DVB setup menu 
   thanks Seppo Ingalsuo <seppo.ingalsuo@iki.fi>
+- rewrote i18n support
