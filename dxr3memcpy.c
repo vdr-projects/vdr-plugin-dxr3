@@ -35,6 +35,9 @@
 #include "dxr3cpu.h"
 #include "dxr3memcpy.h"
 
+
+// ==================================
+//! our function pointer
 void *(* dxr3_memcpy)(void *to, const void *from, size_t len);
 
 #if defined(ARCH_X86) || defined(ARCH_X86_64)
@@ -314,7 +317,7 @@ static void *linux_kernel_memcpy(void *to, const void *from, size_t len) {
 
 
 // ==================================
-// constr.
+//! constr.
 cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 {	
 	//
@@ -423,7 +426,7 @@ cDxr3MemcpyBench::cDxr3MemcpyBench(uint32_t config_flags)
 }
 
 // ==================================
-// neede for exact timing
+//! needed for exact timing
 unsigned long long int cDxr3MemcpyBench::Rdtsc()
 {
 	#ifdef ARCH_X86
