@@ -232,21 +232,25 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 
 2005-0?-??: Version 0.2.3-pre3
 
-- fixed output of anamorphic video, if tv aspect is configured to 16:9 in DVB setup menu 
-  thanks Seppo Ingalsuo <seppo.ingalsuo@iki.fi>
+- fixed output of anamorphic video when tv aspect is configured to 16:9 in
+  DVB setup menu (Seppo Ingalsuo)
 - rewrote i18n support, improved Finnish translation and other bits
-- fixed void cDxr3Interface::SetAudioDigitalPCM() - thanks to Stephan Skrodzki <skrodzki@contcast.de> for patch
+  (Christian Gmeiner, Ville Skyttä)
+- fixed void cDxr3Interface::SetAudioDigitalPCM() (Stephan Skrodzki)
 - dxr3memcpy.c/h: fix to support older compilers like gcc-2.95
+  (Christian Gmeiner, Marco Schlüßler)
 - dxr3memcpy.c/h: should now compile on alpha and powerpc
-- added many comments into source
-- using doxygen for docs
-- added support for VDR 1.3.13 and later - thanks to Luca Olivetti and others
-- removed -lz from makefile
-- compiles now with 3.4.x gcc's
-- use $CXX for generating dependencies instead of hardcoded g++
-- added descriptions to audio and video output threads
+  (Christian Gmeiner, Paavo Hartikainen)
+- added many comments into source (Christian Gmeiner)
+- using doxygen for docs (Christian Gmeiner)
+- added support for VDR 1.3.13 and later (Luca Olivetti, Peter Dittmann)
+- removed -lz from makefile (Christian Gmeiner)
+- compiles now with 3.4.x gcc's (Christian Gmeiner, Ville Skyttä)
+- use $CXX for generating dependencies instead of hardcoded g++ (Ville Skyttä)
+- added descriptions to audio and video output threads (Ville Skyttä)
 - fixed audio and video thread deletion in demux device destructor
-- made "all" the default target in Makefile
-- assume SSE support implies MMXEXT support
-- avoid hang in pause mode with VDR >= 1.3.18
-- avoid high CPU usage in pause mode
+  (Ville Skyttä)
+- made "all" the default target in Makefile (Ville Skyttä)
+- assume SSE support implies MMXEXT support (Ville Skyttä)
+- avoid hang in pause mode with VDR >= 1.3.18 (Luca Olivetti)
+- avoid high CPU usage in pause mode (Luca Olivetti, Klaus Schmidinger)
