@@ -1,5 +1,5 @@
 /*
- * dxr3unixsocket.c
+ * dxr3unixserversocket.h
  *
  * Copyright (C) 2002-2004 Kai Möller
  *
