@@ -174,7 +174,7 @@ void cDxr3Interface::SetAudioDigitalPCM()
     int ioval = 0;
     Lock();
 
-    if (m_ExternalReleased && m_audioMode != EM8300_AUDIOMODE_DIGITALPCM) 
+    if (!m_ExternalReleased && m_audioMode != EM8300_AUDIOMODE_DIGITALPCM) 
 	{
         int prevMode = m_audioMode;
         m_audioMode = ioval = EM8300_AUDIOMODE_DIGITALPCM;
