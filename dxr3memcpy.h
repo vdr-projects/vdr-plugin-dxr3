@@ -62,10 +62,10 @@
 // ==================================
 struct memcpy_routine
 {
-	string name;
-	void *(* function)(void *to, const void *from, size_t len);
-	unsigned long long time;
-	uint32_t cpu_require;		// caps from dxr3cpu.h
+	string name;	///< name of memcpy methode
+	void *(* function)(void *to, const void *from, size_t len);	///< our memcopy methode
+	unsigned long long time;	///< needed time for banchmark
+	uint32_t cpu_require;		///< caps from dxr3cpu.h
 };
 
 // ==================================
@@ -82,7 +82,7 @@ public:
 private:
 	unsigned long long int Rdtsc();
 
-	vector<memcpy_routine>	m_methods;
+	vector<memcpy_routine>	m_methods;	///< a std::vector with all methodes
 };
 
 // ==================================
