@@ -230,46 +230,49 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - fixed dxr3osd_subpicutre.c - thanks to Paavo Hartikainen <pahartik@sci.fi>
 
 
-2005-??-??: Version 0.2.3-pre3
+2005-??-??: Version 0.3.0-cvs
 
-- fixed output of anamorphic video, if tv aspect is configured to 16:9 in DVB setup menu 
-  thanks Seppo Ingalsuo <seppo.ingalsuo@iki.fi>
+- fixed output of anamorphic video when tv aspect is configured to 16:9 in
+  DVB setup menu (Seppo Ingalsuo)
 - rewrote i18n support, improved Finnish translation and other bits
-- fixed void cDxr3Interface::SetAudioDigitalPCM() - thanks to Stephan Skrodzki <skrodzki@contcast.de> for patch
+  (Christian Gmeiner, Ville Skyttä)
+- fixed void cDxr3Interface::SetAudioDigitalPCM() (Stephan Skrodzki)
 - dxr3memcpy.c/h: fix to support older compilers like gcc-2.95
-  Here i want to thanks  Marco Schlüßler very much for run compil tests, even he
-  dont run the plugin :)
-- dxr3memcpy.c/h (bug #1000647)
-  should now compile on alpha and powerpc - thanks to Paavo Hartikainen <pahartik@sci.fi>
-- added many comments into source
-- using doxygen for docs
-- cDxr3Interface::ConfigureDevice(): we get now videomode from driver and set only a 
-  new one, if the wanted one is different to the driver defaults one.
+  (Christian Gmeiner, Marco Schlüßler)
+- dxr3memcpy.c/h: should now compile on alpha and powerpc
+  (bug #1000647, Christian Gmeiner, Paavo Hartikainen)
+- added many comments into source (Christian Gmeiner)
+- using doxygen for docs (Christian Gmeiner)
+- we get now videomode from driver and set only a new one, if the wanted
+  one is different from the driver's default one (Christian Gmeiner)
 - added functions to read and write registers directly with the plugin
-- added basic dolby digital interface
-- you can configure microcode path in Makefile - thanks to Sascha Volkenandt <sascha@akv-soft.de>
-- fixed DVBDIR and FFMDIR in Makefile - thanks to guys from www.vdr-wiki.de
-- you can set now logpath in makefile
-  You should also run a linke like 
-  # find / -name "dxr3plugin.log" | xargs rm
-  because the pre2 seems to put this dxr3plugin.log random in some folders  - reporded by Martin Dauskardt <md001@gmx.de>
-- extended cDxr3MemcpyBench::Rdtsc(uint32_t config_flags)
-  support for non x86 arch
-  support for cpu's, which dont support rdtsc timing
-- logger now thread safe
-- rewrote cDxr3SpuDecoder
-  dropped software decoder
-  added hardware decoder, so we make use of DVD-functions of the dxr3
-- checked Lock() and Unlock() in dxr3interface.c - hope everything is ok else contact me
-- using now std:: instead of namespace std;	- fixed bug #1044069
+  (Christian Gmeiner)
+- added basic dolby digital interface (Christian Gmeiner)
+- made path to microcode configurable in Makefile (Sascha Volkenandt)
+- made log dir configurable in Makefile (Christian Gmeiner, Martin Dauskardt)
+  You may also want to search and remove files called "dxr3plugin.log" as the
+  old plugin wrote them into the current working directory.
+- better default directories in Makefile (Christian Gmeiner, vdr-wiki.de folks)
+- extended cDxr3MemcpyBench::Rdtsc(uint32_t config_flags): support for
+  non-x86 archs, support for cpu's, which dont support rdtsc timing
+  (Christian Gmeiner)
+- logger is now thread safe (Christian Gmeiner)
+- rewrote cDxr3SpuDecoder: dropped software decoder, added hardware decoder,
+  so we make use of DVD-functions of the dxr3 (Christian Gmeiner)
+- checked Lock() and Unlock() in dxr3interface.c - hope everything is ok
+  else contact me (Christian Gmeiner)
+- using now std:: instead of namespace std (bug #1044069, Christian Gmeiner)
 - renamed dxr3interface_spu_encoder.h/c to dxr3spuencoder.h/c
-- removed log commands in dxr3outputthread.c
-- fixed #includes
-  moved #include "dxr3osd.h" from dxr3interface.h to dxr3interface.c
-  removed not needed #includes
-- fixed bug #1022810: Osd gets pink
-- added support for VDR 1.3.13 and later - thanks to Luca Olivetti and others
-- some little fixes in the dx3interface: if we cant open control fifo plugins retuns now correct error message
-- removed -lz from makefile
-- compiles now with 3.4.x gcc's
-- use $CXX for generating dependencies instead of hardcoded g++
+  (Christian Gmeiner)
+- removed extra log commands in dxr3outputthread.c (Christian Gmeiner)
+- fixed #includes: moved #include "dxr3osd.h" from dxr3interface.h to
+  dxr3interface.c, removed not needed #includes (Christian Gmeiner)
+- fixed OSD getting pink (bug #1022810, Christian Gmeiner)
+- added support for VDR 1.3.13 and later (Luca Olivetti, Peter Dittmann)
+- if we cant open control fifo, plugin now returns a correct error message
+  (Christian Gmeiner)
+- removed explicit linking with zlib (Christian Gmeiner)
+- compiles now with 3.4.x gcc's (Christian Gmeiner, Ville Skyttä)
+- use $CXX for generating dependencies instead of hardcoded g++ (Ville Skyttä)
+- assume SSE support implies MMXEXT support, this enables optimized
+  memcpy routines on more systems (Ville Skyttä)
