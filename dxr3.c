@@ -3,7 +3,7 @@
 *
 * See the README file for copyright information and how to reach the author.
 *
-* $Id: dxr3.c,v 1.1.2.3 2005/03/21 20:01:42 scop Exp $
+* $Id: dxr3.c,v 1.1.2.4 2005/03/23 18:21:32 scop Exp $
 */
 
 
@@ -88,11 +88,11 @@ cMenuSetupDxr3::cMenuSetupDxr3(void)
 // save menu values
 void cMenuSetupDxr3::Store(void)
 {  
-	SetupStore("UseDigitalOut", cDxr3ConfigData::Instance().SetUseDigitalOut(newUseDigitalOut));
-	SetupStore("Dxr3Card",      cDxr3ConfigData::Instance().SetDxr3Card(newDxr3Card));
-	SetupStore("Dxr3VideoMode", cDxr3ConfigData::Instance().SetVideoMode((eVideoMode) newVideoMode));
-	SetupStore("Dxr3Debug", cDxr3ConfigData::Instance().SetDebug(newDebug));
-	SetupStore("Dxr3DebugLevel", cDxr3ConfigData::Instance().SetDebugLevel(newDebugLevel));
+	SetupStore("UseDigitalOut",		cDxr3ConfigData::Instance().SetUseDigitalOut(newUseDigitalOut));
+	SetupStore("Dxr3Card",			cDxr3ConfigData::Instance().SetDxr3Card(newDxr3Card));
+	SetupStore("Dxr3VideoMode",		cDxr3ConfigData::Instance().SetVideoMode((eVideoMode) newVideoMode));
+	SetupStore("Dxr3Debug",			cDxr3ConfigData::Instance().SetDebug(newDebug));
+	SetupStore("Dxr3DebugLevel",	cDxr3ConfigData::Instance().SetDebugLevel(newDebugLevel));
 }
 
 // ==================================
