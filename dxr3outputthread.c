@@ -1,21 +1,8 @@
 /*
- * dxr3outputthread.c
+ * dxr3outputthread.c: 
  *
- * Copyright (C) 2002-2004 Kai Möller
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public License
- * as published by the Free Software Foundation; either version 2.1
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * See the main source file 'dxr3.c' for copyright information and
+ * how to reach the author.
  *
  */
 
@@ -32,14 +19,14 @@ const int AUDIO_OFFSET = 4500;
 // ================================== 
 
 // ================================== 
-//! constructor
+// constr.
 cDxr3OutputThread::cDxr3OutputThread(cDxr3Interface& dxr3Device, cDxr3SyncBuffer& buffer) :
 cThread(), m_dxr3Device(dxr3Device), m_buffer(buffer), m_bStopThread(false), m_bNeedResync(false)
 {
 }
 
 // ================================== 
-//! send stop signal
+// send stop signal
 void cDxr3OutputThread::SetStopSignal() 
 {
     Lock();
@@ -48,7 +35,7 @@ void cDxr3OutputThread::SetStopSignal()
 }
 
 // ==================================
-//! was stop signal send?
+// was stop signal send?
 bool cDxr3OutputThread::GetStopSignal() 
 {
     bool ret = false;
@@ -60,14 +47,17 @@ bool cDxr3OutputThread::GetStopSignal()
 }
 
 // ==================================
-//! constr.
+// constr.
 cDxr3AudioOutThread::cDxr3AudioOutThread(cDxr3Interface& dxr3Device, cDxr3SyncBuffer& buffer) :
 cDxr3OutputThread(dxr3Device, buffer) 
 {
+#if VDRVERSNUM >= 10300
+    SetDescription("DXR3 audio output");
+#endif
 }
 
 // ==================================
-//! thread action
+// thread action
 void cDxr3AudioOutThread::Action() 
 { 
     bool resync = false;
@@ -92,6 +82,10 @@ void cDxr3AudioOutThread::Action()
         
         if (pts && abs((int)pts-(int)SCR) > 30000 || m_dxr3Device.IsExternalReleased()) 
 		{
+			if (cDxr3ConfigData::Instance().GetDebugEverything())
+			{
+				cLog::Instance() << "cDxr3AudioOutThread::Action " << "pts = " << pts << " scr = " << SCR << "\n";
+			}
             m_buffer.Clear();
             m_bNeedResync = true;
         } 
@@ -99,6 +93,10 @@ void cDxr3AudioOutThread::Action()
 		{
             if (!pts || pts < SCR) 
 			{
+				if (cDxr3ConfigData::Instance().GetDebugEverything())
+				{
+//					if (pts) cLog::Instance() << "cDxr3AudioOutThread::Action pts " << pNext->GetPts() << " scr " << SCR << " delta " << (pts - SCR) << "\n";
+				}
                 if (!pts && resync) 
 				{
                     continue;
@@ -110,6 +108,10 @@ void cDxr3AudioOutThread::Action()
                 
                 if (pts && (pts < SCR) && ((SCR - pts) > 5000)) 
 				{
+					if (cDxr3ConfigData::Instance().GetDebugEverything())
+					{
+//						cLog::Instance() << "cDxr3AudioOutThread::Action pts audio too small " << (SCR - pts) << "\n";
+					}
                     m_dxr3Device.SetSysClock(pts+ 1 * AUDIO_OFFSET);
                     m_dxr3Device.PlayAudioFrame(pNext);
                     if (m_buffer.IsPolled()) 
@@ -120,6 +122,10 @@ void cDxr3AudioOutThread::Action()
                 } 
 				else 
 				{                
+					if (cDxr3ConfigData::Instance().GetDebugEverything())
+					{
+//						cLog::Instance() << "cDxr3AudioOutThread::Action write audio\n";
+					}
                     m_dxr3Device.PlayAudioFrame(pNext);
                     m_buffer.Pop();
                 }                                   
@@ -128,6 +134,10 @@ void cDxr3AudioOutThread::Action()
 			{
                 if (abs((int)pts - (int)SCR) < (AUDIO_OFFSET )) 
 				{
+					if (cDxr3ConfigData::Instance().GetDebugEverything())
+					{
+//						if (pts) cLog::Instance() << "cDxr3AudioOutThread::Action pts " << pNext->GetPts() << " scr " << SCR << " delta " << (pts - SCR) << "\n";
+					}
                     m_dxr3Device.PlayAudioFrame(pNext);
                     m_buffer.Pop();    
                 } 
@@ -136,20 +146,33 @@ void cDxr3AudioOutThread::Action()
         
         if ((pts > SCR && abs((int)pts - (int)SCR) > AUDIO_OFFSET)) 
 		{
-			usleep(10000);
+			if (cDxr3ConfigData::Instance().GetDebugEverything())
+			{
+//				cLog::Instance() << "cDxr3AudioOutThread::Action Stopping audio " << SCR << " " << pts << "\n";
+			}
+
+            usleep(10000);
+
+			if (cDxr3ConfigData::Instance().GetDebugEverything())
+			{
+//				cLog::Instance() << "cDxr3AudioOutThread::Action Starting audio " << SCR << " " << pts << "\n";
+			}
         }
     }
 }
 
 // ==================================
-//! constr.
+// constr.
 cDxr3VideoOutThread::cDxr3VideoOutThread(cDxr3Interface& dxr3Device, cDxr3SyncBuffer& buffer) :
 cDxr3OutputThread(dxr3Device, buffer) 
 {
+#if VDRVERSNUM >= 10300
+    SetDescription("DXR3 video output");
+#endif
 }
 
 // ==================================
-//! thread action
+// thread action
 void cDxr3VideoOutThread::Action() 
 {
     uint32_t pts = 0;
@@ -162,7 +185,7 @@ void cDxr3VideoOutThread::Action()
 
     if (!pthread_setschedparam(pthread_self(), SCHED_RR, &temp)) 
 	{
-        cLog::Instance() << "cDxr3VideoOutThread::Action(): Error can't set priority\n";
+//        cLog::Instance() << "cDxr3VideoOutThread::Action(): Error can't set priority\n";
     }      
 
     while (!GetStopSignal()) 
@@ -190,13 +213,38 @@ void cDxr3VideoOutThread::Action()
 			{
                 if ((pts > SCR) && abs((int)pts - (int)SCR) < 7500) 
 				{
+					if (cDxr3ConfigData::Instance().GetDebugEverything())
+					{
+//						cLog::Instance() << "cDxr3VideoOutThread::Action pts " << pts << " scr " << SCR << " delta " << (pts - SCR) << "\n";
+					}
+
                     m_dxr3Device.SetPts(pts);
+
+					if (cDxr3ConfigData::Instance().GetDebugEverything())
+					{
+//						cLog::Instance() << "cDxr3VideoOutThread::Action done\n";
+					}
 
                     if (m_buffer.Available() && pNext->GetData() && pNext->GetCount()) 
 					{
                         m_dxr3Device.PlayVideoFrame(pNext);
-                        m_buffer.Pop();
+
+						if (cDxr3ConfigData::Instance().GetDebugEverything())
+						{
+//							cLog::Instance() << "cDxr3VideoOutThread::Action write\n";
+						}
+
+                        m_buffer.Pop();    
+
+						if (cDxr3ConfigData::Instance().GetDebugEverything())
+						{
+//							cLog::Instance() << "cDxr3VideoOutThread::Action done pop\n";
+						}
                     }
+					if (cDxr3ConfigData::Instance().GetDebug())
+					{
+//						cLog::Instance() << "cDxr3VideoOutThread::Action done complete\n";
+					}
                 } 
 				else 
 				{
@@ -217,7 +265,17 @@ void cDxr3VideoOutThread::Action()
         
             if ((pts > SCR && abs((int)pts - (int)SCR) > 7500 )) 
 			{
+				if (cDxr3ConfigData::Instance().GetDebugEverything())
+				{
+//					cLog::Instance() << "cDxr3VideoOutThread::Action Stopping video "  << SCR << " " << pts << "\n";
+				}
+
                 usleep(10000);
+
+				if (cDxr3ConfigData::Instance().GetDebugEverything())
+				{
+//					cLog::Instance() << "cDxr3VideoOutThread::Action Starting video "  << SCR << " " << pts << "\n";
+				}
             }
         }
     }
