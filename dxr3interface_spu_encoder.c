@@ -382,13 +382,13 @@ int cSPUEncoder::Cmd(OSD_Command cmd, int color, int x0, int y0, int x1, int y1,
 		} 
 		else 
 		{
-			cLog::Instance() << "Waring: SPU data (" << m_encodeddata.count << ") size exceeds limit\n";
+			cLog::Instance() << "Warning: SPU data (" << m_encodeddata.count << ") size exceeds limit\n";
 			return -1;
 	    }
 		break;
 
 	case OSD_Close:
-		// clear colors from plattemanager
+		// clear colors from palettemanager
 
 	#if VDRVERSNUM >= 10307
 		if ((col = (tColor*)m_windows[m_lastwindow].colors) != NULL) 
@@ -436,7 +436,7 @@ int cSPUEncoder::Cmd(OSD_Command cmd, int color, int x0, int y0, int x1, int y1,
 		} 
 		else 
 		{
-			cLog::Instance() << "Waring: SPU data (" << m_encodeddata.count << ") size exceeds limit\n";
+			cLog::Instance() << "Warning: SPU data (" << m_encodeddata.count << ") size exceeds limit\n";
 			return -1;
 	    }
 
@@ -444,7 +444,7 @@ int cSPUEncoder::Cmd(OSD_Command cmd, int color, int x0, int y0, int x1, int y1,
 		break;
 
 	case OSD_Clear:
-		// Sets all pixel to color 0
+		// Sets all pixels to color 0
 		// returns 0 on success
 
 		// This should be done in cSPUEncoder::cSPUEncoder
