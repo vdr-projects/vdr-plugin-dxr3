@@ -265,4 +265,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - removed log commands in dxr3outputthread.c
 - fixed #includes
   moved #include "dxr3osd.h" from dxr3interface.h to dxr3interface.c
-  removed not needed #include ""
+  removed not needed #includes
