@@ -48,7 +48,7 @@ private:
 #define OSD_SPU_CM_DUMP 0
 
 #define MAX_NO_OF_SECTIONS	15
-#define MAX_NO_OF_REGIONS	30
+#define MAX_NO_OF_REGIONS	60
 
 
 // ==================================
@@ -111,12 +111,12 @@ private: // Private attributes
 	int MaxY;
 
 	/** Opens a new highlight region */
-  	void OpenRegion(int y, int NrOfSecToCopy = 0);
+  	void OpenRegion(int y);
 	/** Closes the spu-highlight region */
 	void CloseRegion(int y);
 	
     xSection* NewSection(int x);
-    xSection *GetSection(int x, int &n);
+    xSection *GetSection(int x);
 };
 
 #endif /*_DXR3COLORMANAGER_H_*/

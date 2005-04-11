@@ -51,6 +51,7 @@
 #include <assert.h>
 
 #include "dxr3colormanager.h"
+#include "dxr3log.h"
 #include "dxr3memcpy.h"
 #include <stdio.h>
 #include <string.h>
@@ -79,19 +80,11 @@ cColorManager::~cColorManager()
 
 // ==================================
 // Opens a new highlight region
-void cColorManager::OpenRegion(int y, int NrOfSecToCopy)
+void cColorManager::OpenRegion(int y)
 {
 	hlr[NrOfRegions] = new yRegion();
 	hlr[NrOfRegions]->Y1 = y;
 	isopen = true;
-
-    if (NrOfSecToCopy > 0)
-    {
-    	for (int i = 0; i < NrOfSecToCopy; i++)
-        {
-        	hlr[NrOfRegions]->Section[i] = hlr[NrOfRegions - 1]->Section[i];
-        }
-    }
 }
 
 // ==================================
@@ -104,7 +97,7 @@ void cColorManager::CloseRegion(int y)
 
 	if (hlr[NrOfRegions]->N != 0)		// skip this region if there is no section defined
 	{
-		if (NrOfRegions < MAX_NO_OF_SECTIONS -1)
+		if (NrOfRegions < MAX_NO_OF_REGIONS - 1)
         {
 			NrOfRegions++;
    		}
@@ -115,36 +108,27 @@ void cColorManager::CloseRegion(int y)
 // ==================================    
 void cColorManager::EncodeColors(int width, int height, unsigned char* map, unsigned char* dmap)
 {
-    unsigned char color = 0xFF, ccol = 0xFF;
-    unsigned char ColorIndex = 0xFF;
+    unsigned char color;
+    unsigned char ColorIndex;
     unsigned char buffer[1024] = {0};
 
     for (int y = 0; y < height; ++y) 
 	{
-        color = 0xFF;
         for(int x = 0; x < width; ++x) 
 		{
-            ccol = map[y * width + x];
-            if (ccol != 0) MaxY = y;
-            if (ccol != color)  
-			{
-                color = ccol; // save this color
-                if (!AddColor(x,y,color, ColorIndex)) 
-				{ 
-					// add this color to highlight regions
-                    color = 0xFF;
-                    x = -1;
-                } 
-				else
-				{ 
-					// color successfully added
-                    buffer[x] = ColorIndex;
-                }
-            } 
-			else
-			{
-                buffer[x] = ColorIndex;//*(dmap+(y * width + x)) = ColorIndex;
-            }
+	    color = map[y * width + x];
+	    if (color != 0) MaxY = y;
+	    if (AddColor(x, y, color, ColorIndex))
+	    {
+		// store as the highlight region index
+		buffer[x] = ColorIndex;
+	    }
+	    else
+	    {
+		// retry with another region
+		// FIXME: check limits to avoid infinite loop
+		x = -1;
+	    }
         }
         dxr3_memcpy(dmap+y*width, buffer,width);
     }
@@ -153,13 +137,12 @@ void cColorManager::EncodeColors(int width, int height, unsigned char* map, unsi
 // ==================================
 unsigned char cColorManager::AddColor(int x, int y, unsigned char color, unsigned char &ColorIndex) {
     static int yold = -1;
-    xSection* Section = 0;
-    int SectionIndex = 0;
+    xSection* Section;
 
     if (isopen) 
 	{
 		// there is an opened highlight-region
-        Section = GetSection(x, SectionIndex);	
+        Section = GetSection(x);
 		
 		// checks whether we have a section defined on the formerly line on this x-position
         if (Section != NULL) 
@@ -176,9 +159,6 @@ unsigned char cColorManager::AddColor(int x, int y, unsigned char color, unsigne
                         CloseRegion(y-1); 
 						// terminate region
                         return(0);
-                        yold = y;
-						// open new region
-                        OpenRegion(y,SectionIndex+1);
                     }
 					// create new section
                     Section = NewSection(x);
@@ -218,17 +198,15 @@ unsigned char cColorManager::AddColor(int x, int y, unsigned char color, unsigne
 }
 
 // ==================================
-xSection *cColorManager::GetSection(int x, int &n)
+xSection *cColorManager::GetSection(int x)
 {
 	int i;
-    n = 0;
 
 	// for every section in the current region
     for (i = 0; i < hlr[NrOfRegions]->N; i++)	
     {
     	if ((x <= hlr[NrOfRegions]->Section[i]->X2) &&  (x >= hlr[NrOfRegions]->Section[i]->X1)) // x-pos is in section
         {
-        	n = i;
         	return (hlr[NrOfRegions]->Section[i]);
         }
     }
@@ -308,6 +286,8 @@ xSection *cColorManager::NewSection(int x)
 {
 	xSection* sec = new xSection(x);
     int N = hlr[NrOfRegions]->N;
+	if (N >= MAX_NO_OF_SECTIONS - 1)
+		cLog::Instance() << "Bummer, too many sections\n";
 
 	hlr[NrOfRegions]->Section[hlr[NrOfRegions]->N] = sec;
 	if (N > 0)
