@@ -45,6 +45,7 @@ ToDo:
 #define CMD_SPU_SET_ALPHA       0x04
 #define CMD_SPU_SET_SIZE        0x05
 #define CMD_SPU_SET_PXD_OFFSET  0x06
+#define CMD_SPU_CHG_COLCON      0x07
 #define CMD_SPU_EOF             0xff
 
 #define spuU32(i)  ((spu[i] << 8) + spu[i+1])
@@ -600,6 +601,13 @@ int cDxr3SpuDecoder::setTime(uint32_t pts)
 					}
                     i += 5;
                     break;
+
+		case CMD_SPU_CHG_COLCON:
+		    {
+			int size = spuU32(i + 1);
+			i += 1 + size;
+		    }
+		    break;
 
                 case CMD_SPU_MENU:
 					if (cDxr3ConfigData::Instance().GetDebug())
