@@ -56,33 +56,6 @@
 #include <stdio.h>
 #include <string.h>
 
-//#define timingdebug
-// Enables some time measure debugging code
-// (taken from the osdteletext plugin, thanks folks)
-#ifdef timingdebug
-    #include <sys/timeb.h>
-    
-    class cTime {
-        // Debugging: Simple class to measure time
-        timeb start;
-    public:
-        void Start() {
-            ftime(&start);
-        }
-        void Stop(char *txt) {
-            timeb t;
-            ftime(&t);
-            int s=t.time-start.time;
-            int ms=t.millitm-start.millitm;
-            if (ms<0) {
-                s--;
-                ms+=1000;
-            }
-            printf("%s: %i.%03i\n",txt,s,ms);
-        }
-    };
-#endif
-
 // ==================================
 //! constructor
 cColorManager::cColorManager()
@@ -132,11 +105,6 @@ void cColorManager::EncodeColors(int width, int height, unsigned char* map, unsi
     unsigned char ColorIndex;
     int mapoffset=0;
 
-    #ifdef timingdebug
-      cTime t;
-      t.Start();
-    #endif
-
     OpenRegion(0);
     for (int y = 0; y < height; ++y) {
         oldcolor=0xFF;
@@ -173,10 +141,6 @@ void cColorManager::EncodeColors(int width, int height, unsigned char* map, unsi
     //close the last highligt region
     CloseRegion(height);
 
-    #ifdef timingdebug
-      t.Stop("EncodeColors");
-    #endif
-  
 //#define colordebug  
 #ifdef colordebug    
      {

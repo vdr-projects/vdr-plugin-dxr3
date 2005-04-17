@@ -118,14 +118,15 @@ public:
     ~cSPUEncoder() {}
 
 	int Cmd(OSD_Command cmd, int color = 0, int x0 = 0, int y0 = 0, int x1 = 0, int y1 = 0, const void *data = 0);
-	int Flush(void);
+	int Flush(cPalette *Palette);
+	void CopyBlockIntoOSD(int numWindow, int linewidth, int x0,int y0, int x1, int y1, const tIndex *data);
 	void StopSpu(void);
+	void SetPalette(int numWindow, cPalette* commonPalette, cPalette* windowPalette);
 
 private:
     cSPUEncoder(cSPUEncoder&);  // no copy constructor
 
 	// helper functions
-	void CopyBlockIntoOSD(int linewidth, int x0,int y0, int x1, int y1, u_char *data);
 	void EncodePixelbufRle(int x, int y, int w, int h, u_char *inbuf, int stride, encodedata *ed);
 #ifndef USE_XINE_SCALER
 	void ScaleOSD(double fac, unsigned char* buf, unsigned char NumColors=4);

@@ -1,5 +1,31 @@
 #include "dxr3osd_subpicture.h"
 
+// Enables some time measure debugging code
+// (taken from the osdteletext plugin, thanks folks)
+#ifdef timingdebug
+    #include <sys/timeb.h>
+    
+    class cTime {
+        // Debugging: Simple class to measure time
+        timeb start;
+    public:
+        void Start() {
+            ftime(&start);
+        }
+        void Stop(char *txt) {
+            timeb t;
+            ftime(&t);
+            int s=t.time-start.time;
+            int ms=t.millitm-start.millitm;
+            if (ms<0) {
+                s--;
+                ms+=1000;
+            }
+            printf("%s: %i.%03i\n",txt,s,ms);
+        }
+    };
+#endif
+
 #if VDRVERSNUM >= 10307
 
 #define MAXNUMWINDOWS 7 // OSD windows are counted 1...7
@@ -9,6 +35,8 @@
 cDxr3SubpictureOsd::cDxr3SubpictureOsd(int Left, int Top) : cOsd(Left, Top)
 {
 	shown = false;
+	oldPalette = new cPalette(4);
+	newPalette = new cPalette(4);
 #if VDRVERSNUM >= 10318
 	last = new cTimeMs();
 	last->Set(-FLUSHRATE);
@@ -40,6 +68,8 @@ cDxr3SubpictureOsd::~cDxr3SubpictureOsd()
 		}
 	}
 	Spu->StopSpu();
+	delete oldPalette;
+	delete newPalette;
 #if VDRVERSNUM >= 10318
 	delete last;
 #endif
@@ -96,8 +126,61 @@ void cDxr3SubpictureOsd::Flush()
 	last = time_ms();
 #endif
 
+        #ifdef timingdebug
+          cTime t;
+          t.Start();
+        #endif
+
 	cBitmap *Bitmap;
+	int oldi;
+	int newi;
+	int i;
+	int indexfree[16];
+	int firstfree=-1;
+	int indexnoassigned[16];
+	int firstnoassigned=-1;
+	bool colfree[16];
+	int NumNewColors;
+	int NumOldColors;
 	
+	//first pass: determine the palette used by all bitmaps
+	newPalette->Reset();
+	for (i=0; i<16; i++) colfree[i]=true;
+	for (i=0; (Bitmap = GetBitmap(i)) != NULL; i++) newPalette->Take(*Bitmap);
+	const tColor *newColors=newPalette->Colors(NumNewColors);
+	const tColor *oldColors=oldPalette->Colors(NumOldColors);
+	//colors already assigned
+	for (newi=0;newi<NumNewColors;newi++) {
+	  for(oldi=0;oldi<NumOldColors;oldi++) {
+	    if (newColors[newi]==oldColors[oldi]) {
+	      colfree[oldi]=false;
+	      break; 
+	    }
+	  }  
+          if (oldi>=NumOldColors) {
+            firstnoassigned++;
+            indexnoassigned[firstnoassigned]=newi;
+	  }
+	}
+	//unused colors
+	for (i=0; i<NumOldColors; i++) {
+	  if(colfree[i]) {
+	    firstfree++;
+	    indexfree[firstfree]=i;
+	  }
+	}
+	//replace unused colors with unassigned ones
+	for (i=0; i<=firstnoassigned; i++) {
+	  newi=indexnoassigned[i];
+	  if (firstfree>=0) {
+	    oldPalette->SetColor(indexfree[firstfree], newColors[newi]);
+	    firstfree--;
+	  } else {
+	    oldPalette->Index(newColors[newi]);
+	  }
+	}
+	
+	//second pass: shove the bitmaps
 	for (int i = 0; (Bitmap = GetBitmap(i)) != NULL; i++) 
 	{
 		Spu->Cmd(OSD_SetWindow, 0, i + 1);
@@ -113,7 +196,7 @@ void cDxr3SubpictureOsd::Flush()
 			//TODO Workaround: apparently the bitmap sent to the driver always has to be a multiple
 			//TODO of 8 bits wide, and (dx * dy) also has to be a multiple of 8.
 			//TODO Fix driver (should be able to handle any size bitmaps!)
-			
+			/*
 			while ((x1 > 0 || x2 < Bitmap->Width() - 1) && ((x2 - x1) & 7) != 7) 
 			{
 				if (x2 < Bitmap->Width() - 1)
@@ -150,8 +233,9 @@ void cDxr3SubpictureOsd::Flush()
 					x1--;
 				}
 			}
-			
+			*/
 			// commit colors:
+			/*
 			int NumColors;
 			const tColor *Colors = Bitmap->Colors(NumColors);
 			
@@ -170,14 +254,19 @@ void cDxr3SubpictureOsd::Flush()
 				//TODO end of stuff that should be fixed in the driver
 				Spu->Cmd(OSD_SetPalette, 0, NumColors - 1, 0, 0, 0, Colors);
 			}
+			*/
 			// commit modified data:
-			Spu->Cmd(OSD_SetBlock, Bitmap->Width(), x1, y1, x2, y2, Bitmap->Data(x1, y1));
+			Spu->SetPalette(i+1,oldPalette,Bitmap);
+			Spu->CopyBlockIntoOSD(i+1, Bitmap->Width(), x1, y1, x2, y2, Bitmap->Data(x1, y1));
 		}
 		Bitmap->Clean();
 	}
 	
-	Spu->Flush();
+	Spu->Flush(oldPalette);
 	shown = true;
+        #ifdef timingdebug
+          t.Stop("cDxr3SubpictureOsd::Flush");
+        #endif
 }
 
 #endif /*VDRVERSNUM*/

@@ -338,8 +338,6 @@ int cSPUEncoder::Cmd(OSD_Command cmd, int color, int x0, int y0, int x1, int y1,
 			m_windows[m_lastwindow].opacity[i] = opacity;
 			col++;
 		}
-		int colors = 0;
-		cDxr3Interface::Instance().SetPalette((unsigned int*)m_palManager.Colors(colors));
 
 		return 0;
 		break;
@@ -352,13 +350,13 @@ int cSPUEncoder::Cmd(OSD_Command cmd, int color, int x0, int y0, int x1, int y1,
 		// returns 0 on success, -1 on clipping all pixel
 
 		CopyBlockIntoOSD
-			(
+			(	m_lastwindow,
 				color,
-				m_windows[m_lastwindow].x0 + x0,
-				m_windows[m_lastwindow].y0 + y0,
-				m_windows[m_lastwindow].x0 + x1,
-				m_windows[m_lastwindow].y0 + y1,
-				(u_char *)data
+				x0,
+				y0,
+				x1,
+				y1,
+				(tIndex *)data
 			);
 		break;
 
@@ -425,10 +423,41 @@ int cSPUEncoder::Cmd(OSD_Command cmd, int color, int x0, int y0, int x1, int y1,
 }
 
 
-//===================================
-//Flushes the OSD content into the spu
-int cSPUEncoder::Flush(void)
+//========================================
+//Sets the palette indexes to use for one
+//window taking into account the global
+//palette (with colors needed by all windows)
+
+void cSPUEncoder::SetPalette(int numWindow, cPalette* commonPalette, cPalette* windowPalette)
 {
+   int NumColors;
+   const tColor *Colors = windowPalette->Colors(NumColors);
+   if (Colors) {
+     for (int i=0; i<NumColors; i++) {
+       int idx=commonPalette->Index(Colors[i]);
+       int opacity=((Colors[i] & 0xFF000000) >> 24) * 0xF / 0xFF;
+       m_windows[numWindow].colors[i]=(opacity<<4) | idx;
+     }  
+   }    
+}
+
+//=============================================================
+//Sets the spu palette and flushes the OSD content into the spu
+int cSPUEncoder::Flush(cPalette *Palette)
+{
+
+  int NumColors;
+  const tColor *Colors = Palette->Colors(NumColors);
+  if (Colors) {
+    unsigned int palcolors[16];
+    for (int i=0; i<NumColors; i++) {   
+      // convert AARRGGBB to AABBGGRR (the driver expected the the colors the wrong way, so does Rgb2YCrCb and friends)
+      unsigned int color = ((Colors[i] & 0x0000FF) << 16) | (Colors[i] & 0x00FF00) | ((Colors[i] & 0xFF0000) >> 16);
+      palcolors[i]=Tools::Rgb2YCrCb(color);
+    }
+    cDxr3Interface::Instance().SetPalette(palcolors);
+  }  
+  
   // calculate osd size (actually dead code)
   CalculateActiveOsdArea();
 
@@ -455,25 +484,30 @@ int cSPUEncoder::Flush(void)
 
 // ==================================
 // stamps window content into full osd bitmap
-void cSPUEncoder::CopyBlockIntoOSD(int linewidth, int x0, int y0, int x1, int y1, u_char *data)
+void cSPUEncoder::CopyBlockIntoOSD(int numWindow, int linewidth, int x0, int y0, int x1, int y1, const tIndex *data)
 {
 	int i;
 	int w;
-	u_char *cp;
-	u_char *sp = data;
+	tIndex *cp;
+	const tIndex *sp = data;
 
 
 	// linewidth contains the width of one line in the data block,
 	// linewidth<=0 uses blockwidth as linewidth
 	if (linewidth <= 0)
 	{
-		w = m_windows[m_lastwindow].x1 - m_windows[m_lastwindow].x0;
+		w = m_windows[numWindow].x1 - m_windows[numWindow].x0;
 	}
 	else
 	{
 		w = linewidth;
 	}
 	
+    x0+=m_windows[numWindow].x0;
+    x1+=m_windows[numWindow].x0;
+    y0+=m_windows[numWindow].y0;
+    y1+=m_windows[numWindow].y0;	
+    
     for (i = y0; i <= y1; ++i) 
 	{
         cp = &OSD_Screen[i*OSDWIDTH + x0];
@@ -481,7 +515,7 @@ void cSPUEncoder::CopyBlockIntoOSD(int linewidth, int x0, int y0, int x1, int y1
 		{
             for (int xx=0; xx <= (x1-x0); xx++) 
 			{
-                *(cp+xx) = m_windows[m_lastwindow].colors[*(sp+xx) & 0x0f];
+                *(cp+xx) = m_windows[numWindow].colors[*(sp+xx) & 0x0f];
             }
         } 
 		else 

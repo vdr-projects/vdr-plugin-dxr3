@@ -48,7 +48,7 @@ private:
 #define OSD_SPU_CM_DUMP 0
 
 #define MAX_NO_OF_SECTIONS	15
-#define MAX_NO_OF_REGIONS	60
+#define MAX_NO_OF_REGIONS	100
 
 
 // ==================================
