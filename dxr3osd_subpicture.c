@@ -35,8 +35,7 @@
 cDxr3SubpictureOsd::cDxr3SubpictureOsd(int Left, int Top) : cOsd(Left, Top)
 {
 	shown = false;
-	oldPalette = new cPalette(4);
-	newPalette = new cPalette(4);
+	Palette = new cPalette(4);
 #if VDRVERSNUM >= 10318
 	last = new cTimeMs();
 	last->Set(-FLUSHRATE);
@@ -44,32 +43,17 @@ cDxr3SubpictureOsd::cDxr3SubpictureOsd(int Left, int Top) : cOsd(Left, Top)
 	last = time_ms() - FLUSHRATE;
 #endif
 	Spu = &cSPUEncoder::Instance();
-
-	// must clear all windows here to avoid flashing effects - doesn't work if done
-	// in Flush() only for the windows that are actually used...
-	for (int i = 0; i < MAXNUMWINDOWS; i++) 
-	{
-		Spu->Cmd(OSD_SetWindow, 0, i + 1);
-		Spu->Cmd(OSD_Clear);
-	}
-
+	
+	//Clears the OSD screen image
+	Spu->Clear();
 }
 
 // ==================================
 cDxr3SubpictureOsd::~cDxr3SubpictureOsd()
 {
-	if (shown) 
-	{
-		cBitmap *Bitmap;
-		for (int i = 0; (Bitmap = GetBitmap(i)) != NULL; i++) 
-		{
-			Spu->Cmd(OSD_SetWindow, 0, i + 1);
-			Spu->Cmd(OSD_Close);
-		}
-	}
+	//Remove the OSD from the screen
 	Spu->StopSpu();
-	delete oldPalette;
-	delete newPalette;
+	delete Palette;
 #if VDRVERSNUM >= 10318
 	delete last;
 #endif
@@ -143,12 +127,17 @@ void cDxr3SubpictureOsd::Flush()
 	int NumNewColors;
 	int NumOldColors;
 	
-	//first pass: determine the palette used by all bitmaps
-	newPalette->Reset();
+	//determine the palette used by all bitmaps (without alpha channel)
+	
+	cPalette *newPalette=new cPalette(4);
 	for (i=0; i<16; i++) colfree[i]=true;
-	for (i=0; (Bitmap = GetBitmap(i)) != NULL; i++) newPalette->Take(*Bitmap);
+	for (i=0; (Bitmap = GetBitmap(i)) != NULL; i++) {
+	  int nc;
+	  const tColor *col=Bitmap->Colors(nc);
+	  if (col) for (int kk=0; kk<nc; kk++) newPalette->Index(col[kk] & 0x00FFFFFF);
+	}  
 	const tColor *newColors=newPalette->Colors(NumNewColors);
-	const tColor *oldColors=oldPalette->Colors(NumOldColors);
+	const tColor *oldColors=Palette->Colors(NumOldColors);
 	//colors already assigned
 	for (newi=0;newi<NumNewColors;newi++) {
 	  for(oldi=0;oldi<NumOldColors;oldi++) {
@@ -173,30 +162,27 @@ void cDxr3SubpictureOsd::Flush()
 	for (i=0; i<=firstnoassigned; i++) {
 	  newi=indexnoassigned[i];
 	  if (firstfree>=0) {
-	    oldPalette->SetColor(indexfree[firstfree], newColors[newi]);
+	    Palette->SetColor(indexfree[firstfree], newColors[newi]);
 	    firstfree--;
 	  } else {
-	    oldPalette->Index(newColors[newi]);
+	    Palette->Index(newColors[newi]);
 	  }
 	}
+	delete newPalette;
 	
-	//second pass: shove the bitmaps
+	//Shove the bitmaps to the OSD global bitmap
 	for (int i = 0; (Bitmap = GetBitmap(i)) != NULL; i++) 
 	{
-		Spu->Cmd(OSD_SetWindow, 0, i + 1);
-		
-		if (!shown)
-		{
-			Spu->Cmd(OSD_Open, Bitmap->Bpp(), Left() + Bitmap->X0(), Top() + Bitmap->Y0(), Left() + Bitmap->X0() + Bitmap->Width() - 1, Top() + Bitmap->Y0() + Bitmap->Height() - 1, (void *)1); // initially hidden!
-		}
-		
 		int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
 		if (Bitmap->Dirty(x1, y1, x2, y2)) 
 		{
 			//TODO Workaround: apparently the bitmap sent to the driver always has to be a multiple
 			//TODO of 8 bits wide, and (dx * dy) also has to be a multiple of 8.
 			//TODO Fix driver (should be able to handle any size bitmaps!)
-			/*
+			//
+			// This isn't actually necessary with this plugin, but since other plugins rely
+			// on this behaviour to work correctly, I left it here. It doesn't hurt too much.
+			
 			while ((x1 > 0 || x2 < Bitmap->Width() - 1) && ((x2 - x1) & 7) != 7) 
 			{
 				if (x2 < Bitmap->Width() - 1)
@@ -233,36 +219,16 @@ void cDxr3SubpictureOsd::Flush()
 					x1--;
 				}
 			}
-			*/
-			// commit colors:
-			/*
-			int NumColors;
-			const tColor *Colors = Bitmap->Colors(NumColors);
 			
-			if (Colors) 
-			{
-
-				// TODO this should be fixed in the driver!
-				tColor colors[NumColors];
-				for (int i = 0; i < NumColors; i++) 
-				{
-					// convert AARRGGBB to AABBGGRR (the driver expects the colors the wrong way):
-					colors[i] = (Colors[i] & 0xFF000000) | ((Colors[i] & 0x0000FF) << 16) | (Colors[i] & 0x00FF00) | ((Colors[i] & 0xFF0000) >> 16);
-				}
-				
-				Colors = colors;
-				//TODO end of stuff that should be fixed in the driver
-				Spu->Cmd(OSD_SetPalette, 0, NumColors - 1, 0, 0, 0, Colors);
-			}
-			*/
-			// commit modified data:
-			Spu->SetPalette(i+1,oldPalette,Bitmap);
-			Spu->CopyBlockIntoOSD(i+1, Bitmap->Width(), x1, y1, x2, y2, Bitmap->Data(x1, y1));
+			Spu->SetPalette(i+1,Palette,Bitmap);
+			int origx=Left()+Bitmap->X0();
+			int origy=Top()+Bitmap->Y0();
+			Spu->CopyBlockIntoOSD(i+1, Bitmap->Width(), origx+x1, origy+y1, origx+x2, origy+y2, Bitmap->Data(x1, y1));
+    		        Bitmap->Clean();
 		}
-		Bitmap->Clean();
 	}
 	
-	Spu->Flush(oldPalette);
+	Spu->Flush(Palette);
 	shown = true;
         #ifdef timingdebug
           t.Stop("cDxr3SubpictureOsd::Flush");

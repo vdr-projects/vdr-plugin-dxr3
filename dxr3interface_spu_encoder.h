@@ -45,21 +45,6 @@
 #define OSDHEIGHT	576
 
 // ==================================
-// basic infos about one osd "window"
-struct sOSD_Window
-{
-    size_t x0;
-    size_t y0;
-    size_t x1;
-    size_t y1;
-
-    unsigned char colors[16];
-    unsigned char opacity[16];
-
-	size_t NumColors;
-};
-
-// ==================================
 // used to get active osd area
 struct sRectal
 {
@@ -117,11 +102,11 @@ public:
 	cSPUEncoder();
     ~cSPUEncoder() {}
 
-	int Cmd(OSD_Command cmd, int color = 0, int x0 = 0, int y0 = 0, int x1 = 0, int y1 = 0, const void *data = 0);
 	int Flush(cPalette *Palette);
 	void CopyBlockIntoOSD(int numWindow, int linewidth, int x0,int y0, int x1, int y1, const tIndex *data);
 	void StopSpu(void);
 	void SetPalette(int numWindow, cPalette* commonPalette, cPalette* windowPalette);
+	void Clear(void);
 
 private:
     cSPUEncoder(cSPUEncoder&);  // no copy constructor
@@ -139,11 +124,9 @@ private:
 
 	void CalculateActiveOsdArea();
 
-	sOSD_Window			m_windows[8];
-	cPalette		m_palManager; // name for hysterical raisins ;)
+	int bitmapcolor[8][16];
 	cColorManager*		m_ColorManager;
 	encodedata			m_encodeddata;
-    int					m_lastwindow;
 
 	// our osd :)
 	u_char				OSD_Screen[OSDWIDTH * OSDHEIGHT];

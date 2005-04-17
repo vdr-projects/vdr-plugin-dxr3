@@ -13,8 +13,7 @@ class cDxr3SubpictureOsd : public cOsd
 private:
 	cSPUEncoder* Spu;	///< interface to cSPUEncoder
 	bool shown;			///< is the osd shown?
-	cPalette* oldPalette; ///< palette used in previous flush (do detect changes)
-	cPalette* newPalette; ///< palette needed now
+	cPalette* Palette; ///< global palette (needed by all bitmaps)
 #if VDRVERSNUM >= 10318
 	cTimeMs *last;
 #else

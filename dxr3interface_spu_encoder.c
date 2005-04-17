@@ -269,157 +269,6 @@ cSPUEncoder::cSPUEncoder()
 
 	// set active area to 0
 	//m_x0 = m_x1 = m_y0 = m_y1 = 0;
-	// 16 Colors max.
-	m_palManager.SetBpp(4);
-}
-
-// ==================================
-// main function for the osd
-// makes life nicer :)
-int cSPUEncoder::Cmd(OSD_Command cmd, int color, int x0, int y0, int x1, int y1, const void *data)
-{
-    u_char *cp;
-	unsigned char idx = 0;
-	int opacity = 0;
-#if VDRVERSNUM >= 10307
-	const tColor *col;
-#else
-	eDvbColor *col;
-#endif
-
-	switch (cmd)
-	{
-	case OSD_SetWindow:
-		//  (x0) set window with number 0<x0<8 as current
-		if (x0 < 8 && x0 > 0)
-		{
-			m_lastwindow = x0;
-			return 0;
-		}
-
-		return -1;
-		break;
-
-	case OSD_Open:
-		// (x0,y0,x1,y1,BitPerPixel[2/4/8](color&0x0F),mix[0..15](color&0xF0))
-		// Opens OSD with this size and bit depth
-		// returns 0 on success, -1 on DRAM allocation error, -2 on "already open"
-		m_windows[m_lastwindow].x0 = x0;
-		m_windows[m_lastwindow].y0 = y0;
-		m_windows[m_lastwindow].x1 = x1;
-		m_windows[m_lastwindow].y1 = y1;
-
-		return 0;
-		break;
-
-	case OSD_SetPalette:
-	{
-		// Spu->Cmd(OSD_SetPalette, 0, NumColors - 1, 0, 0, 0, Colors);
-		// (firstcolor{color},lastcolor{x0},data)
-		// Set a number of entries in the palette
-		// sets the entries "firstcolor" through "lastcolor" from the array "data"
-		// data has 4 byte for each color:
-		// R,G,B, and a opacity value: 0->transparent, 1..254->mix, 255->pixel
-
-	#if VDRVERSNUM >= 10307
-		col = (tColor*)data;
-	#else
-		eDvbColor *col;
-		col = (eDvbColor*)data;
-	#endif
-
-		m_windows[m_lastwindow].NumColors = x0;
-
-		for (int x = color, i = 0; x <= x0; x++,i++) 
-		{
-			idx = m_palManager.Index(Tools::Rgb2YCrCb(*col & 0x00FFFFFF));
-			opacity = ((*col & 0xFF000000) >> 24) * 0xF / 0xFF;
-			m_windows[m_lastwindow].colors[i] = (opacity << 4) | idx;
-			m_windows[m_lastwindow].opacity[i] = opacity;
-			col++;
-		}
-
-		return 0;
-		break;
-	}
-	case OSD_SetBlock:
-		// (x0,y0,x1,y1,increment{color},data)
-		// fills pixels x0,y0 through  x1,y1 with the content of data[]
-		// inc contains the width of one line in the data block,
-		// inc<=0 uses blockwidth as linewidth
-		// returns 0 on success, -1 on clipping all pixel
-
-		CopyBlockIntoOSD
-			(	m_lastwindow,
-				color,
-				x0,
-				y0,
-				x1,
-				y1,
-				(tIndex *)data
-			);
-		break;
-
-	case OSD_Close:
-		// clear colors from palettemanager
-		m_palManager.Reset();
-
-		// clear osd
-		for (size_t i = m_windows[m_lastwindow].y0; i <= m_windows[m_lastwindow].y1; ++i) 
-		{
-			cp = &OSD_Screen[i*OSDWIDTH + m_windows[m_lastwindow].x0];
-			if ((cp+m_windows[m_lastwindow].x1-m_windows[m_lastwindow].x0+1) < &OSD_Screen[OSDWIDTH * OSDHEIGHT-1])
-			{
-				for (size_t xx=0; xx <= (m_windows[m_lastwindow].x1-m_windows[m_lastwindow].x0); xx++) 
-				{
-					*(cp+xx) = 0x00;
-				}
-			} 
-			else 
-			{
-				continue;
-			}
-		}
-
-                
-		// set windows position to 0
-		m_windows[m_lastwindow].x0 = 0;
-		m_windows[m_lastwindow].y0 = 0;
-		m_windows[m_lastwindow].x1 = 0;
-		m_windows[m_lastwindow].y1 = 0;
-
-		return 0;
-		break;
-
-	case OSD_Clear:
-		// Sets all pixels to color 0
-		// returns 0 on success
-
-		// This should be done in cSPUEncoder::cSPUEncoder
-
-		return 0;
-		break;
-
-	// not needed - at the moment
-	case OSD_Show:
-	case OSD_Hide:
-	case OSD_Fill:
-	case OSD_SetColor:
-	case OSD_SetTrans:
-	case OSD_SetPixel:
-	case OSD_GetPixel:
-	case OSD_SetRow:
-	case OSD_FillRow:
-	case OSD_FillBlock:
-	case OSD_Line:
-	case OSD_Query:
-	case OSD_Test:
-	case OSD_Text:
-	case OSD_MoveWindow:
-		break;
-	};
-
-	return -1;
 }
 
 
@@ -434,11 +283,19 @@ void cSPUEncoder::SetPalette(int numWindow, cPalette* commonPalette, cPalette* w
    const tColor *Colors = windowPalette->Colors(NumColors);
    if (Colors) {
      for (int i=0; i<NumColors; i++) {
-       int idx=commonPalette->Index(Colors[i]);
+       int idx=commonPalette->Index(Colors[i] & 0x00FFFFFF);
        int opacity=((Colors[i] & 0xFF000000) >> 24) * 0xF / 0xFF;
-       m_windows[numWindow].colors[i]=(opacity<<4) | idx;
+       bitmapcolor[numWindow][i]=(opacity<<4) | idx;
      }  
    }    
+}
+
+//========================================
+//Clears the OSD bitmap
+
+void cSPUEncoder::Clear(void)
+{
+  memset(OSD_Screen, 0 , sizeof(OSD_Screen));
 }
 
 //=============================================================
@@ -486,44 +343,20 @@ int cSPUEncoder::Flush(cPalette *Palette)
 // stamps window content into full osd bitmap
 void cSPUEncoder::CopyBlockIntoOSD(int numWindow, int linewidth, int x0, int y0, int x1, int y1, const tIndex *data)
 {
-	int i;
-	int w;
-	tIndex *cp;
-	const tIndex *sp = data;
-
-
-	// linewidth contains the width of one line in the data block,
-	// linewidth<=0 uses blockwidth as linewidth
-	if (linewidth <= 0)
-	{
-		w = m_windows[numWindow].x1 - m_windows[numWindow].x0;
-	}
-	else
-	{
-		w = linewidth;
-	}
-	
-    x0+=m_windows[numWindow].x0;
-    x1+=m_windows[numWindow].x0;
-    y0+=m_windows[numWindow].y0;
-    y1+=m_windows[numWindow].y0;	
-    
-    for (i = y0; i <= y1; ++i) 
-	{
-        cp = &OSD_Screen[i*OSDWIDTH + x0];
-        if ((cp+x1-x0+1) < &OSD_Screen[OSDWIDTH * OSDHEIGHT-1]) 
-		{
-            for (int xx=0; xx <= (x1-x0); xx++) 
-			{
-                *(cp+xx) = m_windows[numWindow].colors[*(sp+xx) & 0x0f];
-            }
-        } 
-		else 
-		{
-            continue;
+    tIndex *cp;
+    const tIndex *sp = data;
+        
+    if (x1>=OSDWIDTH) x1=OSDWIDTH-1;
+    if (y1>=OSDHEIGHT) y1=OSDHEIGHT-1;
+    cp = &OSD_Screen[y0*OSDWIDTH+x0];     
+         
+    for (int y = y0; y <= y1; y++) {
+        for (int x=x0; x <= x1; x++) {
+           *(cp++) = bitmapcolor[numWindow][*(sp++) & 0x0f];
         }
-        sp += w;
-	}
+        cp+=OSDWIDTH-(x1-x0+1);
+        sp+=linewidth-(x1-x0+1);
+    }
 }
 
 // ==================================
