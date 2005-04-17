@@ -389,7 +389,7 @@ void cDxr3Interface::DisableAudio()
 { 
 	m_AudioActive = false;
 
-	// we wirte zero buffers to dxr3
+	// we write zero buffers to dxr3
     if (!m_ExternalReleased) 
 	{   
         if (write(m_fdAudio, zerobuffer, ZEROBUFFER_SIZE) < 0) Resuscitation();
@@ -403,7 +403,7 @@ void cDxr3Interface::DisableAudio()
 //! enable overlay mode of the dxr3
 void cDxr3Interface::EnableOverlay()
 {
-	// first we check, if it is enable yet
+	// first we check, if it is enabled yet
 	if (m_OverlayActive)
 	{
 		return;
