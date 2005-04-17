@@ -1,7 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.1.2.11 2005/04/05 18:54:01 scop Exp $
+# $Id: Makefile,v 1.1.2.12 2005/04/17 16:47:30 scop Exp $
 
 # The official name of this plugin.
 # This name will be used in the '-P...' option of VDR to load the plugin.
@@ -56,6 +56,13 @@ DEFINES += -DLOGPATH=\"/video/\"	# note: path must end with /
 # use OSD scaler borrowed from the Xine plugin?
 # comment this out to use the traditional vdr-dxr3 scaler
 DEFINES += -DUSE_XINE_SCALER
+
+# The OSD goes berserk (flickering rectangles in colors from the current
+# palette around the screen) in some setups if it's refreshed too often.
+# If it doesn't happen for you or you don't like the small delay this
+# causes, change this to 0.  Experiment with larger values if the default
+# of 35ms does not calm down your OSD.
+DEFINES += -DFLUSHRATE=35
 
 ### The object files (add further files here):
 
