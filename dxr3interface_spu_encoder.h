@@ -118,6 +118,8 @@ public:
     ~cSPUEncoder() {}
 
 	int Cmd(OSD_Command cmd, int color = 0, int x0 = 0, int y0 = 0, int x1 = 0, int y1 = 0, const void *data = 0);
+	int Flush(void);
+	void StopSpu(void);
 
 private:
     cSPUEncoder(cSPUEncoder&);  // no copy constructor

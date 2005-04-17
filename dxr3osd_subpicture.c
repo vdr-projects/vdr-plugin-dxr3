@@ -39,6 +39,7 @@ cDxr3SubpictureOsd::~cDxr3SubpictureOsd()
 			Spu->Cmd(OSD_Close);
 		}
 	}
+	Spu->StopSpu();
 #if VDRVERSNUM >= 10318
 	delete last;
 #endif
@@ -170,22 +171,13 @@ void cDxr3SubpictureOsd::Flush()
 				Spu->Cmd(OSD_SetPalette, 0, NumColors - 1, 0, 0, 0, Colors);
 			}
 			// commit modified data:
-			//Spu->Cmd(OSD_SetBlock, Bitmap->Width(), x1, y1, x2, y2, Bitmap->Data(x1, y1));
 			Spu->Cmd(OSD_SetBlock, Bitmap->Width(), x1, y1, x2, y2, Bitmap->Data(x1, y1));
 		}
 		Bitmap->Clean();
 	}
 	
-	if (!shown) 
-	{
-		// Showing the windows in a separate loop to avoid seeing them come up one after another
-		for (int i = 0; (Bitmap = GetBitmap(i)) != NULL; i++) 
-		{
-			Spu->Cmd(OSD_SetWindow, 0, i + 1);
-			Spu->Cmd(OSD_MoveWindow, 0, Left() + Bitmap->X0(), Top() + Bitmap->Y0());
-		}
-		shown = true;
-	}
+	Spu->Flush();
+	shown = true;
 }
 
 #endif /*VDRVERSNUM*/

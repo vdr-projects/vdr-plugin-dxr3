@@ -360,30 +360,6 @@ int cSPUEncoder::Cmd(OSD_Command cmd, int color, int x0, int y0, int x1, int y1,
 				m_windows[m_lastwindow].y0 + y1,
 				(u_char *)data
 			);
-
-		// calculate osd size
-		CalculateActiveOsdArea();
-
-		//cLog::Instance() << "(" << m_x0 << ", " <<  m_x1 << ") - (" << m_y0 << ", " << m_y1 << ")";
-
-		m_encodeddata.count = 0;
-		EncodePixelbufRle(0,0, OSDWIDTH, OSDHEIGHT-1, OSD_Screen, 0, &m_encodeddata);
-
-		if (cDxr3ConfigData::Instance().GetDebug())
-		{
-			cLog::Instance() << "OSD Datasize: " << m_encodeddata.count << "\n";
-		}
-
-		if (m_encodeddata.count <= DATASIZE) 
-		{
-			cDxr3Interface::Instance().WriteSpu((uint8_t*) &m_encodeddata, m_encodeddata.count);
-			return 0;
-		} 
-		else 
-		{
-			cLog::Instance() << "Warning: SPU data (" << m_encodeddata.count << ") size exceeds limit\n";
-			return -1;
-	    }
 		break;
 
 	case OSD_Close:
@@ -407,26 +383,12 @@ int cSPUEncoder::Cmd(OSD_Command cmd, int color, int x0, int y0, int x1, int y1,
 			}
 		}
 
-		// encode rle
-		m_encodeddata.count = 0;
-		EncodePixelbufRle(0,0, OSDWIDTH, OSDHEIGHT-1, OSD_Screen, 0, &m_encodeddata);
-
+                
 		// set windows position to 0
 		m_windows[m_lastwindow].x0 = 0;
 		m_windows[m_lastwindow].y0 = 0;
 		m_windows[m_lastwindow].x1 = 0;
 		m_windows[m_lastwindow].y1 = 0;
-
-		if (m_encodeddata.count <= DATASIZE) 
-		{
-			cDxr3Interface::Instance().WriteSpu((uint8_t*) &m_encodeddata, m_encodeddata.count);
-			return 0;
-		} 
-		else 
-		{
-			cLog::Instance() << "Warning: SPU data (" << m_encodeddata.count << ") size exceeds limit\n";
-			return -1;
-	    }
 
 		return 0;
 		break;
@@ -460,6 +422,35 @@ int cSPUEncoder::Cmd(OSD_Command cmd, int color, int x0, int y0, int x1, int y1,
 	};
 
 	return -1;
+}
+
+
+//===================================
+//Flushes the OSD content into the spu
+int cSPUEncoder::Flush(void)
+{
+  // calculate osd size (actually dead code)
+  CalculateActiveOsdArea();
+
+  //cLog::Instance() << "(" << m_x0 << ", " <<  m_x1 << ") - (" << m_y0 << ", " << m_y1 << ")";
+
+  m_encodeddata.count = 0;
+  EncodePixelbufRle(0,0, OSDWIDTH, OSDHEIGHT-1, OSD_Screen, 0, &m_encodeddata);
+
+  if (cDxr3ConfigData::Instance().GetDebug())
+  {
+    cLog::Instance() << "OSD Datasize: " << m_encodeddata.count << "\n";
+  }
+
+  if (m_encodeddata.count <= DATASIZE) 
+  {
+    cDxr3Interface::Instance().WriteSpu((uint8_t*) &m_encodeddata, m_encodeddata.count);
+    return 0;
+  } else 
+  {
+    cLog::Instance() << "Warning: SPU data (" << m_encodeddata.count << ") size exceeds limit\n";
+    return -1;
+  }
 }
 
 // ==================================
@@ -762,6 +753,11 @@ void cSPUEncoder::encode_do_control(int x,int y, encodedata* ed, pixbuf* pb)
     unsigned char *spudata;
 
     spudata = m_ColorManager->GetSpuData(len);
+    //check that the highlight regions data wont overflow the buffer
+    if(i+len+2>DATASIZE) {
+      ed->count=DATASIZE+1;
+      return;
+    }
 
     for (int si= 0; si < len; si++) 
 	{
@@ -784,6 +780,36 @@ void cSPUEncoder::encode_do_control(int x,int y, encodedata* ed, pixbuf* pb)
     ed->data[1]= i & 0xff;
 
     ed->count= i;
+}
+
+// ==================================
+// Stop spu display
+void cSPUEncoder::StopSpu(void) 
+{
+    uint8_t ed[10];
+    /* packet size */
+    ed[0]= 0;
+    ed[1]= 10;
+    
+    /* pointer to the SP_DCSQT */
+    ed[2]= 0;
+    ed[3]= 4; 
+    
+    /* SP_DCSQT */
+    /* display duration... */
+    ed[4]= 0x00;
+    ed[5]= 0x00; //duration before turn on command occurs (will not be used)
+
+    /* pointer to next command block */
+    ed[6]= 0;  //since this is the last command block, this
+    ed[7]= 4;//points back to itself
+
+    /* 0x02: stop displaying */
+    ed[8]= 0x02;
+
+    /* 0xFF: end sequence */
+    ed[9]= 0xFF;
+    cDxr3Interface::Instance().WriteSpu(ed, 10);
 }
 
 // ==================================

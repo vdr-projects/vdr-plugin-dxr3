@@ -96,27 +96,22 @@ public:
     /** encodes the color information as highlight spu data*/
   	unsigned char* GetSpuData(int &len);
 
-	/** Adds a new highlight region beginning from FIRST to LAST column */
-//	void AddRegion(int first, int last, unsigned int color, unsigned int opac=0xFFFF);
-
-	/** No descriptions */
-  void SetBgColor(unsigned int bgColor);
-
 private: // Private attributes
 	yRegion *hlr[MAX_NO_OF_REGIONS];
+	yRegion *curRegion;
 	int 	NrOfRegions;
-	bool isopen;
-	unsigned char spudata[2*4096];
-	unsigned int BgCol;
-	int MaxY;
+	unsigned char spudata[(4+6*MAX_NO_OF_SECTIONS)*MAX_NO_OF_REGIONS+7];
+	xSection *curSection;
+	int curSectionIndex;
 
 	/** Opens a new highlight region */
   	void OpenRegion(int y);
 	/** Closes the spu-highlight region */
 	void CloseRegion(int y);
 	
-    xSection* NewSection(int x);
-    xSection *GetSection(int x);
+        void  NewSection(int x);
+        void  FirstSection(void);
+        void  NextSection(void);
 };
 
 #endif /*_DXR3COLORMANAGER_H_*/
