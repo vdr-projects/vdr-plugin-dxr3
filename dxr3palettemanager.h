@@ -37,3 +37,9 @@ private:
 };
 
 #endif /*_DXR3PALETTEMANAGER_H_*/
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

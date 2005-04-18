@@ -90,3 +90,9 @@ private:
 extern void *(* dxr3_memcpy)(void *to, const void *from, size_t len);
 
 #endif /*_DXR3MEMCPY_H_*/
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

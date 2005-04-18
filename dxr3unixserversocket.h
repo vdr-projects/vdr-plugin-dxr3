@@ -82,3 +82,9 @@ private:
 };
 
 #endif // __DXR3_UNIX_SERVER_SOCKET_H
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

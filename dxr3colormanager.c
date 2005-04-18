@@ -377,3 +377,9 @@ void cColorManager::SetBgColor(unsigned int bgColor)
 {
 //	cColorManager::BgColor = bgColor;
 }
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

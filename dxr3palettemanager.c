@@ -113,3 +113,9 @@ uint32_t* cDxr3PaletteManager::GetPalette()
     
     return m_pal;
 } 
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

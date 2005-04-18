@@ -1284,3 +1284,9 @@ char blackframe[] =
 0x0, 0x0, 0x0, 0x0, 0x0 }; 
 
 int blackframeLength = sizeof(blackframe);
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

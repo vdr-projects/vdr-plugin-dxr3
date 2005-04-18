@@ -53,3 +53,9 @@
 #endif
 
 #endif /*_DXR3_VDRINCLUDES_H_*/
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

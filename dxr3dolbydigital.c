@@ -57,3 +57,8 @@ void cDxr3DolbyDigital::Action()
 {
 }
 
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

@@ -120,3 +120,9 @@ private: // Private attributes
 };
 
 #endif /*_DXR3COLORMANAGER_H_*/
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

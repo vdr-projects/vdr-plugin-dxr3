@@ -247,3 +247,8 @@ uint32_t cDxr3PesFrame::m_staticAspectRatio = EM8300_ASPECTRATIO_4_3;
 uint32_t cDxr3PesFrame::m_staticHorizontalSize = 720;
 const uint32_t cDxr3PesFrame::MAX_PES_HEADER_SIZE = 184;
 
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

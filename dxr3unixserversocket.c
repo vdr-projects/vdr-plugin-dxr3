@@ -207,3 +207,9 @@ void cDxr3StartStopThread::Action()
         while (mySocket.GetNextMessage());
     }
 }
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

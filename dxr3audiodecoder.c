@@ -293,3 +293,9 @@ bool cDxr3AudioDecoder::HeadCheck(unsigned long head)
 
     return retval;
 }
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

@@ -135,3 +135,9 @@ bool cDxr3CPU::Cpuid(unsigned long function, unsigned long& out_eax, unsigned lo
 	   : "0" (function));
 	return true;
 }
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

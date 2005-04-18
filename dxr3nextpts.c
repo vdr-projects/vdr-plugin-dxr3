@@ -23,3 +23,9 @@
 
 // ==================================
 cMutex* cDxr3NextPts::m_pMutex = new cMutex;
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

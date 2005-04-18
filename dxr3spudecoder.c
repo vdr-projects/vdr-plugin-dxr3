@@ -103,3 +103,9 @@ int cDxr3SpuDecoder::setTime(uint32_t pts)
 { 
     return (pts == 0) ? 0 : 1; 
 }
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

@@ -104,5 +104,10 @@ protected:
     static void Unlock()	{ cLog::m_pMutex->Unlock(); }
 };
 
-
 #endif /*_DXR3_LOG_H_*/
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

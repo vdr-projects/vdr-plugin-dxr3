@@ -78,3 +78,9 @@ private:
 };
 
 #endif /*_DXR3_AUDIODECODER_H_*/
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

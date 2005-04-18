@@ -39,3 +39,9 @@ cDxr3ConfigData::cDxr3ConfigData()
 	m_Contrast		= 500;
 	m_Saturation	= 500;
 }
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

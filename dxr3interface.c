@@ -1390,3 +1390,9 @@ char cDxr3Interface::Dxr3CopyYUVData(int pos, int *dst, int length)
 
 // ==================================
 cMutex* cDxr3Interface::m_pMutex = new cMutex;
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

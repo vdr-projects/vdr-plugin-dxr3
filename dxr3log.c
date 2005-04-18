@@ -73,3 +73,9 @@ void cLog::Close()
 	}
 	Unlock();
 }
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

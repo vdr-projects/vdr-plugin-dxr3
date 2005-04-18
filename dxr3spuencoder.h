@@ -201,3 +201,9 @@ private:
 */
 
 #endif /*_DXR3_INTERFACE_SPU_ENCODER_*/
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

@@ -3,7 +3,7 @@
 *
 * See the README file for copyright information and how to reach the author.
 *
-* $Id: dxr3.c,v 1.4 2005/03/22 20:55:42 scop Exp $
+* $Id: dxr3.c,v 1.5 2005/04/18 19:34:23 scop Exp $
 */
 
 
@@ -444,3 +444,9 @@ cOsdObject* cPluginDxr3::MainMenuAction()
 }
 
 VDRPLUGINCREATOR(cPluginDxr3); // Don't touch this!
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

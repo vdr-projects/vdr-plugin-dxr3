@@ -238,3 +238,9 @@ void cSPUEncoder::CalculateActiveOsdArea()
 	cLog::Instance() << "OSD x1: " << m_active_osd.x1 << "\n";
 	cLog::Instance() << "OSD y1: " << m_active_osd.y1 << "\n";
 }
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

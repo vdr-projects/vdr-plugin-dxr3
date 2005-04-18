@@ -673,3 +673,9 @@ int cDxr3DemuxDevice::DemuxAudioPes(const uint8_t* buf, int length)
         return origLength;
     } 
 }
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:
