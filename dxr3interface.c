@@ -32,6 +32,7 @@
 const int LPCM_HEADER_LENGTH = 7;
 const int ZEROBUFFER_SIZE = 4096;
 uint8_t zerobuffer[ZEROBUFFER_SIZE] = {0};
+const uint32_t UNKNOWN_AUDIO_MODE = 9; // default, unused value
 
 // ==================================
 //! default spu palette
@@ -114,8 +115,7 @@ m_fdControl(-1), m_fdVideo(-1), m_fdAudio(-1), m_fdSpu(-1)
     m_audioDataRate = 0;
     m_audioSampleSize = 0;
 
-	// default value 9 = unused value
-    m_audioMode =  9;
+    m_audioMode = UNKNOWN_AUDIO_MODE;
 	m_aspectRatio = UNKNOWN_ASPECT_RATIO;
 	m_spuMode = EM8300_SPUMODE_OFF;
 
@@ -429,7 +429,7 @@ void cDxr3Interface::DisableAudio()
 	
 	m_AudioActive = false;
 
-	// we wirte zero buffers to dxr3
+	// we write zero buffers to dxr3
     if (!m_ExternalReleased) 
 	{   
         if (write(m_fdAudio, zerobuffer, ZEROBUFFER_SIZE) < 0) Resuscitation();
@@ -446,7 +446,7 @@ void cDxr3Interface::EnableOverlay()
 {
 	Lock();
 
-	// first we check, if it is enable yet
+	// first we check, if it is enabled yet
 	if (m_OverlayActive)
 	{
 		return;
@@ -812,6 +812,7 @@ void cDxr3Interface::ExternalReleaseDevices()
         if (m_fdAudio > -1) close(m_fdAudio);
         m_fdControl = m_fdVideo = m_fdSpu = m_fdAudio = -1;
         m_aspectRatio = UNKNOWN_ASPECT_RATIO;
+        m_audioMode = UNKNOWN_AUDIO_MODE;
 
         m_ExternalReleased = true;
         
