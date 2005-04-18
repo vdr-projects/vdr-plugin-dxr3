@@ -28,7 +28,8 @@
 cDxr3Ffmepg::cDxr3Ffmepg()
 {
 	avcodec_init();
-    avcodec_register_all();
+    // Register only codec(s) we'll need.
+    register_avcodec(&mp2_decoder);
 }
 
 // ==================================

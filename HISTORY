@@ -288,3 +288,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
   (Luca Olivetti, Kimmo Vuorinen)
 - rework OSD color management, fixes color "bleeding" (Luca Olivetti)
 - sync SPU decoder with VDR 1.3.23 (Ville Skyttä)
+- register only needed ffmpeg codec(s) (Marco Schluessler)
