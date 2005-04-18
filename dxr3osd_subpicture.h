@@ -33,3 +33,9 @@ public:
 
 #endif /*VDRVERSNUM*/
 #endif /*_DXR3OSD_SUBPICTURE_H_*/
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

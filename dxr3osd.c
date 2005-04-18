@@ -160,3 +160,9 @@ void cDxr3Osd::MoveWindow(cWindow *Window, int x, int y)
 }
 
 #endif /*VDRVERSNUM*/
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

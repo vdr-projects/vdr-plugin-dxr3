@@ -68,3 +68,9 @@ void cDxr3SysClock::SetSpuPts(uint32_t pts)
     ioctl(m_fdspu, EM8300_IOCTL_SPU_SETPTS, &newPts);
     mutex.Unlock();
 }
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

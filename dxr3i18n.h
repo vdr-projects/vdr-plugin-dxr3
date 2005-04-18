@@ -27,3 +27,9 @@
 extern const tI18nPhrase Phrases[];
 
 #endif /*_DXR3_I18N_H_*/
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

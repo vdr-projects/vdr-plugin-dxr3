@@ -249,3 +249,8 @@ uint32_t cDxr3PesFrame::m_staticHorizontalSize = 720;
 uint32_t cDxr3PesFrame::m_staticVerticalSize = 576;
 const uint32_t cDxr3PesFrame::MAX_PES_HEADER_SIZE = 184;
 
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

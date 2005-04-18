@@ -441,3 +441,9 @@ unsigned long long int cDxr3MemcpyBench::Rdtsc(uint32_t config_flags)
 	return times(&tp);
 #endif /* __i386__ || __x86_64__ */
 }
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

@@ -88,3 +88,9 @@ void cDxr3Ffmepg::CloseCodec(struct Dxr3Codec& Codec)
 		Codec.Open = false;
     }
 }
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

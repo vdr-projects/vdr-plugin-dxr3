@@ -103,5 +103,10 @@ private:
 	CPUInformation m_Info;
 };
 
-
 #endif /*_DXR3_CPU_H_*/
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

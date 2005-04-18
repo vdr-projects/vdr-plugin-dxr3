@@ -44,7 +44,10 @@ enum eDxr3TrickState {
     DXR3_FREEZE,
 };
 
-
-
-
 #endif // __DXR3_GENERAL_DEFINES_H
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

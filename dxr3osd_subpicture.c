@@ -237,3 +237,8 @@ void cDxr3SubpictureOsd::Flush()
 
 #endif /*VDRVERSNUM*/
 
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

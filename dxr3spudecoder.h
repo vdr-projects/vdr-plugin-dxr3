@@ -162,3 +162,9 @@ inline uint32_t cDxr3SpuPalette::getColor(uint8_t idx, uint8_t trans) const
 }
 
 #endif /*_DXR3SPUDECODER_H_*/
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

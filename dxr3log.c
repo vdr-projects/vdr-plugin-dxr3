@@ -66,3 +66,9 @@ void cLog::Close()
 		m_LogOpen = false;
 	}	
 }
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

@@ -643,3 +643,8 @@ void cMultichannelAudio::Encapsulate(uchar *b, int length)
   Unlock();
 }
 
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

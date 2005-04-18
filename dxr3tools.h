@@ -104,3 +104,9 @@ namespace Tools
 }
 
 #endif /*_DXR3TOOLS_H_*/
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

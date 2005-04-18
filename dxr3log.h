@@ -90,5 +90,10 @@ private:
 	void Close();						// with this function we close our logfile
 };
 
-
 #endif /*_DXR3_LOG_H_*/
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:
