@@ -49,5 +49,6 @@ enum eDxr3TrickState {
 // Local variables:
 // mode: c++
 // c-file-style: "stroustrup"
+// c-file-offsets: ((inline-open . 0))
 // indent-tabs-mode: t
 // End:

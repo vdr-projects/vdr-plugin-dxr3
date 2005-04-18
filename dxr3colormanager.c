@@ -357,5 +357,6 @@ bool xSection::HasColor(unsigned int color, unsigned char &ColorIndex)
 // Local variables:
 // mode: c++
 // c-file-style: "stroustrup"
+// c-file-offsets: ((inline-open . 0))
 // indent-tabs-mode: t
 // End:
