@@ -94,5 +94,6 @@ extern void *(* dxr3_memcpy)(void *to, const void *from, size_t len);
 // Local variables:
 // mode: c++
 // c-file-style: "stroustrup"
+// c-file-offsets: ((inline-open . 0))
 // indent-tabs-mode: t
 // End:
