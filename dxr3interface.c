@@ -32,6 +32,7 @@
 const int LPCM_HEADER_LENGTH = 7;
 const int ZEROBUFFER_SIZE = 4096;
 uint8_t zerobuffer[ZEROBUFFER_SIZE] = {0};
+const uint32_t UNKNOWN_AUDIO_MODE = 9; // default, unused value
 
 // ==================================
 //! helper function to generate name
@@ -106,8 +107,7 @@ m_fdControl(-1), m_fdVideo(-1), m_fdAudio(-1), m_fdSpu(-1)
     m_audioDataRate = 0;
     m_audioSampleSize = 0;
 
-	// default value 9 = unused value
-    m_audioMode =  9;
+    m_audioMode = UNKNOWN_AUDIO_MODE;
 	m_aspectRatio = UNKNOWN_ASPECT_RATIO;
 	m_spuMode = EM8300_SPUMODE_OFF;
 
@@ -751,6 +751,7 @@ void cDxr3Interface::ExternalReleaseDevices()
         if (m_fdAudio > -1) close(m_fdAudio);
         m_fdControl = m_fdVideo = m_fdSpu = m_fdAudio = -1;
         m_aspectRatio = UNKNOWN_ASPECT_RATIO;
+        m_audioMode = UNKNOWN_AUDIO_MODE;
 
         m_ExternalReleased = true;
         
