@@ -29,65 +29,65 @@
 // ==================================
 //!  A log class. 
 /*!
-	With this nice util dxr3plugin generates and mange a log file. In this
-	file the developer/enduser can find informations and can find errors,
-	problems and ohter stuff.
+  With this nice util dxr3plugin generates and mange a log file. In this
+  file the developer/enduser can find informations and can find errors,
+  problems and ohter stuff.
 */
 class cLog : public Singleton<cLog>
 {
-public: 
-	cLog();		// use default log file
-	cLog(std::string FileName);
+ public: 
+  cLog();		// use default log file
+  cLog(std::string FileName);
 	
-	~cLog()		{ Close(); }
+  ~cLog()		{ Close(); }
 	
-	void SetForceFlush(const bool v)	{ m_ForeFlush = v; }
-	bool GetForceFlush() const			{ return m_ForeFlush; }
+  void SetForceFlush(const bool v)	{ m_ForeFlush = v; }
+  bool GetForceFlush() const			{ return m_ForeFlush; }
 	
-	// write type data to log file.
-	template <class Type>
-	inline cLog& operator << ( Type item ) 
+  // write type data to log file.
+  template <class Type>
+    inline cLog& operator << ( Type item ) 
+    {
+      if (m_LogOpen)
 	{
-		if (m_LogOpen)
-		{
-			m_LogStream << item;
-			if (m_ForeFlush) m_LogStream.flush();
-		}
-		return *this;
+	  m_LogStream << item;
+	  if (m_ForeFlush) m_LogStream.flush();
 	}
-	inline cLog& operator << ( size_t item ) 
+      return *this;
+    }
+  inline cLog& operator << ( size_t item ) 
+    {
+      if (m_LogOpen)
 	{
-		if (m_LogOpen)
-		{
-			m_LogStream << (unsigned int)item;
-			if (m_ForeFlush) m_LogStream.flush();
-		}
-		return *this;
+	  m_LogStream << (unsigned int)item;
+	  if (m_ForeFlush) m_LogStream.flush();
 	}
-	inline cLog& operator << ( bool item ) 
+      return *this;
+    }
+  inline cLog& operator << ( bool item ) 
+    {
+      if (m_LogOpen) 
 	{
-		if (m_LogOpen) 
-		{
-			if (item == true) 
-			{
-				m_LogStream << "true";
-			} 
-			else 
-			{
-				m_LogStream << "false";
-			}
-			if (m_ForeFlush) m_LogStream.flush();
-		}
-		return *this;
+	  if (item == true) 
+	    {
+	      m_LogStream << "true";
+	    } 
+	  else 
+	    {
+	      m_LogStream << "false";
+	    }
+	  if (m_ForeFlush) m_LogStream.flush();
 	}
+      return *this;
+    }
 
-private:
-	std::ofstream	m_LogStream;	///< Our logstream
-	bool			m_LogOpen;		///< Is log open?
-	bool			m_ForeFlush;	///< Do we want to flush log everytime?
+ private:
+  std::ofstream	m_LogStream;	///< Our logstream
+  bool			m_LogOpen;		///< Is log open?
+  bool			m_ForeFlush;	///< Do we want to flush log everytime?
 
-	void Open(std::string Filename);	// with this function we open our logfile
-	void Close();						// with this function we close our logfile
+  void Open(std::string Filename);	// with this function we open our logfile
+  void Close();						// with this function we close our logfile
 };
 
 

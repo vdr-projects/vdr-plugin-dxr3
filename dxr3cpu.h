@@ -30,77 +30,77 @@
 // ==================================
 //! all possible cabs
 enum Cpu_cabs
-{
-	CC_MMX		= 0x80000000,	///< Value for mmx
-	CC_3DNOW	= 0x40000000,	///< Value for 3dnow
-	CC_MMXEXT	= 0x20000000,	///< Value for mmx ext
-	CC_SSE		= 0x10000000,	///< Value for sse
-	CC_SSE2		= 0x08000000	///< Value for sse2
-};
+  {
+    CC_MMX		= 0x80000000,	///< Value for mmx
+    CC_3DNOW	= 0x40000000,	///< Value for 3dnow
+    CC_MMXEXT	= 0x20000000,	///< Value for mmx ext
+    CC_SSE		= 0x10000000,	///< Value for sse
+    CC_SSE2		= 0x08000000	///< Value for sse2
+  };
 
 // ==================================
 //! easy and fast access to all infos
 struct CPUInformation
 {
-	CPUInformation()
-	{
-		AMD			= false;
-		INTEL		= false;
-		MMX			= false;
-		MMXEXT		= false;
-		SSE			= false;
-		SSE2		= false;
-		Now			= false;
-		RDTSC		= false;
-		HT			= false;
-		AMD64Bit	= false;
-	}
+  CPUInformation()
+  {
+    AMD			= false;
+    INTEL		= false;
+    MMX			= false;
+    MMXEXT		= false;
+    SSE			= false;
+    SSE2		= false;
+    Now			= false;
+    RDTSC		= false;
+    HT			= false;
+    AMD64Bit	= false;
+  }
 	
-	char Vendor[16];	///< vendorname
+  char Vendor[16];	///< vendorname
 	
-	bool AMD;			///< is it an AMD CPU?
-	bool INTEL;			///< is it an Intel CPU?
-	bool MMX;			///< is MMX-Technology supported?
-	bool MMXEXT;		///< are Extended MMX_MultimediaExtensions supported?
-	bool SSE;			///< is SSE-Technology supported?
-	bool SSE2;			///< is SSE2-Technology supported?
-	bool Now;			///< is 3DNow-Technology supported?
-	bool RDTSC;			///< is RDTSC-Technology supported?
-	bool HT;			///< is HyperThreading supported?
-	bool AMD64Bit;		///< is it a 64 bit machine?
+  bool AMD;			///< is it an AMD CPU?
+  bool INTEL;			///< is it an Intel CPU?
+  bool MMX;			///< is MMX-Technology supported?
+  bool MMXEXT;		///< are Extended MMX_MultimediaExtensions supported?
+  bool SSE;			///< is SSE-Technology supported?
+  bool SSE2;			///< is SSE2-Technology supported?
+  bool Now;			///< is 3DNow-Technology supported?
+  bool RDTSC;			///< is RDTSC-Technology supported?
+  bool HT;			///< is HyperThreading supported?
+  bool AMD64Bit;		///< is it a 64 bit machine?
 
-	uint32_t caps;		///< all features represanted as caps
+  uint32_t caps;		///< all features represanted as caps
 };
 
 // ==================================
 //!  Grab some infos about the cpu(s)
 /*!
-	If you want to know what the cpu of the
-	target machine can do, this class is for you :)
-	It is used intern for the math and memcpy part.
+  If you want to know what the cpu of the
+  target machine can do, this class is for you :)
+  It is used intern for the math and memcpy part.
 */
 class cDxr3CPU : public Singleton<cDxr3CPU>
 {
-public:
-	cDxr3CPU();
-	~cDxr3CPU()	{}
+ public:
+  cDxr3CPU();
+  ~cDxr3CPU()	{}
 	
-	bool HasMMXSupport() const		{ return m_Info.MMX; }
-	bool HasSSESupport() const		{ return m_Info.SSE; }
-	bool HasSSE2Support() const		{ return m_Info.SSE2; }
-	bool Has3DNowSupport() const	{ return m_Info.Now; }
-	bool HasRDTSCSupport() const	{ return m_Info.RDTSC; }
-	bool HasHTSupport() const		{ return m_Info.HT; }
+  bool HasMMXSupport() const		{ return m_Info.MMX; }
+  bool HasSSESupport() const		{ return m_Info.SSE; }
+  bool HasSSE2Support() const		{ return m_Info.SSE2; }
+  bool Has3DNowSupport() const	{ return m_Info.Now; }
+  bool HasRDTSCSupport() const	{ return m_Info.RDTSC; }
+  bool HasHTSupport() const		{ return m_Info.HT; }
 	
-	inline CPUInformation GetInfos() const	{ return m_Info ;}
+  inline CPUInformation GetInfos() const	{ return m_Info ;}
 	
-private:
-	bool CheckCPUIDPresence();
+ private:
+  bool CheckCPUIDPresence();
 
-	// main function to get cpu(s) features
-	bool Cpuid(unsigned long function, unsigned long& out_eax, unsigned long& out_ebx, unsigned long& out_ecx, unsigned long& out_edx);
+  // main function to get cpu(s) features
+  bool Cpuid(unsigned long function, unsigned long& out_eax, unsigned long& out_ebx, unsigned long& out_ecx, unsigned long& out_edx);
 	
-	CPUInformation m_Info;
+  CPUInformation m_Info;
 };
 
 

@@ -25,44 +25,50 @@
 //! constructor
 cLog::cLog()
 {
-	m_LogOpen = false;
-	m_ForeFlush = true;
+    m_LogOpen = false;
+    m_ForeFlush = true;
 	
-	std::string Filename;
-	Filename = LOGPATH;
-	Filename += "dxr3plugin.log";
+    std::string Filename;
+    Filename = LOGPATH;
+    Filename += "dxr3plugin.log";
 
-	Open(Filename);
+    Open(Filename);
 }
 
 // ==================================
 //! constructor with filename
 cLog::cLog(std::string Filename)
 {
-	m_LogOpen = false;
-	m_ForeFlush = true;
+    m_LogOpen = false;
+    m_ForeFlush = true;
 	
-	Open(Filename);
+    Open(Filename);
 }
 
 // ==================================
 //! open log file
 void cLog::Open(std::string Filename)
 {
-	m_LogStream.open(Filename.c_str());
-	m_LogOpen = true;
+    m_LogStream.open(Filename.c_str());
+    m_LogOpen = true;
 }
 	
 // ==================================
 //! close log file
 void cLog::Close()
 {
-	if (m_LogOpen)
-	{
-		// close file now
-		m_LogStream.flush();
-		m_LogStream.close();
+    if (m_LogOpen)
+    {
+	// close file now
+	m_LogStream.flush();
+	m_LogStream.close();
 		
-		m_LogOpen = false;
-	}	
+	m_LogOpen = false;
+    }	
 }
+
+// Local variables:
+// mode: c++
+// c-file-style: "stroustrup"
+// indent-tabs-mode: t
+// End:

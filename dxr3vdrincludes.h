@@ -34,9 +34,9 @@
 
 // all includes from vdr
 #if VDRVERSNUM >= 10307
-	#include <vdr/osd.h>
+#include <vdr/osd.h>
 #else
-	#include <vdr/osdbase.h>
+#include <vdr/osdbase.h>
 #endif
 #include <vdr/config.h>
 #include <vdr/thread.h>

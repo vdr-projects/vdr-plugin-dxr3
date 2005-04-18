@@ -55,34 +55,34 @@
 
 // ==================================
 /*! \def BUFSIZE
-    \brief size of buffers for benchmark :)
+  \brief size of buffers for benchmark :)
 */
 #define BUFSIZE 1024*1024
 
 // ==================================
 struct memcpy_routine
 {
-	std::string name;	///< name of memcpy methode
-	void *(* function)(void *to, const void *from, size_t len);	///< our memcopy methode
-	unsigned long long time;	///< needed time for banchmark
-	uint32_t cpu_require;		///< caps from dxr3cpu.h
+  std::string name;	///< name of memcpy methode
+  void *(* function)(void *to, const void *from, size_t len);	///< our memcopy methode
+  unsigned long long time;	///< needed time for banchmark
+  uint32_t cpu_require;		///< caps from dxr3cpu.h
 };
 
 // ==================================
 //! Little class to do a nice benchmark
 /*
-	Whith this class we can get the fastest memcyp
-	methode for target computer.
+  Whith this class we can get the fastest memcyp
+  methode for target computer.
 */
 class cDxr3MemcpyBench
 {
-public:
-	cDxr3MemcpyBench(uint32_t config_flags = 0);
+ public:
+  cDxr3MemcpyBench(uint32_t config_flags = 0);
 
-private:
-	unsigned long long int Rdtsc(uint32_t config_flags);
+ private:
+  unsigned long long int Rdtsc(uint32_t config_flags);
 
-	std::vector<memcpy_routine>	m_methods;	///< a std::vector with all methodes
+  std::vector<memcpy_routine>	m_methods;	///< a std::vector with all methodes
 };
 
 // ==================================

@@ -40,15 +40,15 @@
 // ! create osd at (Left, Top)
 cOsd *cDxr3OsdProvider::CreateOsd(int Left, int Top)
 {
-//	if (cDxr3ConfigData::Instance().GetMenuMode() == (eMenuMode)SUBPICTURE)
-//	{
-		// use subpicture
-		return new cDxr3SubpictureOsd(Left, Top);
-/*	}
+  //	if (cDxr3ConfigData::Instance().GetMenuMode() == (eMenuMode)SUBPICTURE)
+  //	{
+  // use subpicture
+  return new cDxr3SubpictureOsd(Left, Top);
+  /*	}
 	else
 	{
-		// mpeg based menu system
-		return new cDxr3MpegOsd(Left, Top);
+	// mpeg based menu system
+	return new cDxr3MpegOsd(Left, Top);
 	}*/
 }
 
@@ -57,106 +57,106 @@ cOsd *cDxr3OsdProvider::CreateOsd(int Left, int Top)
 // ==================================
 bool cDxr3Osd::SetWindow(cWindow *Window) 
 {
-	if (Window) 
+  if (Window) 
+    {
+      // Window handles are counted 0...(MAXNUMWINDOWS - 1), but the actual window
+      // numbers in the driver are used from 1...MAXNUMWINDOWS.
+      int Handle = Window->Handle();
+      if (0 <= Handle && Handle < MAXNUMWINDOWS) 
 	{
-		// Window handles are counted 0...(MAXNUMWINDOWS - 1), but the actual window
-		// numbers in the driver are used from 1...MAXNUMWINDOWS.
-		int Handle = Window->Handle();
-		if (0 <= Handle && Handle < MAXNUMWINDOWS) 
-		{
-			Spu->Cmd(OSD_SetWindow, 0, Handle + 1);
-			return true;
-		}
-		esyslog("ERROR: illegal window handle: %d", Handle);
-
-		if (cDxr3ConfigData::Instance().GetDebug())
-		{
-			cLog::Instance() << "cDxr3Osd::SetWindow: illegal window handle:" << Handle << "\n";
-		}
+	  Spu->Cmd(OSD_SetWindow, 0, Handle + 1);
+	  return true;
 	}
-	return false;
+      esyslog("ERROR: illegal window handle: %d", Handle);
+
+      if (cDxr3ConfigData::Instance().GetDebug())
+	{
+	  cLog::Instance() << "cDxr3Osd::SetWindow: illegal window handle:" << Handle << "\n";
+	}
+    }
+  return false;
 }
 
 // ==================================
 cDxr3Osd::cDxr3Osd(int x, int y) : cOsdBase(x, y)
 {    
-    Spu = &cSPUEncoder::Instance();
+  Spu = &cSPUEncoder::Instance();
 }
 
 // ==================================
 cDxr3Osd::~cDxr3Osd()
 {
   for (int i = 0; i < NumWindows(); i++)
-  {
+    {
       CloseWindow(GetWindowNr(i));
-  }
+    }
 }
 
 // ==================================
 bool cDxr3Osd::OpenWindow(cWindow *Window)
 {
-	if (SetWindow(Window)) 
-	{
-		Spu->Cmd(OSD_Open, Window->Bpp(), X0() + Window->X0(), Y0() + Window->Y0(), X0() + Window->X0() + Window->Width() - 1, Y0() + Window->Y0() + Window->Height() - 1, (void *)1); // initially hidden!
-		return true;
-	}
-	return false;
+  if (SetWindow(Window)) 
+    {
+      Spu->Cmd(OSD_Open, Window->Bpp(), X0() + Window->X0(), Y0() + Window->Y0(), X0() + Window->X0() + Window->Width() - 1, Y0() + Window->Y0() + Window->Height() - 1, (void *)1); // initially hidden!
+      return true;
+    }
+  return false;
 }
 
 // ==================================
 void cDxr3Osd::CommitWindow(cWindow *Window)
 {
-	if (SetWindow(Window)) 
-	{
-		int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
+  if (SetWindow(Window)) 
+    {
+      int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
 		
-		if (Window->Dirty(x1, y1, x2, y2)) 
-		{
-			// commit colors:
-			int FirstColor = 0, LastColor = 0;
-			const eDvbColor *pal;
-			while ((pal = Window->NewColors(FirstColor, LastColor)) != NULL)
-				Spu->Cmd(OSD_SetPalette, FirstColor, LastColor, 0, 0, 0, pal);
-			// commit modified data:
-			Spu->Cmd(OSD_SetBlock, Window->Width(), x1, y1, x2, y2, Window->Data(x1, y1));
+      if (Window->Dirty(x1, y1, x2, y2)) 
+	{
+	  // commit colors:
+	  int FirstColor = 0, LastColor = 0;
+	  const eDvbColor *pal;
+	  while ((pal = Window->NewColors(FirstColor, LastColor)) != NULL)
+	    Spu->Cmd(OSD_SetPalette, FirstColor, LastColor, 0, 0, 0, pal);
+	  // commit modified data:
+	  Spu->Cmd(OSD_SetBlock, Window->Width(), x1, y1, x2, y2, Window->Data(x1, y1));
         }
-	}
+    }
 }
 
 // ==================================
 void cDxr3Osd::ShowWindow(cWindow *Window)
 {
-	if (SetWindow(Window))
-	{
-		Spu->Cmd(OSD_MoveWindow, 0, X0() + Window->X0(), Y0() + Window->Y0());
-	}
+  if (SetWindow(Window))
+    {
+      Spu->Cmd(OSD_MoveWindow, 0, X0() + Window->X0(), Y0() + Window->Y0());
+    }
 }
 
 // ==================================
 void cDxr3Osd::HideWindow(cWindow *Window, bool Hide)
 {
-	if (SetWindow(Window))
-	{
-		Spu->Cmd(Hide ? OSD_Hide : OSD_Show, 0);
-	}
+  if (SetWindow(Window))
+    {
+      Spu->Cmd(Hide ? OSD_Hide : OSD_Show, 0);
+    }
 }
 
 // ==================================
 void cDxr3Osd::CloseWindow(cWindow *Window)
 {
-	if (SetWindow(Window))
-	{
-		Spu->Cmd(OSD_Close);
-	}
+  if (SetWindow(Window))
+    {
+      Spu->Cmd(OSD_Close);
+    }
 }
 
 // ==================================
 void cDxr3Osd::MoveWindow(cWindow *Window, int x, int y)
 {
-	if (SetWindow(Window))
-	{
-		Spu->Cmd(OSD_MoveWindow, 0, X0() + x, Y0() + y);
-	}
+  if (SetWindow(Window))
+    {
+      Spu->Cmd(OSD_MoveWindow, 0, X0() + x, Y0() + y);
+    }
 }
 
 #endif /*VDRVERSNUM*/
