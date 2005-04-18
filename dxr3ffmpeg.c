@@ -27,64 +27,64 @@
 //! constructor
 cDxr3Ffmepg::cDxr3Ffmepg()
 {
-  avcodec_init();
-  avcodec_register_all();
+	avcodec_init();
+    avcodec_register_all();
 }
 
 // ==================================
 //! look if Codec is supported by ffmpeg
 bool cDxr3Ffmepg::FindCodec(struct Dxr3Codec& Codec)
 {
-  // find codec
-  Codec.codec = avcodec_find_decoder(Codec.id);
+	// find codec
+    Codec.codec = avcodec_find_decoder(Codec.id);
 
-  if (!Codec.codec) 
-    {
-      // codec is't supported by ffmpeg
-      if (cDxr3ConfigData::Instance().GetDebug())
+	if (!Codec.codec) 
 	{
-	  cLog::Instance() << "cDxr3Ffmepg::OpenCodec(struct Dxr3Codec& Codec) codec not found (" << Codec.id << ")\n";
+		// codec is't supported by ffmpeg
+		if (cDxr3ConfigData::Instance().GetDebug())
+		{
+			cLog::Instance() << "cDxr3Ffmepg::OpenCodec(struct Dxr3Codec& Codec) codec not found (" << Codec.id << ")\n";
+		}
+		return false;
 	}
-      return false;
-    }
 
-  // init codec_context
-  memset(&Codec.codec_context, 0, sizeof(Codec.codec_context));
+	// init codec_context
+    memset(&Codec.codec_context, 0, sizeof(Codec.codec_context));
 
-  return true;
+	return true;
 }
 
 // ==================================
 //! try to open Codec
 bool cDxr3Ffmepg::OpenCodec(struct Dxr3Codec& Codec)
 {
-  // try to open codec
-  int result = avcodec_open(&Codec.codec_context, Codec.codec); 
+	// try to open codec
+    int result = avcodec_open(&Codec.codec_context, Codec.codec); 
 
-  if (result < 0) 
-    {
-      // we could not open codec
-      if (cDxr3ConfigData::Instance().GetDebug())
+	if (result < 0) 
 	{
-	  cLog::Instance() << "cDxr3Ffmepg::OpenCodec(struct Dxr3Codec& Codec) coudnt open codec (" << Codec.id << ")\n";
+		// we could not open codec
+		if (cDxr3ConfigData::Instance().GetDebug())
+		{
+			cLog::Instance() << "cDxr3Ffmepg::OpenCodec(struct Dxr3Codec& Codec) coudnt open codec (" << Codec.id << ")\n";
+		}
+		return false;
 	}
-      return false;
-    }
-  else
-    {
-      Codec.Open = true;
-    }
+	else
+	{
+		Codec.Open = true;
+	}
 
-  return true;
+	return true;
 }
 
 // ==================================
 //! close codec
 void cDxr3Ffmepg::CloseCodec(struct Dxr3Codec& Codec)
 {
-  if (Codec.Open) 
-    {
-      avcodec_close(&Codec.codec_context);
-      Codec.Open = false;
+    if (Codec.Open) 
+	{
+        avcodec_close(&Codec.codec_context);
+		Codec.Open = false;
     }
 }

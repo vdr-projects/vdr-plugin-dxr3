@@ -35,41 +35,41 @@
 // decode audio to mp2 or use DD :)
 class cDxr3AudioDecoder 
 {
- public:
-  cDxr3AudioDecoder();
-  ~cDxr3AudioDecoder();
+public:
+    cDxr3AudioDecoder();
+    ~cDxr3AudioDecoder();
 
-  void Init(void); // init in const?                                
+    void Init(void); // init in const?                                
 
-  void Decode(const uint8_t* buf, int length, uint32_t pts, cDxr3SyncBuffer &aBuf);
-  void DecodeLpcm(const uint8_t* buf, int length, uint32_t pts, cDxr3SyncBuffer &aBuf);
-  void DecodeAc3Dts(const uint8_t* pPes, const uint8_t* buf, int length, uint32_t pts, cDxr3SyncBuffer &aBuf);
+    void Decode(const uint8_t* buf, int length, uint32_t pts, cDxr3SyncBuffer &aBuf);
+    void DecodeLpcm(const uint8_t* buf, int length, uint32_t pts, cDxr3SyncBuffer &aBuf);
+    void DecodeAc3Dts(const uint8_t* pPes, const uint8_t* buf, int length, uint32_t pts, cDxr3SyncBuffer &aBuf);
 
-  int GetRate(void) const			{ return rate; }
-  int GetChannelCount(void) const { return channels; }
-  int GetFrameSize(void) const	{ return frameSize; }
-  void Reset(void)				{ ac3dtsDecoder.Clear(); rbuf.Clear(); }
+    int GetRate(void) const			{ return rate; }
+    int GetChannelCount(void) const { return channels; }
+    int GetFrameSize(void) const	{ return frameSize; }
+    void Reset(void)				{ ac3dtsDecoder.Clear(); rbuf.Clear(); }
     
- private:
-  bool HeadCheck(unsigned long head);
+private:
+    bool HeadCheck(unsigned long head);
     
-  struct Dxr3Codec Codec;
+	struct Dxr3Codec Codec;
 
-  cRingBufferFrame rbuf;
-  cMultichannelAudio ac3dtsDecoder;
+    cRingBufferFrame rbuf;
+    cMultichannelAudio ac3dtsDecoder;
     
-  bool audioSynched;
-  bool decoderOpened;
-  uint8_t lastHeader[4];
-  int rate;
-  int channels;
-  uint32_t frameSize;
-  uint8_t pcmbuf[AVCODEC_MAX_AUDIO_FRAME_SIZE];
-  int volume;
-  bool foundHeader;
-  bool decodeAudio;
+    bool audioSynched;
+    bool decoderOpened;
+    uint8_t lastHeader[4];
+    int rate;
+    int channels;
+    uint32_t frameSize;
+    uint8_t pcmbuf[AVCODEC_MAX_AUDIO_FRAME_SIZE];
+    int volume;
+    bool foundHeader;
+    bool decodeAudio;
 
-  cDxr3AudioDecoder(cDxr3AudioDecoder&); // no copy constructor
+    cDxr3AudioDecoder(cDxr3AudioDecoder&); // no copy constructor
 };
 
 #endif /*_DXR3_AUDIODECODER_H_*/
