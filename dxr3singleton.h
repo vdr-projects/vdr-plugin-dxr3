@@ -21,32 +21,32 @@
 
 #ifndef _DXR3_SINGLETON_H_
 #define _DXR3_SINGLETON_H_
-	
+
 // ==================================
-//!  A singleton template. 
+//!  A singleton template.
 /*!
-	Is a nice solution to use only
-	one instance of a class.
+  Is a nice solution to use only
+  one instance of a class.
 */
 template<typename T>
 class Singleton
 {
-	protected:
-		Singleton() {}
-		virtual ~Singleton() {}
+protected:
+    Singleton() {}
+    virtual ~Singleton() {}
 
-	public:
-		static T& Instance()  
-		{
-			static T m_Instance;
-			return m_Instance;
-		}
+public:
+    static T& Instance()
+    {
+	static T m_Instance;
+	return m_Instance;
+    }
 
-		static T* InstanceP()
-		{
-			static T* m_InstanceP = new T;
-			return m_InstanceP;
-		}
+    static T* InstanceP()
+    {
+	static T* m_InstanceP = new T;
+	return m_InstanceP;
+    }
 };
 
 #endif /*_DXR3_SINGLETON_H_*/

@@ -22,11 +22,6 @@
  *
  */
 
-/*
-ToDo:
-	- Line 175
-*/
-
 #include <assert.h>
 #include <string.h>
 #include <inttypes.h>
@@ -48,7 +43,7 @@ ToDo:
 #define CMD_SPU_CHG_COLCON      0x07
 #define CMD_SPU_EOF             0xff
 
-#define spuU32(i)  ((spu[i] << 8) + spu[i+1])
+#define spuU32(i) ((spu[i] << 8) + spu[i+1])
 
 
 /*
@@ -60,36 +55,36 @@ ToDo:
  * Inputs:
  *  - a SPU rle encoded image on creation, which will be decoded into
  *    the full screen indexed bitmap
- *  
+ *
  * Output:
  *  - a minimal sized cDxr3SpuBitmap a given palette, the indexed bitmap
  *    will be scanned to get the smallest possible resulting bitmap considering
  *    transparencies
  */
 
-
 // ==================================
 void cDxr3SpuPalette::setPalette(const uint32_t * pal)
 {
     for (int i = 0; i < 16; i++)
-        palette[i] = Tools::YUV2Rgb(pal[i]);
+	palette[i] = Tools::YUV2Rgb(pal[i]);
 }
 
 // ==================================
 #define setMin(a, b) if (a > b) a = b
 #define setMax(a, b) if (a < b) a = b
 
-#define spuXres   720
-#define spuYres   576
+#define spuXres 720
+#define spuYres 576
 
 #define revRect(r1, r2) { r1.x1 = r2.x2; r1.y1 = r2.y2; r1.x2 = r2.x1; r1.y2 = r2.y1; }
 
 // ==================================
-cDxr3SpuBitmap::cDxr3SpuBitmap(sDxr3SpuRect size, uint8_t * fodd, uint8_t * eodd, uint8_t * feven, uint8_t * eeven)
+cDxr3SpuBitmap::cDxr3SpuBitmap(sDxr3SpuRect size, uint8_t * fodd,
+			       uint8_t * eodd, uint8_t * feven,
+			       uint8_t * eeven)
 {
-    if (size.x1 < 0 || size.y1 < 0 || size.x2 >= spuXres
-        || size.y2 >= spuYres)
-        throw;
+    if (size.x1 < 0 || size.y1 < 0 || size.x2 >= spuXres || size.y2 >= spuYres)
+	throw;
 
     bmpsize = size;
     revRect(minsize[0], size);
@@ -98,7 +93,7 @@ cDxr3SpuBitmap::cDxr3SpuBitmap(sDxr3SpuRect size, uint8_t * fodd, uint8_t * eodd
     revRect(minsize[3], size);
 
     if (!(bmp = new uint8_t[spuXres * spuYres * sizeof(uint8_t)]))
-        throw;
+	throw;
 
     memset(bmp, 0, spuXres * spuYres * sizeof(uint8_t));
     putFieldData(0, fodd, eodd);
@@ -112,75 +107,80 @@ cDxr3SpuBitmap::~cDxr3SpuBitmap()
 }
 
 // ==================================
-cBitmap *cDxr3SpuBitmap::getBitmap(const aDxr3SpuPalDescr paldescr, const cDxr3SpuPalette & pal, sDxr3SpuRect & size) const
+cBitmap *cDxr3SpuBitmap::getBitmap(const aDxr3SpuPalDescr paldescr,
+				   const cDxr3SpuPalette & pal,
+				   sDxr3SpuRect & size) const
 {
     int h = size.height();
     int w = size.width();
 
     if (size.y1 + h >= spuYres)
-	{
-        h = spuYres - size.y1 - 1;
-	}
+    {
+	h = spuYres - size.y1 - 1;
+    }
     if (size.x1 + w >= spuXres)
-	{
-        w = spuXres - size.x1 - 1;
-	}
+    {
+	w = spuXres - size.x1 - 1;
+    }
 
     if (w & 0x03)
-	{
-        w += 4 - (w & 0x03);
-	}
+    {
+	w += 4 - (w & 0x03);
+    }
 
     cBitmap *ret = new cBitmap(w, h, 2);
 
     // set the palette
-    for (int i = 0; i < 4; i++) 
-	{
-        uint32_t color = pal.getColor(paldescr[i].index, paldescr[i].trans);
-        ret->SetColor(i, (tColor) color);
+    for (int i = 0; i < 4; i++)
+    {
+	uint32_t color = pal.getColor(paldescr[i].index, paldescr[i].trans);
+	ret->SetColor(i, (tColor) color);
     }
 
     // set the content
-    for (int yp = 0; yp < h; yp++) 
+    for (int yp = 0; yp < h; yp++)
+    {
+	for (int xp = 0; xp < w; xp++)
 	{
-        for (int xp = 0; xp < w; xp++) 
-		{
-            uint8_t idx = bmp[(size.y1 + yp) * spuXres + size.x1 + xp];
-            ret->SetIndex(xp, yp, idx);
-        }
+	    uint8_t idx = bmp[(size.y1 + yp) * spuXres + size.x1 + xp];
+	    ret->SetIndex(xp, yp, idx);
+	}
     }
     return ret;
 }
 
 // ==================================
 // find the minimum non-transparent area
-bool cDxr3SpuBitmap::getMinSize(const aDxr3SpuPalDescr paldescr, sDxr3SpuRect & size) const
+bool cDxr3SpuBitmap::getMinSize(const aDxr3SpuPalDescr paldescr,
+				sDxr3SpuRect & size) const
 {
     bool ret = false;
-    for (int i = 0; i < 4; i++) 
+    for (int i = 0; i < 4; i++)
+    {
+	if (paldescr[i].trans != 0)
 	{
-        if (paldescr[i].trans != 0) 
-		{
-            if (!ret)
-			{
-                size = minsize[i];
-			}
-            else 
-			{
-                setMin(size.x1, minsize[i].x1);
-                setMin(size.y1, minsize[i].y1);
-                setMax(size.x2, minsize[i].x2);
-                setMax(size.y2, minsize[i].y2);
-            }
-            ret = true;
-        }
-    }
-/*
-	if (ret && cDxr3ConfigData::Instance().GetDebug())
-	{
-		cLog::Instance() << "cDxr3SpuBitmap::getMinSize: (" << size.x1 ", " << size.y1 << ") x (" << size.x2 << ", " << size.y2 << ")\n";
+	    if (!ret)
+	    {
+		size = minsize[i];
+	    }
+	    else
+	    {
+		setMin(size.x1, minsize[i].x1);
+		setMin(size.y1, minsize[i].y1);
+		setMax(size.x2, minsize[i].x2);
+		setMax(size.y2, minsize[i].y2);
+	    }
+	    ret = true;
 	}
-*/
+    }
+    /*
+    if (ret && cDxr3ConfigData::Instance().GetDebug())
+    {
+	cLog::Instance() << "cDxr3SpuBitmap::getMinSize: ("
+			 << size.x1 ", " << size.y1 << ") x ("
+			 << size.x2 << ", " << size.y2 << ")\n";
+    }
+    */
     return ret;
 }
 
@@ -199,13 +199,13 @@ static uint8_t getBits(uint8_t * &data, uint8_t & bitf)
 {
     uint8_t ret = *data;
     if (bitf)
-	{
-        ret >>= 4;
-	}
+    {
+	ret >>= 4;
+    }
     else
-	{
-        data++;
-	}
+    {
+	data++;
+    }
 
     bitf ^= 1;
 
@@ -219,41 +219,41 @@ void cDxr3SpuBitmap::putFieldData(int field, uint8_t * data, uint8_t * endp)
     int yp = bmpsize.y1 + field;
     uint8_t bitf = 1;
 
-    while (data < endp) 
+    while (data < endp)
+    {
+	uint16_t vlc = getBits(data, bitf);
+	if (vlc < 0x0004)
 	{
-        uint16_t vlc = getBits(data, bitf);
-        if (vlc < 0x0004) 
+	    vlc = (vlc << 4) | getBits(data, bitf);
+	    if (vlc < 0x0010)
+	    {
+		vlc = (vlc << 4) | getBits(data, bitf);
+		if (vlc < 0x0040)
 		{
-            vlc = (vlc << 4) | getBits(data, bitf);
-            if (vlc < 0x0010) 
-			{
-                vlc = (vlc << 4) | getBits(data, bitf);
-                if (vlc < 0x0040) 
-				{
-                    vlc = (vlc << 4) | getBits(data, bitf);
-                }
-            }
-        }
+		    vlc = (vlc << 4) | getBits(data, bitf);
+		}
+	    }
+	}
 
-        uint8_t color = vlc & 0x03;
-        int len = vlc >> 2;
+	uint8_t color = vlc & 0x03;
+	int len = vlc >> 2;
 
-        // if len == 0 -> end sequence - fill to end of line
-        len = len ? len : bmpsize.x2 - xp + 1;
-        putPixel(xp, yp, len, color);
-        xp += len;
+	// if len == 0 -> end sequence - fill to end of line
+	len = len ? len : bmpsize.x2 - xp + 1;
+	putPixel(xp, yp, len, color);
+	xp += len;
 
-        if (xp > bmpsize.x2) 
-		{
-            // nextLine
-            if (!bitf)
-                data++;
-            bitf = 1;
-            xp = bmpsize.x1;
-            yp += 2;
-            if (yp > bmpsize.y2)
-                return;
-        }
+	if (xp > bmpsize.x2)
+	{
+	    // nextLine
+	    if (!bitf)
+		data++;
+	    bitf = 1;
+	    xp = bmpsize.x1;
+	    yp += 2;
+	    if (yp > bmpsize.y2)
+		return;
+	}
     }
 }
 
@@ -286,10 +286,11 @@ void cDxr3SpuDecoder::processSPU(uint32_t pts, uint8_t * buf)
 {
     setTime(pts);
 
-	if (cDxr3ConfigData::Instance().GetDebug())
-	{
-		cLog::Instance() << "cDxr3SpuDecoder::processSPU: SPU pushData: pts: " << pts << "\n";
-	}
+    if (cDxr3ConfigData::Instance().GetDebug())
+    {
+	cLog::Instance() << "cDxr3SpuDecoder::processSPU: SPU pushData: pts: "
+			 << pts << "\n";
+    }
 
     delete spubmp;
     spubmp = NULL;
@@ -329,31 +330,32 @@ void cDxr3SpuDecoder::setPalette(uint32_t * pal)
 void cDxr3SpuDecoder::setHighlight(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint32_t palette)
 {
     aDxr3SpuPalDescr pld;
-    for (int i = 0; i < 4; i++) 
-	{
-        pld[i].index = 0xf & (palette >> (16 + 4 * i));
-        pld[i].trans = 0xf & (palette >> (4 * i));
+    for (int i = 0; i < 4; i++)
+    {
+	pld[i].index = 0xf & (palette >> (16 + 4 * i));
+	pld[i].trans = 0xf & (palette >> (4 * i));
     }
 
     bool ne = hlpsize.x1 != sx || hlpsize.y1 != sy ||
-        hlpsize.x2 != ex || hlpsize.y2 != ey ||
-        pld[0] != hlpDescr[0] || pld[1] != hlpDescr[1] ||
-        pld[2] != hlpDescr[2] || pld[3] != hlpDescr[3];
+	hlpsize.x2 != ex || hlpsize.y2 != ey ||
+	pld[0] != hlpDescr[0] || pld[1] != hlpDescr[1] ||
+	pld[2] != hlpDescr[2] || pld[3] != hlpDescr[3];
 
-    if (ne) 
+    if (ne)
+    {
+	if (cDxr3ConfigData::Instance().GetDebug())
 	{
-		if (cDxr3ConfigData::Instance().GetDebug())
-		{
-			cLog::Instance() << "cDxr3SpuDecoder::setHighlight: " << sx << ", " << sy << ", " << ex << ", " << ey << "\n";
-		}
+	    cLog::Instance() << "cDxr3SpuDecoder::setHighlight: " << sx
+			     << ", " << sy << ", " << ex << ", " << ey << "\n";
+	}
 
-        hlpsize.x1 = sx;
-        hlpsize.y1 = sy;
-        hlpsize.x2 = ex;
-        hlpsize.y2 = ey;
-        memcpy(hlpDescr, pld, sizeof(aDxr3SpuPalDescr));
-        highlight = true;
-        clean = false;
+	hlpsize.x1 = sx;
+	hlpsize.y1 = sy;
+	hlpsize.x2 = ex;
+	hlpsize.y2 = ey;
+	memcpy(hlpDescr, pld, sizeof(aDxr3SpuPalDescr));
+	highlight = true;
+	clean = false;
     }
 }
 
@@ -372,22 +374,23 @@ void cDxr3SpuDecoder::clearHighlight()
 // ==================================
 int cDxr3SpuDecoder::ScaleYcoord(int value)
 {
-    if (scaleMode == eSpuLetterBox) 
-	{
-        int offset = cDevice::PrimaryDevice()->GetVideoSystem() == vsPAL ? 72 : 60;
-        return lround((value * 3.0) / 4.0) + offset;
+    if (scaleMode == eSpuLetterBox)
+    {
+	int offset =
+	    cDevice::PrimaryDevice()->GetVideoSystem() == vsPAL ? 72 : 60;
+	return lround((value * 3.0) / 4.0) + offset;
     }
-	return value;
+    return value;
 }
 
 // ==================================
 int cDxr3SpuDecoder::ScaleYres(int value)
 {
     if (scaleMode == eSpuLetterBox)
-	{
-        return lround((value * 3.0) / 4.0);
-	}
-	return value;
+    {
+	return lround((value * 3.0) / 4.0);
+    }
+    return value;
 }
 
 // ==================================
@@ -395,11 +398,11 @@ void cDxr3SpuDecoder::DrawBmp(sDxr3SpuRect & size, cBitmap * bmp)
 {
     int x2 = size.x2;
     while ((x2 - size.x1 + 1) & 0x03)
-          x2++;
+	x2++;
     tArea Area = { size.x1, size.y1, x2, size.y2, 2 };
     osd->SetAreas(&Area, 1);
     if (x2 > size.x2)
-       osd->DrawRectangle(size.x2 + 1, size.y1, x2, size.y2, clrTransparent);
+	osd->DrawRectangle(size.x2 + 1, size.y1, x2, size.y2, clrTransparent);
     osd->DrawBitmap(size.x1, size.y1, *bmp);
     delete bmp;
 }
@@ -411,9 +414,9 @@ void cDxr3SpuDecoder::Draw()
     Hide();
 
     if (!spubmp)
-	{
-        return;
-	}
+    {
+	return;
+    }
 
     cBitmap *fg = NULL;
     cBitmap *bg = NULL;
@@ -426,46 +429,46 @@ void cDxr3SpuDecoder::Draw()
     hlsize.y2 = ScaleYcoord(hlpsize.y2);
 
     if (highlight)
-	{
-        fg = spubmp->getBitmap(hlpDescr, palette, hlsize);
-	}
-
-    if (spubmp->getMinSize(palDescr, bgsize)) 
-	{
-        bg = spubmp->getBitmap(palDescr, palette, bgsize);
-        if (scaleMode == eSpuLetterBox) 
-		{
-            // the coordinates have to be modified for letterbox
-            int y1 = ScaleYres(bgsize.y1) + bgsize.height();
-            bgsize.y2 = y1 + bgsize.height();
-            bgsize.y1 = y1;
-        }
+    {
+	fg = spubmp->getBitmap(hlpDescr, palette, hlsize);
     }
 
-    if (bg || fg) 
+    if (spubmp->getMinSize(palDescr, bgsize))
+    {
+	bg = spubmp->getBitmap(palDescr, palette, bgsize);
+	if (scaleMode == eSpuLetterBox)
 	{
-        if (osd == NULL)
-            if ((osd = cOsdProvider::NewOsd(0, 0)) == NULL) 
-			{
-				if (cDxr3ConfigData::Instance().GetDebug())
-				{
-					cLog::Instance() << "cDxr3SpuDecoder::Draw: New OSD faild!\n";
-				}
-                dsyslog("NewOsd failed\n");
-                return;
-            }
+	    // the coordinates have to be modified for letterbox
+	    int y1 = ScaleYres(bgsize.y1) + bgsize.height();
+	    bgsize.y2 = y1 + bgsize.height();
+	    bgsize.y1 = y1;
+	}
+    }
 
-        if (fg)
+    if (bg || fg)
+    {
+	if (osd == NULL)
+	    if ((osd = cOsdProvider::NewOsd(0, 0)) == NULL)
+	    {
+		if (cDxr3ConfigData::Instance().GetDebug())
 		{
-            DrawBmp(hlsize, fg);
+		    cLog::Instance() << "cDxr3SpuDecoder::Draw: New OSD faild!\n";
 		}
+		dsyslog("NewOsd failed\n");
+		return;
+	    }
 
-        if (bg)
-		{
-            DrawBmp(bgsize, bg);
-		}
+	if (fg)
+	{
+	    DrawBmp(hlsize, fg);
+	}
 
-        osd->Flush();
+	if (bg)
+	{
+	    DrawBmp(bgsize, bg);
+	}
+
+	osd->Flush();
     }
 
     clean = true;
@@ -500,157 +503,164 @@ void cDxr3SpuDecoder::Empty()
 int cDxr3SpuDecoder::setTime(uint32_t pts)
 {
     if (!spu)
-	{
-        return 0;
-	}
+    {
+	return 0;
+    }
 
     if (spu && !clean)
+    {
+	Draw();
+    }
+
+    while (DCSQ_offset != prev_DCSQ_offset)
+    {
+	// Display Control Sequences
+	int i = DCSQ_offset;
+	state = spNONE;
+
+	uint32_t exec_time = spupts + spuU32(i) * 1024;
+	if ((pts != 0) && (exec_time > pts))
 	{
-        Draw();
+	    return 0;
 	}
 
-    while (DCSQ_offset != prev_DCSQ_offset) 
-	{   
-		// Display Control Sequences
-        int i = DCSQ_offset;
-        state = spNONE;
+	if (pts != 0)
+	{
+	    uint16_t feven = 0;
+	    uint16_t fodd = 0;
 
-        uint32_t exec_time = spupts + spuU32(i) * 1024;
-        if ((pts != 0) && (exec_time > pts))
+	    i += 2;
+
+	    prev_DCSQ_offset = DCSQ_offset;
+	    DCSQ_offset = spuU32(i);
+	    i += 2;
+
+	    while (spu[i] != CMD_SPU_EOF)
+	    {
+		// Command Sequence
+		switch (spu[i])
 		{
-            return 0;
-		}
-
-        if (pts != 0) 
-		{
-            uint16_t feven = 0;
-            uint16_t fodd = 0;
-
-            i += 2;
-
-            prev_DCSQ_offset = DCSQ_offset;
-            DCSQ_offset = spuU32(i);
-            i += 2;
-
-            while (spu[i] != CMD_SPU_EOF) 
-			{
-				// Command Sequence
-                switch (spu[i]) 
-				{
-                case CMD_SPU_SHOW:     
-					// show subpicture
-					if (cDxr3ConfigData::Instance().GetDebug())
-					{
-						cLog::Instance() << "cDxr3SpuDecoder::setTime: show subpicture\n";
-					}
-                    state = spSHOW;
-                    i++;
-                    break;
-
-                case CMD_SPU_HIDE:     
-					// hide subpicture
-					if (cDxr3ConfigData::Instance().GetDebug())
-					{
-						cLog::Instance() << "cDxr3SpuDecoder::setTime: hide subpicture\n";
-					}
-                    state = spHIDE;
-                    i++;
-                    break;
-
-                case CMD_SPU_SET_PALETTE:      
-					// CLUT
-                    palDescr[0].index = spu[i + 2] & 0xf;
-                    palDescr[1].index = spu[i + 2] >> 4;
-                    palDescr[2].index = spu[i + 1] & 0xf;
-                    palDescr[3].index = spu[i + 1] >> 4;
-                    i += 3;
-                    break;
-
-                case CMD_SPU_SET_ALPHA:        
-					// transparency palette
-                    palDescr[0].trans = spu[i + 2] & 0xf;
-                    palDescr[1].trans = spu[i + 2] >> 4;
-                    palDescr[2].trans = spu[i + 1] & 0xf;
-                    palDescr[3].trans = spu[i + 1] >> 4;
-                    i += 3;
-                    break;
-
-                case CMD_SPU_SET_SIZE: 
-					// image coordinates
-                    size.x1 = (spu[i + 1] << 4) | (spu[i + 2] >> 4);
-                    size.x2 = ((spu[i + 2] & 0x0f) << 8) | spu[i + 3];
-
-                    size.y1 = (spu[i + 4] << 4) | (spu[i + 5] >> 4);
-                    size.y2 = ((spu[i + 5] & 0x0f) << 8) | spu[i + 6];
-
-					if (cDxr3ConfigData::Instance().GetDebug())
-					{
-						cLog::Instance() << "cDxr3SpuDecoder::setTime: (" << size.x1 << ", " << size.y1 <<") x (" << size.x2 << ", " << size.y2 <<")\n";
-					}
-                    i += 7;
-                    break;
-
-                case CMD_SPU_SET_PXD_OFFSET:   
-					// image 1 / image 2 offsets
-                    fodd = spuU32(i + 1);
-                    feven = spuU32(i + 3);
-
-					if (cDxr3ConfigData::Instance().GetDebug())
-					{
-						cLog::Instance() << "cDxr3SpuDecoder::setTime: odd = " << fodd << " even = " << feven << "\n";
-					}
-                    i += 5;
-                    break;
-
-		case CMD_SPU_CHG_COLCON:
+		case CMD_SPU_SHOW:
+		    // show subpicture
+		    if (cDxr3ConfigData::Instance().GetDebug())
 		    {
-			int size = spuU32(i + 1);
-			i += 1 + size;
+			cLog::Instance() << "cDxr3SpuDecoder::setTime: show subpicture\n";
 		    }
+		    state = spSHOW;
+		    i++;
 		    break;
 
-                case CMD_SPU_MENU:
-					if (cDxr3ConfigData::Instance().GetDebug())
-					{
-						cLog::Instance() << "cDxr3SpuDecoder::setTime: spu menu\n";
-					}
-                    state = spMENU;
+		case CMD_SPU_HIDE:
+		    // hide subpicture
+		    if (cDxr3ConfigData::Instance().GetDebug())
+		    {
+			cLog::Instance() << "cDxr3SpuDecoder::setTime: hide subpicture\n";
+		    }
+		    state = spHIDE;
+		    i++;
+		    break;
 
-                    i++;
-                    break;
+		case CMD_SPU_SET_PALETTE:
+		    // CLUT
+		    palDescr[0].index = spu[i + 2] & 0xf;
+		    palDescr[1].index = spu[i + 2] >> 4;
+		    palDescr[2].index = spu[i + 1] & 0xf;
+		    palDescr[3].index = spu[i + 1] >> 4;
+		    i += 3;
+		    break;
 
-                default:
-                    esyslog("invalid sequence in control header (%.2x)\n", spu[i]);
-                    assert(0);
-                    i++;
-                    break;
-                }
-            }
-            if (fodd != 0 && feven != 0) 
-			{
-                delete spubmp;
-                spubmp = new cDxr3SpuBitmap(size, spu + fodd, spu + feven, spu + feven, spu + cmdOffs());
-            }
-        } 
-		else if (!clean)
+		case CMD_SPU_SET_ALPHA:
+		    // transparency palette
+		    palDescr[0].trans = spu[i + 2] & 0xf;
+		    palDescr[1].trans = spu[i + 2] >> 4;
+		    palDescr[2].trans = spu[i + 1] & 0xf;
+		    palDescr[3].trans = spu[i + 1] >> 4;
+		    i += 3;
+		    break;
+
+		case CMD_SPU_SET_SIZE:
+		    // image coordinates
+		    size.x1 = (spu[i + 1] << 4) | (spu[i + 2] >> 4);
+		    size.x2 = ((spu[i + 2] & 0x0f) << 8) | spu[i + 3];
+
+		    size.y1 = (spu[i + 4] << 4) | (spu[i + 5] >> 4);
+		    size.y2 = ((spu[i + 5] & 0x0f) << 8) | spu[i + 6];
+
+		    if (cDxr3ConfigData::Instance().GetDebug())
+		    {
+			cLog::Instance() << "cDxr3SpuDecoder::setTime: ("
+					 << size.x1 << ", " << size.y1
+					 << ") x (" << size.x2 << ", "
+					 << size.y2 <<")\n";
+		    }
+		    i += 7;
+		    break;
+
+		case CMD_SPU_SET_PXD_OFFSET:
+		    // image 1 / image 2 offsets
+		    fodd = spuU32(i + 1);
+		    feven = spuU32(i + 3);
+
+		    if (cDxr3ConfigData::Instance().GetDebug())
+		    {
+			cLog::Instance() << "cDxr3SpuDecoder::setTime: odd = "
+					 << fodd << " even = " << feven
+					 << "\n";
+		    }
+		    i += 5;
+		    break;
+
+		case CMD_SPU_CHG_COLCON:
 		{
-            state = spSHOW;
+		    int size = spuU32(i + 1);
+		    i += 1 + size;
 		}
+		break;
 
-        if (state == spSHOW || state == spMENU)
-		{
-            Draw();
-		}
+		case CMD_SPU_MENU:
+		    if (cDxr3ConfigData::Instance().GetDebug())
+		    {
+			cLog::Instance() << "cDxr3SpuDecoder::setTime: spu menu\n";
+		    }
+		    state = spMENU;
 
-        if (state == spHIDE)
-		{
-            Hide();
-		}
+		    i++;
+		    break;
 
-        if (pts == 0)
-		{
-            return 0;
+		default:
+		    esyslog("invalid sequence in control header (%.2x)\n",
+			    spu[i]);
+		    assert(0);
+		    i++;
+		    break;
 		}
+	    }
+	    if (fodd != 0 && feven != 0)
+	    {
+		delete spubmp;
+		spubmp = new cDxr3SpuBitmap(size, spu + fodd, spu + feven,
+					    spu + feven, spu + cmdOffs());
+	    }
+	}
+	else if (!clean)
+	{
+	    state = spSHOW;
+	}
+
+	if (state == spSHOW || state == spMENU)
+	{
+	    Draw();
+	}
+
+	if (state == spHIDE)
+	{
+	    Hide();
+	}
+
+	if (pts == 0)
+	{
+	    return 0;
+	}
     }
 
     return 1;

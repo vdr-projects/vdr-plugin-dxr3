@@ -5,27 +5,27 @@
 
 // ==================================
 // setup screen
-class cMenuSetupDxr3 : public cMenuSetupPage 
+class cMenuSetupDxr3 : public cMenuSetupPage
 {
 public:
-	cMenuSetupDxr3();
-	
+    cMenuSetupDxr3();
+
 protected:
-	virtual void Store();
-	
+    virtual void Store();
+
 private:
-	int newUseDigitalOut;
-	int newDxr3Card;
-	int newVideoMode;
-	int newDebug;
-	int newDebugLevel;
-	const char *menuVideoModes[3];
-	const char *menuDebugModes[2];
+    int newUseDigitalOut;
+    int newDxr3Card;
+    int newVideoMode;
+    int newDebug;
+    int newDebugLevel;
+    const char *menuVideoModes[3];
+    const char *menuDebugModes[2];
 };
 
 
 // ==================================
-enum eDxr3OsdItem 
+enum eDxr3OsdItem
 {
     DXR3_RESET_HARDWARE,
     DXR3_FORCE_LETTER_BOX,
@@ -36,60 +36,55 @@ enum eDxr3OsdItem
 
 // ==================================
 // osd item
-class cDxr3OsdItem : public cOsdItem 
+class cDxr3OsdItem : public cOsdItem
 {
-public:    
-    cDxr3OsdItem(const char* text, eDxr3OsdItem item) : cOsdItem(text), m_item(item) {}
-	
-	// process fb input
+public:
+    cDxr3OsdItem(const char* text, eDxr3OsdItem item) :
+	cOsdItem(text), m_item(item) {}
+
+    // process fb input
     eOSState ProcessKey(eKeys Key);
 
 protected:
-    eDxr3OsdItem m_item; 
+    eDxr3OsdItem m_item;
 };
 
 // ==================================
 // main screen
-class cDxr3OsdMenu : public cOsdMenu 
+class cDxr3OsdMenu : public cOsdMenu
 {
 public:
     cDxr3OsdMenu(): cOsdMenu(tr("DXR3 Adjustment"))
+    {
+	Clear();
+	SetHasHotkeys();
+	Add(new cDxr3OsdItem(hk(tr("Reset DXR3 hardware")),
+			     DXR3_RESET_HARDWARE));
+	Add(new cDxr3OsdItem(hk(tr("Toggle force letterbox")),
+			     DXR3_FORCE_LETTER_BOX));
+
+	if (cDxr3ConfigData::Instance().GetUseDigitalOut())
+	    Add(new cDxr3OsdItem(hk(tr("Switch to analog audio output")),
+				 DXR3_ANALOG_OUT));
+	else
+	    Add(new cDxr3OsdItem(hk(tr("Switch to digital audio output")),
+				 DXR3_DIGITAL_OUT));
+	/*
+	if (cDxr3ConfigData::Instance().GetUseDigitalOut())
 	{
-        Clear();
-        SetHasHotkeys();
-        Add(new cDxr3OsdItem(hk(tr("Reset DXR3 hardware")), DXR3_RESET_HARDWARE));        
-        Add(new cDxr3OsdItem(hk(tr("Toggle force letterbox")), DXR3_FORCE_LETTER_BOX));
+	    Add(new cDxr3OsdItem(hk("Analog output"), DXR3_ANALOG_OUT));
 
-		if (cDxr3ConfigData::Instance().GetUseDigitalOut())
-		{
-			Add(new cDxr3OsdItem(hk(tr("Switch to analog audio output")), DXR3_ANALOG_OUT));
-		}
-		else
-		{
-			Add(new cDxr3OsdItem(hk(tr("Switch to digital audio output")), DXR3_DIGITAL_OUT));
-		}
-/*		
-        if (cDxr3ConfigData::Instance().GetUseDigitalOut()) 
-		{
-			Add(new cDxr3OsdItem(hk("Analog output"), DXR3_ANALOG_OUT));
-
-            if (cDxr3ConfigData::Instance().GetAc3OutPut()) 
-			{
-                Add(new cDxr3OsdItem(hk(tr("AC3 output off")), DXR3_AC3_OUT));
-            } 
-			else 
-			{
-                if (cDxr3Interface::Instance().IsAc3Present()) 
-				{
-                    Add(new cDxr3OsdItem(hk(tr("AC3 output on")), DXR3_AC3_OUT));
-                }
-            }
-        } 
-		else 
-		{
-            Add(new cDxr3OsdItem(hk(tr("Switch to digital audio output")), DXR3_DIGITAL_OUT));
-        }
-		*/
+	    if (cDxr3ConfigData::Instance().GetAc3OutPut())
+		Add(new cDxr3OsdItem(hk(tr("AC3 output off")), DXR3_AC3_OUT));
+	    else if (cDxr3Interface::Instance().IsAc3Present())
+		Add(new cDxr3OsdItem(hk(tr("AC3 output on")), DXR3_AC3_OUT));
+	}
+	else
+	{
+	    Add(new cDxr3OsdItem(hk(tr("Switch to digital audio output")),
+				 DXR3_DIGITAL_OUT));
+	}
+	*/
     }
 };
 

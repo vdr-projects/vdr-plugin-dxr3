@@ -22,44 +22,44 @@
 #ifndef _DXR3_FFMPEG_H_
 #define _DXR3_FFMPEG_H_
 
-extern "C" 
+extern "C"
 {
-	#include <avcodec.h>
+#include <avcodec.h>
 }
 
-#include <string.h> 
+#include <string.h>
 #include "dxr3singleton.h"
 
 // ==================================
 //! a codec used by this plugin
 struct Dxr3Codec
 {
-	Dxr3Codec() : Open(false) {}
+    Dxr3Codec() : Open(false) {}
 
-    AVCodec* codec;					///< ffmpeg's AVCodec
+    AVCodec* codec;			///< ffmpeg's AVCodec
     AVCodecContext codec_context;	///< ffmpeg's AVCodecContext
-	enum CodecID id;				///< id's from ffmpeg - like CODEC_ID_MP2
-	bool Open;						///< is codec open?
+    enum CodecID id;			///< id's from ffmpeg, eg. CODEC_ID_MP2
+    bool Open;				///< is codec open?
 };
 
 // ==================================
 // class to work with ffmpeg
 /*!
-	With cDxr3Ffmepg you can easily handle as many
-	codecs as you want.
-	At the moment we need this only for
-	the audiodecoder, but in future i want to use
-	it for ohter nice stuff :)
+  With cDxr3Ffmepg you can easily handle as many
+  codecs as you want.
+  At the moment we need this only for
+  the audiodecoder, but in future i want to use
+  it for ohter nice stuff :)
 */
-class cDxr3Ffmepg : public Singleton<cDxr3Ffmepg> 
+class cDxr3Ffmepg : public Singleton<cDxr3Ffmepg>
 {
 public:
     cDxr3Ffmepg();
-    ~cDxr3Ffmepg()	{}
+    ~cDxr3Ffmepg() {}
 
-	bool FindCodec(struct Dxr3Codec& Codec);
-	bool OpenCodec(struct Dxr3Codec& Codec);
-	void CloseCodec(struct Dxr3Codec& Codec);
+    bool FindCodec(struct Dxr3Codec& Codec);
+    bool OpenCodec(struct Dxr3Codec& Codec);
+    void CloseCodec(struct Dxr3Codec& Codec);
 
 private:
     cDxr3Ffmepg(cDxr3Ffmepg&); // no copy constructor

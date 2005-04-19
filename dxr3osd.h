@@ -8,10 +8,10 @@
 
 // ==================================
 // osd plugin provider
-class cDxr3OsdProvider : public cOsdProvider 
+class cDxr3OsdProvider : public cOsdProvider
 {
 public:
-    cDxr3OsdProvider()	{}
+    cDxr3OsdProvider() {}
     virtual cOsd *CreateOsd(int Left, int Top);
 };
 
@@ -19,12 +19,12 @@ public:
 
 // ==================================
 // osd interface for =< vdr1,3,7
-class cDxr3Osd : public cOsdBase 
+class cDxr3Osd : public cOsdBase
 {
 private:
     cSPUEncoder* Spu;	///< interface to cSPUEncoder
 
-	bool SetWindow(cWindow*);
+    bool SetWindow(cWindow*);
 
 public:
     cDxr3Osd(int x, int y);

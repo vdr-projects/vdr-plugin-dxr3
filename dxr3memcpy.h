@@ -29,7 +29,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -41,11 +41,11 @@
  *****************************************************************************
  *
  * Original code:
- * 
+ *
  * Copyright (C) 2000-2001 the xine project
- * 
+ *
  * This file is part of xine, a unix video player.
- * 
+ *
  *****************************************************************************/
 
 #ifndef _DXR3MEMCPY_H_
@@ -55,34 +55,34 @@
 
 // ==================================
 /*! \def BUFSIZE
-    \brief size of buffers for benchmark :)
+  \brief size of buffers for benchmark :)
 */
 #define BUFSIZE 1024*1024
 
 // ==================================
 struct memcpy_routine
 {
-	std::string name;	///< name of memcpy methode
-	void *(* function)(void *to, const void *from, size_t len);	///< our memcopy methode
-	unsigned long long time;	///< needed time for banchmark
-	uint32_t cpu_require;		///< caps from dxr3cpu.h
+    std::string name;	///< name of memcpy methode
+    void *(* function)(void *to, const void *from, size_t len);	///< our memcopy methode
+    unsigned long long time;	///< needed time for banchmark
+    uint32_t cpu_require;		///< caps from dxr3cpu.h
 };
 
 // ==================================
 //! Little class to do a nice benchmark
 /*
-	Whith this class we can get the fastest memcyp
-	methode for target computer.
+  Whith this class we can get the fastest memcyp
+  methode for target computer.
 */
 class cDxr3MemcpyBench
 {
 public:
-	cDxr3MemcpyBench(uint32_t config_flags = 0);
+    cDxr3MemcpyBench(uint32_t config_flags = 0);
 
 private:
-	unsigned long long int Rdtsc(uint32_t config_flags);
+    unsigned long long int Rdtsc(uint32_t config_flags);
 
-	std::vector<memcpy_routine>	m_methods;	///< a std::vector with all methodes
+    std::vector<memcpy_routine>	m_methods; ///< a std::vector with all methods
 };
 
 // ==================================
