@@ -8,42 +8,47 @@ Note: you'll probably want to apply em8300-adv7170-wss.patch too
 Index: dxr3interface.c
 ===================================================================
 RCS file: /cvsroot/dxr3plugin/dxr3/dxr3interface.c,v
-retrieving revision 1.4.2.10
-diff -u -r1.4.2.10 dxr3interface.c
---- dxr3interface.c	23 Mar 2005 18:33:57 -0000	1.4.2.10
-+++ dxr3interface.c	23 Mar 2005 19:48:35 -0000
-@@ -489,18 +489,32 @@
- void cDxr3Interface::SetAspectRatio(uint32_t ratio) 
+retrieving revision 1.4.2.19
+diff -u -r1.4.2.19 dxr3interface.c
+--- dxr3interface.c	19 Apr 2005 18:19:37 -0000	1.4.2.19
++++ dxr3interface.c	19 Apr 2005 18:20:02 -0000
+@@ -497,20 +497,36 @@
+ void cDxr3Interface::SetAspectRatio(uint32_t ratio)
  {
      static int requestCounter = 0;
 +    int wssmode;
 +    int aspect;
-     
+ 
      Lock();
  
-     if (cDxr3ConfigData::Instance().GetForceLetterBox()) ratio = EM8300_ASPECTRATIO_16_9;
--	if (Setup.VideoFormat) ratio = EM8300_ASPECTRATIO_4_3;
+     if (cDxr3ConfigData::Instance().GetForceLetterBox())
+ 	ratio = EM8300_ASPECTRATIO_16_9;
+-    if (Setup.VideoFormat)
+-	ratio = EM8300_ASPECTRATIO_4_3;
  
- 	if (!m_ExternalReleased && ratio != UNKNOWN_ASPECT_RATIO) 
- 	{      
- 		if (ratio != m_aspectRatio && requestCounter > 50) 
- 		{
-+            if (Setup.VideoFormat)
-+            {
-+                aspect = EM8300_ASPECTRATIO_4_3;
+     if (!m_ExternalReleased && ratio != UNKNOWN_ASPECT_RATIO)
+     {
+ 	if (ratio != m_aspectRatio && requestCounter > 50)
+ 	{
++	    if (Setup.VideoFormat)
++	    {
++		aspect = EM8300_ASPECTRATIO_4_3;
 +#ifdef EM8300_IOCTL_SET_WSS
-+                if (ratio == EM8300_ASPECTRATIO_16_9)
-+                    wssmode = EM8300_WSS_16_9;
-+                else
-+                    wssmode = EM8300_WSS_OFF;
-+                ioctl(m_fdControl, EM8300_IOCTL_SET_WSS, &wssmode);
++		if (ratio == EM8300_ASPECTRATIO_16_9)
++		    wssmode = EM8300_WSS_16_9;
++		else
++		    wssmode = EM8300_WSS_OFF;
++		ioctl(m_fdControl, EM8300_IOCTL_SET_WSS, &wssmode);
 +#endif
-+            }
-+            else
-+                aspect = ratio;
-             requestCounter = 0;
--            if (ioctl(m_fdControl, EM8300_IOCTL_SET_ASPECTRATIO, &ratio) < 0) 
-+            if (ioctl(m_fdControl, EM8300_IOCTL_SET_ASPECTRATIO, &aspect) < 0) 
- 			{
- 				cLog::Instance() << "cDxr3AbsDevice::SetAspectRatio Unable to set aspect ratio\n";
-             } 
++	    }
++	    else
++	    {
++		aspect = ratio;
++	    }
++
+ 	    requestCounter = 0;
+-	    if (ioctl(m_fdControl, EM8300_IOCTL_SET_ASPECTRATIO, &ratio) < 0)
++	    if (ioctl(m_fdControl, EM8300_IOCTL_SET_ASPECTRATIO, &aspect) < 0)
+ 	    {
+ 		cLog::Instance() << "cDxr3AbsDevice::SetAspectRatio Unable to set aspect ratio\n";
+ 	    }
