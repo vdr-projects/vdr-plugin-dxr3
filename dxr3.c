@@ -3,7 +3,7 @@
 *
 * See the README file for copyright information and how to reach the author.
 *
-* $Id: dxr3.c,v 1.1.2.8 2005/04/18 21:17:42 scop Exp $
+* $Id: dxr3.c,v 1.1.2.9 2005/04/19 06:11:43 scop Exp $
 */
 
 
@@ -31,7 +31,8 @@ eOSState cDxr3OsdItem::ProcessKey(eKeys Key)
 		{
 		case DXR3_RESET_HARDWARE:
 			cDxr3Interface::Instance().ResetHardware();
-			cDxr3Device::Instance().Reset();
+			if (cDxr3Device::InstanceP())
+			    cDxr3Device::InstanceP()->Reset();
 			break;
 
 		case DXR3_FORCE_LETTER_BOX:
@@ -42,20 +43,23 @@ eOSState cDxr3OsdItem::ProcessKey(eKeys Key)
 			cLog::Instance() << "Changing audio to analog\n";
 			cDxr3ConfigData::Instance().SetUseDigitalOut(0);
 			cDxr3ConfigData::Instance().SetAc3OutPut(0);
-			cDxr3Device::Instance().Reset();            
+			if (cDxr3Device::InstanceP())
+			    cDxr3Device::InstanceP()->Reset();
 			break;
 
 		case DXR3_DIGITAL_OUT:
 			cLog::Instance() << "Changing audio to digital\n";
 			cDxr3ConfigData::Instance().SetUseDigitalOut(1);
 			cDxr3ConfigData::Instance().SetAc3OutPut(0);
-			cDxr3Device::Instance().Reset();                    
+			if (cDxr3Device::InstanceP())
+			    cDxr3Device::InstanceP()->Reset();
 			break;
 
 		case DXR3_AC3_OUT:
 			cLog::Instance() << "Changing audio to ac3\n";
 			cDxr3ConfigData::Instance().SetAc3OutPut(!cDxr3ConfigData::Instance().GetAc3OutPut());
-			cDxr3Device::Instance().Reset();                    
+			if (cDxr3Device::InstanceP())
+			    cDxr3Device::InstanceP()->Reset();
 			break;
 		}
 	}
@@ -154,7 +158,7 @@ bool cPluginDxr3::Initialize()
 	RegisterI18n(Phrases);
 
 	new cDxr3CPU();
-	cDxr3Device::Instance();
+	cDxr3Device::InstanceP();
 
     return true;
 }    

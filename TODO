@@ -8,12 +8,6 @@ Known problems, bugs, and workarounds for this driver:
 * VCD plugin does not work.
   Workaround: use the MPlayer plugin to play VCDs.
 
-* VDR crashes at exit.
-  Workaround: none known.  Unless you want to try to debug it (which you're
-  most welcome to do, obviously!), you probably don't want core dumps all
-  over your disk.  Disable them with eg. "ulimit -c 0" in the environment
-  you run VDR in.
-
 * When cutting recordings from some channels, the still picture is stuck
   and won't move when you press 4 or 6 to fine tune the cutmarks.
   Workaround: see vdr-iframe.patch in the patches/ directory.

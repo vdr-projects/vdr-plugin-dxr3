@@ -318,7 +318,7 @@ cFixedLengthFrame* cDxr3SyncBuffer::Get(void)
        
     if (!m_bStopped) 
 	{
-        while (!Available() || !m_bStartReceiver) 
+        while ((!Available() || !m_bStartReceiver) && !m_bStopped)
 		{
             m_bGetBlock = true;
             ReceiverStopped();

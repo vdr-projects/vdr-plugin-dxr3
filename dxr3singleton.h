@@ -41,6 +41,12 @@ class Singleton
 			static T m_Instance;
 			return m_Instance;
 		}
+
+		static T* InstanceP()
+		{
+			static T* m_InstanceP = new T;
+			return m_InstanceP;
+		}
 };
 
 #endif /*_DXR3_SINGLETON_H_*/

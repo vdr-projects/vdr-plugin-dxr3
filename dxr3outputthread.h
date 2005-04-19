@@ -56,7 +56,7 @@ class cDxr3AudioOutThread : public cDxr3OutputThread
 {
 public:
     cDxr3AudioOutThread(cDxr3Interface& dxr3Device, cDxr3SyncBuffer& buffer);
-    virtual ~cDxr3AudioOutThread() {}
+    virtual ~cDxr3AudioOutThread();
     
 protected:    
     void Action();
@@ -71,7 +71,7 @@ class cDxr3VideoOutThread : public cDxr3OutputThread
 {
 public:
     cDxr3VideoOutThread(cDxr3Interface& dxr3Device, cDxr3SyncBuffer& buffer);
-    virtual ~cDxr3VideoOutThread() {}
+    virtual ~cDxr3VideoOutThread();
 
 protected:    
     void Action();
