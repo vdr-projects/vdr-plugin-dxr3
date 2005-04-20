@@ -58,7 +58,7 @@ public:
 
 private:
 	cDxr3Interface&	m_Interface;	///< interface to dxr3 driver
-	bool			m_visible;		///< is anything visible (nav, osd, subtilte)
+	bool			m_visible;		///< is anything visible (nav, osd, subtitles)
 }; 
  
 #endif /*_DXR3SPUDECODER_H_*/

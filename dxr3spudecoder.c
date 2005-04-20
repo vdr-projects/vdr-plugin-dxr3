@@ -77,14 +77,14 @@ void cDxr3SpuDecoder::clearHighlight(void)
 } 
 
 // ==================================
-// ! draw nav, subtilte, ...
+// ! draw nav, subtitles, ...
 void cDxr3SpuDecoder::Draw(void) 
 {
 	m_visible = true;
 } 
 
 // ==================================
-// ! hide nav, subtilte, ...
+// ! hide nav, subtitles, ...
 void cDxr3SpuDecoder::Hide(void) 
 {
 	m_visible = false;
