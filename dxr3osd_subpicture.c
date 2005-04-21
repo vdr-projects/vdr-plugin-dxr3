@@ -203,6 +203,9 @@ void cDxr3SubpictureOsd::Flush()
 	       here. It doesn't hurt too much.
 	    */
 
+// http://article.gmane.org/gmane.linux.vdr/21572
+//#define optimize_bitmap_transfer
+#ifdef optimize_bitmap_transfer
 	    while ((x1 > 0 || x2 < Bitmap->Width() - 1) &&
 		   ((x2 - x1) & 7) != 7)
 	    {
@@ -242,6 +245,12 @@ void cDxr3SubpictureOsd::Flush()
 		    x1--;
 		}
 	    }
+#else
+	    x1 = 0;
+	    y1 = 0;
+	    x2 = Bitmap->Width() - 1;
+	    y2 = Bitmap->Height() - 1;
+#endif
 
 	    Spu->SetPalette(i + 1, Palette, Bitmap);
 	    int origx = Left() + Bitmap->X0();
