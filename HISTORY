@@ -286,7 +286,8 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - set aspect ratio and audio mode to unknown when releasing devices, fixes
   the setup eg. after returning from the MPlayer plugin
   (Luca Olivetti, Kimmo Vuorinen)
-- rework OSD color management, fixes color "bleeding" (Luca Olivetti)
+- rework OSD color management, fixes eg. color "bleeding"
+  (Luca Olivetti, Thomas Husterer)
 - sync SPU decoder with VDR 1.3.23 (Ville Skyttä)
 - register only needed ffmpeg codec(s) (Marco Schlüßler)
 - fix crash at exit (Marco Schlüßler)

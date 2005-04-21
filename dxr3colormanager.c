@@ -231,7 +231,7 @@ unsigned char cColorManager::AddColor(int x, int y, unsigned char color,
     if (!curSection->HasColor(color, ColorIndex))
     {
 	// this color is new for this section
-	if (curSection->AllColorsUsed())
+	if (curSection->AllColorsUsed(curRegion->Y1==y))
 	{
 	    // no more free colors
 	    if (y != curRegion->Y1)

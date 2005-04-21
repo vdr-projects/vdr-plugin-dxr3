@@ -54,12 +54,9 @@ public:
     xSection(int x);
     bool HasColor(unsigned int color, unsigned char &ColorIndex);
     unsigned char AddColor(unsigned int color);
-    bool AllColorsUsed() {
+    bool AllColorsUsed(bool FirstLine) {
 	//DIAG("AllColorsUsed: %d\n",NrOfColors);
-	if(NrOfColors >= 4)
-	    return (true);
-	else
-	    return (false);
+	return(NrOfColors >= (FirstLine ? 3 : 4));
     };
     int X1;
     int X2;
