@@ -131,6 +131,7 @@ private:
     uint32_t spupts;
     bool clean;
     bool ready;
+    bool allowedShow;
 
     enum spFlag
     {

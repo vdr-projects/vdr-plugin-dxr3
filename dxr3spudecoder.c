@@ -181,6 +181,8 @@ bool cDxr3SpuBitmap::getMinSize(const aDxr3SpuPalDescr paldescr,
 			 << size.x2 << ", " << size.y2 << ")\n";
     }
     */
+    if (size.x1 > size.x2 || size.y1 > size.y2)
+	return false;
     return ret;
 }
 
@@ -266,6 +268,7 @@ cDxr3SpuDecoder::cDxr3SpuDecoder()
     spu = NULL;
     osd = NULL;
     spubmp = NULL;
+    allowedShow = true;
 }
 
 // ==================================
@@ -302,6 +305,9 @@ void cDxr3SpuDecoder::processSPU(uint32_t pts, uint8_t * buf)
     prev_DCSQ_offset = 0;
 
     clean = true;
+#if VDRVERSNUM >= 10318
+    allowedShow = AllowedShow;
+#endif
 }
 
 // ==================================
@@ -647,7 +653,7 @@ int cDxr3SpuDecoder::setTime(uint32_t pts)
 	    state = spSHOW;
 	}
 
-	if (state == spSHOW || state == spMENU)
+	if ((state == spSHOW && allowedShow) || state == spMENU)
 	{
 	    Draw();
 	}
