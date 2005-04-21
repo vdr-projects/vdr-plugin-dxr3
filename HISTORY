@@ -258,7 +258,8 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
   (Christian Gmeiner)
 - logger is now thread safe (Christian Gmeiner)
 - rewrote cDxr3SpuDecoder: dropped software decoder, added hardware decoder,
-  so we make use of DVD-functions of the dxr3 (Christian Gmeiner)
+  so we make use of DVD-functions of the dxr3
+  (Christian Gmeiner, Marco Schlüßler)
 - checked Lock() and Unlock() in dxr3interface.c - hope everything is ok
   else contact me (Christian Gmeiner)
 - use std:: instead of namespace std

@@ -25,6 +25,7 @@
 // ! constructor
 cDxr3SpuDecoder::cDxr3SpuDecoder() : m_Interface(cDxr3Interface::Instance()), m_visible(false) 
 {
+    m_ScaleMode = eSpuNormal;
 }
 
 // ==================================
@@ -39,20 +40,21 @@ void cDxr3SpuDecoder::processSPU(uint32_t pts, uint8_t * buf)
 	// size = (buf[0] << 8) + buf[1]
 	
 	m_Interface.WriteSpu(buf, (buf[0] << 8) + buf[1]);
+	m_Interface.SetSpuPts(pts);
 } 
 
 // ==================================
-// ! get scalemode - needed only to compile with VDR >= 1.3.22
+// ! get scalemode
 cSpuDecoder::eScaleMode cDxr3SpuDecoder::getScaleMode(void)
 {
-	return eSpuNormal; // XXX: what... but this is unused in VDR <= 1.3.23
+	return m_ScaleMode;
 }
 
 // ==================================
 // ! set scalemode - not needed
 void cDxr3SpuDecoder::setScaleMode(cSpuDecoder::eScaleMode ScaleMode) 
 {
-	// not needed
+	m_ScaleMode = ScaleMode;
 } 
 
 // ==================================
@@ -101,6 +103,7 @@ void cDxr3SpuDecoder::Empty(void)
 // ! set pts
 int cDxr3SpuDecoder::setTime(uint32_t pts) 
 { 
+    m_Interface.SetSpuPts(pts);
     return (pts == 0) ? 0 : 1; 
 }
 
