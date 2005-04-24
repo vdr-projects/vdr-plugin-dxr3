@@ -414,7 +414,7 @@ void cDxr3SpuDecoder::DrawBmp(sDxr3SpuRect & size, cBitmap * bmp)
 }
 
 // ==================================
-// ! draw nav, subtilte, ...
+// ! draw nav, subtitles, ...
 void cDxr3SpuDecoder::Draw()
 {
     Hide();
@@ -481,7 +481,7 @@ void cDxr3SpuDecoder::Draw()
 }
 
 // ==================================
-// ! hide nav, subtilte, ...
+// ! hide nav, subtitles, ...
 void cDxr3SpuDecoder::Hide()
 {
     delete osd;
