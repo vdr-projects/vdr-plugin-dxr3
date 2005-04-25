@@ -53,7 +53,7 @@ static const char *Dxr3Name(const char *Name, int n)
 }
 
 // ==================================
-//! helper function to open the card #n
+//! helper function to open card #n
 static int Dxr3Open(const char *Name, int n, int Mode)
 {
 	const char *FileName = Dxr3Name(Name, n);
@@ -178,7 +178,7 @@ void cDxr3Interface::Stop()
 
 // audio
 // ==================================
-//! set audio-output to analog
+//! set audio output to analog
 void cDxr3Interface::SetAudioAnalog()
 {
     Lock();
@@ -202,7 +202,7 @@ void cDxr3Interface::SetAudioAnalog()
 }
 
 // ==================================
-//! set audio-output to digital pcm
+//! set audio output to digital pcm
 void cDxr3Interface::SetAudioDigitalPCM()
 {
     Lock();
@@ -227,7 +227,7 @@ void cDxr3Interface::SetAudioDigitalPCM()
 }
 
 // ==================================
-//! set audio-output to digital ac3
+//! set audio output to digital ac3
 void cDxr3Interface::SetAudioDigitalAC3()
 {
 	Lock();
@@ -251,7 +251,7 @@ void cDxr3Interface::SetAudioDigitalAC3()
 }
 
 // ==================================
-//! set audiosepeed
+//! set audio speed
 void cDxr3Interface::SetAudioSpeed(uint32_t speed)
 {
 	Lock();
@@ -275,7 +275,7 @@ void cDxr3Interface::SetAudioSpeed(uint32_t speed)
 }
 
 // ==================================
-//! set nummber of channels
+//! set number of channels
 void cDxr3Interface::SetChannelCount(uint32_t count)
 {
 	Lock();
@@ -394,7 +394,7 @@ void cDxr3Interface::EnableSPU()
         m_spuMode = ioval = EM8300_SPUMODE_ON;
         if (ioctl(m_fdControl, EM8300_IOCTL_SET_SPUMODE, &ioval) < 0) 
 		{
-            cLog::Instance() << "cDxr3AbsDevice::EnableSpu Unable to set subpicture mode!\n";
+            cLog::Instance() << "cDxr3Interface::EnableSPU Unable to set subpicture mode!\n";
         }
     }
 
@@ -414,7 +414,7 @@ void cDxr3Interface::DisableSPU()
         m_spuMode = ioval = EM8300_SPUMODE_OFF;
         if (ioctl(m_fdControl, EM8300_IOCTL_SET_SPUMODE, &ioval) < 0) 
 		{
-            cLog::Instance() << "cDxr3AbsDevice::EnableSpu Unable to set subpicture mode!\n";
+            cLog::Instance() << "cDxr3Interface::DisableSPU Unable to set subpicture mode!\n";
         }
     }
 
@@ -446,7 +446,7 @@ void cDxr3Interface::EnableOverlay()
 {
 	Lock();
 
-	// first we check, if it is enabled yet
+	// first check if it is enabled already
 	if (m_OverlayActive)
 	{
 		return;
@@ -463,7 +463,7 @@ void cDxr3Interface::EnableOverlay()
 	if (ioctl(m_fdControl, EM8300_IOCTL_OVERLAY_SIGNALMODE, &ioval) < 0) 
 	{
 		//######
-		cLog::Instance() << "Singnalmode failed\n";
+		cLog::Instance() << "Signalmode failed\n";
 		return;
 	}
 
@@ -475,7 +475,7 @@ void cDxr3Interface::EnableOverlay()
 	if (ioctl(m_fdControl, EM8300_IOCTL_OVERLAY_SETSCREEN, &scr) < 0) 
 	{
 		//######
-		cLog::Instance() << "seting up screen failed\n";
+		cLog::Instance() << "Setting up screen failed\n";
 		return;
 	}
 
@@ -489,7 +489,7 @@ void cDxr3Interface::EnableOverlay()
 	if (ioctl(m_fdControl, EM8300_IOCTL_OVERLAY_SETWINDOW, &win) < 0) 
 	{
 		//######
-		cLog::Instance() << "seting up window failed\n";
+		cLog::Instance() << "Setting up window failed\n";
 		return;
 	}
 
@@ -504,7 +504,7 @@ void cDxr3Interface::DisanleOverlay()
 {
 	Lock();
 
-	// is it allready disabled
+	// is it already disabled
 	if (!m_OverlayActive)
 	{
 		return;
@@ -525,7 +525,7 @@ uint32_t cDxr3Interface::GetAspectRatio() const
 	{
         if (ioctl(m_fdControl, EM8300_IOCTL_GET_ASPECTRATIO, &ioval) < 0) 
 		{
-			cLog::Instance() << "cDxr3AbsDevice::GetAspectRatio Unable to get aspect ratio\n";
+			cLog::Instance() << "cDxr3Interface::GetAspectRatio Unable to get aspect ratio\n";
         }
     }
     
@@ -534,7 +534,7 @@ uint32_t cDxr3Interface::GetAspectRatio() const
 }
 
 // ==================================
-//! set aspectratio
+//! set aspect ratio
 void cDxr3Interface::SetAspectRatio(uint32_t ratio) 
 {
     Lock();
@@ -551,7 +551,7 @@ void cDxr3Interface::SetAspectRatio(uint32_t ratio)
             requestCounter = 0;
             if (ioctl(m_fdControl, EM8300_IOCTL_SET_ASPECTRATIO, &ratio) < 0) 
 			{
-				cLog::Instance() << "cDxr3AbsDevice::SetAspectRatio Unable to set aspect ratio\n";
+				cLog::Instance() << "cDxr3Interface::SetAspectRatio Unable to set aspect ratio\n";
             } 
 			else 
 			{
@@ -594,7 +594,7 @@ void cDxr3Interface::SetPlayMode()
         ioval = EM8300_PLAYMODE_PLAY;
         if (ioctl(m_fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval) < 0) 
 		{
-			cLog::Instance() << "cDxr3Device::SetPlayMode Unable to set playmode!\n";
+			cLog::Instance() << "cDxr3Interface::SetPlayMode Unable to set playmode!\n";
         }
         reg.microcode_register = 1;
         reg.reg = 0;
@@ -602,7 +602,7 @@ void cDxr3Interface::SetPlayMode()
 
         if (ioctl(m_fdControl, EM8300_IOCTL_WRITEREG, &reg) < 0) 
 		{
-            cLog::Instance() << "cDxr3Device::SetPlayMode Unable to start em8300 sync engine\n";
+            cLog::Instance() << "cDxr3Interface::SetPlayMode Unable to start em8300 sync engine\n";
         }
     }
 
@@ -620,7 +620,7 @@ void cDxr3Interface::Pause()
 	{    
         if (ioctl(m_fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval) < 0) 
 		{
-            cLog::Instance() << "cDxr3Device::Pause Unable to set playmode!\n";
+            cLog::Instance() << "cDxr3Interface::Pause Unable to set playmode!\n";
         }
     }
 
@@ -636,7 +636,7 @@ void cDxr3Interface::SingleStep()
     if (!m_ExternalReleased) 
 	{    
         if (ioctl(m_fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval) < 0) {
-            cLog::Instance() << "cDxr3Device::Pause Unable to set playmode!\n";
+            cLog::Instance() << "cDxr3Interface::SingleStep Unable to set playmode!\n";
         }
     }
 
@@ -865,7 +865,7 @@ void cDxr3Interface::ExternalReopenDevices()
 
 // tools
 // ==================================
-//! play blackframe on tv
+//! play black frame on tv
 void cDxr3Interface::PlayBlackFrame()
 {  
     Lock();
@@ -1070,7 +1070,7 @@ void cDxr3Interface::Resuscitation()
     dsyslog("cDxr3Interface::Resuscitation Device failure detected");
     
     UploadMicroCode();
-    dsyslog("cDxr3Interface::Resuscitation Micro code upload successfully");
+    dsyslog("cDxr3Interface::Resuscitation Microcode upload successful");
     
 //    NonBlockingCloseOpen();
     m_ExternalReleased = false;
