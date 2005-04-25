@@ -8,10 +8,10 @@ Note: you'll probably want to apply em8300-adv7170-wss.patch too
 Index: dxr3interface.c
 ===================================================================
 RCS file: /cvsroot/dxr3plugin/dxr3/dxr3interface.c,v
-retrieving revision 1.22
-diff -u -r1.22 dxr3interface.c
---- dxr3interface.c	23 Mar 2005 18:37:29 -0000	1.22
-+++ dxr3interface.c	23 Mar 2005 19:51:20 -0000
+retrieving revision 1.28
+diff -u -r1.28 dxr3interface.c
+--- dxr3interface.c	25 Apr 2005 18:21:19 -0000	1.28
++++ dxr3interface.c	25 Apr 2005 18:21:47 -0000
 @@ -540,16 +540,30 @@
      Lock();
  	
@@ -43,5 +43,5 @@ diff -u -r1.22 dxr3interface.c
 -            if (ioctl(m_fdControl, EM8300_IOCTL_SET_ASPECTRATIO, &ratio) < 0) 
 +            if (ioctl(m_fdControl, EM8300_IOCTL_SET_ASPECTRATIO, &aspect) < 0) 
  			{
- 				cLog::Instance() << "cDxr3AbsDevice::SetAspectRatio Unable to set aspect ratio\n";
+ 				cLog::Instance() << "cDxr3Interface::SetAspectRatio Unable to set aspect ratio\n";
              } 
