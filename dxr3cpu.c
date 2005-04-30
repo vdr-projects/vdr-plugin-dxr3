@@ -128,10 +128,19 @@ bool cDxr3CPU::Cpuid(unsigned long function, unsigned long& out_eax,
 		     unsigned long& out_edx)
 {
     // This works with PIC/non-PIC, from ffmpeg (libavcodec/i386/cputest.c)
+
+#ifdef __x86_64__
+#  define REG_b "rbx"
+#  define REG_S "rsi"
+#else
+#  define REG_b "ebx"
+#  define REG_S "esi"
+#endif
+
     __asm __volatile						\
-	("movl %%ebx, %%esi\n\t"				\
+	("mov %%"REG_b", %%"REG_S"\n\t"       			\
 	 "cpuid\n\t"						\
-	 "xchgl %%ebx, %%esi"					\
+	 "xchg %%"REG_b", %%"REG_S			       	\
 	 : "=a" (out_eax), "=S" (out_ebx),			\
 	   "=c" (out_ecx), "=d" (out_edx)			\
 	 : "0" (function));
