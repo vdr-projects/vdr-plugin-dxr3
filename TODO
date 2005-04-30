@@ -14,7 +14,8 @@ Known problems, bugs, and workarounds for this driver:
 
 * When cutting recordings from some channels, the still picture is stuck
   and won't move when you press 4 or 6 to fine tune the cutmarks.
-  Workaround: see vdr-iframe.patch in the patches/ directory.
+  Workaround: see vdr-iframe.patch in the patches/ directory or Reinhard
+  Niﬂl's http://home.vr-web.de/~rnissl/vdr-1.3.23-dvbplayer3.patch (better)
 
 * If the TV aspect ratio does not automatically adjust according to the
   video stream, and you have a ADV7170-based DXR3 and a PAL system, see
