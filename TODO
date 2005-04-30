@@ -21,9 +21,6 @@ Known problems, bugs, and workarounds for this driver:
   video stream, and you have a ADV7170-based DXR3 and a PAL system, see
   em8300-adv7170-wss.patch and vdr-dxr3-wss.patch in the patches/ dir.
 
-* The TVOnscreen plugin's OSD is a mess, positioning errors etc.
-  Workaround: use TVOnscreen < 0.6.0.  0.5.2 works fine for me (Ville).
-
 Other TODOs:
 ------------
 
