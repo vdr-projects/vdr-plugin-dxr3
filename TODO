@@ -8,6 +8,10 @@ Known problems, bugs, and workarounds for this driver:
 * VCD plugin does not work.
   Workaround: use the MPlayer plugin to play VCDs.
 
+* No sound (analog) with the DVD plugin with VDR >= 1.3.18.
+  Workaround: use the MPlayer plugin to play DVDs.
+  Workaround 2: use VDR < 1.3.18.
+
 * When cutting recordings from some channels, the still picture is stuck
   and won't move when you press 4 or 6 to fine tune the cutmarks.
   Workaround: see vdr-iframe.patch in the patches/ directory.
