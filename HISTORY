@@ -292,3 +292,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - set aspect ratio and audio mode to unknown when releasing devices, fixes
   the setup eg. after returning from the MPlayer plugin
   (Luca Olivetti, Kimmo Vuorinen)
+- avoid crashing with some corrupted streams (Jon Burgess)

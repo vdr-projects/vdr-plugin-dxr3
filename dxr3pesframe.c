@@ -44,6 +44,12 @@ bool cDxr3PesFrame::ExtractNextFrame(const uint8_t* pBuf, uint32_t length) throw
         if (length > 9) 
 		{
             for (; pos + 9 < length && !IsPesHeader(pesArray.SubArray(pos, 4)); pos++);
+	    if (pos + 9 >= length)
+	    {
+		// Corrupt stream?
+		m_remainingLength = 0;
+		return m_bValid;
+	    }
             m_pPesStart = pBuf + pos;
             
             if ((pesArray[pos + 6] & 0xC0) == 0x80 /*|| (pesArray[pos + 6] & 0xC0) == 0x00*/) 
