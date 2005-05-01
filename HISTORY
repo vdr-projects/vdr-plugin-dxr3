@@ -293,3 +293,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - register only needed ffmpeg codec(s) (Marco Schlüßler)
 - fix crash at exit (Marco Schlüßler)
 - add support for mandatory subtitles (Marco Schlüßler)
+- avoid crashing with some corrupted streams (Jon Burgess)
