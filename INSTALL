@@ -1,3 +1,12 @@
+-------------------------------------------------------------------------------
+NOTE:  This is the CVS HEAD version of the DXR3 plugin.  It is currently not
+       ready for general consumption; for example OSD is missing.  You
+       probably want to use the vdr-dxr3-0-2 branch instead.  Check out that
+       branch with:
+       cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/dxr3plugin \
+         co -r vdr-dxr3-0-2 dxr3
+-------------------------------------------------------------------------------
+
 Prerequisites:
 
 - Get the current CVS of the dxr3 drivers from http://dxr3.sourceforge.net/
