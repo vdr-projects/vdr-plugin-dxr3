@@ -237,10 +237,6 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - rewrote i18n support, improved Finnish translation and other bits
   (Christian Gmeiner, Ville Skyttä)
 - fixed void cDxr3Interface::SetAudioDigitalPCM() (Stephan Skrodzki)
-- dxr3memcpy.c/h: fix to support older compilers like gcc-2.95
-  (Christian Gmeiner, Marco Schlüßler)
-- dxr3memcpy.c/h: should now compile on alpha and powerpc
-  (bug #1000647, Christian Gmeiner, Paavo Hartikainen)
 - added many comments into source (Christian Gmeiner)
 - using doxygen for docs (Christian Gmeiner)
 - made path to microcode configurable in Makefile (Sascha Volkenandt)
@@ -248,9 +244,6 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
   You may also want to search and remove files called "dxr3plugin.log" as the
   old plugin wrote them into the current working directory.
 - better default directories in Makefile (Christian Gmeiner, vdr-wiki.de folks)
-- extended cDxr3MemcpyBench::Rdtsc(uint32_t config_flags): support for
-  non-x86 archs, support for cpu's, which dont support rdtsc timing
-  (Christian Gmeiner)
 - use std:: instead of namespace std
   (bug #1044069, Christian Gmeiner, Ville Skyttä)
 - removed extra log commands in dxr3outputthread.c (Christian Gmeiner)
@@ -267,8 +260,6 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - fixed audio and video thread deletion in demux device destructor
   (#1112674, Ville Skyttä)
 - made "all" the default target in Makefile (Ville Skyttä)
-- assume SSE support implies MMXEXT support, this enables optimized
-  memcpy routines on more systems (Ville Skyttä)
 - avoid hang in pause mode with VDR >= 1.3.18 (Luca Olivetti)
 - avoid high CPU usage in pause mode (Luca Olivetti, Klaus Schmidinger)
 - improved GetSTC(): fixes DVB subtitles sync problems (Mikko Tuumanen)
@@ -276,8 +267,6 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
   refreshed too often, see FLUSHRATE in Makefile (Luca Olivetti, Ville Skyttä)
 - borrow better OSD scaling routines from the Xine plugin (Luca Olivetti)
 - improve original OSD scaler for small resolutions (#1014339, Luca Olivetti)
-- fix PIC and AMD64 problems in the cpuid code, kudos to ffmpeg
-  (Ville Skyttä, Jon Burgess)
 - eliminate some compiler warnings (Ville Skyttä)
 - fix OSD going pink after returning from the MPlayer plugin; while at it,
   remove dxr3palettemanager.* and use VDR's cPalette
@@ -294,3 +283,5 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - fix crash at exit (Marco Schlüßler)
 - add support for mandatory subtitles (Marco Schlüßler)
 - avoid crashing with some corrupted streams (Jon Burgess)
+- remove optimized memcpy routines and related stuff, just use the glibc
+  one (Ville Skyttä)

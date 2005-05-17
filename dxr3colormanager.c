@@ -52,7 +52,6 @@
 
 #include "dxr3colormanager.h"
 #include "dxr3log.h"
-#include "dxr3memcpy.h"
 #include <stdio.h>
 #include <string.h>
 

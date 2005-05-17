@@ -27,7 +27,6 @@
 
 #include <unistd.h>
 #include "dxr3syncbuffer.h"
-#include "dxr3memcpy.h"
 
 const int DXR3_MAX_VIDEO_FRAME_LENGTH = 4096;
 const int DXR3_MAX_AUDIO_FRAME_LENGTH = 4096;
@@ -80,7 +79,7 @@ void cFixedLengthFrame::CopyFrame(const uint8_t* pStart, int length,
     m_type = type;
     m_count = length;
     m_pts = pts;
-    dxr3_memcpy((void*) m_pData, (void*) pStart, length);
+    memcpy((void*) m_pData, (void*) pStart, length);
 }
 
 // ==================================

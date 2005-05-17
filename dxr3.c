@@ -3,7 +3,7 @@
  *
  * See the README file for copyright information and how to reach the author.
  *
- * $Id: dxr3.c,v 1.1.2.10 2005/04/19 18:19:36 scop Exp $
+ * $Id: dxr3.c,v 1.1.2.11 2005/05/17 20:26:00 scop Exp $
  *
  */
 
@@ -18,8 +18,6 @@
 static const char *VERSION        = "0.2.3-cvs";
 static const char *DESCRIPTION    = "Hardware MPEG decoder";
 static const char *MAINMENUENTRY  = "DXR3";
-
-#include "dxr3cpu.h"
 
 // ==================================
 // 'message-handler' for the main screen
@@ -170,7 +168,6 @@ bool cPluginDxr3::Initialize()
 {
     RegisterI18n(Phrases);
 
-    new cDxr3CPU();
     cDxr3Device::InstanceP();
 
     return true;

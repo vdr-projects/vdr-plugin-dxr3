@@ -1,7 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.1.2.15 2005/04/19 17:28:22 scop Exp $
+# $Id: Makefile,v 1.1.2.16 2005/05/17 20:26:00 scop Exp $
 
 # The official name of this plugin.
 # This name will be used in the '-P...' option of VDR to load the plugin.
@@ -69,8 +69,7 @@ DEFINES += -DFLUSHRATE=40
 OBJS = $(PLUGIN).o dxr3multichannelaudio.o dxr3sysclock.o dxr3colormanager.o dxr3syncbuffer.o dxr3audiodecoder.o \
 dxr3blackframe.o dxr3nextpts.o dxr3pesframe.o dxr3demuxdevice.o dxr3configdata.o \
 dxr3log.o dxr3ffmpeg.o dxr3interface_spu_encoder.o dxr3i18n.o \
-dxr3interface.o dxr3device.o dxr3outputthread.o dxr3osd.o dxr3osd_subpicture.o dxr3spudecoder.o \
-dxr3cpu.o dxr3memcpy.o
+dxr3interface.o dxr3device.o dxr3outputthread.o dxr3osd.o dxr3osd_subpicture.o dxr3spudecoder.o
 
 ### Default target:
 
