@@ -443,27 +443,7 @@ void cSPUEncoder::ScaleOSD(double fac, unsigned char* buf,
 
 	    for (d = 1; d < (2 * OSDWIDTH); d += 2)
 	    {
-#if VDRVERSNUM <= 10307
-		// 'interpolate' values
-		if ((dline[d - 1] == BLACK) || (dline[d + 1] == BLACK))
-		{
-		    dline[d] = BLACK;
-		}
-		else if ((dline[d - 1] == WHITE) || (dline[d + 1] == WHITE))
-		{
-		    dline[d] = WHITE;
-		}
-		else if ((dline[d - 1] == CYAN) || (dline[d + 1] == CYAN))
-		{
-		    dline[d] = CYAN;
-		}
-		else
-		{
-		    dline[d] = dline[d + 1];
-		}
-#else /*VDRVERSNUM*/
 		dline[d] = dline[d + 1];
-#endif /*VDRVERSNUM*/
 	    }
 
 	    for (s = 0, x = 0; x < OSDWIDTH2; x++, s += 3)

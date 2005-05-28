@@ -4,10 +4,8 @@
 #include "dxr3vdrincludes.h"
 #include "dxr3interface_spu_encoder.h"
 
-#if VDRVERSNUM >= 10307
-
 // ==================================
-// osd interface for => vdr1,3,7
+// osd interface
 class cDxr3SubpictureOsd : public cOsd
 {
 private:
@@ -31,7 +29,6 @@ public:
     void Flush();
 };
 
-#endif /*VDRVERSNUM*/
 #endif /*_DXR3OSD_SUBPICTURE_H_*/
 
 // Local variables:

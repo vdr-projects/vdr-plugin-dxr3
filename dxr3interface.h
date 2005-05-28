@@ -135,9 +135,6 @@ public:
     void ReOpenAudio();
 
     // osd/spu
-#if VDRVERSNUM < 10307
-    cOsdBase* NewOsd(int x, int y);
-#endif
 
     void ClearOsd();
     void WriteSpu(const uint8_t* pBuf, int length);

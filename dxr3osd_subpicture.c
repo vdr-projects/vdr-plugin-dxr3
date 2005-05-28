@@ -29,8 +29,6 @@ public:
 };
 #endif
 
-#if VDRVERSNUM >= 10307
-
 #define MAXNUMWINDOWS 7 // OSD windows are counted 1...7
 
 // ==================================
@@ -268,8 +266,6 @@ void cDxr3SubpictureOsd::Flush()
     t.Stop("cDxr3SubpictureOsd::Flush");
 #endif
 }
-
-#endif /*VDRVERSNUM*/
 
 // Local variables:
 // mode: c++

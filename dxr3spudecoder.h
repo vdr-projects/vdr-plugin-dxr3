@@ -114,14 +114,12 @@ public:
     void processSPU(uint32_t pts, uint8_t * buf);
 #endif
 
-#if VDRVERSNUM >= 10311
     void Hide();
     void Draw();
     bool IsVisible()
     {
 	return osd != NULL;
     }
-#endif
 
 private:
     cOsd * osd;

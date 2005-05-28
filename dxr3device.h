@@ -71,9 +71,6 @@ public:
 
     // osd
     virtual cSpuDecoder *GetSpuDecoder();
-#if VDRVERSNUM < 10307
-    virtual cOsdBase* NewOsd(int x, int y);
-#endif
 
     // helper function
     void Reset()
