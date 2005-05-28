@@ -238,14 +238,6 @@ void cDxr3DemuxDevice::SetVideoOnlyMode()
     
 }
 
-#if VDRVERSNUM < 10307
-// ==================================
-cOsdBase* cDxr3DemuxDevice::NewOsd(int x, int y) 
-{
-    return m_dxr3Device.NewOsd(x, y);
-}
-#endif 
-
 // ==================================
 void cDxr3DemuxDevice::StillPicture(const uint8_t* buf, int length) 
 {

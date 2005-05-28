@@ -41,17 +41,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -71,17 +67,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -101,17 +93,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -131,17 +119,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -161,17 +145,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -191,17 +171,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -221,17 +197,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -251,17 +223,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -281,17 +249,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -311,17 +275,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -341,17 +301,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -371,17 +327,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -401,17 +353,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -431,17 +379,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -461,17 +405,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -491,17 +431,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -521,17 +457,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -551,17 +483,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -581,17 +509,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -611,17 +535,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -641,17 +561,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -671,17 +587,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -701,17 +613,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{
@@ -731,17 +639,13 @@ const tI18nPhrase Phrases[] = {
 		"", // Românã
 		"", // Magyar
 		"", // Català
-#if VDRVERSNUM > 10302
 		"", // ÀãááÚØÙ (Russian)
-# if VDRVERSNUM > 10307
 		"", // Hrvatski
-#  if VDRVERSNUM > 10312
+#if VDRVERSNUM > 10312
 		"", // Eesti
-#   if VDRVERSNUM > 10315
+#if VDRVERSNUM > 10315
 		"", // Dansk
-#   endif
-#  endif
-# endif
+#endif
 #endif
 	},
 	{ NULL }

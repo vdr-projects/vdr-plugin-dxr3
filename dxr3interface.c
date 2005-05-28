@@ -914,14 +914,6 @@ void cDxr3Interface::ReOpenAudio()
     Unlock();
 }
 
-#if VDRVERSNUM < 10307
-// ==================================
-cOsdBase* cDxr3Interface::NewOsd(int x, int y)
-{
-	return new cDxr3Osd(x, y);
-}
-#endif
-
 // ==================================
 //! uploadroutine for microcode
 void cDxr3Interface::UploadMicroCode()

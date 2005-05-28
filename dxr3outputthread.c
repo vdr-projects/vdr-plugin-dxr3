@@ -64,9 +64,7 @@ bool cDxr3OutputThread::GetStopSignal()
 cDxr3AudioOutThread::cDxr3AudioOutThread(cDxr3Interface& dxr3Device, cDxr3SyncBuffer& buffer) :
 cDxr3OutputThread(dxr3Device, buffer) 
 {
-#if VDRVERSNUM >= 10300
     SetDescription("DXR3 audio output");
-#endif
 }
 
 // ==================================
@@ -149,9 +147,7 @@ void cDxr3AudioOutThread::Action()
 cDxr3VideoOutThread::cDxr3VideoOutThread(cDxr3Interface& dxr3Device, cDxr3SyncBuffer& buffer) :
 cDxr3OutputThread(dxr3Device, buffer) 
 {
-#if VDRVERSNUM >= 10300
     SetDescription("DXR3 video output");
-#endif
 }
 
 // ==================================

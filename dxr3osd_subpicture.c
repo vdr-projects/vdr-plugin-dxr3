@@ -1,7 +1,5 @@
 #include "dxr3osd_subpicture.h"
 
-#if VDRVERSNUM >= 10307
-
 #define MAXNUMWINDOWS 7 // OSD windows are counted 1...7
 
 // ==================================
@@ -171,8 +169,6 @@ void cDxr3SubpictureOsd::Flush()
 		shown = true;
 	}
 }
-
-#endif /*VDRVERSNUM*/
 
 // Local variables:
 // mode: c++

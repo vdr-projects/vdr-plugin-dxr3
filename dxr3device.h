@@ -70,9 +70,6 @@ public:
 
 	// osd
 	virtual cSpuDecoder *GetSpuDecoder();
-	#if VDRVERSNUM < 10307
-    virtual cOsdBase* NewOsd(int x, int y);
-	#endif
 
 	// helper function
 	void Reset()		{ m_CalledBySet = true; SetPlayMode(m_PlayMode); m_CalledBySet = false; }

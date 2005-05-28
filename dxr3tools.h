@@ -89,11 +89,7 @@ namespace Tools
 	//! write a string via vdr to OSD
 	inline void WriteInfoToOsd(std::string x)
 	{
-		#if VDRVERSNUM <= 10306
-			Interface->Info(x.c_str());
-		#else
-			Skins.Message(mtInfo, x.c_str());
-		#endif
+		Skins.Message(mtInfo, x.c_str());
 	}
 
 }

@@ -3,7 +3,7 @@
 *
 * See the README file for copyright information and how to reach the author.
 *
-* $Id: dxr3.c,v 1.6 2005/04/18 21:18:43 scop Exp $
+* $Id: dxr3.c,v 1.7 2005/05/28 10:10:52 scop Exp $
 */
 
 
@@ -20,6 +20,10 @@
 static const char *VERSION        = "0.3.0-cvs";
 static const char *DESCRIPTION    = "Hardware MPEG decoder";
 static const char *MAINMENUENTRY  = "DXR3";
+
+#if VDRVERSNUM && VDRVERSNUM < 10308
+#error "This version of the DXR3 plugin needs VDR version >= 1.3.8"
+#endif
 
 // ==================================
 // 'message-handler' for the main screen

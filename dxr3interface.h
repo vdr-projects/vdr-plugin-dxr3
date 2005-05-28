@@ -106,10 +106,6 @@ public:
 	void ReOpenAudio();
 
 	// osd/spu
-	#if VDRVERSNUM < 10307
-	cOsdBase* NewOsd(int x, int y);
-	#endif
-
     void ClearOsd();
     void WriteSpu(const uint8_t* pBuf, int length);
     void SetButton(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint32_t palette);

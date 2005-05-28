@@ -55,9 +55,7 @@ cDxr3Device::~cDxr3Device()
 // ==================================
 void cDxr3Device::MakePrimaryDevice(bool On)
 {
-#if VDRVERSNUM >= 10307
     new cDxr3OsdProvider();
-#endif
 }
 
 // replaying
@@ -104,11 +102,9 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
 			cLog::Instance() << "cDxr3Device::SetPlayMode this should be avoided\n"; 
 			break;
 
-		#if VDRVERSNUM >= 10307
 		case pmVideoOnly:
 			cLog::Instance() << "cDxr3Device::SetPlayMode video only from player, audio from decoder\n"; 
 			break;
-		#endif
 		}
 	}
 
@@ -360,13 +356,6 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 		int origLength = Length;
 #endif    
 
-#if VDRVERSNUM < 10307
-    if (!m_AC3Present) 
-	{
-        Interface->Write(Interface->Width() / 2, 0, "AC3", clrRed);
-    }	
-#endif
-
     m_AC3Present = true;
 	
     if ((m_DemuxDevice.GetDemuxMode() == DXR3_DEMUX_TRICK_MODE &&
@@ -502,15 +491,6 @@ cSpuDecoder *cDxr3Device::GetSpuDecoder(void)
 	}
 	return m_spuDecoder;
 }
-
-#if VDRVERSNUM < 10307
-// ==================================
-// return osd
-cOsdBase *cDxr3Device::NewOsd(int x, int y) 
-{
-    return m_DemuxDevice.NewOsd(x, y);
-}
-#endif
 
 // Local variables:
 // mode: c++

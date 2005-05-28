@@ -55,10 +55,6 @@ public:
     void SetReplayMode(void);
     void SetTrickMode(eDxr3TrickState trickState, int Speed = 1);
 
-	#if VDRVERSNUM < 10307
-    cOsdBase* NewOsd(int x, int y);
-	#endif
-
     int DemuxPes(const uint8_t* buf, int length, bool bAc3Dts = false);
     int DemuxAudioPes(const uint8_t* buf, int length);
     void StillPicture(const uint8_t* buf, int length);

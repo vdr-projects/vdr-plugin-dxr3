@@ -33,11 +33,7 @@
 #endif
 
 // all includes from vdr
-#if VDRVERSNUM >= 10307
-	#include <vdr/osd.h>
-#else
-	#include <vdr/osdbase.h>
-#endif
+#include <vdr/osd.h>
 #include <vdr/config.h>
 #include <vdr/thread.h>
 #include <vdr/ringbuffer.h>
