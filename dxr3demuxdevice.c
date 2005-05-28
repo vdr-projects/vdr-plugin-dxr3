@@ -388,6 +388,9 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
 		    m_dxr3Device.SetVerticalSize(pesFrame.GetVerticalSize());
 		    while (!Poll(100));
 		    cFixedLengthFrame* pTempFrame = m_vBuf.Push(pesFrame.GetEsStart(), (int) (pesFrame.GetEsLength()), pts, ftVideo);
+		    if (!pTempFrame) /* Push Timeout */
+			throw (cDxr3PesFrame::PES_GENERAL_ERROR);
+
 		    pTempFrame->SetAspectRatio(pesFrame.GetAspectRatio());
 
 		    m_aBuf.WakeUp();
@@ -414,6 +417,9 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
 			m_dxr3Device.SetHorizontalSize(pesFrame.GetHorizontalSize());
 			m_dxr3Device.SetVerticalSize(pesFrame.GetVerticalSize());
 			cFixedLengthFrame* pTempFrame = m_vBuf.Push(pesFrame.GetEsStart(), (int) (pesFrame.GetEsLength()), pts, ftVideo);
+			if (!pTempFrame) /* Push Timeout */
+			    throw (cDxr3PesFrame::PES_GENERAL_ERROR);
+
 			pTempFrame->SetAspectRatio(pesFrame.GetAspectRatio());
 
 			if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED)

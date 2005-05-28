@@ -26,6 +26,7 @@
 */
 
 #include <unistd.h>
+#include <sys/time.h>
 #include "dxr3syncbuffer.h"
 
 const int DXR3_MAX_VIDEO_FRAME_LENGTH = 4096;
@@ -181,7 +182,9 @@ bool cDxr3SyncBuffer::Poll(int TimeoutMs)
 {
     bool retVal = true;
     uint32_t currTime = m_dxr3Device.GetSysClock();
+    struct timeval tv_start, tv;
     m_bPollSync = true;
+    gettimeofday(&tv_start, NULL);
     if (m_demuxMode == DXR3_DEMUX_REPLAY_MODE)
     {
 	if (Available() >= Size() - (Size()*BUFFER_LIMIT/100))
@@ -191,10 +194,20 @@ bool cDxr3SyncBuffer::Poll(int TimeoutMs)
 		   ((m_dxr3Device.GetSysClock() - currTime) <
 		    ((uint32_t)TimeoutMs * (uint32_t)45)))
 	    {
+		int d_s, d_us, ms;
 		m_bPutBlock = true;
 		EnableGet();
 		m_bWaitPts = false;
 		WaitForPut();
+		gettimeofday(&tv, NULL);
+		d_s  = tv.tv_sec  - tv_start.tv_sec;
+		d_us = tv.tv_usec - tv_start.tv_usec;
+		ms = d_s * 1000 + d_us / 1000;
+		if (ms > TimeoutMs * 2) {
+		    cLog::Instance() << "Secondary timeout\n";
+		    printf("Secondary timeout\n");
+		    break;
+		}
 	    }
 	    if (Available() >= Size() - (Size()*BUFFER_LIMIT_2)/100)
 	    {
@@ -210,6 +223,8 @@ bool cDxr3SyncBuffer::Poll(int TimeoutMs)
 cFixedLengthFrame* cDxr3SyncBuffer::Push(const uint8_t* pStart, int length, uint32_t pts, eFrameType type)  throw (eSyncBufferException)
 {
     int lastIndex = 0;
+    struct timeval tv_start, tv;
+    gettimeofday(&tv_start, NULL);
 
     switch (m_demuxMode)
     {
@@ -222,10 +237,20 @@ cFixedLengthFrame* cDxr3SyncBuffer::Push(const uint8_t* pStart, int length, uint
 
 	while ((Available() >= Size() - (Size()*10)/100))
 	{
+	    int d_s, d_us, ms;
 	    m_bPutBlock = true;
 	    EnableGet();
 	    m_bWaitPts = false;
 	    WaitForPut();
+	    gettimeofday(&tv, NULL);
+	    d_s  = tv.tv_sec  - tv_start.tv_sec;
+	    d_us = tv.tv_usec - tv_start.tv_usec;
+	    ms = d_s * 1000 + d_us / 1000;
+	    if (ms > 2000) {
+		cLog::Instance() << "Push timeout\n";
+		printf("Push timeout\n");
+		return NULL;
+	    }
 	}
 
 #if VDRVERSNUM < 10313

@@ -22,7 +22,6 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <time.h>
-#include <pthread.h>
 #include "dxr3outputthread.h"
 #include "dxr3log.h"
 
@@ -89,14 +88,6 @@ void cDxr3AudioOutThread::Action()
     uint32_t pts = 0;
 
     cLog::Instance() << "cDxr3AudioOutThread::Action Thread started\n";
-
-    sched_param temp;
-    temp.sched_priority = 2;
-
-    if (!pthread_setschedparam(pthread_self(), SCHED_RR, &temp))
-    {
-	cLog::Instance() << "cDxr3AudioOutThread::Action(): Error can't set priority\n";
-    }
 
     while (!GetStopSignal())
     {
@@ -182,14 +173,6 @@ void cDxr3VideoOutThread::Action()
     static uint32_t lastPts = 0;
 
     cLog::Instance() << "cDxr3VideoOutThread::Action Thread started\n";
-
-    sched_param temp;
-    temp.sched_priority = 1;
-
-    if (!pthread_setschedparam(pthread_self(), SCHED_RR, &temp))
-    {
-	cLog::Instance() << "cDxr3VideoOutThread::Action(): Error can't set priority\n";
-    }
 
     while (!GetStopSignal())
     {
