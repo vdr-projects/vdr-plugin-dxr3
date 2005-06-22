@@ -665,8 +665,8 @@ void cDxr3Interface::PlayVideoFrame(const uint8_t* pBuf, int length, int times)
 // ==================================
 void cDxr3Interface::PlayAudioFrame(cFixedLengthFrame* pFrame)
 {
-
     // XXX: Call this only with we are not in external mode?
+    int written = 0;
 
     if (m_AudioActive)
     {
@@ -679,7 +679,18 @@ void cDxr3Interface::PlayAudioFrame(cFixedLengthFrame* pFrame)
 	{
 	    if (!cDxr3ConfigData::Instance().GetAc3OutPut())
 		ResampleVolume((short*)pFrame->GetData(), pFrame->GetCount());
-	    write(m_fdAudio, pFrame->GetData(), pFrame->GetCount());
+
+	    written = write(m_fdAudio, pFrame->GetData(), pFrame->GetCount());
+	    if (written < 0)
+	    {
+		esyslog("dxr3: unable to play audio frame: %m");
+		// TODO: Resuscitation() ?
+	    }
+	    else if (written != pFrame->GetCount())
+	    {
+		esyslog("dxr3: unable to play whole audio frame, skipped"
+			" %d bytes", pFrame->GetCount() - written);
+	    }
 	}
 
 	Unlock();
@@ -697,8 +708,12 @@ void cDxr3Interface::PlayAudioFrame(uint8_t* pBuf, int length)
 	if (!cDxr3ConfigData::Instance().GetAc3OutPut())
 	    ResampleVolume((short*)pBuf, length);
 
-	if ((written = write(m_fdAudio, pBuf, length) < 0)) Resuscitation();
-	if (written != length)
+	if ((written = write(m_fdAudio, pBuf, length)) < 0)
+	{
+	    esyslog("dxr3: unable to play audio frame: %m");
+	    Resuscitation();
+	}
+	else if (written != length)
 	{
 	    esyslog("dxr3: unable to play whole audio frame, skipped %d bytes",
 		    length - written);

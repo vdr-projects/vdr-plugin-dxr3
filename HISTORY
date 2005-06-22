@@ -263,7 +263,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
   refreshed too often, see FLUSHRATE in Makefile (Luca Olivetti, Ville Skyttä)
 - borrow better OSD scaling routines from the Xine plugin (Luca Olivetti)
 - improve original OSD scaler for small resolutions (#1014339, Luca Olivetti)
-- eliminate some compiler warnings (Ville Skyttä)
+- improve error checking, eliminate some compiler warnings (Ville Skyttä)
 - fix OSD going pink after returning from the MPlayer plugin; while at it,
   remove dxr3palettemanager.* and use VDR's cPalette
   (Ville Skyttä, Martin Cap, Luca Olivetti)
