@@ -1,18 +1,11 @@
-Wide screen signaling (WSS) patch for vdr-dxr3 by Seppo Ingalsuo.
-Apply to: vdr-dxr3 plugin sources
-More info: http://thread.gmane.org/gmane.linux.vdr/17095
-Note: you'll probably want to apply em8300-adv7170-wss.patch too
-  in order to get support for this functionality in the driver.
-
-
 Index: dxr3interface.c
 ===================================================================
 RCS file: /cvsroot/dxr3plugin/dxr3/dxr3interface.c,v
-retrieving revision 1.4.2.20
-diff -u -r1.4.2.20 dxr3interface.c
---- dxr3interface.c	25 Apr 2005 18:23:05 -0000	1.4.2.20
-+++ dxr3interface.c	25 Apr 2005 18:23:28 -0000
-@@ -497,20 +497,36 @@
+retrieving revision 1.4.2.23
+diff -u -r1.4.2.23 dxr3interface.c
+--- dxr3interface.c	22 Jun 2005 17:37:22 -0000	1.4.2.23
++++ dxr3interface.c	22 Jun 2005 17:40:10 -0000
+@@ -498,20 +498,39 @@
  void cDxr3Interface::SetAspectRatio(uint32_t ratio)
  {
      static int requestCounter = 0;
@@ -38,7 +31,10 @@ diff -u -r1.4.2.20 dxr3interface.c
 +		    wssmode = EM8300_WSS_16_9;
 +		else
 +		    wssmode = EM8300_WSS_OFF;
-+		ioctl(m_fdControl, EM8300_IOCTL_SET_WSS, &wssmode);
++		if (ioctl(m_fdControl, EM8300_IOCTL_SET_WSS, &wssmode) < 0)
++		{
++		    esyslog("dxr3: unable to set WSS: %m");
++		}
 +#endif
 +	    }
 +	    else
@@ -50,5 +46,5 @@ diff -u -r1.4.2.20 dxr3interface.c
 -	    if (ioctl(m_fdControl, EM8300_IOCTL_SET_ASPECTRATIO, &ratio) < 0)
 +	    if (ioctl(m_fdControl, EM8300_IOCTL_SET_ASPECTRATIO, &aspect) < 0)
  	    {
- 		cLog::Instance() << "cDxr3Interface::SetAspectRatio Unable to set aspect ratio\n";
+ 		esyslog("dxr3: unable to set aspect ratio: %m");
  	    }
