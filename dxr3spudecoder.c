@@ -30,7 +30,6 @@
 #include "dxr3spudecoder.h"
 #include "dxr3interface.h"
 #include "dxr3tools.h"
-#include "dxr3log.h"
 
 // ==================================
 #define CMD_SPU_MENU            0x00
@@ -173,14 +172,8 @@ bool cDxr3SpuBitmap::getMinSize(const aDxr3SpuPalDescr paldescr,
 	    ret = true;
 	}
     }
-    /*
-    if (ret && cDxr3ConfigData::Instance().GetDebug())
-    {
-	cLog::Instance() << "cDxr3SpuBitmap::getMinSize: ("
-			 << size.x1 ", " << size.y1 << ") x ("
-			 << size.x2 << ", " << size.y2 << ")\n";
-    }
-    */
+    dsyslog("dxr3: getminsize: (%d,%d) x (%d,%d)",
+	    size.x1, size.y1, size.x2, size.y2);
     if (size.x1 > size.x2 || size.y1 > size.y2)
 	return false;
     return ret;
@@ -288,12 +281,7 @@ void cDxr3SpuDecoder::processSPU(uint32_t pts, uint8_t * buf)
 #endif
 {
     setTime(pts);
-
-    if (cDxr3ConfigData::Instance().GetDebug())
-    {
-	cLog::Instance() << "cDxr3SpuDecoder::processSPU: SPU pushData: pts: "
-			 << pts << "\n";
-    }
+    dsyslog("dxr3: spudec push: pts=%d", pts);
 
     delete spubmp;
     spubmp = NULL;
@@ -349,11 +337,7 @@ void cDxr3SpuDecoder::setHighlight(uint16_t sx, uint16_t sy, uint16_t ex, uint16
 
     if (ne)
     {
-	if (cDxr3ConfigData::Instance().GetDebug())
-	{
-	    cLog::Instance() << "cDxr3SpuDecoder::setHighlight: " << sx
-			     << ", " << sy << ", " << ex << ", " << ey << "\n";
-	}
+	dsyslog("dxr3: spu highlight: %d, %d, %d, %d", sx, sy, ex, ey);
 
 	hlpsize.x1 = sx;
 	hlpsize.y1 = sy;
@@ -456,11 +440,7 @@ void cDxr3SpuDecoder::Draw()
 	if (osd == NULL)
 	    if ((osd = cOsdProvider::NewOsd(0, 0)) == NULL)
 	    {
-		if (cDxr3ConfigData::Instance().GetDebug())
-		{
-		    cLog::Instance() << "cDxr3SpuDecoder::Draw: New OSD faild!\n";
-		}
-		dsyslog("NewOsd failed\n");
+		esyslog("dxr3: could not instantiate new OSD");
 		return;
 	    }
 
@@ -548,20 +528,14 @@ int cDxr3SpuDecoder::setTime(uint32_t pts)
 		{
 		case CMD_SPU_SHOW:
 		    // show subpicture
-		    if (cDxr3ConfigData::Instance().GetDebug())
-		    {
-			cLog::Instance() << "cDxr3SpuDecoder::setTime: show subpicture\n";
-		    }
+		    dsyslog("dxr3: spu show");
 		    state = spSHOW;
 		    i++;
 		    break;
 
 		case CMD_SPU_HIDE:
 		    // hide subpicture
-		    if (cDxr3ConfigData::Instance().GetDebug())
-		    {
-			cLog::Instance() << "cDxr3SpuDecoder::setTime: hide subpicture\n";
-		    }
+		    dsyslog("dxr3: spu hide");
 		    state = spHIDE;
 		    i++;
 		    break;
@@ -592,13 +566,8 @@ int cDxr3SpuDecoder::setTime(uint32_t pts)
 		    size.y1 = (spu[i + 4] << 4) | (spu[i + 5] >> 4);
 		    size.y2 = ((spu[i + 5] & 0x0f) << 8) | spu[i + 6];
 
-		    if (cDxr3ConfigData::Instance().GetDebug())
-		    {
-			cLog::Instance() << "cDxr3SpuDecoder::setTime: ("
-					 << size.x1 << ", " << size.y1
-					 << ") x (" << size.x2 << ", "
-					 << size.y2 <<")\n";
-		    }
+		    dsyslog("dxr3: spu size (%d,%d) x (%d,%d)",
+			    size.x1, size.y1, size.x2, size.y2);
 		    i += 7;
 		    break;
 
@@ -607,12 +576,7 @@ int cDxr3SpuDecoder::setTime(uint32_t pts)
 		    fodd = spuU32(i + 1);
 		    feven = spuU32(i + 3);
 
-		    if (cDxr3ConfigData::Instance().GetDebug())
-		    {
-			cLog::Instance() << "cDxr3SpuDecoder::setTime: odd = "
-					 << fodd << " even = " << feven
-					 << "\n";
-		    }
+		    dsyslog("dxr3: spu offset: odd=%d, even=%d", fodd, feven);
 		    i += 5;
 		    break;
 
@@ -624,17 +588,13 @@ int cDxr3SpuDecoder::setTime(uint32_t pts)
 		break;
 
 		case CMD_SPU_MENU:
-		    if (cDxr3ConfigData::Instance().GetDebug())
-		    {
-			cLog::Instance() << "cDxr3SpuDecoder::setTime: spu menu\n";
-		    }
+		    dsyslog("dxr3: spu menu");
 		    state = spMENU;
-
 		    i++;
 		    break;
 
 		default:
-		    esyslog("invalid sequence in control header (%.2x)\n",
+		    esyslog("dxr3: invalid sequence in control header (%.2x)",
 			    spu[i]);
 		    assert(0);
 		    i++;

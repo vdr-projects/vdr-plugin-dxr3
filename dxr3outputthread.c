@@ -23,7 +23,6 @@
 #include <unistd.h>
 #include <time.h>
 #include "dxr3outputthread.h"
-#include "dxr3log.h"
 
 // ==================================
 const int AUDIO_OFFSET = 4500;
@@ -86,8 +85,6 @@ void cDxr3AudioOutThread::Action()
 {
     bool resync = false;
     uint32_t pts = 0;
-
-    cLog::Instance() << "cDxr3AudioOutThread::Action Thread started\n";
 
     while (!GetStopSignal())
     {
@@ -171,8 +168,6 @@ void cDxr3VideoOutThread::Action()
 {
     uint32_t pts = 0;
     static uint32_t lastPts = 0;
-
-    cLog::Instance() << "cDxr3VideoOutThread::Action Thread started\n";
 
     while (!GetStopSignal())
     {

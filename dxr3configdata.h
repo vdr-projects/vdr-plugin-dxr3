@@ -43,14 +43,6 @@ enum eMenuMode
 };
 
 // ==================================
-//! possible debug levels
-enum eDebugLevel
-{
-    LOW = 0,		///< only log basic warings and errors
-    EVERYTHING		///< log everything - note logfile can become very big
-};
-
-// ==================================
 //! global interface to access all config datas of this plugin
 /*
   With this singleton you can access very easy all possible
@@ -112,36 +104,6 @@ public:
 	return m_menumode = menuMode;
     }
 
-    int GetDebug() const
-    {
-	return m_debug;
-    }
-    int SetDebug(int value)
-    {
-	return m_debug = value;
-    }
-    int GetDebugLevel() const
-    {
-	return m_debuglevel;
-    }
-    int SetDebugLevel(int value)
-    {
-	return m_debuglevel = value;
-    }
-
-    // some little helpers to save some writing
-    int GetDebugLow() const
-    {
-	return (m_debug && !m_debuglevel);
-    }
-    int GetDebugEverything() const
-    {
-	if (m_debug && !m_debuglevel)
-	    return 1;
-	else
-	    return 0;
-    }
-
     int GetBrightness() const
     {
 	return m_brightness;
@@ -175,8 +137,6 @@ protected:
     int m_ac3output;
     int m_card;
     int m_forceletterbox;
-    int m_debug;
-    int m_debuglevel;
     int m_brightness;
     int m_contrast;
     int m_saturation;

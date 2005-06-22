@@ -29,7 +29,6 @@
 #include "dxr3ffmpeg.h"
 #include "dxr3syncbuffer.h"
 #include "dxr3multichannelaudio.h"
-#include "dxr3log.h"
 
 // ==================================
 // decode audio to mp2 or use DD :)

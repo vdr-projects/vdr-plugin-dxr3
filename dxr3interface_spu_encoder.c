@@ -308,19 +308,12 @@ int cSPUEncoder::Flush(cPalette *Palette)
     // calculate osd size (actually dead code)
     CalculateActiveOsdArea();
 
-    /*
-    cLog::Instance() << "(" << m_x0 << ", " <<  m_x1 << ") - ("
-		     << m_y0 << ", " << m_y1 << ")";
-    */
-
     m_encodeddata.count = 0;
     EncodePixelbufRle(0, 0, OSDWIDTH, OSDHEIGHT-1, OSD_Screen, 0,
 		      &m_encodeddata);
 
-    if (cDxr3ConfigData::Instance().GetDebug())
-    {
-	cLog::Instance() << "OSD Datasize: " << m_encodeddata.count << "\n";
-    }
+    dsyslog("dxr3: cSPUEncoder::Flush: OSD data size: %d",
+	    m_encodeddata.count);
 
     if (m_encodeddata.count <= DATASIZE)
     {
@@ -330,8 +323,8 @@ int cSPUEncoder::Flush(cPalette *Palette)
     }
     else
     {
-	cLog::Instance() << "Warning: SPU data (" << m_encodeddata.count
-			 << ") size exceeds limit\n";
+	esyslog("dxr3: spu: warning: SPU data size (%d) exceeds limit (%d)",
+		m_encodeddata.count, DATASIZE);
 	return -1;
     }
 }

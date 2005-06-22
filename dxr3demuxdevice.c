@@ -25,10 +25,8 @@
 #include <unistd.h>
 #include "dxr3demuxdevice.h"
 #include <linux/em8300.h>
-#include "dxr3log.h"
 #include "dxr3pesframe.h"
 #include "dxr3configdata.h"
-#include "dxr3log.h"
 
 // ==================================
 //! constructor
@@ -43,7 +41,7 @@ cDxr3DemuxDevice::cDxr3DemuxDevice(cDxr3Interface& dxr3Device) :
     m_pAudioThread = new cDxr3AudioOutThread(dxr3Device, m_aBuf);
     if (!m_pAudioThread)
     {
-	cLog::Instance() << "cDxr3DemuxDevice::cDxr3DemuxDevice: failed to allocate memory\n";
+	esyslog("dxr3: fatal: unable to allocate memory for audio thread");
 	exit(1);
     }
     m_pAudioThread->Start();
@@ -51,7 +49,7 @@ cDxr3DemuxDevice::cDxr3DemuxDevice(cDxr3Interface& dxr3Device) :
     m_pVideoThread = new cDxr3VideoOutThread(dxr3Device, m_vBuf);
     if (!m_pVideoThread)
     {
-	cLog::Instance() << "cDxr3DemuxDevice::cDxr3DemuxDevice: failed to allocate memory\n";
+	esyslog("dxr3: fatal: unable to allocate memory for video thread");
 	exit(1);
     }
     m_pVideoThread->Start();
@@ -248,7 +246,7 @@ void cDxr3DemuxDevice::StillPicture(const uint8_t* buf, int length)
     m_trickState = DXR3_FREEZE;
     m_dxr3Device.SingleStep();
 
-    cLog::Instance() << "StillPicture: len = " << length << "\n";
+    dsyslog("dxr3: demux: stillpicture length: %d", length);
 
     DemuxPes(buf, length);
     DemuxPes(buf, length);
@@ -345,7 +343,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
 		    switch (pesFrame.GetFrameType())
 		    {
 		    case I_FRAME:
-			cLog::Instance() << "i - frame\n";
+			dsyslog("dxr3: demux: I-frame");
 			m_dxr3Device.SingleStep();
 			bPlaySuc = true;
 			//if (bPlayedFrame) return length;
@@ -357,7 +355,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
 			break;
 
 		    case UNKNOWN_FRAME:
-			cLog::Instance() << "frame unknown\n";
+			dsyslog("dxr3: demux: unknown frame");
 			if (bPlaySuc)
 			{
 			    m_dxr3Device.PlayVideoFrame(pesFrame.GetEsStart(), (int) (pesFrame.GetEsLength()), m_ReUseFrame);
@@ -365,7 +363,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
 			break;
 
 		    default:
-			cLog::Instance() << "default frame\n";
+			dsyslog("dxr3: demux: default frame");
 			if (bPlaySuc)
 			{
 			    m_dxr3Device.PlayVideoFrame(pesFrame.GetEsStart(), (int) (pesFrame.GetOffset()), m_ReUseFrame);

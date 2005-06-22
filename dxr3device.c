@@ -78,36 +78,6 @@ bool cDxr3Device::CanReplay() const
 // ==================================
 bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
 {
-    if (cDxr3ConfigData::Instance().GetDebug())
-    {
-	switch (PlayMode)
-	{
-	case pmNone:
-	    cLog::Instance() << "cDxr3Device::SetPlayMode audio/video from decoder\n";
-	    break;
-
-	case pmAudioVideo:
-	    cLog::Instance() << "cDxr3Device::SetPlayMode audio/video from player\n";
-	    break;
-
-	case pmAudioOnly:
-	    cLog::Instance() << "cDxr3Device::SetPlayMode audio only from player, video from decoder\n";
-	    break;
-
-	case pmAudioOnlyBlack:
-	    cLog::Instance() << "cDxr3Device::SetPlayMode audio only from player, no video (black screen)\n";
-	    break;
-
-	case pmExtern_THIS_SHOULD_BE_AVOIDED:
-	    cLog::Instance() << "cDxr3Device::SetPlayMode this should be avoided\n";
-	    break;
-
-	case pmVideoOnly:
-	    cLog::Instance() << "cDxr3Device::SetPlayMode video only from player, audio from decoder\n";
-	    break;
-	}
-    }
-
     if (PlayMode == pmExtern_THIS_SHOULD_BE_AVOIDED)
     {
 	Tools::WriteInfoToOsd(tr("DXR3: releasing devices"));
@@ -142,26 +112,24 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
 	m_DemuxDevice.Stop();
     }
 
-    cLog::Instance() << "Setting audio mode...";
-
     if (cDxr3ConfigData::Instance().GetUseDigitalOut())
     {
 	if (cDxr3ConfigData::Instance().GetAc3OutPut() && m_CalledBySet)
 	{
+	    isyslog("dxr3: Setting AC3 audio mode");
 	    cDxr3Interface::Instance().SetAudioDigitalAC3(); // !!! FIXME
-	    cLog::Instance() << "ac3\n";
 	}
 	else
 	{
+	    isyslog("dxr3: Setting digital PCM audio mode");
 	    cDxr3Interface::Instance().SetAudioDigitalPCM();
 	    cDxr3ConfigData::Instance().SetAc3OutPut(0);
-	    cLog::Instance() << "digital pcm\n";
 	}
     }
     else
     {
+	isyslog("dxr3: Setting analog audio mode");
 	cDxr3Interface::Instance().SetAudioAnalog();
-	cLog::Instance() << "analog\n";
     }
 
     return true;
@@ -176,31 +144,10 @@ int64_t cDxr3Device::GetSTC()
 // ==================================
 void cDxr3Device::TrickSpeed(int Speed)
 {
-    if (cDxr3ConfigData::Instance().GetDebug())
-    {
-	cLog::Instance() << "cDxr3Device::TrickSpeed(int Speed): "
-			 << Speed << "\n";
-    }
+    dsyslog("dxr3: device: tricspeed: %d", Speed);
 
     m_DemuxDevice.SetTrickMode(DXR3_FAST, Speed);
 
-
-    /*
-    switch (Speed)
-    {
-    case 6:
-	cLog::Instance() << "Trickspeed: 1x vorwärts\n";
-	break;
-
-    case 3:
-	cLog::Instance() << "Trickspeed: 2x vorwärts\n";
-	break;
-
-    case 1:
-	cLog::Instance() << "Trickspeed: 3x vorwärts\n";
-	break;
-    };
-    */
     /*
 	6 ... 1x vowärts
 	3 ... 2x vowärts
@@ -481,10 +428,6 @@ bool cDxr3Device::GrabImage(const char *FileName, bool Jpeg, int Quality,
 // ==================================
 void cDxr3Device::SetVideoFormat(bool VideoFormat16_9)
 {
-    if (cDxr3ConfigData::Instance().GetDebug())
-    {
-	cLog::Instance() << "cDxr3Device::SetPlayMode(ePlayMode PlayMode)() done\n";
-    }
     // Do we need this function?
 }
 

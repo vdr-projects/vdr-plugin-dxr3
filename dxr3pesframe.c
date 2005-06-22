@@ -20,13 +20,13 @@
  */
 
 #include "dxr3pesframe.h"
-#include "dxr3log.h"
 
 #include <linux/em8300.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <vdr/tools.h>
 
 // ==================================
 bool cDxr3PesFrame::ExtractNextFrame(const uint8_t* pBuf, uint32_t length)
@@ -128,7 +128,7 @@ bool cDxr3PesFrame::ExtractNextFrame(const uint8_t* pBuf, uint32_t length)
     catch (cDxr3SafeArray<uint8_t>::eSafeArrayException ex)
     {
 	m_bValid = false;
-	cLog::Instance() << "*** PES_GENERAL_ERROR ****\n";
+	esyslog("dxr3: general PES error");
 	throw(PES_GENERAL_ERROR);
     }
 

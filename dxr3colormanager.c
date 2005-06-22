@@ -51,7 +51,7 @@
 #include <assert.h>
 
 #include "dxr3colormanager.h"
-#include "dxr3log.h"
+#include <vdr/tools.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -140,8 +140,8 @@ void cColorManager::EncodeColors(int width, int height, unsigned char* map,
 		    }
 		    else
 		    {
-			// give up
-			cLog::Instance() << "dxr3colormanager: too many regions!\n";
+			esyslog("dxr3: colormanager: too many regions (%d)"
+				" - giving up", NrOfRegions);
 			return;
 		    }
 		}
@@ -260,8 +260,7 @@ void cColorManager::NextSection(void)
     if (curSectionIndex < curRegion->N)
 	curSection=curRegion->Section[curSectionIndex];
     // it shouldn't happen
-    else cLog::Instance() <<
-	"dxr3colormanager: no more sections in NextSection!\n";
+    else esyslog("dxr3: colormanager: ran out of sections");
 }
 
 // ==================================
@@ -327,7 +326,8 @@ void cColorManager::NewSection(int x)
 {
     int N = curRegion->N;
     if (N >= MAX_NO_OF_SECTIONS - 1) {
-	cLog::Instance() << "dxr3colormanager: bummer, too many sections\n";
+	esyslog("dxr3: colormanager: bummer, too many sections (%d),"
+		" reusing last one", N);
 	return; // reuse last section, not optimal but there's no other way out
     }
     curSection  = new xSection(x);

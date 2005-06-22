@@ -21,7 +21,7 @@
 
 #include "dxr3ffmpeg.h"
 #include "dxr3configdata.h"
-#include "dxr3log.h"
+#include <vdr/tools.h>
 
 // ==================================
 //! constructor
@@ -41,12 +41,8 @@ bool cDxr3Ffmepg::FindCodec(struct Dxr3Codec& Codec)
 
     if (!Codec.codec)
     {
-	// codec is't supported by ffmpeg
-	if (cDxr3ConfigData::Instance().GetDebug())
-	{
-	    cLog::Instance() << "cDxr3Ffmepg::FindCodec() codec not found ("
-			     << Codec.id << ")\n";
-	}
+	esyslog("dxr3: ffmpeg: codec %#.5x not found - not supported"
+		" by FFmpeg?", Codec.id);
 	return false;
     }
 
@@ -65,12 +61,7 @@ bool cDxr3Ffmepg::OpenCodec(struct Dxr3Codec& Codec)
 
     if (result < 0)
     {
-	// we could not open codec
-	if (cDxr3ConfigData::Instance().GetDebug())
-	{
-	    cLog::Instance() << "cDxr3Ffmepg::OpenCodec() coudnt open codec ("
-			     << Codec.id << ")\n";
-	}
+	esyslog("dxr3: ffmpeg: couldn't open codec %#.5x", Codec.id);
 	return false;
     }
     else

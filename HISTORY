@@ -240,13 +240,9 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - added many comments into source (Christian Gmeiner)
 - using doxygen for docs (Christian Gmeiner)
 - made path to microcode configurable in Makefile (Sascha Volkenandt)
-- made log dir configurable in Makefile (Christian Gmeiner, Martin Dauskardt)
-  You may also want to search and remove files called "dxr3plugin.log" as the
-  old plugin wrote them into the current working directory.
 - better default directories in Makefile (Christian Gmeiner, vdr-wiki.de folks)
 - use std:: instead of namespace std
   (bug #1044069, Christian Gmeiner, Ville Skyttä)
-- removed extra log commands in dxr3outputthread.c (Christian Gmeiner)
 - fixed #includes: moved #include "dxr3osd.h" from dxr3interface.h to
   dxr3interface.c, removed not needed #includes (Christian Gmeiner)
 - added support for VDR 1.3.13 and later (Luca Olivetti, Peter Dittmann)
@@ -288,3 +284,5 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - clean up dead code for old VDR versions that hasn't worked for some time
   anyway, VDR >= 1.3.11 is now required (Ville Skyttä)
 - improve recovery and avoid lockups caused by bad streams (Jon Burgess)
+- use VDR's facilities for logging (no more dxr3plugin.log), make it less
+  noisy (Ville Skyttä, Christian Gmeiner)

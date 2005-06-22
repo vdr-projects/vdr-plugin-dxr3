@@ -109,11 +109,9 @@ void cDxr3AudioDecoder::Decode(const uint8_t* buf, int length, uint32_t pts,
 	{
 	    if ((buf[i+2] & 0xFC) != (lastHeader[2] & 0xFC))
 	    {
-		cLog::Instance() << "cDxr3AudioDecoder::Decode Found different audio header -> init\n";
-		cLog::Instance() << "cDxr3AudioDecoder::Decode Old header 0x"
-				 << std::hex << *((uint32_t*) lastHeader)
-				 << " new header 0x" << *((uint32_t*) (buf+i))
-				 << std::dec << "\n";
+		dsyslog("dxr3: audiodecoder: found different audio header"
+			" (new: %#x, old: %#x), (re)initializing",
+			*((uint32_t*) lastHeader), *((uint32_t*) (buf+i)));
 
 		Init();
 		lastHeader[0] = buf[i];
@@ -151,18 +149,18 @@ void cDxr3AudioDecoder::Decode(const uint8_t* buf, int length, uint32_t pts,
 
 	    if (Codec.codec_context.sample_rate != rate)
 	    {
-		cLog::Instance() << "cDxr3AudioDecoder::Decode Sample rate = "
-				 << Codec.codec_context.sample_rate << "\n";
+		dsyslog("dxr3: audiodecoder: sample rate=%d",
+			Codec.codec_context.sample_rate);
 		if (rate != -1) throw UNEXPECTED_PARAMETER_CHANGE;
 		rate = Codec.codec_context.sample_rate;
 	    }
 	    if (Codec.codec_context.channels != channels + 1)
 	    {
+		dsyslog("dxr3: audiodecoder: channels=%d",
+			Codec.codec_context.channels);
 		if (channels != -1)
 		    throw UNEXPECTED_PARAMETER_CHANGE;
 		channels = (Codec.codec_context.channels == 2) ? 1 : 0;
-		cLog::Instance() << "cDxr3AudioDecoder::Decode channels = "
-				 << Codec.codec_context.channels << "\n";
 	    }
 	    if (out_size)
 	    {
@@ -180,19 +178,18 @@ void cDxr3AudioDecoder::Decode(const uint8_t* buf, int length, uint32_t pts,
 	switch (ex)
 	{
 	case WRONG_LENGTH:
-	    cLog::Instance() << "cDxr3AudioDecoder::Decode wrong length\n";
+	    esyslog("dxr3: audiodecoder: wrong length");
 	    break;
 
 	case UNEXPECTED_PARAMETER_CHANGE:
-	    cLog::Instance() << "cDxr3AudioDecoder::Decode unexpected parameter change\n";
+	    esyslog("dxr3: audiodecoder: unexpected parameter change");
 	    break;
 
 	default:
-	    cLog::Instance() << "cDxr3AudioDecoder::Decode unexpeced exception\n";
+	    esyslog("dxr3: audiodecoder: unexpected exception");
 	    break;
 	}
-	dsyslog("cDxr3AudioDecoder::Decode skipping %d broken data bytes",
-		length);
+	esyslog("dxr3: audiodecoder: skipping %d broken data bytes", length);
 
 	Init();
     }

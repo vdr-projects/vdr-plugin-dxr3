@@ -3,7 +3,7 @@
  *
  * See the README file for copyright information and how to reach the author.
  *
- * $Id: dxr3.c,v 1.1.2.12 2005/05/28 10:03:25 scop Exp $
+ * $Id: dxr3.c,v 1.1.2.13 2005/06/22 16:57:58 scop Exp $
  *
  */
 
@@ -42,7 +42,6 @@ eOSState cDxr3OsdItem::ProcessKey(eKeys Key)
 	    break;
 
 	case DXR3_ANALOG_OUT:
-	    cLog::Instance() << "Changing audio to analog\n";
 	    cDxr3ConfigData::Instance().SetUseDigitalOut(0);
 	    cDxr3ConfigData::Instance().SetAc3OutPut(0);
 	    if (cDxr3Device::InstanceP())
@@ -50,7 +49,6 @@ eOSState cDxr3OsdItem::ProcessKey(eKeys Key)
 	    break;
 
 	case DXR3_DIGITAL_OUT:
-	    cLog::Instance() << "Changing audio to digital\n";
 	    cDxr3ConfigData::Instance().SetUseDigitalOut(1);
 	    cDxr3ConfigData::Instance().SetAc3OutPut(0);
 	    if (cDxr3Device::InstanceP())
@@ -58,7 +56,6 @@ eOSState cDxr3OsdItem::ProcessKey(eKeys Key)
 	    break;
 
 	case DXR3_AC3_OUT:
-	    cLog::Instance() << "Changing audio to ac3\n";
 	    cDxr3ConfigData::Instance().SetAc3OutPut(!cDxr3ConfigData::Instance().GetAc3OutPut());
 	    if (cDxr3Device::InstanceP())
 		cDxr3Device::InstanceP()->Reset();
@@ -83,13 +80,6 @@ cMenuSetupDxr3::cMenuSetupDxr3(void)
     menuVideoModes[2] = tr("NTSC");
     Add(new cMenuEditStraItem(tr("Video mode"),
 			      &newVideoMode, 3, menuVideoModes));
-    newDebug = (int) cDxr3ConfigData::Instance().GetDebug();
-    Add(new cMenuEditBoolItem(tr("Debug mode"), &newDebug));
-    newDebugLevel = (int) cDxr3ConfigData::Instance().GetDebugLevel();
-    menuDebugModes[0] = tr("low");
-    menuDebugModes[1] = tr("everything");
-    Add(new cMenuEditStraItem(tr("Debug level"),
-			      &newDebugLevel, 2, menuDebugModes));
 }
 
 // ==================================
@@ -102,10 +92,6 @@ void cMenuSetupDxr3::Store(void)
 	       cDxr3ConfigData::Instance().SetDxr3Card(newDxr3Card));
     SetupStore("Dxr3VideoMode",
 	       cDxr3ConfigData::Instance().SetVideoMode((eVideoMode) newVideoMode));
-    SetupStore("Dxr3Debug",
-	       cDxr3ConfigData::Instance().SetDebug(newDebug));
-    SetupStore("Dxr3DebugLevel",
-	       cDxr3ConfigData::Instance().SetDebugLevel(newDebugLevel));
 }
 
 // ==================================
@@ -201,19 +187,9 @@ bool cPluginDxr3::SetupParse(const char *Name, const char *Value)
 	cDxr3ConfigData::Instance().SetDxr3Card(atoi(Value));
 	return true;
     }
-    if (!strcasecmp(Name, "Dxr3Debug"))
-    {
-	cDxr3ConfigData::Instance().SetDebug(atoi(Value));
-	return true;
-    }
     if (!strcasecmp(Name, "Dxr3VideoMode"))
     {
 	cDxr3ConfigData::Instance().SetVideoMode((eVideoMode) atoi(Value));
-	return true;
-    }
-    if (!strcasecmp(Name, "Dxr3DebugLevel"))
-    {
-	cDxr3ConfigData::Instance().SetDebugLevel(atoi(Value));
 	return true;
     }
 

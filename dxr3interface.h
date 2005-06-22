@@ -30,7 +30,6 @@
 #include <sys/ioctl.h>
 
 #include "dxr3vdrincludes.h"
-#include "dxr3log.h"
 #include "dxr3configdata.h"
 #include "dxr3sysclock.h"
 

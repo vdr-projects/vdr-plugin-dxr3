@@ -17,10 +17,7 @@ private:
     int newUseDigitalOut;
     int newDxr3Card;
     int newVideoMode;
-    int newDebug;
-    int newDebugLevel;
     const char *menuVideoModes[3];
-    const char *menuDebugModes[2];
 };
 
 

@@ -62,7 +62,7 @@ void cFixedLengthFrame::Init(uint32_t lenght)
     // allocation ok?
     if (!m_pData)
     {
-	cLog::Instance() << "Failed to allocate memory in cFixedLengthFrame (m_pData) - will stop now";
+	esyslog("dxr3: fatal: unable to allocate memory for new frame");
 	exit(1);
     }
 }
@@ -123,7 +123,7 @@ cDxr3SyncBuffer::cDxr3SyncBuffer(int frameCount, int frameLength,
     // got we a valid m_pBuffer?
     if (!m_pBuffer)
     {
-	cLog::Instance() << "Failed to allocate memory in cDxr3SyncBuffer (m_pBuffer) - will stop now";
+	esyslog("dxr3: fatal: unable to allocate memory for new frame");
 	exit(1);
     }
 
@@ -204,8 +204,7 @@ bool cDxr3SyncBuffer::Poll(int TimeoutMs)
 		d_us = tv.tv_usec - tv_start.tv_usec;
 		ms = d_s * 1000 + d_us / 1000;
 		if (ms > TimeoutMs * 2) {
-		    cLog::Instance() << "Secondary timeout\n";
-		    printf("Secondary timeout\n");
+		    esyslog("dxr3: sync: secondary timeout");
 		    break;
 		}
 	    }
@@ -247,8 +246,7 @@ cFixedLengthFrame* cDxr3SyncBuffer::Push(const uint8_t* pStart, int length, uint
 	    d_us = tv.tv_usec - tv_start.tv_usec;
 	    ms = d_s * 1000 + d_us / 1000;
 	    if (ms > 2000) {
-		cLog::Instance() << "Push timeout\n";
-		printf("Push timeout\n");
+		esyslog("dxr3: sync: push timeout");
 		return NULL;
 	    }
 	}
@@ -275,11 +273,7 @@ cFixedLengthFrame* cDxr3SyncBuffer::Push(const uint8_t* pStart, int length, uint
 
 	if (m_nextFree == m_next)
 	{
-	    cLog::Instance() << "Buffer overrun\n";
-	    //cLog::Instance() << "cDxr3SyncBuffer::Push m_demuxMode: " << (int)m_demuxMode << endl;
-	    //cLog::Instance() << "cDxr3SyncBuffer::Push Available(): " << Available() << endl;
-	    //cLog::Instance() << "cDxr3SyncBuffer::Push Size(): " << Size() << endl;
-
+	    esyslog("dxr3: sync: push buffer overrun");
 	    Clear(); // XXX This is only a workaround until a sufficient control algorithm is implemented
 	    throw(SYNC_BUFFER_OVERRUN);
 	}

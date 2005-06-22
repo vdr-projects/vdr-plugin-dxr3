@@ -1,7 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.1.2.16 2005/05/17 20:26:00 scop Exp $
+# $Id: Makefile,v 1.1.2.17 2005/06/22 16:57:58 scop Exp $
 
 # The official name of this plugin.
 # This name will be used in the '-P...' option of VDR to load the plugin.
@@ -50,9 +50,6 @@ DEFINES += -D_GNU_SOURCE
 # where is the microcode for the dxr3 located?
 DEFINES += -DMICROCODE=\"/usr/share/misc/em8300.uc\"
 
-# where should we write our log?
-DEFINES += -DLOGPATH=\"/video/\"	# note: path must end with /
-
 # use OSD scaler borrowed from the Xine plugin?
 # comment this out to use the traditional vdr-dxr3 scaler
 DEFINES += -DUSE_XINE_SCALER
@@ -68,7 +65,7 @@ DEFINES += -DFLUSHRATE=40
 
 OBJS = $(PLUGIN).o dxr3multichannelaudio.o dxr3sysclock.o dxr3colormanager.o dxr3syncbuffer.o dxr3audiodecoder.o \
 dxr3blackframe.o dxr3nextpts.o dxr3pesframe.o dxr3demuxdevice.o dxr3configdata.o \
-dxr3log.o dxr3ffmpeg.o dxr3interface_spu_encoder.o dxr3i18n.o \
+dxr3ffmpeg.o dxr3interface_spu_encoder.o dxr3i18n.o \
 dxr3interface.o dxr3device.o dxr3outputthread.o dxr3osd.o dxr3osd_subpicture.o dxr3spudecoder.o
 
 ### Default target:

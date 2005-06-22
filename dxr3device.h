@@ -24,7 +24,6 @@
 #define _DXR3_DEVICE_H_
 
 #include "dxr3interface.h"
-#include "dxr3log.h"
 #include "dxr3demuxdevice.h"
 #include "dxr3spudecoder.h"
 #include <string>

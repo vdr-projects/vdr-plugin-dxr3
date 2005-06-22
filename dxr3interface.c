@@ -52,7 +52,7 @@ static int Dxr3Open(const char *Name, int n, int Mode)
 
     if (fd < 0)
     {
-	cLog::Instance() << "Unable to open " << FileName << "\n";
+	esyslog("dxr3: unable to open %s: %m", FileName);
     }
     return fd;
 }
@@ -67,7 +67,7 @@ cDxr3Interface::cDxr3Interface() :
 			   O_WRONLY | O_SYNC);
     if (m_fdControl < 0)
     {
-	cLog::Instance() << "Please check if the dxr3 modules are loaded!\n";
+	esyslog("dxr3: please verify that the em8300 modules are loaded");
 	exit(1);
     }
 
@@ -85,7 +85,8 @@ cDxr3Interface::cDxr3Interface() :
     // everything ok?
     if (m_fdVideo < 0 || m_fdAudio < 0 || m_fdSpu < 0)
     {
-	cLog::Instance() << "Unable to open one of the 'multimedia' streams!\n";
+	
+	esyslog("dxr3: fatal: unable to open some em8300 devices");
 	exit(1);
     }
 
@@ -95,7 +96,7 @@ cDxr3Interface::cDxr3Interface() :
     // everything ok?
     if (!m_pClock)
     {
-	cLog::Instance() << "Unable to allocate memory for m_pClock in cDxr3Interface\n";
+	esyslog("dxr3: fatal: unable to allocate memory for em8300 clock");
 	exit(1);
     }
 
@@ -119,16 +120,14 @@ cDxr3Interface::cDxr3Interface() :
     ConfigureDevice();
 
     // get bcs values from driver
-    ioctl(m_fdControl, EM8300_IOCTL_GETBCS, &m_bcs);
-
-    if (cDxr3ConfigData::Instance().GetDebug())
+    if (ioctl(m_fdControl, EM8300_IOCTL_GETBCS, &m_bcs) < 0)
     {
-	cLog::Instance() << "DXR3: brightness: "
-			 << m_bcs.brightness << "\n";
-	cLog::Instance() << "DXR3: contrast: "
-			 << m_bcs.contrast << "\n";
-	cLog::Instance() << "DXR3: saturation: "
-			 << m_bcs.saturation << "\n";
+	esyslog("dxr3: failed to get brightness/contrast/saturation: %m");
+    }
+    else
+    {
+	dsyslog("dxr3: intf: brightness=%d,contrast=%d,saturation=%d at init",
+		m_bcs.brightness, m_bcs.contrast, m_bcs.saturation);
     }
 
     PlayBlackFrame();
@@ -189,7 +188,7 @@ void cDxr3Interface::SetAudioAnalog()
 	m_audioMode = ioval = EM8300_AUDIOMODE_ANALOG;
 	if (ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &ioval) < 0)
 	{
-	    cLog::Instance() << "cDxr3AbsDevice::SetAudioAnalog Unable to set audiomode!\n";
+	    esyslog("dxr3: unable to set analog audio mode: %m");
 	}
 	if (prevMode ==	 EM8300_AUDIOMODE_DIGITALAC3)
 	{
@@ -214,7 +213,7 @@ void cDxr3Interface::SetAudioDigitalPCM()
 
 	if (ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &ioval) < 0)
 	{
-	    cLog::Instance() << "cDxr3AbsDevice::SetAudioAnalog Unable to set audiomode!\n";
+	    esyslog("dxr3: unable to set digital PCM audio mode: %m");
 	}
 	if (prevMode ==	 EM8300_AUDIOMODE_DIGITALAC3)
 	{
@@ -239,7 +238,7 @@ void cDxr3Interface::SetAudioDigitalAC3()
 	    m_audioMode = ioval = EM8300_AUDIOMODE_DIGITALAC3;
 	    if (ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &ioval) < 0)
 	    {
-		cLog::Instance() << "cDxr3AbsDevice::SetAudioAnalog Unable to set audiomode!\n";
+		esyslog("dxr3: unable to set AC3 audio mode: %m");
 	    }
 	    ReOpenAudio();
 	}
@@ -260,7 +259,7 @@ void cDxr3Interface::SetAudioSpeed(uint32_t speed)
 	    {
 		if (ioctl(m_fdAudio, SNDCTL_DSP_SPEED, &speed) < 0)
 		{
-		    cLog::Instance() << "cDxr3Interface::SetAudioSpeed Unable to set dsp speed\n";
+		    esyslog("dxr3: unable to set DSP speed to %d: %m", speed);
 		}
 	    }
 	}
@@ -280,7 +279,8 @@ void cDxr3Interface::SetChannelCount(uint32_t count)
 	    {
 		if (ioctl(m_fdAudio, SNDCTL_DSP_STEREO, &count) < 0)
 		{
-		    cLog::Instance() << "cDxr3AbsDevice::SetChannelCount Unable to set channel count\n";
+		    esyslog("dxr3: unable to set channel count to %d: %m",
+			    count);
 		}
 	    }
 	}
@@ -294,9 +294,10 @@ void cDxr3Interface::SetAudioSampleSize(uint32_t sampleSize)
 {
     if (!m_ExternalReleased)
     {
-	if (ioctl(m_fdAudio, SNDCTL_DSP_SAMPLESIZE, sampleSize))
+	if (ioctl(m_fdAudio, SNDCTL_DSP_SAMPLESIZE, sampleSize) < 0)
 	{
-	    cLog::Instance() <<"cDxr3AbsDevice::SetAudioSampleSize Unable to set audio sample size\n";
+	    esyslog("dxr3: unable to set audio sample size to %d: %m",
+		    sampleSize);
 	}
     }
     m_audioSampleSize = sampleSize;
@@ -365,7 +366,7 @@ void cDxr3Interface::EnableSPU()
 	m_spuMode = ioval = EM8300_SPUMODE_ON;
 	if (ioctl(m_fdControl, EM8300_IOCTL_SET_SPUMODE, &ioval) < 0)
 	{
-	    cLog::Instance() << "cDxr3Interface::EnableSPU Unable to set subpicture mode!\n";
+	    esyslog("dxr3: unable to enable subpicture mode: %m");
 	}
     }
 
@@ -384,7 +385,7 @@ void cDxr3Interface::DisableSPU()
 	m_spuMode = ioval = EM8300_SPUMODE_OFF;
 	if (ioctl(m_fdControl, EM8300_IOCTL_SET_SPUMODE, &ioval) < 0)
 	{
-	    cLog::Instance() << "cDxr3Interface::DisableSPU Unable to set subpicture mode!\n";
+	    esyslog("dxr3: unable to disable subpicture mode: %m");
 	}
     }
 
@@ -428,7 +429,7 @@ void cDxr3Interface::EnableOverlay()
     if (ioctl(m_fdControl, EM8300_IOCTL_OVERLAY_SIGNALMODE, &ioval) < 0)
     {
 	//######
-	cLog::Instance() << "Signalmode failed\n";
+	esyslog("dxr3: unable to set overlay signal mode: %m");
 	return;
     }
 
@@ -440,7 +441,7 @@ void cDxr3Interface::EnableOverlay()
     if (ioctl(m_fdControl, EM8300_IOCTL_OVERLAY_SETSCREEN, &scr) < 0)
     {
 	//######
-	cLog::Instance() << "Setting up screen failed\n";
+	esyslog("dxr3: unable to set up overlay screen: %m");
 	return;
     }
 
@@ -454,7 +455,7 @@ void cDxr3Interface::EnableOverlay()
     if (ioctl(m_fdControl, EM8300_IOCTL_OVERLAY_SETWINDOW, &win) < 0)
     {
 	//######
-	cLog::Instance() << "Setting up window failed\n";
+	esyslog("dxr3: unable to set up overlay window: %m");
 	return;
     }
 
@@ -484,7 +485,7 @@ uint32_t cDxr3Interface::GetAspectRatio() const
     {
 	if (ioctl(m_fdControl, EM8300_IOCTL_GET_ASPECTRATIO, &ioval) < 0)
 	{
-	    cLog::Instance() << "cDxr3Interface::GetAspectRatio Unable to get aspect ratio\n";
+	    esyslog("dxr3: unable to get aspect ratio: %m");
 	}
     }
 
@@ -512,7 +513,7 @@ void cDxr3Interface::SetAspectRatio(uint32_t ratio)
 	    requestCounter = 0;
 	    if (ioctl(m_fdControl, EM8300_IOCTL_SET_ASPECTRATIO, &ratio) < 0)
 	    {
-		cLog::Instance() << "cDxr3Interface::SetAspectRatio Unable to set aspect ratio\n";
+		esyslog("dxr3: unable to set aspect ratio: %m");
 	    }
 	    else
 	    {
@@ -555,7 +556,7 @@ void cDxr3Interface::SetPlayMode()
 	ioval = EM8300_PLAYMODE_PLAY;
 	if (ioctl(m_fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval) < 0)
 	{
-	    cLog::Instance() << "cDxr3Interface::SetPlayMode Unable to set playmode!\n";
+	    esyslog("dxr3: unable to set play mode: %m");
 	}
 	reg.microcode_register = 1;
 	reg.reg = 0;
@@ -563,7 +564,7 @@ void cDxr3Interface::SetPlayMode()
 
 	if (ioctl(m_fdControl, EM8300_IOCTL_WRITEREG, &reg) < 0)
 	{
-	    cLog::Instance() << "cDxr3Interface::SetPlayMode Unable to start em8300 sync engine\n";
+	    esyslog("dxr3: unable to start em8300 sync engine: %m");
 	}
     }
 
@@ -580,7 +581,7 @@ void cDxr3Interface::Pause()
     {
 	if (ioctl(m_fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval) < 0)
 	{
-	    cLog::Instance() << "cDxr3Interface::Pause Unable to set playmode!\n";
+	    esyslog("dxr3: unable to set pause mode: %m");
 	}
     }
 
@@ -596,7 +597,7 @@ void cDxr3Interface::SingleStep()
     {
 	if (ioctl(m_fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval) < 0)
 	{
-	    cLog::Instance() << "cDxr3Interface::SingleStep Unable to set playmode!\n";
+	    esyslog("dxr3: unable to set single-step mode: %m");
 	}
     }
 
@@ -619,7 +620,7 @@ void cDxr3Interface::PlayVideoFrame(cFixedLengthFrame* pFrame, int times)
 	    {
 		if (times > 1)
 		{
-		    cLog::Instance() << "times: " << times << "\n";
+		    dsyslog("dxr3: playvideoframe: times=%d", times);
 		}
 
 		while (written < pFrame->GetCount() && count >= 0)
@@ -699,7 +700,8 @@ void cDxr3Interface::PlayAudioFrame(uint8_t* pBuf, int length)
 	if ((written = write(m_fdAudio, pBuf, length) < 0)) Resuscitation();
 	if (written != length)
 	{
-	    cLog::Instance() << "cDxr3Interface::PlayAudioFrame(uint8_t* pBuf, int length): Not written = " << length - written << "\n";
+	    esyslog("dxr3: unable to play whole audio frame, skipped %d bytes",
+		    length - written);
 	}
     }
 
@@ -805,7 +807,8 @@ void cDxr3Interface::ExternalReopenDevices()
 	    m_pClock = new cDxr3SysClock(m_fdControl, m_fdVideo, m_fdSpu);
 	    if (!m_pClock)
 	    {
-		cLog::Instance() << "Unable to allocate memory for m_pClock in cDxr3Interface\n";
+		esyslog("dxr3: fatal: failed to allocate memory for em8300"
+			" system clock in reopen");
 		exit(1);
 	    }
 
@@ -881,12 +884,6 @@ void cDxr3Interface::ReOpenAudio()
 //! uploadroutine for microcode
 void cDxr3Interface::UploadMicroCode()
 {
-    if (cDxr3ConfigData::Instance().GetDebug())
-    {
-	cLog::Instance() << "cDxr3Interface::UploadMicroCode: uploading from "
-			 << MICROCODE << "...";
-    }
-
     em8300_microcode_t em8300_microcode;
     struct stat s;
 
@@ -896,14 +893,15 @@ void cDxr3Interface::UploadMicroCode()
 
     if (UCODE <0)
     {
-	cLog::Instance() << "Unable to open microcode file "
-			 << MICROCODE << " for reading\n";
+	esyslog("dxr3: fatal: unable to open microcode file %s: %m",
+		MICROCODE);
 	exit(1);
     }
 
     if (fstat(UCODE, &s ) <0)
     {
-	cLog::Instance() << "Unable to fstat ucode file\n";
+	esyslog("dxr3: fatal: unable to fstat microcode file %s: %m",
+		MICROCODE);
 	exit(1);
     }
 
@@ -911,13 +909,14 @@ void cDxr3Interface::UploadMicroCode()
     em8300_microcode.ucode = new char[s.st_size];
     if (em8300_microcode.ucode == NULL)
     {
-	cLog::Instance() << "Unable to malloc() space for ucode\n";
+	esyslog("dxr3: fatal: unable to malloc() space for microcode");
 	exit(1);
     }
 
     if (read(UCODE,em8300_microcode.ucode,s.st_size) < 1)
     {
-	cLog::Instance() << "Unable to read data from microcode file\n";
+	esyslog("dxr3: fatal: unable to read microcode file %s: %m",
+		MICROCODE);
 	// free memory to avoid memory leak
 	delete [] (char*) em8300_microcode.ucode;
 	exit(1);
@@ -930,7 +929,7 @@ void cDxr3Interface::UploadMicroCode()
     // upload it
     if( ioctl(m_fdControl, EM8300_IOCTL_INIT, &em8300_microcode) == -1)
     {
-	cLog::Instance() << "Microcode upload to failed!! \n";
+	esyslog("dxr3: fatal: microcode upload failed: %m");
 	// free memory to avoid memory leak
 	delete [] (char*) em8300_microcode.ucode;
 	exit(1);
@@ -938,11 +937,6 @@ void cDxr3Interface::UploadMicroCode()
 
     // free memory to avoid memory leak
     delete [] (char*) em8300_microcode.ucode;
-
-    if (cDxr3ConfigData::Instance().GetDebug())
-    {
-	cLog::Instance() << "...done\n";
-    }
 }
 
 // ==================================
@@ -954,44 +948,32 @@ void cDxr3Interface::ConfigureDevice()
     // set video mode
     if (cDxr3ConfigData::Instance().GetVideoMode() == PAL)
     {
+	dsyslog("dxr3: configure: video mode: PAL");
 	videomode = EM8300_VIDEOMODE_PAL;
-	if (cDxr3ConfigData::Instance().GetDebug())
-	{
-	    cLog::Instance() << "cDxr3Interface::ConfigureDevice: Videomode = PAL\n";
-	}
     }
     else if (cDxr3ConfigData::Instance().GetVideoMode() == PAL60)
     {
+	dsyslog("dxr3: configure: video mode: PAL60");
 	videomode = EM8300_VIDEOMODE_PAL60;
-	if (cDxr3ConfigData::Instance().GetDebug())
-	{
-	    cLog::Instance() << "cDxr3Interface::ConfigureDevice: Videomode = PAL60\n";
-	}
     }
     else
     {
+	dsyslog("dxr3: configure: video mode: NTSC");
 	videomode = EM8300_VIDEOMODE_NTSC;
-	if (cDxr3ConfigData::Instance().GetDebug())
-	{
-	    cLog::Instance() << "cDxr3Interface::ConfigureDevice: Videomode = NTSC\n";
-	}
     }
 
     // make ioctl
     if (ioctl(m_fdControl, EM8300_IOCTL_SET_VIDEOMODE, &videomode) == -1)
     {
-	cLog::Instance() << "Unable to set videomode\n";
+	esyslog("dxr3: fatal: unable to set video mode: %m");
 	exit(1);
     }
 
     // set audio mode
     if (!cDxr3ConfigData::Instance().GetUseDigitalOut())
     {
+	dsyslog("dxr3: configure: audio mode: analog");
 	SetAudioAnalog();
-	if (cDxr3ConfigData::Instance().GetDebug())
-	{
-	    cLog::Instance() << "cDxr3Interface::ConfigureDevice: Audiomode = Analog\n";
-	}
     }
 }
 
@@ -1002,23 +984,23 @@ void cDxr3Interface::Resuscitation()
     time_t startt = time(&startt);
     time_t endt = 0;
     m_ExternalReleased = true;
-    dsyslog("cDxr3Interface::Resuscitation Device failure detected");
+
+    dsyslog("dxr3: resuscitation: device failure or user initiated reset");
 
     UploadMicroCode();
-    dsyslog("cDxr3Interface::Resuscitation Microcode upload successful");
 
     //NonBlockingCloseOpen();
     m_ExternalReleased = false;
 
     endt = time(&endt);
 
-    dsyslog("cDxr3Interface::Resuscitation Reopening devices took %d",
-	    (int)(endt - startt));
-
     if (endt - startt > 4)
     {
+	esyslog("dxr3: fatal: reopening devices took too long");
 	exit(1);
     }
+    dsyslog("dxr3: resuscitation: reopening devices took %ld seconds",
+	    endt - startt);
 
     ConfigureDevice();
 }
@@ -1141,7 +1123,7 @@ void cDxr3Interface::ResetHardware()
 {
     Lock();
 
-    cLog::Instance() << "cDxr3Interface: Resetting DXR3 hardware\n";
+    isyslog("dxr3: hardware reset requested");
     Resuscitation();
 
     Unlock();
@@ -1156,7 +1138,7 @@ void cDxr3Interface::SetBrightness(int value)
 
     if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) < 0)
     {
-	cLog::Instance() << "cDxr3Interface::SetBrightness: Unable to set brightness to " << value << "\n";
+	esyslog("dxr3: unable to set brightness to %d: %m", value);
     }
 }
 
@@ -1168,7 +1150,7 @@ void cDxr3Interface::SetContrast(int value)
 
     if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) < 0)
     {
-	cLog::Instance() << "cDxr3Interface::SetContrast: Unable to set contrast to " << value << "\n";
+	esyslog("dxr3: unable to set contrast to %d: %m", value);
     }
 }
 
@@ -1180,7 +1162,7 @@ void cDxr3Interface::SetSaturation(int value)
 
     if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) < 0)
     {
-	cLog::Instance() << "cDxr3Interface::SetSaturation: Unable to set saturation to " << value << "\n";
+	esyslog("dxr3: unable to set saturation to %d: %m", value);
     }
 }
 

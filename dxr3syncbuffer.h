@@ -28,7 +28,6 @@
 #include "dxr3interface.h"
 #include "dxr3generaldefines.h"
 #include "dxr3nextpts.h"
-#include "dxr3log.h"
 
 // ==================================
 const uint32_t UNKNOWN_CHANNEL_COUNT = 0xFFFFFFFF;
