@@ -1,11 +1,17 @@
+Wide screen signaling (WSS) patch for vdr-dxr3 by Seppo Ingalsuo.
+Apply to: vdr-dxr3 plugin sources
+More info: http://thread.gmane.org/gmane.linux.vdr/17095
+Note: you'll probably want to apply em8300-adv7170-wss.patch too
+  in order to get support for this functionality in the driver.
+
 Index: dxr3interface.c
 ===================================================================
 RCS file: /cvsroot/dxr3plugin/dxr3/dxr3interface.c,v
-retrieving revision 1.4.2.23
-diff -u -r1.4.2.23 dxr3interface.c
---- dxr3interface.c	22 Jun 2005 17:37:22 -0000	1.4.2.23
-+++ dxr3interface.c	22 Jun 2005 17:40:10 -0000
-@@ -498,20 +498,39 @@
+retrieving revision 1.4.2.25
+diff -u -r1.4.2.25 dxr3interface.c
+--- dxr3interface.c	6 Jul 2005 20:16:23 -0000	1.4.2.25
++++ dxr3interface.c	6 Jul 2005 20:16:57 -0000
+@@ -500,20 +500,39 @@
  void cDxr3Interface::SetAspectRatio(uint32_t ratio)
  {
      static int requestCounter = 0;
