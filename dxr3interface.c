@@ -1021,7 +1021,7 @@ void cDxr3Interface::Resuscitation()
 }
 
 // ==================================
-//! pcm resampling funtcion
+//! pcm resampling function
 void cDxr3Interface::ResampleVolume(short* pcmbuf, int size)
 {
     if (m_volume == 0)

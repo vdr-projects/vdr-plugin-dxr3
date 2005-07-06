@@ -163,7 +163,7 @@ private:
     // dxr3 clock
     cDxr3SysClock* m_pClock;	///< clock used for sync
 
-    uint32_t m_audioChannelCount; ///< how many channles has the current audiostream
+    uint32_t m_audioChannelCount; ///< how many channels in the current audiostream
     uint32_t m_audioDataRate;	///< which rate is used for the current audiostream
     int m_aspectDelayCounter;
     uint32_t m_aspectRatio;	///< current used aspect ratio
@@ -172,7 +172,7 @@ private:
     uint32_t m_audioSampleSize;	///< how big is the sample size for the current audiostream
     uint32_t m_audioMode;
     uint32_t m_spuMode;
-    bool m_ExternalReleased;	// is dxr3 used by e.g. mplayer?
+    bool m_ExternalReleased;	///< is dxr3 used by e.g. mplayer?
     int m_volume;		///< volumevalue (0...255)
     bool m_AudioActive;		///< is audio active?
     bool m_VideoActive;		///< is video active?
