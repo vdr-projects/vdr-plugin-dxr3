@@ -438,6 +438,17 @@ void cDxr3Device::SetVolumeDevice(int Volume)
 }
 
 // ==================================
+//! sets audio channel for audio output (stero, mono left, mono right)
+void cDxr3Device::SetAudioChannelDevice(int AudioChannel)
+{
+    cDxr3Interface::Instance().SetAudioChannel(AudioChannel);
+}
+int cDxr3Device::GetAudioChannelDevice(void)
+{
+    return cDxr3Interface::Instance().GetAudioChannel();
+}
+
+// ==================================
 // get spudecoder
 cSpuDecoder *cDxr3Device::GetSpuDecoder(void)
 {

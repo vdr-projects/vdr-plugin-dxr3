@@ -287,3 +287,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - use VDR's facilities for logging (no more dxr3plugin.log), make it less
   noisy (Ville Skyttä, Christian Gmeiner)
 - add setup option for hiding the main menu entry (Ville Skyttä)
+- implement stereo/left/right audio channel switching (Malcolm Caldwell)

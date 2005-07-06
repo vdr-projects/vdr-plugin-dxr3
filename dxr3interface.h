@@ -61,6 +61,14 @@ public:
     {
 	m_volume = volume;
     }
+    void SetAudioChannel(int audiochannel)
+    {
+	m_audioChannel = audiochannel;
+    }
+    int GetAudioChannel(void)
+    {
+	return m_audioChannel;
+    }
     void SetAudioSpeed(uint32_t speed);
     void SetChannelCount(uint32_t count);
     void SetAudioSampleSize(uint32_t sampleSize);
@@ -174,6 +182,7 @@ private:
     uint32_t m_spuMode;
     bool m_ExternalReleased;	///< is dxr3 used by e.g. mplayer?
     int m_volume;		///< volumevalue (0...255)
+    int m_audioChannel;		///> 0=stereo, 1=left, 2=right audio channel
     bool m_AudioActive;		///< is audio active?
     bool m_VideoActive;		///< is video active?
     bool m_OverlayActive;	///< is overlay active?

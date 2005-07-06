@@ -23,6 +23,7 @@
 #include <assert.h>
 #include <math.h>
 #include <sys/soundcard.h>
+#include <linux/dvb/audio.h>
 
 #include "dxr3interface.h"
 #include "dxr3syncbuffer.h"
@@ -106,6 +107,7 @@ cDxr3Interface::cDxr3Interface() :
     m_OverlayActive = false;
     m_ExternalReleased = false;
     m_volume = 255;
+    m_audioChannel = AUDIO_STEREO;
     m_horizontal = 720;
     m_vertical = 576;
     m_audioChannelCount = UNKNOWN_CHANNEL_COUNT;
@@ -1028,13 +1030,24 @@ void cDxr3Interface::ResampleVolume(short* pcmbuf, int size)
     {
 	memset(pcmbuf, 0, size);
     }
-    else if (m_volume != 255)
+    if (m_volume < 255 || m_audioChannel != AUDIO_STEREO)
     {
 	int factor = (int)pow (2.0, (double)m_volume/32 + 8.0) - 1;
 	//int factor = (int)pow (2.0, (double)m_volume/16) - 1;
 	for (int i = 0; i < size / (int)sizeof(short); i++)
 	{
-	    pcmbuf[i] = (((int)pcmbuf[i]) * factor) / 65536;
+	    if (m_audioChannel == AUDIO_MONO_RIGHT && !(i & 0x1))
+	    {
+		pcmbuf[i] = pcmbuf[i+1];
+	    }
+	    if (m_audioChannel == AUDIO_MONO_LEFT  &&  (i & 0x1))
+	    {
+		pcmbuf[i] = pcmbuf[i-1];
+	    }
+	    else if (m_volume < 255)
+	    {
+		pcmbuf[i] = (((int)pcmbuf[i]) * factor) / 65536;
+	    }
 	}
     }
 }
