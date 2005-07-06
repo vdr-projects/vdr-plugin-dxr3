@@ -129,6 +129,15 @@ public:
 	return m_saturation = value;
     }
 
+    int GetHideMenu() const
+    {
+	return m_hidemenu;
+    }
+    int SetHideMenu(int value)
+    {
+	return m_hidemenu = value;
+    }
+
 protected:
     eVideoMode m_videomode;
     eMenuMode m_menumode;
@@ -140,6 +149,7 @@ protected:
     int m_brightness;
     int m_contrast;
     int m_saturation;
+    int m_hidemenu;
 };
 
 #endif /*_DXR3_CONFIGDATA_H_*/

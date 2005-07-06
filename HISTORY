@@ -286,3 +286,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - improve recovery and avoid lockups caused by bad streams (Jon Burgess)
 - use VDR's facilities for logging (no more dxr3plugin.log), make it less
   noisy (Ville Skyttä, Christian Gmeiner)
+- add setup option for hiding the main menu entry (Ville Skyttä)

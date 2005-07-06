@@ -3,7 +3,7 @@
  *
  * See the README file for copyright information and how to reach the author.
  *
- * $Id: dxr3.c,v 1.1.2.13 2005/06/22 16:57:58 scop Exp $
+ * $Id: dxr3.c,v 1.1.2.14 2005/07/06 18:04:46 scop Exp $
  *
  */
 
@@ -80,6 +80,8 @@ cMenuSetupDxr3::cMenuSetupDxr3(void)
     menuVideoModes[2] = tr("NTSC");
     Add(new cMenuEditStraItem(tr("Video mode"),
 			      &newVideoMode, 3, menuVideoModes));
+    newHideMenu = cDxr3ConfigData::Instance().GetHideMenu();
+    Add(new cMenuEditBoolItem(tr("Hide main menu entry"), &newHideMenu));
 }
 
 // ==================================
@@ -92,6 +94,8 @@ void cMenuSetupDxr3::Store(void)
 	       cDxr3ConfigData::Instance().SetDxr3Card(newDxr3Card));
     SetupStore("Dxr3VideoMode",
 	       cDxr3ConfigData::Instance().SetVideoMode((eVideoMode) newVideoMode));
+    SetupStore("HideMenu",
+	       cDxr3ConfigData::Instance().SetHideMenu(newHideMenu));
 }
 
 // ==================================
@@ -192,6 +196,11 @@ bool cPluginDxr3::SetupParse(const char *Name, const char *Value)
 	cDxr3ConfigData::Instance().SetVideoMode((eVideoMode) atoi(Value));
 	return true;
     }
+    if (!strcasecmp(Name, "HideMenu"))
+    {
+	cDxr3ConfigData::Instance().SetHideMenu(atoi(Value));
+	return true;
+    }
 
     return false;
 }
@@ -199,7 +208,8 @@ bool cPluginDxr3::SetupParse(const char *Name, const char *Value)
 // ==================================
 const char* cPluginDxr3::MainMenuEntry()
 {
-    return tr(MAINMENUENTRY);
+    return cDxr3ConfigData::Instance().GetHideMenu() ?
+	NULL : tr(MAINMENUENTRY);
 }
 
 // ==================================

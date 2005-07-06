@@ -35,6 +35,7 @@ cDxr3ConfigData::cDxr3ConfigData()
     m_brightness = 500;
     m_contrast = 500;
     m_saturation = 500;
+    m_hidemenu = 0;
 }
 
 // Local variables:

@@ -544,6 +544,32 @@ const tI18nPhrase Phrases[] = {
 #endif
 #endif
     },
+    {
+	"Hide main menu entry",
+	"Hauptmenüeintrag verstecken",
+	"", // Slovenski
+	"Nascondi voce menù",
+	"", // Nederlands
+	"", // Português
+	"", // Français
+	"", // Norsk
+	"Piilota valinta päävalikosta",
+	"", // Polski
+	"", // Español
+	"", // ÅëëçíéêÜ (Greek)
+	"", // Svenska
+	"", // Românã
+	"", // Magyar
+	"", // Català
+	"ÁÚàëâì ÚÞÜÐÝÔã Ò ÓÛÐÒÝÞÜ ÜÕÝî",
+	"", // Hrvatski
+#if VDRVERSNUM > 10312
+	"Peida valik peamenüüs",
+#if VDRVERSNUM > 10315
+	"", // Dansk
+#endif
+#endif
+    },
     { NULL }
 };
 
