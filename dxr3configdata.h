@@ -138,6 +138,15 @@ public:
 	return m_hidemenu = value;
     }
 
+    unsigned int GetOsdFlushRate() const
+    {
+	return (unsigned) m_osdflushrate;
+    }
+    int SetOsdFlushRate(int value)
+    {
+	return m_osdflushrate = value;
+    }
+
 protected:
     eVideoMode m_videomode;
     eMenuMode m_menumode;
@@ -150,6 +159,7 @@ protected:
     int m_contrast;
     int m_saturation;
     int m_hidemenu;
+    int m_osdflushrate;
 };
 
 #endif /*_DXR3_CONFIGDATA_H_*/

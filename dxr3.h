@@ -19,6 +19,7 @@ private:
     int newVideoMode;
     const char *menuVideoModes[3];
     int newHideMenu;
+    int newOsdFlushRate;
 };
 
 

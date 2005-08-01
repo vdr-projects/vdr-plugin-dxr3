@@ -570,6 +570,32 @@ const tI18nPhrase Phrases[] = {
 #endif
 #endif
     },
+    {
+	"OSD flush rate (ms)",
+	"", // Deutsch
+	"", // Slovenski
+	"", // Italiano
+	"", // Nederlands
+	"", // Português
+	"", // Français
+	"", // Norsk
+	"Kuvaruutunäytön päivitysväli (ms)",
+	"", // Polski
+	"", // Español
+	"", // ÅëëçíéêÜ (Greek)
+	"", // Svenska
+	"", // Românã
+	"", // Magyar
+	"", // Català
+	"", // ÀãááÚØÙ (Russian)
+	"", // Hrvatski
+#if VDRVERSNUM > 10312
+	"", // Eesti
+#if VDRVERSNUM > 10315
+	"", // Dansk
+#endif
+#endif
+    },
     { NULL }
 };
 

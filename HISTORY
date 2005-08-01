@@ -260,7 +260,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - avoid high CPU usage in pause mode (Luca Olivetti, Klaus Schmidinger)
 - improved GetSTC(): fixes DVB subtitles sync problems (Mikko Tuumanen)
 - limit OSD flush rate: prevents OSD from going berserk due to being
-  refreshed too often, see FLUSHRATE in Makefile (Luca Olivetti, Ville Skyttä)
+  refreshed too often, see plugin settings (Luca Olivetti, Ville Skyttä)
 - borrow better OSD scaling routines from the Xine plugin (Luca Olivetti)
 - improve original OSD scaler for small resolutions (#1014339, Luca Olivetti)
 - improve error checking, eliminate some compiler warnings (Ville Skyttä)

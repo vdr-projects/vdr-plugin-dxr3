@@ -36,6 +36,7 @@ cDxr3ConfigData::cDxr3ConfigData()
     m_contrast = 500;
     m_saturation = 500;
     m_hidemenu = 0;
+    m_osdflushrate = 40;
 }
 
 // Local variables:

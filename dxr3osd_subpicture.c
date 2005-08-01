@@ -39,9 +39,9 @@ cDxr3SubpictureOsd::cDxr3SubpictureOsd(int Left, int Top) : cOsd(Left, Top)
     Palette = new cPalette(4);
 #if VDRVERSNUM >= 10318
     last = new cTimeMs();
-    last->Set(-FLUSHRATE);
+    last->Set(-cDxr3ConfigData::Instance().GetOsdFlushRate());
 #else
-    last = time_ms() - FLUSHRATE;
+    last = time_ms() - cDxr3ConfigData::Instance().GetOsdFlushRate();
 #endif
     Spu = &cSPUEncoder::Instance();
 
@@ -107,10 +107,12 @@ void cDxr3SubpictureOsd::RestoreRegion()
 void cDxr3SubpictureOsd::Flush()
 {
 #if VDRVERSNUM >= 10318
-    if (last->Elapsed()<FLUSHRATE) return;
+    if (last->Elapsed() < cDxr3ConfigData::Instance().GetOsdFlushRate())
+	return;
     last->Set();
 #else
-    if (time_ms()-last<FLUSHRATE) return;
+    if (time_ms() - last < cDxr3ConfigData::Instance().GetOsdFlushRate())
+	return;
     last = time_ms();
 #endif
 

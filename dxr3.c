@@ -3,7 +3,7 @@
  *
  * See the README file for copyright information and how to reach the author.
  *
- * $Id: dxr3.c,v 1.1.2.14 2005/07/06 18:04:46 scop Exp $
+ * $Id: dxr3.c,v 1.1.2.15 2005/08/01 17:45:33 scop Exp $
  *
  */
 
@@ -82,6 +82,9 @@ cMenuSetupDxr3::cMenuSetupDxr3(void)
 			      &newVideoMode, 3, menuVideoModes));
     newHideMenu = cDxr3ConfigData::Instance().GetHideMenu();
     Add(new cMenuEditBoolItem(tr("Hide main menu entry"), &newHideMenu));
+    newOsdFlushRate = cDxr3ConfigData::Instance().GetOsdFlushRate();
+    Add(new cMenuEditIntItem(tr("OSD flush rate (ms)"),
+			     &newOsdFlushRate, 0, 255));
 }
 
 // ==================================
@@ -96,6 +99,8 @@ void cMenuSetupDxr3::Store(void)
 	       cDxr3ConfigData::Instance().SetVideoMode((eVideoMode) newVideoMode));
     SetupStore("HideMenu",
 	       cDxr3ConfigData::Instance().SetHideMenu(newHideMenu));
+    SetupStore("OsdFlushRate",
+	       cDxr3ConfigData::Instance().SetOsdFlushRate(newOsdFlushRate));
 }
 
 // ==================================
@@ -199,6 +204,11 @@ bool cPluginDxr3::SetupParse(const char *Name, const char *Value)
     if (!strcasecmp(Name, "HideMenu"))
     {
 	cDxr3ConfigData::Instance().SetHideMenu(atoi(Value));
+	return true;
+    }
+    if (!strcasecmp(Name, "OsdFlushRate"))
+    {
+	cDxr3ConfigData::Instance().SetOsdFlushRate(atoi(Value));
 	return true;
     }
 
