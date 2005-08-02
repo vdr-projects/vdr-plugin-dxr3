@@ -3,7 +3,7 @@
  *
  * See the README file for copyright information and how to reach the author.
  *
- * $Id: dxr3.c,v 1.1.2.15 2005/08/01 17:45:33 scop Exp $
+ * $Id: dxr3.c,v 1.1.2.16 2005/08/02 11:10:50 scop Exp $
  *
  */
 
@@ -22,6 +22,8 @@ static const char *MAINMENUENTRY  = "DXR3";
 #if VDRVERSNUM && VDRVERSNUM < 10311
 #error "This version of the DXR3 plugin needs VDR version >= 1.3.11"
 #endif
+
+#define DXR3_MAX_CARDS 4
 
 // ==================================
 // 'message-handler' for the main screen
@@ -73,7 +75,8 @@ cMenuSetupDxr3::cMenuSetupDxr3(void)
     newUseDigitalOut = cDxr3ConfigData::Instance().GetUseDigitalOut();
     Add(new cMenuEditBoolItem(tr("Digital audio output"), &newUseDigitalOut));
     newDxr3Card = cDxr3ConfigData::Instance().GetDxr3Card();
-    Add(new cMenuEditIntItem(tr("Card number"), &newDxr3Card));
+    Add(new cMenuEditIntItem(tr("Card number"),
+			     &newDxr3Card, 0, DXR3_MAX_CARDS - 1));
     newVideoMode = (int) cDxr3ConfigData::Instance().GetVideoMode();
     menuVideoModes[0] = tr("PAL");
     menuVideoModes[1] = tr("PAL60");
