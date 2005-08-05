@@ -295,3 +295,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - avoid crashing with some corrupted streams (Jon Burgess)
 - clean up dead code for old VDR versions that hasn't worked for some time
   anyway, VDR >= 1.3.8 is now required (Ville Skyttä)
+- added Italian, Spanish and Catalan translations (Luca Olivetti)
