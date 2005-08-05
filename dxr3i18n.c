@@ -28,19 +28,19 @@ const tI18nPhrase Phrases[] = {
 	"DXR3",
 	"DXR3",
 	"", // Slovenski
-	"", // Italiano
+	"DXR3",
 	"", // Nederlands
 	"", // Português
 	"", // Français
 	"", // Norsk
 	"DXR3-toiminnot",
 	"", // Polski
-	"", // Español
+	"DXR3",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
 	"", // Românã
 	"", // Magyar
-	"", // Català
+	"DXR3",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
 #if VDRVERSNUM > 10312
@@ -54,19 +54,19 @@ const tI18nPhrase Phrases[] = {
 	"Hardware MPEG decoder",
 	"", // Deutsch
 	"", // Slovenski
-	"", // Italiano
+	"Decoder MPEG Hardware",
 	"", // Nederlands
 	"", // Português
 	"", // Français
 	"", // Norsk
 	"MPEG-purkukortti",
 	"", // Polski
-	"", // Español
+	"Descodificador MPEG Hardware",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
 	"", // Românã
 	"", // Magyar
-	"", // Català
+	"Descodificador MPEG Hardware",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
 #if VDRVERSNUM > 10312
@@ -80,19 +80,19 @@ const tI18nPhrase Phrases[] = {
 	"DXR3 Adjustment",
 	"DXR3 Einstellungen",
 	"", // Slovenski
-	"", // Italiano
+	"Opzioni DXR3",
 	"", // Nederlands
 	"", // Português
 	"", // Français
 	"", // Norsk
 	"DXR3-toiminnot",
 	"", // Polski
-	"", // Español
+	"Opciones DXR3",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
 	"", // Românã
 	"", // Magyar
-	"", // Català
+	"Opcions DXR3",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
 #if VDRVERSNUM > 10312
@@ -106,19 +106,19 @@ const tI18nPhrase Phrases[] = {
 	"Digital audio output",
 	"Digitaler Audioausgang",
 	"", // Slovenski
-	"", // Italiano
+	"Uscita audio digitale",
 	"", // Nederlands
 	"", // Português
 	"", // Français
 	"", // Norsk
 	"Digitaalinen audioulostulo",
 	"", // Polski
-	"", // Español
+	"Salida audio digital",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
 	"", // Românã
 	"", // Magyar
-	"", // Català
+	"Sortida àudio digital",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
 #if VDRVERSNUM > 10312
@@ -132,19 +132,19 @@ const tI18nPhrase Phrases[] = {
 	"Card number",
 	"Karte",
 	"", // Slovenski
-	"", // Italiano
+	"Scheda",
 	"", // Nederlands
 	"", // Português
 	"", // Français
 	"", // Norsk
 	"Kortin järjestysnumero",
 	"", // Polski
-	"", // Español
+	"Tarjeta",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
 	"", // Românã
 	"", // Magyar
-	"", // Català
+	"Targeta",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
 #if VDRVERSNUM > 10312
@@ -158,19 +158,19 @@ const tI18nPhrase Phrases[] = {
 	"Video mode",
 	"Videomodus",
 	"", // Slovenski
-	"", // Italiano
+	"Modo Video",
 	"", // Nederlands
 	"", // Português
 	"", // Français
 	"", // Norsk
 	"Näyttötila",
 	"", // Polski
-	"", // Español
+	"Modalidad vídeo",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
 	"", // Românã
 	"", // Magyar
-	"", // Català
+	"Modalitat vídeo",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
 #if VDRVERSNUM > 10312
@@ -184,19 +184,19 @@ const tI18nPhrase Phrases[] = {
 	"PAL",
 	"PAL",
 	"", // Slovenski
-	"", // Italiano
+	"PAL",
 	"", // Nederlands
 	"", // Português
 	"", // Français
 	"", // Norsk
 	"PAL",
 	"", // Polski
-	"", // Español
+	"PAL",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
 	"", // Românã
 	"", // Magyar
-	"", // Català
+	"PAL",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
 #if VDRVERSNUM > 10312
@@ -210,19 +210,19 @@ const tI18nPhrase Phrases[] = {
 	"PAL60",
 	"PAL60",
 	"", // Slovenski
-	"", // Italiano
+	"PAL60",
 	"", // Nederlands
 	"", // Português
 	"", // Français
 	"", // Norsk
 	"PAL60",
 	"", // Polski
-	"", // Español
+	"PAL60",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
 	"", // Românã
 	"", // Magyar
-	"", // Català
+	"PAL60",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
 #if VDRVERSNUM > 10312
@@ -236,19 +236,19 @@ const tI18nPhrase Phrases[] = {
 	"NTSC",
 	"NTSC",
 	"", // Slovenski
-	"", // Italiano
+	"NTSC",
 	"", // Nederlands
 	"", // Português
 	"", // Français
 	"", // Norsk
 	"NTSC",
 	"", // Polski
-	"", // Español
+	"NTSC",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
 	"", // Românã
 	"", // Magyar
-	"", // Català
+	"NTSC",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
 #if VDRVERSNUM > 10312
@@ -262,19 +262,19 @@ const tI18nPhrase Phrases[] = {
 	"Reset DXR3 hardware",
 	"Reset DXR3 Hardware",
 	"", // Slovenski
-	"", // Italiano
+	"Reset hardware DXR3",
 	"", // Nederlands
 	"", // Português
 	"", // Français
 	"", // Norsk
 	"Palauta kortti alkutilaan",
 	"", // Polski
-	"", // Español
+	"Reset hardware DXR3",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
 	"", // Românã
 	"", // Magyar
-	"", // Català
+	"Reset hardware DXR3",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
 #if VDRVERSNUM > 10312
@@ -288,19 +288,19 @@ const tI18nPhrase Phrases[] = {
 	"Toggle force letterbox",
 	"Letterbox erzwingen",
 	"", // Slovenski
-	"", // Italiano
+	"Commuta modo letterbox forzato ",
 	"", // Nederlands
 	"", // Português
 	"", // Français
 	"", // Norsk
 	"Letterbox-näyttötilan pakotus päälle/pois",
 	"", // Polski
-	"", // Español
+	"Conmuta modalidad letterbox forzada",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
 	"", // Românã
 	"", // Magyar
-	"", // Català
+	"Commuta modalitat letterbox forçada",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
 #if VDRVERSNUM > 10312
@@ -314,19 +314,19 @@ const tI18nPhrase Phrases[] = {
 	"Switch to analog audio output",
 	"Analoge Ausgabe",
 	"", // Slovenski
-	"", // Italiano
+	"Seleziona uscita audio analogica",
 	"", // Nederlands
 	"", // Português
 	"", // Français
 	"", // Norsk
 	"Kytke analoginen audioulostulo",
 	"", // Polski
-	"", // Español
+	"Selecciona salida audio analógica",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
 	"", // Românã
 	"", // Magyar
-	"", // Català
+	"Selecciona sortida àudio analògica",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
 #if VDRVERSNUM > 10312
@@ -340,19 +340,19 @@ const tI18nPhrase Phrases[] = {
 	"AC3 output on",
 	"AC3 Ausgabe Ein",
 	"", // Slovenski
-	"", // Italiano
+	"Attiva uscita AC3",
 	"", // Nederlands
 	"", // Português
 	"", // Français
 	"", // Norsk
 	"AC3-ulostulo päälle",
 	"", // Polski
-	"", // Español
+	"Activa salida AC3",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
 	"", // Românã
 	"", // Magyar
-	"", // Català
+	"Activa sortida AC3",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
 #if VDRVERSNUM > 10312
@@ -366,19 +366,19 @@ const tI18nPhrase Phrases[] = {
 	"AC3 output off",
 	"AC3 Ausgabe Aus",
 	"", // Slovenski
-	"", // Italiano
+	"Disattiva uscita AC3",
 	"", // Nederlands
 	"", // Português
 	"", // Français
 	"", // Norsk
 	"AC3-ulostulo pois",
 	"", // Polski
-	"", // Español
+	"Desactiva salida AC3",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
 	"", // Românã
 	"", // Magyar
-	"", // Català
+	"Desactiva sortida AC3",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
 #if VDRVERSNUM > 10312
@@ -392,19 +392,19 @@ const tI18nPhrase Phrases[] = {
 	"Switch to digital audio output",
 	"Digitaler Ausgang",
 	"", // Slovenski
-	"", // Italiano
+	"Seleziona uscita audio digitale",
 	"", // Nederlands
 	"", // Português
 	"", // Français
 	"", // Norsk
 	"Kytke digitaalinen audioulostulo",
 	"", // Polski
-	"", // Español
+	"Selecciona salida audio digital",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
 	"", // Românã
 	"", // Magyar
-	"", // Català
+	"Selecciona sortida àudio digital",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
 #if VDRVERSNUM > 10312
@@ -418,19 +418,19 @@ const tI18nPhrase Phrases[] = {
 	"DXR3: releasing devices",
 	"DXR3: Releasing Devices",
 	"", // Slovenski
-	"", // Italiano
+	"DXR3: liberando dispositivo",
 	"", // Nederlands
 	"", // Português
 	"", // Français
 	"", // Norsk
 	"DXR3: vapautetaan laitteet",
 	"", // Polski
-	"", // Español
+	"DXR3: liberando dispositivo",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
 	"", // Românã
 	"", // Magyar
-	"", // Català
+	"DXR3: alliberant dispositiu",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
 #if VDRVERSNUM > 10312
@@ -444,19 +444,19 @@ const tI18nPhrase Phrases[] = {
 	"Color settings",
 	"Farbeinstellungen",
 	"", // Slovenski
-	"", // Italiano
+	"Regolazioni colore",
 	"", // Nederlands
 	"", // Português
 	"", // Français
 	"", // Norsk
 	"Väriasetukset",
 	"", // Polski
-	"", // Español
+	"Ajustes color",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
 	"", // Românã
 	"", // Magyar
-	"", // Català
+	"Ajustaments color",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
 #if VDRVERSNUM > 10312
@@ -470,19 +470,19 @@ const tI18nPhrase Phrases[] = {
 	"Brightness",
 	"Helligkeit",
 	"", // Slovenski
-	"", // Italiano
+	"Luminosità",
 	"", // Nederlands
 	"", // Português
 	"", // Français
 	"", // Norsk
 	"Kirkkaus",
 	"", // Polski
-	"", // Español
+	"Luminosidad",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
 	"", // Românã
 	"", // Magyar
-	"", // Català
+	"Lluminositat",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
 #if VDRVERSNUM > 10312
@@ -496,19 +496,19 @@ const tI18nPhrase Phrases[] = {
 	"Contrast",
 	"Kontrast",
 	"", // Slovenski
-	"", // Italiano
+	"Contrasto",
 	"", // Nederlands
 	"", // Português
 	"", // Français
 	"", // Norsk
 	"Kontrasti",
 	"", // Polski
-	"", // Español
+	"Contraste",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
 	"", // Românã
 	"", // Magyar
-	"", // Català
+	"Contrast",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
 #if VDRVERSNUM > 10312
@@ -522,19 +522,19 @@ const tI18nPhrase Phrases[] = {
 	"Saturation",
 	"Sättigung",
 	"", // Slovenski
-	"", // Italiano
+	"Saturazione",
 	"", // Nederlands
 	"", // Português
 	"", // Français
 	"", // Norsk
 	"Värikylläisyys",
 	"", // Polski
-	"", // Español
+	"Saturación",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
 	"", // Românã
 	"", // Magyar
-	"", // Català
+	"Saturació",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
 #if VDRVERSNUM > 10312
@@ -555,12 +555,12 @@ const tI18nPhrase Phrases[] = {
 	"", // Norsk
 	"Piilota valinta päävalikosta",
 	"", // Polski
-	"", // Español
+	"Esconde entrada menú",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
 	"", // Românã
 	"", // Magyar
-	"", // Català
+	"Amaga entrada menú",
 	"ÁÚàëâì ÚÞÜÐÝÔã Ò ÓÛÐÒÝÞÜ ÜÕÝî",
 	"", // Hrvatski
 #if VDRVERSNUM > 10312
@@ -574,19 +574,19 @@ const tI18nPhrase Phrases[] = {
 	"OSD flush rate (ms)",
 	"", // Deutsch
 	"", // Slovenski
-	"", // Italiano
+	"Tempo minimo rinfresco OSD (ms)",
 	"", // Nederlands
 	"", // Português
 	"", // Français
 	"", // Norsk
 	"Kuvaruutunäytön päivitysväli (ms)",
 	"", // Polski
-	"", // Español
+	"Tiempo mínimo refresco OSD (ms)",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
 	"", // Românã
 	"", // Magyar
-	"", // Català
+	"Temps mínim refresc OSD (ms)",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
 #if VDRVERSNUM > 10312
