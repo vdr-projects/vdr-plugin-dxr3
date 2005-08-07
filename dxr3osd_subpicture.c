@@ -63,18 +63,6 @@ eOsdError cDxr3SubpictureOsd::CanHandleAreas(const tArea *Areas, int NumAreas)
 }
 
 // ==================================
-void cDxr3SubpictureOsd::SaveRegion(int x1, int y1, int x2, int y2)
-{
-	// ToDo?
-}
-
-// ==================================
-void cDxr3SubpictureOsd::RestoreRegion()
-{
-	// ToDo?
-}
-
-// ==================================
 void cDxr3SubpictureOsd::Flush()
 {
 	cBitmap *Bitmap;

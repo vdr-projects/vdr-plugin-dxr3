@@ -17,8 +17,6 @@ public:
 	~cDxr3SubpictureOsd();
 
 	eOsdError CanHandleAreas(const tArea *Areas, int NumAreas);
-	void SaveRegion(int x1, int y1, int x2, int y2);
-	void RestoreRegion(void);
 
     void Flush();
 };
