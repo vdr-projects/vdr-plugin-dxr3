@@ -3,7 +3,7 @@
  *
  * See the README file for copyright information and how to reach the author.
  *
- * $Id: dxr3.c,v 1.1.2.16 2005/08/02 11:10:50 scop Exp $
+ * $Id: dxr3.c,v 1.1.2.17 2005/08/07 20:28:51 scop Exp $
  *
  */
 
@@ -15,7 +15,7 @@
 #include "dxr3.h"
 #include "dxr3i18n.h"
 
-static const char *VERSION        = "0.2.3-cvs";
+static const char *VERSION        = "0.2.3";
 static const char *DESCRIPTION    = "Hardware MPEG decoder";
 static const char *MAINMENUENTRY  = "DXR3";
 

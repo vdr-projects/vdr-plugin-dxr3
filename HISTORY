@@ -230,7 +230,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - fixed dxr3osd_subpicutre.c - thanks to Paavo Hartikainen <pahartik@sci.fi>
 
 
-2005-0?-??: Version 0.2.3-cvs
+2005-08-07: Version 0.2.3
 
 - fixed output of anamorphic video when tv aspect is configured to 16:9 in
   DVB setup menu (Seppo Ingalsuo)
