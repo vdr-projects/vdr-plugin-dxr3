@@ -1,0 +1,43 @@
+Known problems, bugs, and workarounds for this driver:
+------------------------------------------------------
+
+* The MP3 plugin's "show live TV" option while playing stuff doesn't work.
+  Workaround: none known, but the black screen isn't that bad if you
+  make the MP3 progress stuff/playlist visible...
+
+* VCD plugin does not work.
+  Workaround: use the MPlayer plugin to play VCDs.
+
+* No sound with the DVD plugin with VDR >= 1.3.18.
+  Workaround: use the MPlayer plugin to play DVDs.
+  Workaround 2: use VDR < 1.3.18.
+
+* When cutting recordings from some channels, the still picture is stuck
+  and won't move when you press 4 or 6 to fine tune the cutmarks.
+  Workaround: see vdr-iframe.patch in the patches/ directory or Reinhard
+  Nißl's http://home.vr-web.de/~rnissl/vdr-1.3.28-dvbplayer.patch (better)
+
+* If the TV aspect ratio does not automatically adjust according to the
+  video stream, and you have a ADV7170-based DXR3 and a PAL system, see
+  em8300-adv7170-wss.patch and vdr-dxr3-wss.patch in the patches/ dir.
+
+Other TODOs:
+------------
+
+* set bcs
+* clean unneeded log entries
+* stillpicture
+* grab screenshot
+* add much more comments!
+* rewrite some parts of plugin like 
+	- demuxer
+	- palettemanger
+	- colormanger
+	- spuencoder
+* osd via
+	- ffmpeg
+	- vga overlay
+
+* optimize (is it worth it?)
+	Rgb2YCrCb
+	YUV2Rgb
