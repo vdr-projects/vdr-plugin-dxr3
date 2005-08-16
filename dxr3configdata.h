@@ -2,7 +2,7 @@
  * dxr3configdata.h
  *
  * Copyright (C) 2002-2004 Kai Möller
- * Copyright (C) 2004 Christian Gmeiner
+ * Copyright (C) 2004-2005 Christian Gmeiner
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -54,98 +54,32 @@ public:
     cDxr3ConfigData();
     ~cDxr3ConfigData() {}
 
-    int GetUseDigitalOut() const
-    {
-	return m_digitaloutput;
-    }
-    int SetUseDigitalOut(int value)
-    {
-	return m_digitaloutput = value;
-    }
-    int GetDxr3Card() const
-    {
-	return m_card;
-    }
-    int SetDxr3Card(int value)
-    {
-	return m_card = value;
-    }
-    int GetForceLetterBox() const
-    {
-	return m_forceletterbox;
-    }
-    int SetForceLetterBox(int value)
-    {
-	return m_forceletterbox = value;
-    }
-    int GetAc3OutPut() const
-    {
-	return m_ac3output;
-    }
-    int SetAc3OutPut(int value)
-    {
-	return m_ac3output = value;
-    }
+    inline int GetUseDigitalOut() const     { return m_digitaloutput; }
+    inline int SetUseDigitalOut(int value)  { return m_digitaloutput = value; }
+    inline int GetDxr3Card() const          { return m_card; }
+    inline int SetDxr3Card(int value)       { return m_card = value; }
+    inline int GetForceLetterBox() const    { return m_forceletterbox; }
+    inline int SetForceLetterBox(int value) { return m_forceletterbox = value; }
+    inline int GetAc3OutPut() const         { return m_ac3output; }
+    inline int SetAc3OutPut(int value)      { return m_ac3output = value; }
 
-    eVideoMode GetVideoMode() const
-    {
-	return m_videomode;
-    }
-    eVideoMode SetVideoMode(eVideoMode videoMode)
-    {
-	return m_videomode = videoMode;
-    }
-    eMenuMode GetMenuMode() const
-    {
-	return m_menumode;
-    }
-    eMenuMode SetMenuMode(eMenuMode menuMode)
-    {
-	return m_menumode = menuMode;
-    }
+    inline eVideoMode GetVideoMode() const                 { return m_videomode; }
+    inline eVideoMode SetVideoMode(eVideoMode videoMode)   { return m_videomode = videoMode; }
+    inline eMenuMode GetMenuMode() const                   { return m_menumode; }
+    inline eMenuMode SetMenuMode(eMenuMode menuMode)       { return m_menumode = menuMode; }
 
-    int GetBrightness() const
-    {
-	return m_brightness;
-    }
-    int SetBrightness(int value)
-    {
-	return m_brightness = value;
-    }
-    int GetContrast() const
-    {
-	return m_contrast;
-    }
-    int SetContrast(int value)
-    {
-	return m_contrast = value;
-    }
-    int GetSaturation() const
-    {
-	return m_saturation;
-    }
-    int SetSaturation(int value)
-    {
-	return m_saturation = value;
-    }
+    inline int GetBrightness() const       { return m_brightness; }
+    inline int SetBrightness(int value)    { return m_brightness = value;}
+    inline int GetContrast() const         { return m_contrast;}
+    inline int SetContrast(int value)      { return m_contrast = value; }
+    inline int GetSaturation() const       { return m_saturation; }
+    inline int SetSaturation(int value)    { return m_saturation = value; }
 
-    int GetHideMenu() const
-    {
-	return m_hidemenu;
-    }
-    int SetHideMenu(int value)
-    {
-	return m_hidemenu = value;
-    }
+    inline int GetHideMenu() const     { return m_hidemenu; }
+    inline int SetHideMenu(int value)  { return m_hidemenu = value;}
 
-    unsigned int GetOsdFlushRate() const
-    {
-	return (unsigned) m_osdflushrate;
-    }
-    int SetOsdFlushRate(int value)
-    {
-	return m_osdflushrate = value;
-    }
+    inline unsigned int GetOsdFlushRate() const    { return (unsigned) m_osdflushrate; }
+    inline int SetOsdFlushRate(int value)          { return m_osdflushrate = value; }
 
 protected:
     eVideoMode m_videomode;
