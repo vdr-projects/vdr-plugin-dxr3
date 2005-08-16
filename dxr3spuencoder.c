@@ -1,5 +1,5 @@
 /*
- *     dxr3interface_spu_encoder.c - encodes an OSD bitmap as subpicture
+ *     dxr3spuencoder.c - encodes an OSD bitmap as subpicture
  *
  *	Assimilated and adapted by
  *  Stefan Schluenss <dxr3_osd@schluenss.de>

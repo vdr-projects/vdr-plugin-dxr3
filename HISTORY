@@ -296,3 +296,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 2005-0?-??: Version 0.2.?
 
 - added fix for slow udev device creating (Christian Gmeiner)
+- renamed dxr3interface_spu_encoder.[ch] to dxr3spuencoder.[ch] (Christian Gmeiner)
