@@ -57,18 +57,9 @@ public:
     void SetAudioAnalog();
     void SetAudioDigitalPCM();
     void SetAudioDigitalAC3();
-    void SetVolume(int volume)
-    {
-	m_volume = volume;
-    }
-    void SetAudioChannel(int audiochannel)
-    {
-	m_audioChannel = audiochannel;
-    }
-    int GetAudioChannel(void)
-    {
-	return m_audioChannel;
-    }
+    inline void SetVolume(int volume)               { m_volume = volume; }
+    inline void SetAudioChannel(int audiochannel)   { m_audioChannel = audiochannel; }
+    inline int GetAudioChannel() const              { return m_audioChannel; }
     void SetAudioSpeed(uint32_t speed);
     void SetChannelCount(uint32_t count);
     void SetAudioSampleSize(uint32_t sampleSize);
@@ -83,18 +74,9 @@ public:
     // state changes
     void EnableSPU();
     void DisableSPU();
-    void EnableVideo()
-    {
-	m_VideoActive = true;
-    }
-    void DisableVideo()
-    {
-	m_VideoActive = false;
-    }
-    void EnableAudio()
-    {
-	m_AudioActive = true;
-    }
+    inline void EnableVideo()   { m_VideoActive = true; }
+    inline void DisableVideo()  { m_VideoActive = false; }
+    inline void EnableAudio()   { m_AudioActive = true; }
     void DisableAudio();
     void EnableOverlay();
     void DisanleOverlay();
@@ -102,22 +84,10 @@ public:
     // set/get functions
     uint32_t GetAspectRatio() const;
     void SetAspectRatio(uint32_t ratio);
-    uint32_t GetHorizontalSize() const
-    {
-	return m_horizontal;
-    }
-    void SetHorizontalSize(uint32_t horizontal)
-    {
-	m_horizontal = horizontal;
-    };
-    uint32_t GetVerticalSize() const
-    {
-	return m_vertical;
-    }
-    void SetVerticalSize(uint32_t vertical)
-    {
-	m_vertical = vertical;
-    };
+    inline uint32_t GetHorizontalSize() const           { return m_horizontal; }
+    inline void SetHorizontalSize(uint32_t horizontal)  { m_horizontal = horizontal; };
+    inline uint32_t GetVerticalSize() const             { return m_vertical; }
+    inline void SetVerticalSize(uint32_t vertical)      { m_vertical = vertical; };
 
     // play functions
     void SetPlayMode();
@@ -132,21 +102,17 @@ public:
     // external device access
     void ExternalReleaseDevices();
     void ExternalReopenDevices();
-    bool IsExternalReleased() const
-    {
-	return m_ExternalReleased;
-    }
+    inline bool IsExternalReleased() const  { return m_ExternalReleased; }
 
     // tools
     void PlayBlackFrame();
     void ReOpenAudio();
 
     // osd/spu
-
     void ClearOsd();
     void WriteSpu(const uint8_t* pBuf, int length);
     void SetButton(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey,
-		   uint32_t palette);
+            uint32_t palette);
     void ClearButton();
     void SetPalette(unsigned int *pal = NULL);
 
@@ -201,14 +167,8 @@ private:
 protected:
     static cMutex* m_pMutex;	///< mutex for dxr3interface
 
-    static void Lock()
-    {
-	cDxr3Interface::m_pMutex->Lock();
-    }
-    static void Unlock()
-    {
-	cDxr3Interface::m_pMutex->Unlock();
-    }
+    static void Lock()      { cDxr3Interface::m_pMutex->Lock(); }
+    static void Unlock()    { cDxr3Interface::m_pMutex->Unlock(); }
 };
 
 #endif /*_DXR3_INTERFACE_H_*/
