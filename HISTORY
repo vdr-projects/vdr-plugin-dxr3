@@ -297,3 +297,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 
 - added fix for slow udev device creating (Christian Gmeiner)
 - renamed dxr3interface_spu_encoder.[ch] to dxr3spuencoder.[ch] (Christian Gmeiner)
+- we are using dxr3 hardware dvd playback functions in our spudecoder (Christian Gmeiner)
