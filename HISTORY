@@ -291,3 +291,8 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - limit card number to sane values in config (Ville Skyttä)
 - added Italian, Spanish and Catalan translations (Luca Olivetti)
 - don't override OSD's {Save,Restore}Region with dummies (Luca Olivetti)
+
+
+2005-0?-??: Version 0.2.?
+
+- added fix for slow udev device creating (Christian Gmeiner)
