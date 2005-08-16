@@ -26,7 +26,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include "dxr3interface_spu_encoder.h"
+#include "dxr3spuencoder.h"
 #include "dxr3tools.h"
 
 /*
