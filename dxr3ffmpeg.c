@@ -34,16 +34,16 @@ cDxr3Ffmepg::cDxr3Ffmepg()
 
 // ==================================
 //! look if Codec is supported by ffmpeg
-bool cDxr3Ffmepg::FindCodec(struct Dxr3Codec& Codec)
+bool cDxr3Ffmepg::FindCodec(Dxr3Codec& Codec)
 {
     // find codec
     Codec.codec = avcodec_find_decoder(Codec.id);
 
     if (!Codec.codec)
     {
-	esyslog("dxr3: ffmpeg: codec %#.5x not found - not supported"
-		" by FFmpeg?", Codec.id);
-	return false;
+        esyslog("dxr3: ffmpeg: codec %#.5x not found - not supported"
+                " by FFmpeg?", Codec.id);
+        return false;
     }
 
     // init codec_context
@@ -54,32 +54,29 @@ bool cDxr3Ffmepg::FindCodec(struct Dxr3Codec& Codec)
 
 // ==================================
 //! try to open Codec
-bool cDxr3Ffmepg::OpenCodec(struct Dxr3Codec& Codec)
+bool cDxr3Ffmepg::OpenCodec(Dxr3Codec& Codec)
 {
     // try to open codec
-    int result = avcodec_open(&Codec.codec_context, Codec.codec);
+    uint32_t result = avcodec_open(&Codec.codec_context, Codec.codec);
 
     if (result < 0)
     {
-	esyslog("dxr3: ffmpeg: couldn't open codec %#.5x", Codec.id);
-	return false;
-    }
-    else
-    {
-	Codec.Open = true;
+        esyslog("dxr3: ffmpeg: couldn't open codec %#.5x", Codec.id);
+        return false;
     }
 
+    Codec.Open = true;
     return true;
 }
 
 // ==================================
 //! close codec
-void cDxr3Ffmepg::CloseCodec(struct Dxr3Codec& Codec)
+void cDxr3Ffmepg::CloseCodec(Dxr3Codec& Codec)
 {
     if (Codec.Open)
     {
-	avcodec_close(&Codec.codec_context);
-	Codec.Open = false;
+        avcodec_close(&Codec.codec_context);
+        Codec.Open = false;
     }
 }
 

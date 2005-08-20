@@ -36,10 +36,10 @@ struct Dxr3Codec
 {
     Dxr3Codec() : Open(false) {}
 
-    AVCodec* codec;			///< ffmpeg's AVCodec
-    AVCodecContext codec_context;	///< ffmpeg's AVCodecContext
-    enum CodecID id;			///< id's from ffmpeg, eg. CODEC_ID_MP2
-    bool Open;				///< is codec open?
+    AVCodec* codec;                 ///< ffmpeg's AVCodec
+    AVCodecContext codec_context;   ///< ffmpeg's AVCodecContext
+    enum CodecID id;                ///< id's from ffmpeg, eg. CODEC_ID_MP2
+    bool Open;                      ///< is codec open?
 };
 
 // ==================================
@@ -57,9 +57,9 @@ public:
     cDxr3Ffmepg();
     ~cDxr3Ffmepg() {}
 
-    bool FindCodec(struct Dxr3Codec& Codec);
-    bool OpenCodec(struct Dxr3Codec& Codec);
-    void CloseCodec(struct Dxr3Codec& Codec);
+    bool FindCodec(Dxr3Codec& Codec);
+    bool OpenCodec(Dxr3Codec& Codec);
+    void CloseCodec(Dxr3Codec& Codec);
 
 private:
     cDxr3Ffmepg(cDxr3Ffmepg&); // no copy constructor
