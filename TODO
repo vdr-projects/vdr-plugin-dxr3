@@ -1,5 +1,5 @@
-Known problems, bugs, and workarounds for this driver:
-------------------------------------------------------
+Known problems, bugs, and workarounds related to this driver:
+-------------------------------------------------------------
 
 * The MP3 plugin's "show live TV" option while playing stuff doesn't work.
   Workaround: none known, but the black screen isn't that bad if you
