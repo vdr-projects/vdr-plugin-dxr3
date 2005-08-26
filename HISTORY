@@ -299,3 +299,5 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - renamed dxr3interface_spu_encoder.[ch] to dxr3spuencoder.[ch]
   (Christian Gmeiner)
 - use dxr3 hardware dvd playback functions in spudecoder (Christian Gmeiner)
+- don't abort with lpcm frames containing an odd number of bytes, drop
+  the frame instead (Ville Skyttä)

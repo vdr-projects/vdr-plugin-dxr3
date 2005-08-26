@@ -202,10 +202,14 @@ void cDxr3AudioDecoder::DecodeLpcm(const uint8_t* buf, int length,
 {
     if (length > (LPCM_HEADER_LENGTH + 2))
     {
-	uint8_t* pFrame = new uint8_t[length - LPCM_HEADER_LENGTH];
 	// only even number of bytes are allowed
-	assert(!((length - LPCM_HEADER_LENGTH) % 2));
+	if ((length - LPCM_HEADER_LENGTH) % 2 != 0)
+	{
+	    esyslog("dxr3: audiodecoder: skipping %d lpcm bytes", length);
+	    return;
+	}
 
+	uint8_t* pFrame = new uint8_t[length - LPCM_HEADER_LENGTH];
 	for (int i = LPCM_HEADER_LENGTH; i < length; i += 2)
 	{
 	    pFrame[i - LPCM_HEADER_LENGTH] = buf[i + 1];
