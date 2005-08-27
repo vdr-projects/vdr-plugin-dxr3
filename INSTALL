@@ -10,7 +10,7 @@ Installation:
 - Get the latest dxr3-plugin version from
   http://sourceforge.net/projects/dxr3plugin/
 - Unpack the package into "PLUGINS/SRC" directory.
-- Make a symbolic link to this dxr3-plugin (ln -s vdr_dxr3_x.x.x dxr3).
+- Make a symbolic link to this dxr3-plugin (ln -s dxr3-x.x.x dxr3).
 - Check FFMDIR and EM8300 in Makefile.
 - Check extra settings in Makefile: -DMICROCODE, -DUSE_XINE_SCALER
 - Call "make plugins" in the VDR root directory.
