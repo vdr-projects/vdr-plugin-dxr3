@@ -166,8 +166,12 @@ void cDxr3AudioDecoder::Decode(const uint8_t* buf, int length, uint32_t pts,
 	    {
 		cFixedLengthFrame* pTempFrame = aBuf.Push(pcmbuf,
 							  out_size, pts);
-		pTempFrame->SetChannelCount(channels);
-		pTempFrame->SetDataRate(rate);
+		if (pTempFrame)
+		{
+		    // TODO: should we break out of the loop on push timeout?
+		    pTempFrame->SetChannelCount(channels);
+		    pTempFrame->SetDataRate(rate);
+		}
 	    }
 	    length -= len;
 	    buf += len;
@@ -241,9 +245,11 @@ void cDxr3AudioDecoder::DecodeLpcm(const uint8_t* buf, int length,
 	cFixedLengthFrame* pTempFrame = aBuf.Push(pFrame,
 						  length - LPCM_HEADER_LENGTH,
 						  pts);
-	pTempFrame->SetChannelCount(1);
-	pTempFrame->SetDataRate(speed);
-
+	if (pTempFrame)
+	{
+	    pTempFrame->SetChannelCount(1);
+	    pTempFrame->SetDataRate(speed);
+	}
 	delete[] pFrame;
     }
 }
