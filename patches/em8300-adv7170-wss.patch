@@ -1,0 +1,395 @@
+Wide screen signaling (WSS) patch for the em8300 driver by Seppo Ingalsuo.
+Apply to: em8300 driver sources
+More info: http://sf.net/mailarchive/forum.php?thread_id=6061108&forum_id=7173
+Note: you'll probably want to apply vdr-dxr3-wss.patch too
+  in order to get VDR(-dxr3) to use this functionality.
+
+
+Index: em8300setup/em8300setup.c
+===================================================================
+RCS file: /cvsroot/dxr3/em8300/em8300setup/em8300setup.c,v
+retrieving revision 1.3
+diff -u -r1.3 em8300setup.c
+--- em8300setup/em8300setup.c	8 Mar 2005 01:14:31 -0000	1.3
++++ em8300setup/em8300setup.c	24 May 2005 14:03:31 -0000
+@@ -112,7 +112,7 @@
+ 	char ucode_file[200]; // bad hardcoded value ;-)
+ 
+ 	/* Vars to hold desired setings - init to -1 so we can see which were requested to be set explicitly by the user and which should be left alone */
+-        int tvmode=-1, aspect=-1, audio=-1, spu=-1, upload=0, display_only=0;
++        int tvmode=-1, aspect=-1, audio=-1, spu=-1, upload=0, display_only=0, wssmode=-1;
+ 
+ 
+ 	char * devs[] = {"/dev/em8300-0","/dev/em8300-1","/dev/em8300-2","/dev/em8300-3"};
+@@ -175,12 +175,45 @@
+ 							upload=1;
+ 							printf("Using microcode file %s\n",ucode_file);
+ 							break;
++					        case 'z':
++						        switch (opt[2]) {
++							case '0':
++							        wssmode = EM8300_WSS_OFF;
++								break;
++							case '1':
++							        wssmode = EM8300_WSS_4_3;
++								break;
++							case '2':
++							        wssmode = EM8300_WSS_14_9;
++								if (opt[3]=='l') wssmode = EM8300_WSS_14_9_LETTERBOX;
++								if (opt[3]=='t') wssmode = EM8300_WSS_14_9_LETTERBOX_TOP;
++								break;
++							case '3':
++							        wssmode = EM8300_WSS_16_9;
++								if (opt[3]=='l') wssmode = EM8300_WSS_16_9_LETTERBOX;
++								if (opt[3]=='t') wssmode = EM8300_WSS_16_9_LETTERBOX_TOP;
++								if (opt[3]=='p') wssmode = EM8300_WSS_16P_9_LETTERBOX;
++								break;
++							default:
++							        printf("Unknown option -z%c\n\n",opt[2]);;
++								exit(1);
++							}
++							break;
+ 						 default:
+ 							printf("Unknown option -%c \n\n",opt[1]);
+ 							printf("Usage: em8300setup [-q]|[all other options]\n\nWhere options are one of the following (latter options will override previously\nspecified options for the same control):\n\n");
+ 							printf("  -p, -p6, -n\tSet display mode to pal, pal60, ntsc\n");
+ 							printf("  -a, -d, -3\tSet audio mode to analog, digitalpcm, digital ac3\n");
+ 							printf("  -o, -w\tSet aspect ratio to normal[4:3], widescreen[16:9]\n");
++							printf("  -z0\t\tSet WSS to disabled\n");
++							printf("  -z1\t\tSet WSS to 4:3\n");
++							printf("  -z2\t\tSet WSS to 14:9\n");
++							printf("  -z2l\t\tSet WSS to 14:9 letterbox\n");
++							printf("  -z2t\t\tSet WSS to 14:9 letterbox top\n");
++							printf("  -z3\t\tSet WSS to 16:9\n");
++							printf("  -z3l\t\tSet WSS to 16:9 letterbox\n");
++							printf("  -z3t\t\tSet WSS to 16:9 letterbox top\n");
++							printf("  -z3p\t\tSet WSS to >16:9 letterbox\n");
+ 							printf("  -S, -s\tSet spu mode On(S), Off(s)\n");
+ 							printf("  -f <filename>\tSpecify alternate location of microcode\n\t\t(Defaults to /usr/share/misc/em8300.uc)\n");
+ 							printf("  -q\t\tQuery the current settings for all of the above and\n\t\texit without making any changes\n");
+@@ -270,6 +303,12 @@
+ 			if(ioctl(DEV, EM8300_IOCTL_SET_ASPECTRATIO, &aspect) == -1) 
+ 				check_errno("Unable to set aspect ratio");
+ 		}
++		if(wssmode!=-1) {
++			printf("Setting WSS = %i\n",wssmode);
++			if(ioctl(DEV, EM8300_IOCTL_SET_WSS, &wssmode) == -1) 
++				check_errno("Unable to set wss");
++		}
++
+ 		if(audio!=-1) {
+ 			printf("Setting audio = %i\n",audio);
+ 			if(ioctl(DEV, EM8300_IOCTL_SET_AUDIOMODE, &audio) == -1) 
+Index: include/linux/em8300.h
+===================================================================
+RCS file: /cvsroot/dxr3/em8300/include/linux/em8300.h,v
+retrieving revision 1.38
+diff -u -r1.38 em8300.h
+--- include/linux/em8300.h	17 May 2005 19:25:53 -0000	1.38
++++ include/linux/em8300.h	24 May 2005 14:03:32 -0000
+@@ -80,6 +80,7 @@
+ #define EM8300_IOCTL_SCR_SETSPEED _IOW('C',17,unsigned)
+ #define EM8300_IOCTL_FLUSH _IOW('C',18,int)
+ #define EM8300_IOCTL_VBI _IOW('C',19,struct timeval)
++#define EM8300_IOCTL_SET_WSS _IOW('C',20,int)
+ 
+ #define EM8300_OVERLAY_SIGNAL_ONLY 1
+ #define EM8300_OVERLAY_SIGNAL_WITH_VGA 2
+@@ -97,6 +98,16 @@
+ #define EM8300_ASPECTRATIO_16_9 1
+ #define EM8300_ASPECTRATIO_LAST 1
+ 
++#define EM8300_WSS_OFF 0
++#define EM8300_WSS_4_3 8
++#define EM8300_WSS_14_9_LETTERBOX 1
++#define EM8300_WSS_14_9_LETTERBOX_TOP 2
++#define EM8300_WSS_16_9_LETTERBOX 11
++#define EM8300_WSS_16_9_LETTERBOX_TOP 4
++#define EM8300_WSS_16P_9_LETTERBOX 13
++#define EM8300_WSS_14_9 14
++#define EM8300_WSS_16_9 7
++
+ #define EM8300_VIDEOMODE_PAL	0
+ #define EM8300_VIDEOMODE_PAL60	1
+ #define EM8300_VIDEOMODE_NTSC	2
+@@ -454,6 +465,7 @@
+ int em8300_control_ioctl(struct em8300_s *em, int cmd, unsigned long arg);
+ int em8300_ioctl_setvideomode(struct em8300_s *em, int mode);
+ int em8300_ioctl_setaspectratio(struct em8300_s *em, int ratio);
++int em8300_ioctl_setwss(struct em8300_s *em, int wsscode);
+ int em8300_ioctl_getstatus(struct em8300_s *em, char *usermsg);
+ int em8300_ioctl_init(struct em8300_s *em, em8300_microcode_t *useruc);
+ void em8300_ioctl_enable_videoout(struct em8300_s *em, int mode);
+Index: modules/adv717x.c
+===================================================================
+RCS file: /cvsroot/dxr3/em8300/modules/adv717x.c,v
+retrieving revision 1.45
+diff -u -r1.45 adv717x.c
+--- modules/adv717x.c	9 Apr 2005 20:23:54 -0000	1.45
++++ modules/adv717x.c	24 May 2005 14:03:34 -0000
+@@ -112,6 +112,7 @@
+ 	int pp_ntsc;
+ 	int pd_adj_pal;
+ 	int pd_adj_ntsc;
++	int wsscode;
+ 
+ 	unsigned char config[32];
+ 	int configlen;
+@@ -298,6 +299,63 @@
+ 		if (data->rgbmode) {
+ 			tmpconfig[3] |= 0x10;
+ 		}
++
++		switch (data->wsscode) {
++		case 0x08:
++			/* 4:3 full */
++			tmpconfig[22] = 0x80;
++			tmpconfig[23] = 0x00;
++			tmpconfig[24] = 0x08;
++			break;
++		case 0x01:
++			/* 14:9 letterbox center */
++			tmpconfig[22] = 0x80;
++			tmpconfig[23] = 0x00;
++			tmpconfig[24] = 0x01;
++			break;
++		case 0x02:
++			/* 14:9 letterbox top */
++			tmpconfig[22] = 0x80;
++			tmpconfig[23] = 0x00;
++			tmpconfig[24] = 0x02;
++			break;
++		case 0x0b:
++			/* 16:9 letterbox center */
++			tmpconfig[22] = 0x80;
++			tmpconfig[23] = 0x00;
++			tmpconfig[24] = 0x0b;
++			break;
++		case 0x04:
++			/* 16:9 letterbox top */
++			tmpconfig[22] = 0x80;
++			tmpconfig[23] = 0x00;
++			tmpconfig[24] = 0x04;
++			break;
++		case 0x0d:
++			/* >16:9 letterbox center */
++			tmpconfig[22] = 0x80;
++			tmpconfig[23] = 0x00;
++			tmpconfig[24] = 0x0d;
++			break;
++		case 0x0e:
++			/* 14:9 full */
++			tmpconfig[22] = 0x80;
++			tmpconfig[23] = 0x00;
++			tmpconfig[24] = 0x0e;
++			break;
++		case 0x07:
++			/* 16:9 full */
++			tmpconfig[22] = 0x80;
++			tmpconfig[23] = 0x00;
++			tmpconfig[24] = 0x07;
++			break;
++		default:
++			tmpconfig[22] = 0x00;
++			tmpconfig[23] = 0x00;
++			tmpconfig[24] = 0x00;
++			break;
++		}
++
+ 		break;
+ 	}
+ 
+@@ -440,6 +498,7 @@
+ 	data->bars = color_bars[em->card_nr];
+ 	data->rgbmode = 0;
+ 	data->enableoutput = 0;
++	data->wsscode = 0;
+ 
+ 	adv717x_setmode(ENCODER_MODE_PAL60, client);
+ 
+@@ -549,6 +608,42 @@
+ 		data->enableoutput = (long int) arg;
+ 		adv717x_update(client);
+ 		break;
++	case ENCODER_CMD_WSS_4_3:
++		data->wsscode = 8; 
++		adv717x_update(client);
++		break;
++	case ENCODER_CMD_WSS_14_9_LETTERBOX:
++		data->wsscode = 1; 
++		adv717x_update(client);
++		break;
++	case ENCODER_CMD_WSS_14_9_LETTERBOX_TOP:
++		data->wsscode = 2; 
++		adv717x_update(client);
++		break;
++	case ENCODER_CMD_WSS_16_9_LETTERBOX:
++		data->wsscode = 11; 
++		adv717x_update(client);
++		break;
++	case ENCODER_CMD_WSS_16_9_LETTERBOX_TOP:
++		data->wsscode = 4; 
++		adv717x_update(client);
++		break;
++	case ENCODER_CMD_WSS_16P_9_LETTERBOX:
++		data->wsscode = 13; 
++		adv717x_update(client);
++		break;
++	case ENCODER_CMD_WSS_14_9:
++		data->wsscode = 14; 
++		adv717x_update(client);
++		break;
++	case ENCODER_CMD_WSS_16_9:
++		data->wsscode = 7; 
++		adv717x_update(client);
++		break;
++	case ENCODER_CMD_WSS_OFF:
++		data->wsscode = 0; 
++		adv717x_update(client);
++		break;
+ 	default:
+ 		return -EINVAL;
+ 		break;
+Index: modules/em8300_ioctl.c
+===================================================================
+RCS file: /cvsroot/dxr3/em8300/modules/em8300_ioctl.c,v
+retrieving revision 1.48
+diff -u -r1.48 em8300_ioctl.c
+--- modules/em8300_ioctl.c	23 May 2005 23:44:12 -0000	1.48
++++ modules/em8300_ioctl.c	24 May 2005 14:03:35 -0000
+@@ -188,6 +188,18 @@
+ 		}
+ 		break;
+ 
++	case _IOC_NR(EM8300_IOCTL_SET_WSS):
++		if (!em->ucodeloaded) {
++			return -ENOTTY;
++		}
++
++		if (_IOC_DIR(cmd) & _IOC_WRITE) {
++			get_user(val, (int *) arg);
++			em8300_ioctl_setwss(em, val);
++		}
++
++		break;
++
+ 	case _IOC_NR(EM8300_IOCTL_GET_AUDIOMODE):
+ 		if (!em->ucodeloaded) {
+ 			return -ENOTTY;
+@@ -539,6 +551,52 @@
+ 	return 0;
+ }
+ 
++int em8300_ioctl_setwss(struct em8300_s *em, int wsscode)
++{
++	int wsscmd;
++
++	switch (wsscode) {
++	case EM8300_WSS_OFF:
++		wsscmd = ENCODER_CMD_WSS_OFF;
++		break;
++	case EM8300_WSS_4_3:
++		wsscmd = ENCODER_CMD_WSS_4_3;
++		break;
++	case EM8300_WSS_14_9_LETTERBOX:
++		wsscmd = ENCODER_CMD_WSS_14_9_LETTERBOX;
++		break;
++	case EM8300_WSS_14_9_LETTERBOX_TOP:
++		wsscmd = ENCODER_CMD_WSS_14_9_LETTERBOX_TOP;
++		break;
++	case EM8300_WSS_16_9_LETTERBOX:
++		wsscmd = ENCODER_CMD_WSS_16_9_LETTERBOX;
++		break;
++	case EM8300_WSS_16_9_LETTERBOX_TOP:
++		wsscmd = ENCODER_CMD_WSS_16_9_LETTERBOX_TOP;
++		break;
++	case EM8300_WSS_16P_9_LETTERBOX:
++		wsscmd = ENCODER_CMD_WSS_16P_9_LETTERBOX;
++		break;
++	case EM8300_WSS_14_9:
++		wsscmd = ENCODER_CMD_WSS_14_9;
++		break;
++	case EM8300_WSS_16_9:
++		wsscmd = ENCODER_CMD_WSS_16_9;
++		break;
++	default:
++		return -1;
++	}
++
++	em8300_dicom_disable(em);
++	if (em->encoder) {
++		em->encoder->driver->command(em->encoder, wsscmd, (void *) 0 );
++	}
++
++	em8300_dicom_enable(em);
++	em8300_dicom_update(em);
++	return 0;
++}
++
+ int em8300_ioctl_setplaymode(struct em8300_s *em, int mode)
+ {
+ 	switch (mode) {
+Index: modules/encoder.h
+===================================================================
+RCS file: /cvsroot/dxr3/em8300/modules/encoder.h,v
+retrieving revision 1.8
+diff -u -r1.8 encoder.h
+--- modules/encoder.h	14 Jan 2002 21:41:31 -0000	1.8
++++ modules/encoder.h	24 May 2005 14:03:35 -0000
+@@ -13,6 +13,15 @@
+ 
+ #define ENCODER_CMD_SETMODE      1
+ #define ENCODER_CMD_ENABLEOUTPUT 2
++#define ENCODER_CMD_WSS_4_3                3
++#define ENCODER_CMD_WSS_14_9_LETTERBOX     4
++#define ENCODER_CMD_WSS_14_9_LETTERBOX_TOP 5
++#define ENCODER_CMD_WSS_16_9_LETTERBOX     6
++#define ENCODER_CMD_WSS_16_9_LETTERBOX_TOP 7
++#define ENCODER_CMD_WSS_16P_9_LETTERBOX    8
++#define ENCODER_CMD_WSS_14_9               9
++#define ENCODER_CMD_WSS_16_9               10
++#define ENCODER_CMD_WSS_OFF                11
+ 
+ #endif
+ 
+Index: em8300setup/em8300setup.1
+===================================================================
+RCS file: /cvsroot/dxr3/em8300/em8300setup/em8300setup.1,v
+retrieving revision 1.2
+diff -u -r1.2 em8300setup.1
+--- em8300setup/em8300setup.1	28 Apr 2005 23:18:33 -0000	1.2
++++ em8300setup/em8300setup.1	24 May 2005 14:03:31 -0000
+@@ -27,6 +27,33 @@
+ \fB-o\fR, \fB-w\fR
+ Set aspect ratio to respectively normal (4:3) or wide-screen (16:9).
+ .TP
++\fB-z0\fR
++Set WSS to disabled.
++.TP
++\fB-z1\fR
++Set WSS to 4:3.
++.TP
++\fB-z2\fR
++Set WSS to 14:9.
++.TP
++\fB-z2l\fR
++Set WSS to 14:9 letterbox.
++.TP
++\fB-z2t\fR
++Set WSS to 14:9 letterbox top.
++.TP
++\fB-z3\fR
++Set WSS to 16:9.
++.TP
++\fB-z3l\fR
++Set WSS to 16:9 letterbox.
++.TP
++\fB-z3t\fR
++Set WSS to 16:9 letterbox top.
++.TP
++\fB-z3p\fR
++Set WSS to >16:9 letterbox.
++.TP
+ \fB-S\fR, \fB-s\fR
+ Set sub-pictures respectively on or off.
+ .TP
