@@ -184,6 +184,7 @@ void cDxr3Device::Clear()
     m_DemuxDevice.Clear();
     m_Offset = 0;
     m_strBuf.erase(m_strBuf.begin(), m_strBuf.end());
+    cDevice::Clear();
 }
 
 // ==================================
@@ -207,6 +208,7 @@ void cDxr3Device::Freeze()
 void cDxr3Device::Mute()
 {
     m_DemuxDevice.SetTrickMode(DXR3_FAST);
+    cDevice::Mute();
 }
 
 // ==================================
