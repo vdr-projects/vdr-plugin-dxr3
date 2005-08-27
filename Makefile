@@ -1,7 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.20 2005/08/16 18:29:46 austriancoder Exp $
+# $Id: Makefile,v 1.21 2005/08/27 10:55:44 scop Exp $
 
 # The official name of this plugin.
 # This name will be used in the '-P...' option of VDR to load the plugin.
@@ -95,7 +95,7 @@ dist: clean
 	@echo Distribution package created as $(PACKAGE).tgz
 
 clean:
-	@-rm -f $(OBJS) $(DEPFILE) *.so *.tgz core* *~ \#*
+	@-rm -f $(OBJS) $(DEPFILE) *.so* *.tgz core* *~ \#*
 
 #indent:
 #	emacs -batch --eval '(dolist (file command-line-args-left) (progn (find-file file) (c-indent-region (point-min) (point-max)) (save-buffer)))' *.h *.c
