@@ -38,7 +38,9 @@ Other TODOs:
 * osd via
 	- ffmpeg
 	- vga overlay
-
 * optimize (is it worth it?)
 	Rgb2YCrCb
 	YUV2Rgb
+* use xine OSD scaler unconditionally
+* try to preserve aspect ratio and audio mode on reset
+* clean up pre-VDR 1.4 compatibility cruft when 1.4 is out
