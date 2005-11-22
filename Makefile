@@ -1,7 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.1.2.19 2005/08/27 10:56:43 scop Exp $
+# $Id: Makefile,v 1.1.2.20 2005/11/22 10:55:55 scop Exp $
 
 # The official name of this plugin.
 # This name will be used in the '-P...' option of VDR to load the plugin.
@@ -47,8 +47,10 @@ LIBS     = -L$(FFMDIR)/libavcodec -lavcodec -ljpeg
 DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"'
 DEFINES += -D_GNU_SOURCE
 
-# where is the microcode for the dxr3 located?
-DEFINES += -DMICROCODE=\"/usr/share/misc/em8300.uc\"
+# where is the microcode for the dxr3 located?  em8300 driver version 0.15.2
+# and later installs it by default to /lib/firmware/em8300.bin, and earlier
+# versions to /usr/share/misc/em8300.uc.
+DEFINES += -DMICROCODE=\"/lib/firmware/em8300.bin\"
 
 # use OSD scaler borrowed from the Xine plugin?
 # comment this out to use the traditional vdr-dxr3 scaler

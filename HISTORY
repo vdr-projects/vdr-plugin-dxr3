@@ -298,3 +298,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
   the frame instead (Ville Skyttä)
 - fix crash on audio sync buffer push timeouts (Jon Burgess)
 - make the device class call cDevice's Mute() and Clear() (Ville Skyttä)
+
+2005-xx-xx: Version 0.2.5
+
+- sync default microcode location with em8300 0.15.2+ (Ville Skyttä)
