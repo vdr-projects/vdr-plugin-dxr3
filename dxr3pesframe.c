@@ -142,27 +142,24 @@ int cDxr3PesFrame::ExtractVideoData(cDxr3SafeArray<uint8_t> esFrame)
     int retval = 0;
     for (uint32_t i = 0; esFrame.GetLength() > (uint32_t) 8 && i < esFrame.GetLength() - 8; i++)
     {
-	if (esFrame[i] == 0 && esFrame[i+1] == 0 && esFrame[i+2] == 1)
+	if (esFrame[i] == 0 && esFrame[i + 1] == 0 && esFrame[i + 2] == 1)
 	{
 	    // start code
 	    if ((esFrame[i + 3] & 0xFF) == 0x00)
 	    {
 		// extract frame type
 		if (m_offset == 0) retval = i;
-		switch ((esFrame[ i + 5] >> 3) & 0x7)
+		switch ((esFrame[i + 5] >> 3) & 0x7)
 		{
 		case 0x1:
 		    m_videoFrameType = I_FRAME;
 		    break;
-
 		case 0x2:
 		    m_videoFrameType = P_FRAME;
 		    break;
-
 		case 0x3:
 		    m_videoFrameType = B_FRAME;
 		    break;
-
 		default:
 		    m_videoFrameType = UNKNOWN_FRAME;
 		    break;
