@@ -147,8 +147,9 @@ int cDxr3PesFrame::ExtractVideoData(cDxr3SafeArray<uint8_t> esFrame)
 	    // start code
 	    if ((esFrame[i + 3] & 0xFF) == 0x00)
 	    {
-		// extract frame type
-		if (m_offset == 0) retval = i;
+		// frame type
+		if (m_offset == 0)
+		    retval = i;
 		switch ((esFrame[i + 5] >> 3) & 0x7)
 		{
 		case 0x1:
