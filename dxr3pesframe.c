@@ -176,16 +176,16 @@ int cDxr3PesFrame::ExtractVideoData(cDxr3SafeArray<uint8_t> esFrame)
 		case 0x20:
 		    m_staticAspectRatio = m_aspectRatio = ASPECTRATIO_4_3;
 		    break;
-
 		case 0x30:
 		    m_staticAspectRatio = m_aspectRatio = ASPECTRATIO_16_9;
 		    break;
-
 		default:
 		    break;
 		}
-		m_staticHorizontalSize = m_horizontalSize = (esFrame[i + 5] & 0xF0) >> 4 | esFrame[i + 4] << 4;
-		m_staticVerticalSize = m_verticalSize = ((esFrame[i + 5] & 0x0F) << 8) | (esFrame[i + 6]);
+		m_staticHorizontalSize = m_horizontalSize =
+		    (esFrame[i + 5] & 0xF0) >> 4 | esFrame[i + 4] << 4;
+		m_staticVerticalSize = m_verticalSize =
+		    ((esFrame[i + 5] & 0x0F) << 8) | (esFrame[i + 6]);
 	    }
 	}
     }
