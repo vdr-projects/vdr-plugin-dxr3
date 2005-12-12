@@ -63,106 +63,14 @@ static int Dxr3Open(const char *Name, int n, int Mode)
 cDxr3Interface::cDxr3Interface() :
     m_fdControl(-1), m_fdVideo(-1), m_fdAudio(-1), m_fdSpu(-1)
 {
-    // open control stream
-    m_fdControl = Dxr3Open("", cDxr3ConfigData::Instance().GetDxr3Card(),
-			   O_WRONLY | O_SYNC);
-    if (m_fdControl < 0)
-    {
-	esyslog("dxr3: please verify that the em8300 modules are loaded");
-	exit(1);
-    }
-
-    // upload microcode to dxr3
-    UploadMicroCode();
-
-    ///< open multimedia streams
-    m_fdVideo = Dxr3Open("_mv", cDxr3ConfigData::Instance().GetDxr3Card(),
-			 O_WRONLY | O_SYNC);
-    m_fdAudio = Dxr3Open("_ma", cDxr3ConfigData::Instance().GetDxr3Card(),
-			 O_WRONLY | O_SYNC);
-    m_fdSpu = Dxr3Open("_sp", cDxr3ConfigData::Instance().GetDxr3Card(),
-		       O_WRONLY | O_SYNC);
-
-    // everything ok?
-    if (m_fdVideo < 0 || m_fdAudio < 0 || m_fdSpu < 0)
-    {
-	
-	esyslog("dxr3: fatal: unable to open some em8300 devices");
-	exit(1);
-    }
-
-    // create clock
-    m_pClock = new cDxr3SysClock(m_fdControl, m_fdVideo, m_fdSpu);
-
-    // everything ok?
-    if (!m_pClock)
-    {
-	esyslog("dxr3: fatal: unable to allocate memory for em8300 clock");
-	exit(1);
-    }
-
-    // set default values
-    m_AudioActive = false;
-    m_VideoActive = false;
-    m_OverlayActive = false;
-    m_ExternalReleased = false;
-    m_volume = 255;
-    m_audioChannel = AUDIO_STEREO;
-    m_horizontal = 720;
-    m_vertical = 576;
-    m_audioChannelCount = UNKNOWN_CHANNEL_COUNT;
-    m_audioDataRate = 0;
-    m_audioSampleSize = 0;
-
-    m_audioMode = UNKNOWN_AUDIO_MODE;
-    m_aspectRatio = UNKNOWN_ASPECT_RATIO;
-    m_spuMode = EM8300_SPUMODE_OFF;
-
-    // configure device based on settings
-    ConfigureDevice();
-
-    // get bcs values from driver
-    if (ioctl(m_fdControl, EM8300_IOCTL_GETBCS, &m_bcs) < 0)
-    {
-	esyslog("dxr3: failed to get brightness/contrast/saturation: %m");
-    }
-    else
-    {
-	dsyslog("dxr3: intf: brightness=%d,contrast=%d,saturation=%d at init",
-		m_bcs.brightness, m_bcs.contrast, m_bcs.saturation);
-    }
-
-    PlayBlackFrame();
-    SetChannelCount(1);
+    ClaimDevices();
 }
 
 // ==================================
 //! destructor
 cDxr3Interface::~cDxr3Interface()
 {
-    // close filehandles
-    if (m_fdControl > -1)
-    {
-	close(m_fdControl);
-    }
-    if (m_fdVideo > -1)
-    {
-	close(m_fdVideo);
-    }
-    if (m_fdSpu > -1)
-    {
-	close(m_fdSpu);
-    }
-    if (m_fdAudio > -1)
-    {
-	close(m_fdAudio);
-    }
-
-    // free some memory
-    if (m_pClock)
-    {
-	delete m_pClock;
-    }
+    ReleaseDevices();
 }
 
 // main
@@ -400,6 +308,7 @@ void cDxr3Interface::DisableAudio()
 {
     m_AudioActive = false;
 
+    Lock();
     // we write zero buffers to dxr3
     if (!m_ExternalReleased)
     {
@@ -408,6 +317,7 @@ void cDxr3Interface::DisableAudio()
 	if (write(m_fdAudio, zerobuffer, ZEROBUFFER_SIZE) < 0) Resuscitation();
 	if (write(m_fdAudio, zerobuffer, ZEROBUFFER_SIZE) < 0) Resuscitation();
     }
+    Unlock();
 }
 
 // ==================================
@@ -768,6 +678,107 @@ void cDxr3Interface::PlayAudioLpcmFrame(uint8_t* pBuf, int length)
     }
 }
 
+// ==================================
+void cDxr3Interface::ClaimDevices()
+{
+    // open control stream
+    m_fdControl = Dxr3Open("", cDxr3ConfigData::Instance().GetDxr3Card(),
+			   O_WRONLY | O_SYNC);
+    if (m_fdControl < 0)
+    {
+	esyslog("dxr3: please verify that the em8300 modules are loaded");
+	exit(1);
+    }
+
+    // upload microcode to dxr3
+    UploadMicroCode();
+
+    ///< open multimedia streams
+    m_fdVideo = Dxr3Open("_mv", cDxr3ConfigData::Instance().GetDxr3Card(),
+			 O_WRONLY | O_SYNC);
+    m_fdAudio = Dxr3Open("_ma", cDxr3ConfigData::Instance().GetDxr3Card(),
+			 O_WRONLY | O_SYNC);
+    m_fdSpu = Dxr3Open("_sp", cDxr3ConfigData::Instance().GetDxr3Card(),
+		       O_WRONLY | O_SYNC);
+
+    // everything ok?
+    if (m_fdVideo < 0 || m_fdAudio < 0 || m_fdSpu < 0)
+    {
+	esyslog("dxr3: fatal: unable to open some em8300 devices");
+	exit(1);
+    }
+
+    // create clock
+    m_pClock = new cDxr3SysClock(m_fdControl, m_fdVideo, m_fdSpu);
+
+    // everything ok?
+    if (!m_pClock)
+    {
+	esyslog("dxr3: fatal: unable to allocate memory for em8300 clock");
+	exit(1);
+    }
+
+    // set default values
+    m_AudioActive = false;
+    m_VideoActive = false;
+    m_OverlayActive = false;
+    m_ExternalReleased = false;
+    m_volume = 255;
+    m_audioChannel = AUDIO_STEREO;
+    m_horizontal = 720;
+    m_vertical = 576;
+    m_audioChannelCount = UNKNOWN_CHANNEL_COUNT;
+    m_audioDataRate = 0;
+    m_audioSampleSize = 0;
+
+    m_audioMode = UNKNOWN_AUDIO_MODE;
+    m_aspectRatio = UNKNOWN_ASPECT_RATIO;
+    m_spuMode = EM8300_SPUMODE_OFF;
+
+    // configure device based on settings
+    ConfigureDevice();
+
+    // get bcs values from driver
+    if (ioctl(m_fdControl, EM8300_IOCTL_GETBCS, &m_bcs) < 0)
+    {
+	esyslog("dxr3: failed to get brightness/contrast/saturation: %m");
+    }
+    else
+    {
+	dsyslog("dxr3: intf: brightness=%d,contrast=%d,saturation=%d at init",
+		m_bcs.brightness, m_bcs.contrast, m_bcs.saturation);
+    }
+
+    PlayBlackFrame();
+    SetChannelCount(1);
+}
+
+// ==================================
+void cDxr3Interface::ReleaseDevices()
+{
+    if (m_fdControl > -1)
+	close(m_fdControl);
+    m_fdControl = -1;
+
+    if (m_fdVideo > -1)
+	close(m_fdVideo);
+    m_fdVideo = -1;
+
+    if (m_fdSpu > -1)
+	close(m_fdSpu);
+    m_fdSpu = -1;
+
+    if (m_fdAudio > -1)
+	close(m_fdAudio);
+    m_fdAudio = -1;
+
+    m_aspectRatio = UNKNOWN_ASPECT_RATIO;
+    m_audioMode = UNKNOWN_AUDIO_MODE;
+    m_ExternalReleased = true;
+    delete m_pClock;
+    m_pClock = NULL;
+}
+
 // external device access
 // ==================================
 //! release devices, so mplayer-plugin, for instance,
@@ -775,23 +786,8 @@ void cDxr3Interface::PlayAudioLpcmFrame(uint8_t* pBuf, int length)
 void cDxr3Interface::ExternalReleaseDevices()
 {
     Lock();
-
     if (!m_ExternalReleased)
-    {
-	if (m_fdControl > -1) close(m_fdControl);
-	if (m_fdVideo > -1) close(m_fdVideo);
-	if (m_fdSpu > -1) close(m_fdSpu);
-	if (m_fdAudio > -1) close(m_fdAudio);
-	m_fdControl = m_fdVideo = m_fdSpu = m_fdAudio = -1;
-	m_aspectRatio = UNKNOWN_ASPECT_RATIO;
-	m_audioMode = UNKNOWN_AUDIO_MODE;
-
-	m_ExternalReleased = true;
-
-	delete m_pClock;
-	m_pClock = 0;
-    }
-
+	ReleaseDevices();
     Unlock();
 }
 
@@ -1000,17 +996,17 @@ void cDxr3Interface::Resuscitation()
 {
     time_t startt = time(&startt);
     time_t endt = 0;
-    m_ExternalReleased = true;
 
     dsyslog("dxr3: resuscitation: device failure or user initiated reset");
 
-    UploadMicroCode();
+    ReleaseDevices();
+    Unlock();
+    ClaimDevices();
+    Lock();
 
-    //NonBlockingCloseOpen();
     m_ExternalReleased = false;
 
     endt = time(&endt);
-
     if (endt - startt > 4)
     {
 	esyslog("dxr3: fatal: reopening devices took too long");
@@ -1018,8 +1014,6 @@ void cDxr3Interface::Resuscitation()
     }
     dsyslog("dxr3: resuscitation: reopening devices took %ld seconds",
 	    endt - startt);
-
-    ConfigureDevice();
 }
 
 // ==================================

@@ -196,6 +196,8 @@ private:
     void UploadMicroCode();
     void ConfigureDevice();
     void ResampleVolume(short* pcmbuf, int size);
+    void ClaimDevices();
+    void ReleaseDevices();
     void Resuscitation();
 
 protected:

@@ -302,3 +302,5 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 2005-xx-xx: Version 0.2.5
 
 - sync default microcode location with em8300 0.15.2+ (Ville Skyttä)
+- improve device reset and error recovery, try to preserve aspect ratio and
+  audio mode etc (Luca Olivetti, Ville Skyttä)
