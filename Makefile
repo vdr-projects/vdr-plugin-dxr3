@@ -1,7 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.1.2.20 2005/11/22 10:55:55 scop Exp $
+# $Id: Makefile,v 1.1.2.21 2006/01/08 17:58:34 scop Exp $
 
 # The official name of this plugin.
 # This name will be used in the '-P...' option of VDR to load the plugin.
@@ -43,7 +43,7 @@ PACKAGE = $(shell echo vdr-$(ARCHIVE) | sed -e 's/cvs$$/cvs'`date +%Y%m%d`/)
 ### Includes and Defines (add further entries here):
 
 INCLUDES += -I$(VDRDIR)/include -I$(DVBDIR)/include -I$(FFMDIR) -I$(EM8300)
-LIBS     = -L$(FFMDIR)/libavcodec -lavcodec -ljpeg
+LIBS     = -L$(FFMDIR)/libavcodec -lavcodec
 DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"'
 DEFINES += -D_GNU_SOURCE
 

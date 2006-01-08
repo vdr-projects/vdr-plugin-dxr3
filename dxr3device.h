@@ -63,8 +63,6 @@ public:
 #endif
 
     // addition functions
-    virtual bool GrabImage(const char *FileName, bool Jpeg = true,
-			   int Quality = -1, int SizeX = -1, int SizeY = -1);
     virtual void SetVideoFormat(bool VideoFormat16_9);
     virtual void SetVolumeDevice(int Volume);
     virtual void SetAudioChannelDevice(int AudioChannel);
