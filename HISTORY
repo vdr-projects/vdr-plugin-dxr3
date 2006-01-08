@@ -306,3 +306,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
   audio mode etc (Luca Olivetti, Ville Skyttä)
 - remove image grab code, it's broken (crashes vdr) and would cause
   maintenance problems with various 1.3.x vdr versions (Ville Skyttä)
+
+2006-xx-xx: Version 0.2.6
+
+- [No changes yet]
