@@ -26,11 +26,6 @@
 #include "dxr3tools.h"
 #include "dxr3osd.h"
 
-extern "C"
-{
-#include <jpeglib.h>
-}
-
 // ==================================
 //! constructor
 cDxr3Device::cDxr3Device() : m_DemuxDevice(cDxr3Interface::Instance())
