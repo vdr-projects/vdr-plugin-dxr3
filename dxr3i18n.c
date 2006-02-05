@@ -47,6 +47,9 @@ const tI18nPhrase Phrases[] = {
 	"", // Eesti
 #if VDRVERSNUM > 10315
 	"", // Dansk
+#if VDRVERSNUM > 10341
+	"", // Czech
+#endif
 #endif
 #endif
     },
@@ -73,6 +76,9 @@ const tI18nPhrase Phrases[] = {
 	"", // Eesti
 #if VDRVERSNUM > 10315
 	"", // Dansk
+#if VDRVERSNUM > 10341
+	"", // Czech
+#endif
 #endif
 #endif
     },
@@ -99,6 +105,9 @@ const tI18nPhrase Phrases[] = {
 	"", // Eesti
 #if VDRVERSNUM > 10315
 	"", // Dansk
+#if VDRVERSNUM > 10341
+	"", // Czech
+#endif
 #endif
 #endif
     },
@@ -125,6 +134,9 @@ const tI18nPhrase Phrases[] = {
 	"", // Eesti
 #if VDRVERSNUM > 10315
 	"", // Dansk
+#if VDRVERSNUM > 10341
+	"", // Czech
+#endif
 #endif
 #endif
     },
@@ -151,6 +163,9 @@ const tI18nPhrase Phrases[] = {
 	"", // Eesti
 #if VDRVERSNUM > 10315
 	"", // Dansk
+#if VDRVERSNUM > 10341
+	"", // Czech
+#endif
 #endif
 #endif
     },
@@ -177,6 +192,9 @@ const tI18nPhrase Phrases[] = {
 	"", // Eesti
 #if VDRVERSNUM > 10315
 	"", // Dansk
+#if VDRVERSNUM > 10341
+	"", // Czech
+#endif
 #endif
 #endif
     },
@@ -203,6 +221,9 @@ const tI18nPhrase Phrases[] = {
 	"", // Eesti
 #if VDRVERSNUM > 10315
 	"", // Dansk
+#if VDRVERSNUM > 10341
+	"", // Czech
+#endif
 #endif
 #endif
     },
@@ -229,6 +250,9 @@ const tI18nPhrase Phrases[] = {
 	"", // Eesti
 #if VDRVERSNUM > 10315
 	"", // Dansk
+#if VDRVERSNUM > 10341
+	"", // Czech
+#endif
 #endif
 #endif
     },
@@ -255,6 +279,9 @@ const tI18nPhrase Phrases[] = {
 	"", // Eesti
 #if VDRVERSNUM > 10315
 	"", // Dansk
+#if VDRVERSNUM > 10341
+	"", // Czech
+#endif
 #endif
 #endif
     },
@@ -281,6 +308,9 @@ const tI18nPhrase Phrases[] = {
 	"", // Eesti
 #if VDRVERSNUM > 10315
 	"", // Dansk
+#if VDRVERSNUM > 10341
+	"", // Czech
+#endif
 #endif
 #endif
     },
@@ -307,6 +337,9 @@ const tI18nPhrase Phrases[] = {
 	"", // Eesti
 #if VDRVERSNUM > 10315
 	"", // Dansk
+#if VDRVERSNUM > 10341
+	"", // Czech
+#endif
 #endif
 #endif
     },
@@ -333,6 +366,9 @@ const tI18nPhrase Phrases[] = {
 	"", // Eesti
 #if VDRVERSNUM > 10315
 	"", // Dansk
+#if VDRVERSNUM > 10341
+	"", // Czech
+#endif
 #endif
 #endif
     },
@@ -359,6 +395,9 @@ const tI18nPhrase Phrases[] = {
 	"", // Eesti
 #if VDRVERSNUM > 10315
 	"", // Dansk
+#if VDRVERSNUM > 10341
+	"", // Czech
+#endif
 #endif
 #endif
     },
@@ -385,6 +424,9 @@ const tI18nPhrase Phrases[] = {
 	"", // Eesti
 #if VDRVERSNUM > 10315
 	"", // Dansk
+#if VDRVERSNUM > 10341
+	"", // Czech
+#endif
 #endif
 #endif
     },
@@ -411,6 +453,9 @@ const tI18nPhrase Phrases[] = {
 	"", // Eesti
 #if VDRVERSNUM > 10315
 	"", // Dansk
+#if VDRVERSNUM > 10341
+	"", // Czech
+#endif
 #endif
 #endif
     },
@@ -437,6 +482,9 @@ const tI18nPhrase Phrases[] = {
 	"", // Eesti
 #if VDRVERSNUM > 10315
 	"", // Dansk
+#if VDRVERSNUM > 10341
+	"", // Czech
+#endif
 #endif
 #endif
     },
@@ -463,6 +511,9 @@ const tI18nPhrase Phrases[] = {
 	"", // Eesti
 #if VDRVERSNUM > 10315
 	"", // Dansk
+#if VDRVERSNUM > 10341
+	"", // Czech
+#endif
 #endif
 #endif
     },
@@ -489,6 +540,9 @@ const tI18nPhrase Phrases[] = {
 	"", // Eesti
 #if VDRVERSNUM > 10315
 	"", // Dansk
+#if VDRVERSNUM > 10341
+	"", // Czech
+#endif
 #endif
 #endif
     },
@@ -515,6 +569,9 @@ const tI18nPhrase Phrases[] = {
 	"", // Eesti
 #if VDRVERSNUM > 10315
 	"", // Dansk
+#if VDRVERSNUM > 10341
+	"", // Czech
+#endif
 #endif
 #endif
     },
@@ -541,6 +598,9 @@ const tI18nPhrase Phrases[] = {
 	"", // Eesti
 #if VDRVERSNUM > 10315
 	"", // Dansk
+#if VDRVERSNUM > 10341
+	"", // Czech
+#endif
 #endif
 #endif
     },
@@ -567,6 +627,9 @@ const tI18nPhrase Phrases[] = {
 	"Peida valik peamenüüs",
 #if VDRVERSNUM > 10315
 	"", // Dansk
+#if VDRVERSNUM > 10341
+	"", // Czech
+#endif
 #endif
 #endif
     },
@@ -593,6 +656,9 @@ const tI18nPhrase Phrases[] = {
 	"", // Eesti
 #if VDRVERSNUM > 10315
 	"", // Dansk
+#if VDRVERSNUM > 10341
+	"", // Czech
+#endif
 #endif
 #endif
     },

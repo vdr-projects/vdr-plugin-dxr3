@@ -310,3 +310,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 2006-xx-xx: Version 0.2.6
 
 - clean up leftovers from the image grab code removal in 0.2.5 (Ville Skyttä)
+- add Czech i18n placeholders (Ville Skyttä)
