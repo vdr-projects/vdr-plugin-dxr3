@@ -273,7 +273,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
     //printf("aBuf size = %d\n", m_aBuf.Available());
     /*
     if (cDxr3ConfigData::Instance().GetAc3OutPut())
-	cDxr3AbsDevice::Instance().SetAudioDigitalAC3(); // !!! FIXME
+	cDxr3Interface::Instance().SetAudioDigitalAC3(); // !!! FIXME
     */
 
     if (m_pAudioThread->NeedResync() || m_pVideoThread->NeedResync())
@@ -305,7 +305,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
 	bPlaySuc = false;
 	/*
 	if (cDxr3ConfigData::Instance().GetAc3OutPut())
-	    cDxr3AbsDevice::Instance().SetAudioDigitalAC3(); // !!! FIXME
+	    cDxr3Interface::Instance().SetAudioDigitalAC3(); // !!! FIXME
 	*/
     }
 
