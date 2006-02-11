@@ -82,7 +82,7 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
 	cDxr3Interface::Instance().ExternalReopenDevices();
     }
 
-    // should this relay be here?
+    // should this really be here?
     m_Offset = 0;
     m_AC3Present = false;
     m_strBuf.erase(m_strBuf.begin(), m_strBuf.end());
