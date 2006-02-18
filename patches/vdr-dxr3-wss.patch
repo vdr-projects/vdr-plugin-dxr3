@@ -7,11 +7,11 @@ Note: you'll probably want to apply em8300-adv7170-wss.patch too
 Index: dxr3interface.c
 ===================================================================
 RCS file: /cvsroot/dxr3plugin/dxr3/dxr3interface.c,v
-retrieving revision 1.4.2.27
-diff -u -r1.4.2.27 dxr3interface.c
---- dxr3interface.c	12 Dec 2005 17:16:15 -0000	1.4.2.27
-+++ dxr3interface.c	12 Dec 2005 20:18:29 -0000
-@@ -410,20 +410,39 @@
+retrieving revision 1.4.2.28
+diff -u -r1.4.2.28 dxr3interface.c
+--- dxr3interface.c	18 Feb 2006 19:04:44 -0000	1.4.2.28
++++ dxr3interface.c	18 Feb 2006 19:51:06 -0000
+@@ -412,20 +412,39 @@
  void cDxr3Interface::SetAspectRatio(uint32_t ratio)
  {
      static int requestCounter = 0;
