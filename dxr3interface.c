@@ -96,11 +96,12 @@ void cDxr3Interface::SetAudioAnalog()
     {
 	int prevMode = m_audioMode;
 	m_audioMode = ioval = EM8300_AUDIOMODE_ANALOG;
+	isyslog("dxr3: setting analog audio mode");
 	if (ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &ioval) < 0)
 	{
 	    esyslog("dxr3: unable to set analog audio mode: %m");
 	}
-	if (prevMode ==	 EM8300_AUDIOMODE_DIGITALAC3)
+	if (prevMode ==	EM8300_AUDIOMODE_DIGITALAC3)
 	{
 	    ReOpenAudio();
 	}
@@ -120,7 +121,7 @@ void cDxr3Interface::SetAudioDigitalPCM()
     {
 	int prevMode = m_audioMode;
 	m_audioMode = ioval = EM8300_AUDIOMODE_DIGITALPCM;
-
+	isyslog("dxr3: setting digital PCM audio mode");
 	if (ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &ioval) < 0)
 	{
 	    esyslog("dxr3: unable to set digital PCM audio mode: %m");
@@ -146,6 +147,7 @@ void cDxr3Interface::SetAudioDigitalAC3()
 	if (!m_ExternalReleased && m_audioMode != EM8300_AUDIOMODE_DIGITALAC3)
 	{
 	    m_audioMode = ioval = EM8300_AUDIOMODE_DIGITALAC3;
+	    isyslog("dxr3: setting digital AC3 audio mode");
 	    if (ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &ioval) < 0)
 	    {
 		esyslog("dxr3: unable to set AC3 audio mode: %m");

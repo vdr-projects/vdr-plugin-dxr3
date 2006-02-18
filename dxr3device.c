@@ -110,19 +110,16 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
     {
 	if (cDxr3ConfigData::Instance().GetAc3OutPut() && m_CalledBySet)
 	{
-	    isyslog("dxr3: Setting AC3 audio mode");
 	    cDxr3Interface::Instance().SetAudioDigitalAC3(); // !!! FIXME
 	}
 	else
 	{
-	    isyslog("dxr3: Setting digital PCM audio mode");
 	    cDxr3Interface::Instance().SetAudioDigitalPCM();
 	    cDxr3ConfigData::Instance().SetAc3OutPut(0);
 	}
     }
     else
     {
-	isyslog("dxr3: Setting analog audio mode");
 	cDxr3Interface::Instance().SetAudioAnalog();
     }
 
