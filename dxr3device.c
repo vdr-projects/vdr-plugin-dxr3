@@ -256,16 +256,13 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 	    retLength = m_DemuxDevice.DemuxPes((const uint8_t*)m_strBuf.data(), m_strBuf.length());
 	}
     }
+    else if (m_PlayMode == pmAudioOnly)
+    {
+	retLength = m_DemuxDevice.DemuxAudioPes((const uint8_t*)Data, Length);
+    }
     else
     {
-	if (m_PlayMode == pmAudioOnly)
-	{
-	    retLength = m_DemuxDevice.DemuxAudioPes((const uint8_t*)Data, Length);
-	}
-	else
-	{
-	    retLength = m_DemuxDevice.DemuxPes((const uint8_t*)Data, Length);
-	}
+	retLength = m_DemuxDevice.DemuxPes((const uint8_t*)Data, Length);
     }
 
     Length -= retLength;
@@ -274,12 +271,9 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
     {
 	m_strBuf.erase(m_strBuf.length() - retLength, retLength);
     }
-    else
+    else if (Length)
     {
-	if (Length)
-	{
-	    m_strBuf.append((const char*)(Data + retLength), Length);
-	}
+	m_strBuf.append((const char*)(Data + retLength), Length);
     }
 
     return origLength;
@@ -326,14 +320,13 @@ void cDxr3Device::PlayAudio(const uchar *Data, int Length)
 	    retLength = m_DemuxDevice.DemuxPes((const uint8_t*)m_strBuf.data(), m_strBuf.length(), true);
 	}
     }
+    else if (m_PlayMode == pmAudioOnly)
+    {
+	retLength = m_DemuxDevice.DemuxAudioPes((const uint8_t*) Data, Length);
+    }
     else
     {
-	if (m_PlayMode == pmAudioOnly)
-	{
-	    retLength = m_DemuxDevice.DemuxAudioPes((const uint8_t*) Data, Length);
-	} else {
-	    retLength = m_DemuxDevice.DemuxPes((const uint8_t*)Data, Length, true);
-	}
+	retLength = m_DemuxDevice.DemuxPes((const uint8_t*)Data, Length, true);
     }
 
     Length -= retLength;
@@ -342,12 +335,9 @@ void cDxr3Device::PlayAudio(const uchar *Data, int Length)
     {
 	m_strBuf.erase(m_strBuf.length() - retLength, retLength);
     }
-    else
+    else if (Length)
     {
-	if (Length)
-	{
-	    m_strBuf.append((const char*)(Data + retLength), Length);
-	}
+	m_strBuf.append((const char*)(Data + retLength), Length);
     }
 
 #if VDRVERSNUM >= 10318
