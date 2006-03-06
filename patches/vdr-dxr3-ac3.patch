@@ -1,0 +1,452 @@
+AC3 patch for vdr-dxr3 by Agneau Egare and Ville Skyttä.
+Apply to: vdr-dxr3 plugin sources.
+Not part of the plugin yet because of some reported problems,
+especially in fast scenes.
+
+Index: dxr3.c
+===================================================================
+RCS file: /cvsroot/dxr3plugin/dxr3/dxr3.c,v
+retrieving revision 1.1.2.22
+diff -u -r1.1.2.22 dxr3.c
+--- dxr3.c	8 Jan 2006 18:03:28 -0000	1.1.2.22
++++ dxr3.c	19 Feb 2006 10:42:16 -0000
+@@ -45,20 +45,12 @@
+ 
+ 	case DXR3_ANALOG_OUT:
+ 	    cDxr3ConfigData::Instance().SetUseDigitalOut(0);
+-	    cDxr3ConfigData::Instance().SetAc3OutPut(0);
+ 	    if (cDxr3Device::InstanceP())
+ 		cDxr3Device::InstanceP()->Reset();
+ 	    break;
+ 
+ 	case DXR3_DIGITAL_OUT:
+ 	    cDxr3ConfigData::Instance().SetUseDigitalOut(1);
+-	    cDxr3ConfigData::Instance().SetAc3OutPut(0);
+-	    if (cDxr3Device::InstanceP())
+-		cDxr3Device::InstanceP()->Reset();
+-	    break;
+-
+-	case DXR3_AC3_OUT:
+-	    cDxr3ConfigData::Instance().SetAc3OutPut(!cDxr3ConfigData::Instance().GetAc3OutPut());
+ 	    if (cDxr3Device::InstanceP())
+ 		cDxr3Device::InstanceP()->Reset();
+ 	    break;
+Index: dxr3.h
+===================================================================
+RCS file: /cvsroot/dxr3plugin/dxr3/dxr3.h,v
+retrieving revision 1.1.2.9
+diff -u -r1.1.2.9 dxr3.h
+--- dxr3.h	1 Aug 2005 17:45:33 -0000	1.1.2.9
++++ dxr3.h	19 Feb 2006 10:42:16 -0000
+@@ -29,8 +29,7 @@
+     DXR3_RESET_HARDWARE,
+     DXR3_FORCE_LETTER_BOX,
+     DXR3_DIGITAL_OUT,
+-    DXR3_ANALOG_OUT,
+-    DXR3_AC3_OUT
++    DXR3_ANALOG_OUT
+ };
+ 
+ // ==================================
+@@ -68,22 +67,6 @@
+ 	else
+ 	    Add(new cDxr3OsdItem(hk(tr("Switch to digital audio output")),
+ 				 DXR3_DIGITAL_OUT));
+-	/*
+-	if (cDxr3ConfigData::Instance().GetUseDigitalOut())
+-	{
+-	    Add(new cDxr3OsdItem(hk("Analog output"), DXR3_ANALOG_OUT));
+-
+-	    if (cDxr3ConfigData::Instance().GetAc3OutPut())
+-		Add(new cDxr3OsdItem(hk(tr("AC3 output off")), DXR3_AC3_OUT));
+-	    else if (cDxr3Interface::Instance().IsAc3Present())
+-		Add(new cDxr3OsdItem(hk(tr("AC3 output on")), DXR3_AC3_OUT));
+-	}
+-	else
+-	{
+-	    Add(new cDxr3OsdItem(hk(tr("Switch to digital audio output")),
+-				 DXR3_DIGITAL_OUT));
+-	}
+-	*/
+     }
+ };
+ 
+Index: dxr3configdata.c
+===================================================================
+RCS file: /cvsroot/dxr3plugin/dxr3/dxr3configdata.c,v
+retrieving revision 1.4.2.10
+diff -u -r1.4.2.10 dxr3configdata.c
+--- dxr3configdata.c	2 Aug 2005 11:22:08 -0000	1.4.2.10
++++ dxr3configdata.c	19 Feb 2006 10:42:16 -0000
+@@ -27,7 +27,6 @@
+ cDxr3ConfigData::cDxr3ConfigData()
+ {
+     m_digitaloutput = 0;
+-    m_ac3output = 0;
+     m_card = 0;
+     m_forceletterbox = 0;
+     m_videomode = PAL;
+Index: dxr3configdata.h
+===================================================================
+RCS file: /cvsroot/dxr3plugin/dxr3/dxr3configdata.h,v
+retrieving revision 1.5.2.10
+diff -u -r1.5.2.10 dxr3configdata.h
+--- dxr3configdata.h	2 Aug 2005 11:22:08 -0000	1.5.2.10
++++ dxr3configdata.h	19 Feb 2006 10:42:16 -0000
+@@ -78,14 +78,6 @@
+     {
+ 	return m_forceletterbox = value;
+     }
+-    int GetAc3OutPut() const
+-    {
+-	return m_ac3output;
+-    }
+-    int SetAc3OutPut(int value)
+-    {
+-	return m_ac3output = value;
+-    }
+ 
+     eVideoMode GetVideoMode() const
+     {
+@@ -152,7 +144,6 @@
+     eMenuMode m_menumode;
+ 
+     int m_digitaloutput;
+-    int m_ac3output;
+     int m_card;
+     int m_forceletterbox;
+     int m_brightness;
+Index: dxr3demuxdevice.c
+===================================================================
+RCS file: /cvsroot/dxr3plugin/dxr3/dxr3demuxdevice.c,v
+retrieving revision 1.1.2.14
+diff -u -r1.1.2.14 dxr3demuxdevice.c
+--- dxr3demuxdevice.c	11 Feb 2006 10:49:08 -0000	1.1.2.14
++++ dxr3demuxdevice.c	19 Feb 2006 10:42:16 -0000
+@@ -272,7 +272,7 @@
+     //printf("vBuf size = %d\n", m_vBuf.Available());
+     //printf("aBuf size = %d\n", m_aBuf.Available());
+     /*
+-    if (cDxr3ConfigData::Instance().GetAc3OutPut())
++    if (cDxr3Interface::Instance().IsAudioModeAC3())
+ 	cDxr3Interface::Instance().SetAudioDigitalAC3(); // !!! FIXME
+     */
+ 
+@@ -303,10 +303,6 @@
+ 	aPts = 0;
+ 	vPts = 0;
+ 	bPlaySuc = false;
+-	/*
+-	if (cDxr3ConfigData::Instance().GetAc3OutPut())
+-	    cDxr3Interface::Instance().SetAudioDigitalAC3(); // !!! FIXME
+-	*/
+     }
+ 
+     // find start code
+@@ -452,7 +448,7 @@
+ 	    }
+ 	    else if (pesFrame.GetPesDataType() == cDxr3PesFrame::PES_AUDIO_DATA
+ 		     && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
+-		     && !cDxr3ConfigData::Instance().GetAc3OutPut())
++		     && !cDxr3Interface::Instance().IsAudioModeAC3())
+ 	    {
+ 		if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
+ 		    m_synchState == DXR3_DEMUX_SYNCHED)
+@@ -515,7 +511,7 @@
+ 	    }
+ 	    else if (pesFrame.GetPesDataType() == cDxr3PesFrame::PES_PRIVATE_DATA
+ 		     && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
+-		     && !cDxr3ConfigData::Instance().GetAc3OutPut()
++		     && !cDxr3Interface::Instance().IsAudioModeAC3()
+ 		     && !bAc3Dts)
+ 	    {
+ 		if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
+@@ -564,7 +560,7 @@
+ 	    }
+ 	    else if (pesFrame.GetPesDataType() == cDxr3PesFrame::PES_PRIVATE_DATA
+ 		     && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
+-		     && cDxr3ConfigData::Instance().GetAc3OutPut()
++		     && cDxr3Interface::Instance().IsAudioModeAC3()
+ 		     && bAc3Dts)
+ 	    {
+ 		if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
+Index: dxr3device.c
+===================================================================
+RCS file: /cvsroot/dxr3plugin/dxr3/dxr3device.c,v
+retrieving revision 1.2.2.30
+diff -u -r1.2.2.30 dxr3device.c
+--- dxr3device.c	19 Feb 2006 10:38:54 -0000	1.2.2.30
++++ dxr3device.c	19 Feb 2006 10:42:16 -0000
+@@ -33,7 +33,6 @@
+     m_Offset = 0;
+     m_strBuf.erase(m_strBuf.begin(), m_strBuf.end());
+     m_spuDecoder = NULL;
+-    m_AC3Present = false;
+     m_CalledBySet = false;
+ }
+ 
+@@ -84,7 +83,6 @@
+ 
+     // should this really be here?
+     m_Offset = 0;
+-    m_AC3Present = false;
+     m_strBuf.erase(m_strBuf.begin(), m_strBuf.end());
+ 
+     if (PlayMode == pmAudioOnlyBlack)
+@@ -106,17 +104,10 @@
+ 	m_DemuxDevice.Stop();
+     }
+ 
++    // TODO: what about AC3???
+     if (cDxr3ConfigData::Instance().GetUseDigitalOut())
+     {
+-	if (cDxr3ConfigData::Instance().GetAc3OutPut() && m_CalledBySet)
+-	{
+-	    cDxr3Interface::Instance().SetAudioDigitalAC3(); // !!! FIXME
+-	}
+-	else
+-	{
+-	    cDxr3Interface::Instance().SetAudioDigitalPCM();
+-	    cDxr3ConfigData::Instance().SetAc3OutPut(0);
+-	}
++	cDxr3Interface::Instance().SetAudioDigitalPCM();
+     }
+     else
+     {
+@@ -284,19 +275,26 @@
+ #if VDRVERSNUM >= 10318
+ #if VDRVERSNUM >= 10342
+ int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
++{
+ #else
+ int cDxr3Device::PlayAudio(const uchar *Data, int Length)
++{
++    uchar Id = 0;
+ #endif
+ #else
+ void cDxr3Device::PlayAudio(const uchar *Data, int Length)
+-#endif
+ {
++    uchar Id = 0;
++#endif
+     int retLength = 0;
+ #if VDRVERSNUM >= 10318
+     int origLength = Length;
+ #endif
+ 
+-    m_AC3Present = true;
++    bool isAc3 = ((Id & 0xF0) == 0x80) || Id == 0xbd;
++    
++    if (isAc3 && !cDxr3Interface::Instance().IsAudioModeAC3())
++	cDxr3Interface::Instance().SetAudioDigitalAC3();
+ 
+     if ((m_DemuxDevice.GetDemuxMode() == DXR3_DEMUX_TRICK_MODE &&
+ 	 m_DemuxDevice.GetTrickState() == DXR3_FREEZE) ||
+@@ -317,7 +315,7 @@
+ 	{
+ 	    retLength = m_DemuxDevice.DemuxAudioPes((const uint8_t*)m_strBuf.data(), m_strBuf.length());
+ 	} else {
+-	    retLength = m_DemuxDevice.DemuxPes((const uint8_t*)m_strBuf.data(), m_strBuf.length(), true);
++	    retLength = m_DemuxDevice.DemuxPes((const uint8_t*)m_strBuf.data(), m_strBuf.length(), isAc3);
+ 	}
+     }
+     else if (m_PlayMode == pmAudioOnly)
+@@ -326,7 +324,7 @@
+     }
+     else
+     {
+-	retLength = m_DemuxDevice.DemuxPes((const uint8_t*)Data, Length, true);
++	retLength = m_DemuxDevice.DemuxPes((const uint8_t*)Data, Length, isAc3);
+     }
+ 
+     Length -= retLength;
+Index: dxr3device.h
+===================================================================
+RCS file: /cvsroot/dxr3plugin/dxr3/dxr3device.h,v
+retrieving revision 1.1.2.16
+diff -u -r1.1.2.16 dxr3device.h
+--- dxr3device.h	5 Feb 2006 17:32:13 -0000	1.1.2.16
++++ dxr3device.h	19 Feb 2006 10:42:16 -0000
+@@ -86,7 +86,6 @@
+ protected:
+     ePlayMode m_PlayMode;
+     cDxr3DemuxDevice m_DemuxDevice;
+-    bool m_AC3Present;
+     bool m_CalledBySet;
+     std::string m_strBuf;
+     int m_Offset;
+Index: dxr3i18n.c
+===================================================================
+RCS file: /cvsroot/dxr3plugin/dxr3/dxr3i18n.c,v
+retrieving revision 1.4.2.14
+diff -u -r1.4.2.14 dxr3i18n.c
+--- dxr3i18n.c	5 Feb 2006 16:30:43 -0000	1.4.2.14
++++ dxr3i18n.c	19 Feb 2006 10:42:16 -0000
+@@ -373,64 +373,6 @@
+ #endif
+     },
+     {
+-	"AC3 output on",
+-	"AC3 Ausgabe Ein",
+-	"", // Slovenski
+-	"Attiva uscita AC3",
+-	"", // Nederlands
+-	"", // Português
+-	"", // Français
+-	"", // Norsk
+-	"AC3-ulostulo päälle",
+-	"", // Polski
+-	"Activa salida AC3",
+-	"", // ÅëëçíéêÜ (Greek)
+-	"", // Svenska
+-	"", // Românã
+-	"", // Magyar
+-	"Activa sortida AC3",
+-	"", // ÀãááÚØÙ (Russian)
+-	"", // Hrvatski
+-#if VDRVERSNUM > 10312
+-	"", // Eesti
+-#if VDRVERSNUM > 10315
+-	"", // Dansk
+-#if VDRVERSNUM > 10341
+-	"", // Czech
+-#endif
+-#endif
+-#endif
+-    },
+-    {
+-	"AC3 output off",
+-	"AC3 Ausgabe Aus",
+-	"", // Slovenski
+-	"Disattiva uscita AC3",
+-	"", // Nederlands
+-	"", // Português
+-	"", // Français
+-	"", // Norsk
+-	"AC3-ulostulo pois",
+-	"", // Polski
+-	"Desactiva salida AC3",
+-	"", // ÅëëçíéêÜ (Greek)
+-	"", // Svenska
+-	"", // Românã
+-	"", // Magyar
+-	"Desactiva sortida AC3",
+-	"", // ÀãááÚØÙ (Russian)
+-	"", // Hrvatski
+-#if VDRVERSNUM > 10312
+-	"", // Eesti
+-#if VDRVERSNUM > 10315
+-	"", // Dansk
+-#if VDRVERSNUM > 10341
+-	"", // Czech
+-#endif
+-#endif
+-#endif
+-    },
+-    {
+ 	"Switch to digital audio output",
+ 	"Digitaler Ausgang",
+ 	"", // Slovenski
+Index: dxr3interface.c
+===================================================================
+RCS file: /cvsroot/dxr3plugin/dxr3/dxr3interface.c,v
+retrieving revision 1.4.2.28
+diff -u -r1.4.2.28 dxr3interface.c
+--- dxr3interface.c	18 Feb 2006 19:04:44 -0000	1.4.2.28
++++ dxr3interface.c	19 Feb 2006 10:42:17 -0000
+@@ -139,26 +139,36 @@
+ //! set audio output to digital ac3
+ void cDxr3Interface::SetAudioDigitalAC3()
+ {
+-    if (m_audioMode != EM8300_AUDIOMODE_DIGITALAC3)
+-    {
+-	int ioval = 0;
+-	Lock();
++    int ioval = 0;
++    Lock();
+ 
+-	if (!m_ExternalReleased && m_audioMode != EM8300_AUDIOMODE_DIGITALAC3)
++    if (!m_ExternalReleased && m_audioMode != EM8300_AUDIOMODE_DIGITALAC3)
++    {
++	m_audioMode = ioval = EM8300_AUDIOMODE_DIGITALAC3;
++	isyslog("dxr3: setting digital AC3 audio mode");
++	if (ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &ioval) < 0)
+ 	{
+-	    m_audioMode = ioval = EM8300_AUDIOMODE_DIGITALAC3;
+-	    isyslog("dxr3: setting digital AC3 audio mode");
+-	    if (ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &ioval) < 0)
+-	    {
+-		esyslog("dxr3: unable to set AC3 audio mode: %m");
+-	    }
+-	    ReOpenAudio();
++	    esyslog("dxr3: unable to set AC3 audio mode: %m");
+ 	}
+-
+-	Unlock();
++	ReOpenAudio();
+     }
++
++    Unlock();
+ }
+ 
++
++// =================================
++//! get current audio mode
++int cDxr3Interface::GetAudioMode()
++{
++    int audioMode;
++    Lock();
++    ioctl(m_fdControl, EM8300_IOCTL_GET_AUDIOMODE, &audioMode);
++    Unlock();
++    return audioMode;
++}
++
++
+ // ==================================
+ //! set audio speed
+ void cDxr3Interface::SetAudioSpeed(uint32_t speed)
+@@ -591,7 +601,7 @@
+ 
+ 	if (!m_ExternalReleased)
+ 	{
+-	    if (!cDxr3ConfigData::Instance().GetAc3OutPut())
++	    if (!cDxr3Interface::Instance().IsAudioModeAC3())
+ 		ResampleVolume((short*)pFrame->GetData(), pFrame->GetCount());
+ 
+ 	    written = write(m_fdAudio, pFrame->GetData(), pFrame->GetCount());
+@@ -619,7 +629,7 @@
+ 
+     if (!m_ExternalReleased)
+     {
+-	if (!cDxr3ConfigData::Instance().GetAc3OutPut())
++	if (!cDxr3Interface::Instance().IsAudioModeAC3())
+ 	    ResampleVolume((short*)pBuf, length);
+ 
+ 	if ((written = write(m_fdAudio, pBuf, length)) < 0)
+Index: dxr3interface.h
+===================================================================
+RCS file: /cvsroot/dxr3plugin/dxr3/dxr3interface.h,v
+retrieving revision 1.2.2.17
+diff -u -r1.2.2.17 dxr3interface.h
+--- dxr3interface.h	12 Dec 2005 17:16:15 -0000	1.2.2.17
++++ dxr3interface.h	19 Feb 2006 10:42:17 -0000
+@@ -57,6 +57,19 @@
+     void SetAudioAnalog();
+     void SetAudioDigitalPCM();
+     void SetAudioDigitalAC3();
++    int GetAudioMode();
++    int IsAudioModeAnalog()
++    {
++	return GetAudioMode() == EM8300_AUDIOMODE_ANALOG;
++    }
++    int IsAudioModePCM()
++    {
++	return GetAudioMode() == EM8300_AUDIOMODE_DIGITALPCM;
++    }
++    int IsAudioModeAC3()
++    {
++	return GetAudioMode() == EM8300_AUDIOMODE_DIGITALAC3;
++    }
+     void SetVolume(int volume)
+     {
+ 	m_volume = volume;
