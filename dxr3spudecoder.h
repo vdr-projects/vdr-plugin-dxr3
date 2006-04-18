@@ -108,11 +108,7 @@ public:
 		      uint32_t palette);
     void clearHighlight();
     void Empty();
-#if VDRVERSNUM >= 10318
     void processSPU(uint32_t pts, uint8_t * buf, bool AllowedShow);
-#else
-    void processSPU(uint32_t pts, uint8_t * buf);
-#endif
 
     void Hide();
     void Draw();

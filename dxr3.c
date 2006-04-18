@@ -3,7 +3,7 @@
  *
  * See the README file for copyright information and how to reach the author.
  *
- * $Id: dxr3.c,v 1.1.2.22 2006/01/08 18:03:28 scop Exp $
+ * $Id: dxr3.c,v 1.1.2.23 2006/04/18 21:33:18 scop Exp $
  *
  */
 
@@ -19,8 +19,8 @@ static const char *VERSION        = "0.2.6-cvs";
 static const char *DESCRIPTION    = "Hardware MPEG decoder";
 static const char *MAINMENUENTRY  = "DXR3";
 
-#if VDRVERSNUM && VDRVERSNUM < 10311
-#error "This version of the DXR3 plugin needs VDR version >= 1.3.11"
+#if VDRVERSNUM && VDRVERSNUM < 10347
+#error "This version of the DXR3 plugin needs VDR version >= 1.3.47"
 #endif
 
 #define DXR3_MAX_CARDS 4

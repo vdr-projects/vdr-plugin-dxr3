@@ -162,15 +162,7 @@ cDxr3SyncBuffer::~cDxr3SyncBuffer()
 // ==================================
 int cDxr3SyncBuffer::Available(void)
 {
-    int ret = 0;
-#if VDRVERSNUM < 10313
-    Lock();
-#endif
-    ret = m_count;
-#if VDRVERSNUM < 10313
-    Unlock();
-#endif
-    return ret;
+    return m_count;
 }
 
 // ==================================
@@ -251,9 +243,6 @@ cFixedLengthFrame* cDxr3SyncBuffer::Push(const uint8_t* pStart, int length, uint
 	    }
 	}
 
-#if VDRVERSNUM < 10313
-	Lock();
-#endif
 	if (pts == m_lastPts)
 	{
 	    pts = 0;
@@ -293,9 +282,6 @@ cFixedLengthFrame* cDxr3SyncBuffer::Push(const uint8_t* pStart, int length, uint
 		m_bWaitPts = false;
 	    }
 	}
-#if VDRVERSNUM < 10313
-	Unlock();
-#endif
 	break;
     }
 
@@ -305,9 +291,6 @@ cFixedLengthFrame* cDxr3SyncBuffer::Push(const uint8_t* pStart, int length, uint
 // ==================================
 void cDxr3SyncBuffer::Pop(void)
 {
-#if VDRVERSNUM < 10313
-    Lock();
-#endif
     if (m_count)
     {
 	uint32_t nextPts = 0;
@@ -331,9 +314,6 @@ void cDxr3SyncBuffer::Pop(void)
 	}
     }
     EnablePut();
-#if VDRVERSNUM < 10313
-    Unlock();
-#endif
 }
 
 // ==================================
@@ -350,16 +330,10 @@ cFixedLengthFrame* cDxr3SyncBuffer::Get(void)
 	    WaitForGet();
 	}
 
-#if VDRVERSNUM < 10313
-	Lock();
-#endif
 	if (m_nextFree != m_next)
 	{
 	    pRet = &m_pBuffer[m_next];
 	}
-#if VDRVERSNUM < 10313
-	Unlock();
-#endif
     }
     else
     {
@@ -372,9 +346,6 @@ cFixedLengthFrame* cDxr3SyncBuffer::Get(void)
 // ==================================
 void cDxr3SyncBuffer::Clear(void)
 {
-#if VDRVERSNUM < 10313
-    Lock();
-#endif
     m_next = 0;
     m_nextFree = 0;
     m_count = 0;
@@ -389,9 +360,6 @@ void cDxr3SyncBuffer::Clear(void)
     }
     cFixedLengthFrame::Clear();
     cDxr3NextPts::Instance().Clear();
-#if VDRVERSNUM < 10313
-    Unlock();
-#endif
 }
 
 // ==================================
@@ -401,13 +369,7 @@ void cDxr3SyncBuffer::WaitForSysClock(uint32_t pts, uint32_t delta)
     m_waitDelta = delta;
     if (!m_bPutBlock)
     {
-#if VDRVERSNUM < 10313
-	Lock();
-#endif
 	m_bWaitPts = true;
-#if VDRVERSNUM < 10313
-	Unlock();
-#endif
 	m_bGetBlock = true;
 	ReceiverStopped();
 	WaitForGet();
@@ -447,9 +409,6 @@ void cDxr3SyncBuffer::Start(void)
 // ==================================
 void cDxr3SyncBuffer::WakeUp(void)
 {
-#if VDRVERSNUM < 10313
-    Lock();
-#endif
     if (m_bStartReceiver == true)
     {
 	if (!m_bWaitPts)
@@ -466,9 +425,6 @@ void cDxr3SyncBuffer::WakeUp(void)
 	    }
 	}
     }
-#if VDRVERSNUM < 10313
-    Unlock();
-#endif
 }
 
 // ==================================

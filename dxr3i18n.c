@@ -43,15 +43,9 @@ const tI18nPhrase Phrases[] = {
 	"DXR3",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
-#if VDRVERSNUM > 10312
 	"", // Eesti
-#if VDRVERSNUM > 10315
 	"", // Dansk
-#if VDRVERSNUM > 10341
 	"", // Czech
-#endif
-#endif
-#endif
     },
     {
 	"Hardware MPEG decoder",
@@ -72,15 +66,9 @@ const tI18nPhrase Phrases[] = {
 	"Descodificador MPEG Hardware",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
-#if VDRVERSNUM > 10312
 	"", // Eesti
-#if VDRVERSNUM > 10315
 	"", // Dansk
-#if VDRVERSNUM > 10341
 	"", // Czech
-#endif
-#endif
-#endif
     },
     {
 	"DXR3 Adjustment",
@@ -101,15 +89,9 @@ const tI18nPhrase Phrases[] = {
 	"Opcions DXR3",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
-#if VDRVERSNUM > 10312
 	"", // Eesti
-#if VDRVERSNUM > 10315
 	"", // Dansk
-#if VDRVERSNUM > 10341
 	"", // Czech
-#endif
-#endif
-#endif
     },
     {
 	"Digital audio output",
@@ -130,15 +112,9 @@ const tI18nPhrase Phrases[] = {
 	"Sortida àudio digital",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
-#if VDRVERSNUM > 10312
 	"", // Eesti
-#if VDRVERSNUM > 10315
 	"", // Dansk
-#if VDRVERSNUM > 10341
 	"", // Czech
-#endif
-#endif
-#endif
     },
     {
 	"Card number",
@@ -159,15 +135,9 @@ const tI18nPhrase Phrases[] = {
 	"Targeta",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
-#if VDRVERSNUM > 10312
 	"", // Eesti
-#if VDRVERSNUM > 10315
 	"", // Dansk
-#if VDRVERSNUM > 10341
 	"", // Czech
-#endif
-#endif
-#endif
     },
     {
 	"Video mode",
@@ -188,15 +158,9 @@ const tI18nPhrase Phrases[] = {
 	"Modalitat vídeo",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
-#if VDRVERSNUM > 10312
 	"", // Eesti
-#if VDRVERSNUM > 10315
 	"", // Dansk
-#if VDRVERSNUM > 10341
 	"", // Czech
-#endif
-#endif
-#endif
     },
     {
 	"PAL",
@@ -217,15 +181,9 @@ const tI18nPhrase Phrases[] = {
 	"PAL",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
-#if VDRVERSNUM > 10312
 	"", // Eesti
-#if VDRVERSNUM > 10315
 	"", // Dansk
-#if VDRVERSNUM > 10341
 	"", // Czech
-#endif
-#endif
-#endif
     },
     {
 	"PAL60",
@@ -246,15 +204,9 @@ const tI18nPhrase Phrases[] = {
 	"PAL60",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
-#if VDRVERSNUM > 10312
 	"", // Eesti
-#if VDRVERSNUM > 10315
 	"", // Dansk
-#if VDRVERSNUM > 10341
 	"", // Czech
-#endif
-#endif
-#endif
     },
     {
 	"NTSC",
@@ -275,15 +227,9 @@ const tI18nPhrase Phrases[] = {
 	"NTSC",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
-#if VDRVERSNUM > 10312
 	"", // Eesti
-#if VDRVERSNUM > 10315
 	"", // Dansk
-#if VDRVERSNUM > 10341
 	"", // Czech
-#endif
-#endif
-#endif
     },
     {
 	"Reset DXR3 hardware",
@@ -304,15 +250,9 @@ const tI18nPhrase Phrases[] = {
 	"Reset hardware DXR3",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
-#if VDRVERSNUM > 10312
 	"", // Eesti
-#if VDRVERSNUM > 10315
 	"", // Dansk
-#if VDRVERSNUM > 10341
 	"", // Czech
-#endif
-#endif
-#endif
     },
     {
 	"Toggle force letterbox",
@@ -333,15 +273,9 @@ const tI18nPhrase Phrases[] = {
 	"Commuta modalitat letterbox forçada",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
-#if VDRVERSNUM > 10312
 	"", // Eesti
-#if VDRVERSNUM > 10315
 	"", // Dansk
-#if VDRVERSNUM > 10341
 	"", // Czech
-#endif
-#endif
-#endif
     },
     {
 	"Switch to analog audio output",
@@ -362,15 +296,9 @@ const tI18nPhrase Phrases[] = {
 	"Selecciona sortida àudio analògica",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
-#if VDRVERSNUM > 10312
 	"", // Eesti
-#if VDRVERSNUM > 10315
 	"", // Dansk
-#if VDRVERSNUM > 10341
 	"", // Czech
-#endif
-#endif
-#endif
     },
     {
 	"AC3 output on",
@@ -391,15 +319,9 @@ const tI18nPhrase Phrases[] = {
 	"Activa sortida AC3",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
-#if VDRVERSNUM > 10312
 	"", // Eesti
-#if VDRVERSNUM > 10315
 	"", // Dansk
-#if VDRVERSNUM > 10341
 	"", // Czech
-#endif
-#endif
-#endif
     },
     {
 	"AC3 output off",
@@ -420,15 +342,9 @@ const tI18nPhrase Phrases[] = {
 	"Desactiva sortida AC3",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
-#if VDRVERSNUM > 10312
 	"", // Eesti
-#if VDRVERSNUM > 10315
 	"", // Dansk
-#if VDRVERSNUM > 10341
 	"", // Czech
-#endif
-#endif
-#endif
     },
     {
 	"Switch to digital audio output",
@@ -449,15 +365,9 @@ const tI18nPhrase Phrases[] = {
 	"Selecciona sortida àudio digital",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
-#if VDRVERSNUM > 10312
 	"", // Eesti
-#if VDRVERSNUM > 10315
 	"", // Dansk
-#if VDRVERSNUM > 10341
 	"", // Czech
-#endif
-#endif
-#endif
     },
     {
 	"DXR3: releasing devices",
@@ -478,15 +388,9 @@ const tI18nPhrase Phrases[] = {
 	"DXR3: alliberant dispositiu",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
-#if VDRVERSNUM > 10312
 	"", // Eesti
-#if VDRVERSNUM > 10315
 	"", // Dansk
-#if VDRVERSNUM > 10341
 	"", // Czech
-#endif
-#endif
-#endif
     },
     {
 	"Color settings",
@@ -507,15 +411,9 @@ const tI18nPhrase Phrases[] = {
 	"Ajustaments color",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
-#if VDRVERSNUM > 10312
 	"", // Eesti
-#if VDRVERSNUM > 10315
 	"", // Dansk
-#if VDRVERSNUM > 10341
 	"", // Czech
-#endif
-#endif
-#endif
     },
     {
 	"Brightness",
@@ -536,15 +434,9 @@ const tI18nPhrase Phrases[] = {
 	"Lluminositat",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
-#if VDRVERSNUM > 10312
 	"", // Eesti
-#if VDRVERSNUM > 10315
 	"", // Dansk
-#if VDRVERSNUM > 10341
 	"", // Czech
-#endif
-#endif
-#endif
     },
     {
 	"Contrast",
@@ -565,15 +457,9 @@ const tI18nPhrase Phrases[] = {
 	"Contrast",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
-#if VDRVERSNUM > 10312
 	"", // Eesti
-#if VDRVERSNUM > 10315
 	"", // Dansk
-#if VDRVERSNUM > 10341
 	"", // Czech
-#endif
-#endif
-#endif
     },
     {
 	"Saturation",
@@ -594,15 +480,9 @@ const tI18nPhrase Phrases[] = {
 	"Saturació",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
-#if VDRVERSNUM > 10312
 	"", // Eesti
-#if VDRVERSNUM > 10315
 	"", // Dansk
-#if VDRVERSNUM > 10341
 	"", // Czech
-#endif
-#endif
-#endif
     },
     {
 	"Hide main menu entry",
@@ -623,15 +503,9 @@ const tI18nPhrase Phrases[] = {
 	"Amaga entrada menú",
 	"ÁÚàëâì ÚÞÜÐÝÔã Ò ÓÛÐÒÝÞÜ ÜÕÝî",
 	"", // Hrvatski
-#if VDRVERSNUM > 10312
 	"Peida valik peamenüüs",
-#if VDRVERSNUM > 10315
 	"", // Dansk
-#if VDRVERSNUM > 10341
 	"", // Czech
-#endif
-#endif
-#endif
     },
     {
 	"OSD flush rate (ms)",
@@ -652,15 +526,9 @@ const tI18nPhrase Phrases[] = {
 	"Temps mínim refresc OSD (ms)",
 	"", // ÀãááÚØÙ (Russian)
 	"", // Hrvatski
-#if VDRVERSNUM > 10312
 	"", // Eesti
-#if VDRVERSNUM > 10315
 	"", // Dansk
-#if VDRVERSNUM > 10341
 	"", // Czech
-#endif
-#endif
-#endif
     },
     { NULL }
 };

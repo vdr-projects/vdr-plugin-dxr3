@@ -56,15 +56,7 @@ public:
     virtual void StillPicture(const uchar *Data, int Length);
     virtual bool Poll(cPoller &Poller, int TimeoutMs = 0);
     virtual int PlayVideo(const uchar *Data, int Length);
-#if VDRVERSNUM >= 10318
-#if VDRVERSNUM >= 10342
     virtual int PlayAudio(const uchar *Data, int Length, uchar Id);
-#else
-    virtual int PlayAudio(const uchar *Data, int Length);
-#endif
-#else
-    virtual void PlayAudio(const uchar *Data, int Length);
-#endif
 
     // addition functions
     virtual void SetVideoFormat(bool VideoFormat16_9);

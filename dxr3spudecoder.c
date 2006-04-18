@@ -274,11 +274,7 @@ cDxr3SpuDecoder::~cDxr3SpuDecoder()
 
 // ==================================
 // ! send spu data to dxr3
-#if VDRVERSNUM >= 10318
 void cDxr3SpuDecoder::processSPU(uint32_t pts, uint8_t * buf, bool AllowedShow)
-#else
-void cDxr3SpuDecoder::processSPU(uint32_t pts, uint8_t * buf)
-#endif
 {
     setTime(pts);
     dsyslog("dxr3: spudec push: pts=%d", pts);
@@ -293,9 +289,7 @@ void cDxr3SpuDecoder::processSPU(uint32_t pts, uint8_t * buf)
     prev_DCSQ_offset = 0;
 
     clean = true;
-#if VDRVERSNUM >= 10318
     allowedShow = AllowedShow;
-#endif
 }
 
 // ==================================

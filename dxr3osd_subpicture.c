@@ -37,12 +37,8 @@ cDxr3SubpictureOsd::cDxr3SubpictureOsd(int Left, int Top) : cOsd(Left, Top)
 {
     shown = false;
     Palette = new cPalette(4);
-#if VDRVERSNUM >= 10318
     last = new cTimeMs();
     last->Set(-cDxr3ConfigData::Instance().GetOsdFlushRate());
-#else
-    last = time_ms() - cDxr3ConfigData::Instance().GetOsdFlushRate();
-#endif
     Spu = &cSPUEncoder::Instance();
 
     //Clears the OSD screen image
@@ -55,9 +51,7 @@ cDxr3SubpictureOsd::~cDxr3SubpictureOsd()
     //Remove the OSD from the screen
     Spu->StopSpu();
     delete Palette;
-#if VDRVERSNUM >= 10318
     delete last;
-#endif
 }
 
 // ==================================
@@ -94,15 +88,9 @@ eOsdError cDxr3SubpictureOsd::CanHandleAreas(const tArea *Areas, int NumAreas)
 // ==================================
 void cDxr3SubpictureOsd::Flush()
 {
-#if VDRVERSNUM >= 10318
     if (last->Elapsed() < cDxr3ConfigData::Instance().GetOsdFlushRate())
 	return;
     last->Set();
-#else
-    if (time_ms() - last < cDxr3ConfigData::Instance().GetOsdFlushRate())
-	return;
-    last = time_ms();
-#endif
 
 #ifdef timingdebug
     cTime t;

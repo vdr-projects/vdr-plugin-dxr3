@@ -217,11 +217,7 @@ bool cDxr3Device::Poll(cPoller &Poller, int TimeoutMs)
 	 m_DemuxDevice.GetTrickState() == DXR3_FREEZE) ||
 	cDxr3Interface::Instance().IsExternalReleased())
     {
-#if VDRVERSNUM >= 10314
 	cCondWait::SleepMs(TimeoutMs);
-#else
-	usleep(TimeoutMs * 1000);
-#endif
 	return false;
     }
     return m_DemuxDevice.Poll(TimeoutMs); // Poller.Poll(TimeoutMs);
@@ -281,20 +277,10 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 
 // ==================================
 // plays additional audio streams, like Dolby Digital
-#if VDRVERSNUM >= 10318
-#if VDRVERSNUM >= 10342
 int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
-#else
-int cDxr3Device::PlayAudio(const uchar *Data, int Length)
-#endif
-#else
-void cDxr3Device::PlayAudio(const uchar *Data, int Length)
-#endif
 {
     int retLength = 0;
-#if VDRVERSNUM >= 10318
     int origLength = Length;
-#endif
 
     m_AC3Present = true;
 
@@ -303,11 +289,7 @@ void cDxr3Device::PlayAudio(const uchar *Data, int Length)
 	cDxr3Interface::Instance().IsExternalReleased())
     {
 	//usleep(1000000);
-#if VDRVERSNUM >= 10318
 	return 0;
-#else
-	return;
-#endif
     }
 
     if (m_strBuf.length())
@@ -340,9 +322,7 @@ void cDxr3Device::PlayAudio(const uchar *Data, int Length)
 	m_strBuf.append((const char*)(Data + retLength), Length);
     }
 
-#if VDRVERSNUM >= 10318
     return origLength;
-#endif
 }
 
 // addition functions

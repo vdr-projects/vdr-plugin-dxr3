@@ -12,11 +12,7 @@ private:
     cSPUEncoder* Spu;		///< interface to cSPUEncoder
     bool shown;			///< is the osd shown?
     cPalette* Palette;		///< global palette (needed by all bitmaps)
-#if VDRVERSNUM >= 10318
     cTimeMs *last;
-#else
-    int last;
-#endif
 
 public:
     cDxr3SubpictureOsd(int Left, int Top/*, int SpuDev*/);
