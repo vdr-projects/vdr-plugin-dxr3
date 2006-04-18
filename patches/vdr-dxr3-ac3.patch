@@ -6,10 +6,10 @@ especially in fast scenes.
 Index: dxr3.c
 ===================================================================
 RCS file: /cvsroot/dxr3plugin/dxr3/dxr3.c,v
-retrieving revision 1.1.2.22
-diff -u -r1.1.2.22 dxr3.c
---- dxr3.c	8 Jan 2006 18:03:28 -0000	1.1.2.22
-+++ dxr3.c	19 Feb 2006 10:42:16 -0000
+retrieving revision 1.1.2.23
+diff -u -r1.1.2.23 dxr3.c
+--- dxr3.c	18 Apr 2006 21:33:18 -0000	1.1.2.23
++++ dxr3.c	18 Apr 2006 21:38:56 -0000
 @@ -45,20 +45,12 @@
  
  	case DXR3_ANALOG_OUT:
@@ -37,7 +37,7 @@ RCS file: /cvsroot/dxr3plugin/dxr3/dxr3.h,v
 retrieving revision 1.1.2.9
 diff -u -r1.1.2.9 dxr3.h
 --- dxr3.h	1 Aug 2005 17:45:33 -0000	1.1.2.9
-+++ dxr3.h	19 Feb 2006 10:42:16 -0000
++++ dxr3.h	18 Apr 2006 21:38:56 -0000
 @@ -29,8 +29,7 @@
      DXR3_RESET_HARDWARE,
      DXR3_FORCE_LETTER_BOX,
@@ -77,7 +77,7 @@ RCS file: /cvsroot/dxr3plugin/dxr3/dxr3configdata.c,v
 retrieving revision 1.4.2.10
 diff -u -r1.4.2.10 dxr3configdata.c
 --- dxr3configdata.c	2 Aug 2005 11:22:08 -0000	1.4.2.10
-+++ dxr3configdata.c	19 Feb 2006 10:42:16 -0000
++++ dxr3configdata.c	18 Apr 2006 21:38:56 -0000
 @@ -27,7 +27,6 @@
  cDxr3ConfigData::cDxr3ConfigData()
  {
@@ -92,7 +92,7 @@ RCS file: /cvsroot/dxr3plugin/dxr3/dxr3configdata.h,v
 retrieving revision 1.5.2.10
 diff -u -r1.5.2.10 dxr3configdata.h
 --- dxr3configdata.h	2 Aug 2005 11:22:08 -0000	1.5.2.10
-+++ dxr3configdata.h	19 Feb 2006 10:42:16 -0000
++++ dxr3configdata.h	18 Apr 2006 21:38:56 -0000
 @@ -78,14 +78,6 @@
      {
  	return m_forceletterbox = value;
@@ -122,7 +122,7 @@ RCS file: /cvsroot/dxr3plugin/dxr3/dxr3demuxdevice.c,v
 retrieving revision 1.1.2.14
 diff -u -r1.1.2.14 dxr3demuxdevice.c
 --- dxr3demuxdevice.c	11 Feb 2006 10:49:08 -0000	1.1.2.14
-+++ dxr3demuxdevice.c	19 Feb 2006 10:42:16 -0000
++++ dxr3demuxdevice.c	18 Apr 2006 21:38:56 -0000
 @@ -272,7 +272,7 @@
      //printf("vBuf size = %d\n", m_vBuf.Available());
      //printf("aBuf size = %d\n", m_aBuf.Available());
@@ -173,10 +173,10 @@ diff -u -r1.1.2.14 dxr3demuxdevice.c
 Index: dxr3device.c
 ===================================================================
 RCS file: /cvsroot/dxr3plugin/dxr3/dxr3device.c,v
-retrieving revision 1.2.2.30
-diff -u -r1.2.2.30 dxr3device.c
---- dxr3device.c	19 Feb 2006 10:38:54 -0000	1.2.2.30
-+++ dxr3device.c	19 Feb 2006 10:42:16 -0000
+retrieving revision 1.2.2.31
+diff -u -r1.2.2.31 dxr3device.c
+--- dxr3device.c	18 Apr 2006 21:33:19 -0000	1.2.2.31
++++ dxr3device.c	18 Apr 2006 21:38:56 -0000
 @@ -33,7 +33,6 @@
      m_Offset = 0;
      m_strBuf.erase(m_strBuf.begin(), m_strBuf.end());
@@ -213,26 +213,9 @@ diff -u -r1.2.2.30 dxr3device.c
      }
      else
      {
-@@ -284,19 +275,26 @@
- #if VDRVERSNUM >= 10318
- #if VDRVERSNUM >= 10342
- int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
-+{
- #else
- int cDxr3Device::PlayAudio(const uchar *Data, int Length)
-+{
-+    uchar Id = 0;
- #endif
- #else
- void cDxr3Device::PlayAudio(const uchar *Data, int Length)
--#endif
- {
-+    uchar Id = 0;
-+#endif
+@@ -282,7 +273,10 @@
      int retLength = 0;
- #if VDRVERSNUM >= 10318
      int origLength = Length;
- #endif
  
 -    m_AC3Present = true;
 +    bool isAc3 = ((Id & 0xF0) == 0x80) || Id == 0xbd;
@@ -242,7 +225,7 @@ diff -u -r1.2.2.30 dxr3device.c
  
      if ((m_DemuxDevice.GetDemuxMode() == DXR3_DEMUX_TRICK_MODE &&
  	 m_DemuxDevice.GetTrickState() == DXR3_FREEZE) ||
-@@ -317,7 +315,7 @@
+@@ -299,7 +293,7 @@
  	{
  	    retLength = m_DemuxDevice.DemuxAudioPes((const uint8_t*)m_strBuf.data(), m_strBuf.length());
  	} else {
@@ -251,7 +234,7 @@ diff -u -r1.2.2.30 dxr3device.c
  	}
      }
      else if (m_PlayMode == pmAudioOnly)
-@@ -326,7 +324,7 @@
+@@ -308,7 +302,7 @@
      }
      else
      {
@@ -263,11 +246,11 @@ diff -u -r1.2.2.30 dxr3device.c
 Index: dxr3device.h
 ===================================================================
 RCS file: /cvsroot/dxr3plugin/dxr3/dxr3device.h,v
-retrieving revision 1.1.2.16
-diff -u -r1.1.2.16 dxr3device.h
---- dxr3device.h	5 Feb 2006 17:32:13 -0000	1.1.2.16
-+++ dxr3device.h	19 Feb 2006 10:42:16 -0000
-@@ -86,7 +86,6 @@
+retrieving revision 1.1.2.17
+diff -u -r1.1.2.17 dxr3device.h
+--- dxr3device.h	18 Apr 2006 21:33:19 -0000	1.1.2.17
++++ dxr3device.h	18 Apr 2006 21:38:56 -0000
+@@ -78,7 +78,6 @@
  protected:
      ePlayMode m_PlayMode;
      cDxr3DemuxDevice m_DemuxDevice;
@@ -278,12 +261,12 @@ diff -u -r1.1.2.16 dxr3device.h
 Index: dxr3i18n.c
 ===================================================================
 RCS file: /cvsroot/dxr3plugin/dxr3/dxr3i18n.c,v
-retrieving revision 1.4.2.14
-diff -u -r1.4.2.14 dxr3i18n.c
---- dxr3i18n.c	5 Feb 2006 16:30:43 -0000	1.4.2.14
-+++ dxr3i18n.c	19 Feb 2006 10:42:16 -0000
-@@ -373,64 +373,6 @@
- #endif
+retrieving revision 1.4.2.15
+diff -u -r1.4.2.15 dxr3i18n.c
+--- dxr3i18n.c	18 Apr 2006 21:33:19 -0000	1.4.2.15
++++ dxr3i18n.c	18 Apr 2006 21:38:56 -0000
+@@ -301,52 +301,6 @@
+ 	"", // Czech
      },
      {
 -	"AC3 output on",
@@ -304,15 +287,9 @@ diff -u -r1.4.2.14 dxr3i18n.c
 -	"Activa sortida AC3",
 -	"", // Русский (Russian)
 -	"", // Hrvatski
--#if VDRVERSNUM > 10312
 -	"", // Eesti
--#if VDRVERSNUM > 10315
 -	"", // Dansk
--#if VDRVERSNUM > 10341
 -	"", // Czech
--#endif
--#endif
--#endif
 -    },
 -    {
 -	"AC3 output off",
@@ -333,15 +310,9 @@ diff -u -r1.4.2.14 dxr3i18n.c
 -	"Desactiva sortida AC3",
 -	"", // Русский (Russian)
 -	"", // Hrvatski
--#if VDRVERSNUM > 10312
 -	"", // Eesti
--#if VDRVERSNUM > 10315
 -	"", // Dansk
--#if VDRVERSNUM > 10341
 -	"", // Czech
--#endif
--#endif
--#endif
 -    },
 -    {
  	"Switch to digital audio output",
@@ -353,7 +324,7 @@ RCS file: /cvsroot/dxr3plugin/dxr3/dxr3interface.c,v
 retrieving revision 1.4.2.28
 diff -u -r1.4.2.28 dxr3interface.c
 --- dxr3interface.c	18 Feb 2006 19:04:44 -0000	1.4.2.28
-+++ dxr3interface.c	19 Feb 2006 10:42:17 -0000
++++ dxr3interface.c	18 Apr 2006 21:38:56 -0000
 @@ -139,26 +139,36 @@
  //! set audio output to digital ac3
  void cDxr3Interface::SetAudioDigitalAC3()
@@ -429,7 +400,7 @@ RCS file: /cvsroot/dxr3plugin/dxr3/dxr3interface.h,v
 retrieving revision 1.2.2.17
 diff -u -r1.2.2.17 dxr3interface.h
 --- dxr3interface.h	12 Dec 2005 17:16:15 -0000	1.2.2.17
-+++ dxr3interface.h	19 Feb 2006 10:42:17 -0000
++++ dxr3interface.h	18 Apr 2006 21:38:56 -0000
 @@ -57,6 +57,19 @@
      void SetAudioAnalog();
      void SetAudioDigitalPCM();
