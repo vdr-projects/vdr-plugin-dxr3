@@ -61,7 +61,7 @@ protected:
     bool m_bNeedResync;
 
 private:
-    cDxr3OutputThread(cDxr3OutputThread&); // no copy contructor
+    cDxr3OutputThread(cDxr3OutputThread&); // no copy constructor
 };
 
 // ==================================
