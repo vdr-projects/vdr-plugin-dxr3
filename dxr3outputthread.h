@@ -41,7 +41,6 @@ public:
 	cThread::Start();
     };
     */
-    void SetStopSignal(); // can be removed when only VDR >= 1.3.29 supported
     bool NeedResync()
     {
 	return m_bNeedResync;
@@ -53,11 +52,9 @@ public:
 
 protected:
     virtual void Action() = 0;
-    bool GetStopSignal(); // can be replaced by Running() in VDR >= 1.3.29
 
     cDxr3Interface& m_dxr3Device;
     cDxr3SyncBuffer& m_buffer;
-    bool m_bStopThread;   // can be removed when only VDR >= 1.3.29 supported
     bool m_bNeedResync;
 
 private:

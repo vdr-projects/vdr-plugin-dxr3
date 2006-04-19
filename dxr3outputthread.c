@@ -36,30 +36,8 @@ cDxr3OutputThread::cDxr3OutputThread(cDxr3Interface& dxr3Device,
     cThread(),
     m_dxr3Device(dxr3Device),
     m_buffer(buffer),
-    m_bStopThread(false),
     m_bNeedResync(false)
 {
-}
-
-// ==================================
-//! send stop signal
-void cDxr3OutputThread::SetStopSignal()
-{
-    Lock();
-    m_bStopThread = true;
-    Unlock();
-}
-
-// ==================================
-//! was stop signal send?
-bool cDxr3OutputThread::GetStopSignal()
-{
-    bool ret = false;
-    Lock();
-    ret = m_bStopThread;
-    Unlock();
-
-    return ret;
 }
 
 // ==================================
@@ -75,7 +53,6 @@ cDxr3AudioOutThread::cDxr3AudioOutThread(cDxr3Interface& dxr3Device,
 cDxr3AudioOutThread::~cDxr3AudioOutThread()
 {
     m_buffer.Stop();
-    SetStopSignal();
     Cancel(3);
 }
 
@@ -86,7 +63,7 @@ void cDxr3AudioOutThread::Action()
     bool resync = false;
     uint32_t pts = 0;
 
-    while (!GetStopSignal())
+    while (Running())
     {
 	pts = 0;
 	cFixedLengthFrame* pNext = m_buffer.Get();
@@ -158,7 +135,6 @@ cDxr3VideoOutThread::cDxr3VideoOutThread(cDxr3Interface& dxr3Device,
 cDxr3VideoOutThread::~cDxr3VideoOutThread()
 {
     m_buffer.Stop();
-    SetStopSignal();
     Cancel(3);
 }
 
@@ -169,7 +145,7 @@ void cDxr3VideoOutThread::Action()
     uint32_t pts = 0;
     static uint32_t lastPts = 0;
 
-    while (!GetStopSignal())
+    while (Running())
     {
 	cFixedLengthFrame* pNext = m_buffer.Get();
 	if (pNext)

@@ -314,3 +314,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - add Czech i18n placeholders (Ville Skyttä)
 - be less noisy about audio mode (non-)changes (Ville Skyttä)
 - add work-in-progress AC3 patch to patches/ (Agneau Egare, Ville Skyttä)
+- use VDR's thread activity control features instead of our own (Luca Olivetti)
