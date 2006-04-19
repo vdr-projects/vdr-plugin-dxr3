@@ -1,7 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.1.2.22 2006/04/18 21:30:11 scop Exp $
+# $Id: Makefile,v 1.1.2.23 2006/04/19 21:57:35 scop Exp $
 
 # The official name of this plugin.
 # This name will be used in the '-P...' option of VDR to load the plugin.
@@ -32,7 +32,7 @@ EM8300 = /usr/include
 
 ### The version number of VDR's plugin API (taken from VDR's "config.h"):
 
-APIVERSION = $(shell grep 'define APIVERSION ' $(VDRDIR)/config.h | awk '{ print $$3 }' | sed -e 's/"//g')
+APIVERSION = $(shell (grep 'define APIVERSION ' $(VDRDIR)/config.h || grep 'define VDRVERSION ' $(VDRDIR)/config.h) | awk '{ print $$3 }' | sed -e 's/"//g')
 
 ### The name of the distribution archive:
 
