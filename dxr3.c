@@ -3,7 +3,7 @@
  *
  * See the README file for copyright information and how to reach the author.
  *
- * $Id: dxr3.c,v 1.1.2.24 2006/04/19 21:57:35 scop Exp $
+ * $Id: dxr3.c,v 1.1.2.25 2006/04/22 11:24:28 scop Exp $
  *
  */
 
@@ -15,9 +15,9 @@
 #include "dxr3.h"
 #include "dxr3i18n.h"
 
-static const char *VERSION        = "0.2.6-cvs";
-static const char *DESCRIPTION    = "Hardware MPEG decoder";
-static const char *MAINMENUENTRY  = "DXR3";
+static const char VERSION[]       = "0.2.6-cvs";
+static const char DESCRIPTION[]   = "Hardware MPEG decoder";
+static const char MAINMENUENTRY[] = "DXR3";
 
 #if VDRVERSNUM && VDRVERSNUM < 10342
 #error "This version of the DXR3 plugin needs VDR version >= 1.3.42"
