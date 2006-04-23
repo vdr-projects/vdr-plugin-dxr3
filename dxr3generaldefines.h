@@ -41,7 +41,7 @@ enum eDxr3DemuxMode {
 enum eDxr3TrickState {
     DXR3_FAST,
     DXR3_SLOW,
-    DXR3_FREEZE,
+    DXR3_FREEZE
 };
 
 #endif // __DXR3_GENERAL_DEFINES_H

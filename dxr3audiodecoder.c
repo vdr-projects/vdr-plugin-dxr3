@@ -46,7 +46,7 @@ cDxr3AudioDecoder::cDxr3AudioDecoder() : rbuf(50000), ac3dtsDecoder(&rbuf)
 
     lastHeader[0] = 0xFF;
     lastHeader[1] = lastHeader[2] = lastHeader[3] = 0;
-};
+}
 
 // ==================================
 //! deconst.
@@ -54,7 +54,7 @@ cDxr3AudioDecoder::~cDxr3AudioDecoder()
 {
     // close codec, if it is open
     cDxr3Ffmepg::Instance().CloseCodec(Codec);
-};
+}
 
 // ==================================
 //! (re)init ffmpeg codec
