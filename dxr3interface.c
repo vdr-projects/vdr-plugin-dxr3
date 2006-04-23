@@ -1006,8 +1006,6 @@ void cDxr3Interface::Resuscitation()
     ClaimDevices();
     Lock();
 
-    m_ExternalReleased = false;
-
     endt = time(&endt);
     if (endt - startt > 4)
     {
