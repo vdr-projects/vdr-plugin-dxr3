@@ -2,8 +2,8 @@ Prerequisites:
 
 - Get the DXR3 drivers from http://sourceforge.net/projects/dxr3 ,
   install, configure, test and verify the installation.
-- Install the (latest) VDR developer version, or at least >= 1.3.42.
-- The plugin needs the libavcodec library from http://ffmpeg.sourceforge.net/
+- Install VDR 1.4.x (or at least >= 1.3.42).
+- Install the libavcodec library from http://ffmpeg.sourceforge.net/
 
 Installation:
 
