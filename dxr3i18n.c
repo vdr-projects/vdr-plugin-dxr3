@@ -34,7 +34,7 @@ const tI18nPhrase Phrases[] = {
 	"", // Français
 	"", // Norsk
 	"DXR3-toiminnot",
-	"", // Polski
+	"DXR3",
 	"DXR3",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
@@ -57,7 +57,7 @@ const tI18nPhrase Phrases[] = {
 	"", // Français
 	"", // Norsk
 	"MPEG-purkukortti",
-	"", // Polski
+	"Sprzêtowy dekoder MPEG",
 	"Descodificador MPEG Hardware",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
@@ -80,7 +80,7 @@ const tI18nPhrase Phrases[] = {
 	"", // Français
 	"", // Norsk
 	"DXR3-toiminnot",
-	"", // Polski
+	"Ustawienia DXR3",
 	"Opciones DXR3",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
@@ -103,7 +103,7 @@ const tI18nPhrase Phrases[] = {
 	"", // Français
 	"", // Norsk
 	"Digitaalinen audioulostulo",
-	"", // Polski
+	"Cyfrowe wyj¶cie d¼wiêku",
 	"Salida audio digital",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
@@ -126,7 +126,7 @@ const tI18nPhrase Phrases[] = {
 	"", // Français
 	"", // Norsk
 	"Kortin järjestysnumero",
-	"", // Polski
+	"Numer karty",
 	"Tarjeta",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
@@ -149,7 +149,7 @@ const tI18nPhrase Phrases[] = {
 	"", // Français
 	"", // Norsk
 	"Näyttötila",
-	"", // Polski
+	"Tryb obrazu",
 	"Modalidad vídeo",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
@@ -172,7 +172,7 @@ const tI18nPhrase Phrases[] = {
 	"", // Français
 	"", // Norsk
 	"PAL",
-	"", // Polski
+	"PAL",
 	"PAL",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
@@ -195,7 +195,7 @@ const tI18nPhrase Phrases[] = {
 	"", // Français
 	"", // Norsk
 	"PAL60",
-	"", // Polski
+	"PAL60",
 	"PAL60",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
@@ -218,7 +218,7 @@ const tI18nPhrase Phrases[] = {
 	"", // Français
 	"", // Norsk
 	"NTSC",
-	"", // Polski
+	"NTSC",
 	"NTSC",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
@@ -241,7 +241,7 @@ const tI18nPhrase Phrases[] = {
 	"", // Français
 	"", // Norsk
 	"Palauta kortti alkutilaan",
-	"", // Polski
+	"Zerowanie dekodera DXR3",
 	"Reset hardware DXR3",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
@@ -264,7 +264,7 @@ const tI18nPhrase Phrases[] = {
 	"", // Français
 	"", // Norsk
 	"Letterbox-näyttötilan pakotus päälle/pois",
-	"", // Polski
+	"Prze³±cz wymuszanie trybu letterbox",
 	"Conmuta modalidad letterbox forzada",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
@@ -287,7 +287,7 @@ const tI18nPhrase Phrases[] = {
 	"", // Français
 	"", // Norsk
 	"Kytke analoginen audioulostulo",
-	"", // Polski
+	"Prze³±cz w tryb d¼wiêku analogowego",
 	"Selecciona salida audio analógica",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
@@ -310,7 +310,7 @@ const tI18nPhrase Phrases[] = {
 	"", // Français
 	"", // Norsk
 	"AC3-ulostulo päälle",
-	"", // Polski
+	"W³±cz wyj¶cie AC3",
 	"Activa salida AC3",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
@@ -333,7 +333,7 @@ const tI18nPhrase Phrases[] = {
 	"", // Français
 	"", // Norsk
 	"AC3-ulostulo pois",
-	"", // Polski
+	"Wy³±cz wyj¶cie AC3",
 	"Desactiva salida AC3",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
@@ -356,7 +356,7 @@ const tI18nPhrase Phrases[] = {
 	"", // Français
 	"", // Norsk
 	"Kytke digitaalinen audioulostulo",
-	"", // Polski
+	"Prze³±cz w tryb d¼wiêku cyfrowego",
 	"Selecciona salida audio digital",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
@@ -379,7 +379,7 @@ const tI18nPhrase Phrases[] = {
 	"", // Français
 	"", // Norsk
 	"DXR3: vapautetaan laitteet",
-	"", // Polski
+	"DXR3: zwalnianie sprzêtu",
 	"DXR3: liberando dispositivo",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
@@ -402,7 +402,7 @@ const tI18nPhrase Phrases[] = {
 	"", // Français
 	"", // Norsk
 	"Väriasetukset",
-	"", // Polski
+	"Ustawienia koloru",
 	"Ajustes color",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
@@ -425,7 +425,7 @@ const tI18nPhrase Phrases[] = {
 	"", // Français
 	"", // Norsk
 	"Kirkkaus",
-	"", // Polski
+	"Jasno¶æ",
 	"Luminosidad",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
@@ -448,7 +448,7 @@ const tI18nPhrase Phrases[] = {
 	"", // Français
 	"", // Norsk
 	"Kontrasti",
-	"", // Polski
+	"Kontrast",
 	"Contraste",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
@@ -471,7 +471,7 @@ const tI18nPhrase Phrases[] = {
 	"", // Français
 	"", // Norsk
 	"Värikylläisyys",
-	"", // Polski
+	"Nasycenie",
 	"Saturación",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
@@ -494,7 +494,7 @@ const tI18nPhrase Phrases[] = {
 	"", // Français
 	"", // Norsk
 	"Piilota valinta päävalikosta",
-	"", // Polski
+	"Ukryj g³ówny wpis w menu",
 	"Esconde entrada menú",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska
@@ -517,7 +517,7 @@ const tI18nPhrase Phrases[] = {
 	"", // Français
 	"", // Norsk
 	"Kuvaruutunäytön päivitysväli (ms)",
-	"", // Polski
+	"Czas od¶wie¿ania OSD (ms)",
 	"Tiempo mínimo refresco OSD (ms)",
 	"", // ÅëëçíéêÜ (Greek)
 	"", // Svenska

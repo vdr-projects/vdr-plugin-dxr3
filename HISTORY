@@ -315,3 +315,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - be less noisy about audio mode (non-)changes (Ville Skyttä)
 - add work-in-progress AC3 patch to patches/ (Agneau Egare, Ville Skyttä)
 - use VDR's thread activity control features instead of our own (Luca Olivetti)
+
+200x-xx-xx: Version x.x.x
+
+- add Polish translation (Mikolaj Tutak)
