@@ -1,5 +1,14 @@
-Known problems, bugs, and workarounds related to this driver:
--------------------------------------------------------------
+Troubleshooting, known problems, bugs, and workarounds related to this driver:
+------------------------------------------------------------------------------
+
+* There's no sound.
+  Workaround (well, not really a workaround because in the vast majority
+  of cases this is not a problem with the plugin): check that the version of
+  ffmpeg's libavcodec that the plugin uses at runtime is the same or /really/
+  compatible one that you compiled it with.  One simple but perhaps a
+  draconian way to do this is to ensure that you have exactly one version of
+  ffmpeg/libavcodec installed, remove extra ones if needed, rebuild the
+  plugin, and try again.
 
 * The MP3 plugin's "show live TV" option while playing stuff doesn't work.
   Workaround: none known, but the black screen isn't that bad if you
