@@ -319,3 +319,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 200x-xx-xx: Version x.x.x
 
 - add Polish translation (Mikolaj Tutak)
+- sync "make install" with VDR 1.4.2-2 (Ville Skyttä)
