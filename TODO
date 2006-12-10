@@ -32,6 +32,12 @@ Troubleshooting, known problems, bugs, and workarounds related to this driver:
   video stream, and you have a ADV7170-based DXR3 and a PAL system, see
   em8300-adv7170-wss.patch and vdr-dxr3-wss.patch in the patches/ dir.
 
+* OSD instability, flicker, tearing colors etc can in some cases to some
+  extent be reduced by using (increasing) the OSD flush rate option in
+  plugin settings.  For many people, using the skinelchi plugin or the
+  text2skin plugin with the enElchi skin has been reported to work much
+  better than other skins (even with OSD flush rate set to 0).
+
 Other TODOs:
 ------------
 
