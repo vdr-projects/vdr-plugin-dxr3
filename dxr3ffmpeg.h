@@ -45,24 +45,24 @@ struct Dxr3Codec
 // ==================================
 // class to work with ffmpeg
 /*!
-  With cDxr3Ffmepg you can easily handle as many
+  With cDxr3Ffmpeg you can easily handle as many
   codecs as you want.
   At the moment we need this only for
   the audiodecoder, but in future i want to use
   it for ohter nice stuff :)
 */
-class cDxr3Ffmepg : public Singleton<cDxr3Ffmepg>
+class cDxr3Ffmpeg : public Singleton<cDxr3Ffmpeg>
 {
 public:
-    cDxr3Ffmepg();
-    ~cDxr3Ffmepg() {}
+    cDxr3Ffmpeg();
+    ~cDxr3Ffmpeg() {}
 
     bool FindCodec(struct Dxr3Codec& Codec);
     bool OpenCodec(struct Dxr3Codec& Codec);
     void CloseCodec(struct Dxr3Codec& Codec);
 
 private:
-    cDxr3Ffmepg(cDxr3Ffmepg&); // no copy constructor
+    cDxr3Ffmpeg(cDxr3Ffmpeg&); // no copy constructor
 };
 
 #endif /*_DXR3_FFMPEG_H_*/

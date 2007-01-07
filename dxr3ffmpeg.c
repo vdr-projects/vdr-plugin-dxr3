@@ -25,7 +25,7 @@
 
 // ==================================
 //! constructor
-cDxr3Ffmepg::cDxr3Ffmepg()
+cDxr3Ffmpeg::cDxr3Ffmpeg()
 {
     avcodec_init();
     // Register only codec(s) we'll need.
@@ -34,7 +34,7 @@ cDxr3Ffmepg::cDxr3Ffmepg()
 
 // ==================================
 //! look if Codec is supported by ffmpeg
-bool cDxr3Ffmepg::FindCodec(struct Dxr3Codec& Codec)
+bool cDxr3Ffmpeg::FindCodec(struct Dxr3Codec& Codec)
 {
     // find codec
     Codec.codec = avcodec_find_decoder(Codec.id);
@@ -54,7 +54,7 @@ bool cDxr3Ffmepg::FindCodec(struct Dxr3Codec& Codec)
 
 // ==================================
 //! try to open Codec
-bool cDxr3Ffmepg::OpenCodec(struct Dxr3Codec& Codec)
+bool cDxr3Ffmpeg::OpenCodec(struct Dxr3Codec& Codec)
 {
     // try to open codec
     int result = avcodec_open(&Codec.codec_context, Codec.codec);
@@ -74,7 +74,7 @@ bool cDxr3Ffmepg::OpenCodec(struct Dxr3Codec& Codec)
 
 // ==================================
 //! close codec
-void cDxr3Ffmepg::CloseCodec(struct Dxr3Codec& Codec)
+void cDxr3Ffmpeg::CloseCodec(struct Dxr3Codec& Codec)
 {
     if (Codec.Open)
     {

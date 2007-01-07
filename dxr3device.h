@@ -58,7 +58,7 @@ public:
     virtual int PlayVideo(const uchar *Data, int Length);
     virtual int PlayAudio(const uchar *Data, int Length, uchar Id);
 
-    // addition functions
+    // additional functions
     virtual void SetVideoFormat(bool VideoFormat16_9);
     virtual void SetVolumeDevice(int Volume);
     virtual void SetAudioChannelDevice(int AudioChannel);

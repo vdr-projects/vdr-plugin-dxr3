@@ -53,7 +53,7 @@ cDxr3AudioDecoder::cDxr3AudioDecoder() : rbuf(50000), ac3dtsDecoder(&rbuf)
 cDxr3AudioDecoder::~cDxr3AudioDecoder()
 {
     // close codec, if it is open
-    cDxr3Ffmepg::Instance().CloseCodec(Codec);
+    cDxr3Ffmpeg::Instance().CloseCodec(Codec);
 }
 
 // ==================================
@@ -61,10 +61,10 @@ cDxr3AudioDecoder::~cDxr3AudioDecoder()
 void cDxr3AudioDecoder::Init()
 {
     // (re)init codec
-    cDxr3Ffmepg::Instance().CloseCodec(Codec);
-    if (cDxr3Ffmepg::Instance().FindCodec(Codec))
+    cDxr3Ffmpeg::Instance().CloseCodec(Codec);
+    if (cDxr3Ffmpeg::Instance().FindCodec(Codec))
     {
-	cDxr3Ffmepg::Instance().OpenCodec(Codec);
+	cDxr3Ffmpeg::Instance().OpenCodec(Codec);
 	rate = channels = -1;
 	frameSize = Codec.codec_context.frame_size;
 	decoderOpened = true;

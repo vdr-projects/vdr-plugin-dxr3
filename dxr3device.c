@@ -325,7 +325,7 @@ int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
     return origLength;
 }
 
-// addition functions
+// additional functions
 
 // ==================================
 void cDxr3Device::SetVideoFormat(bool VideoFormat16_9)

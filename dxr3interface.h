@@ -97,7 +97,7 @@ public:
     }
     void DisableAudio();
     void EnableOverlay();
-    void DisanleOverlay();
+    void DisableOverlay();
 
     // set/get functions
     uint32_t GetAspectRatio() const;

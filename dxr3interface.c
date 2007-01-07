@@ -378,7 +378,7 @@ void cDxr3Interface::EnableOverlay()
 
 // ==================================
 //! disable overlay mode of the dxr3
-void cDxr3Interface::DisanleOverlay()
+void cDxr3Interface::DisableOverlay()
 {
     // is it already disabled
     if (!m_OverlayActive)
