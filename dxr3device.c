@@ -54,7 +54,7 @@ void cDxr3Device::MakePrimaryDevice(bool On)
 
 // replaying
 // ==================================
-//! does we have an mpeg2 devocer?
+//! do we have an mpeg2 decoder?
 bool cDxr3Device::HasDecoder() const
 {
     // sure we have one ;)
@@ -341,7 +341,7 @@ void cDxr3Device::SetVolumeDevice(int Volume)
 }
 
 // ==================================
-//! sets audio channel for audio output (stero, mono left, mono right)
+//! sets audio channel for audio output (stereo, mono left, mono right)
 void cDxr3Device::SetAudioChannelDevice(int AudioChannel)
 {
     cDxr3Interface::Instance().SetAudioChannel(AudioChannel);
