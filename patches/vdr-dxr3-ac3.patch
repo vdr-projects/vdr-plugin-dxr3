@@ -6,10 +6,10 @@ especially in fast scenes.
 Index: dxr3.c
 ===================================================================
 RCS file: /cvsroot/dxr3plugin/dxr3/dxr3.c,v
-retrieving revision 1.1.2.23
-diff -u -r1.1.2.23 dxr3.c
---- dxr3.c	18 Apr 2006 21:33:18 -0000	1.1.2.23
-+++ dxr3.c	18 Apr 2006 21:38:56 -0000
+retrieving revision 1.1.2.27
+diff -u -r1.1.2.27 dxr3.c
+--- dxr3.c	8 Jun 2006 15:10:01 -0000	1.1.2.27
++++ dxr3.c	28 Jan 2007 17:33:18 -0000
 @@ -45,20 +45,12 @@
  
  	case DXR3_ANALOG_OUT:
@@ -37,7 +37,7 @@ RCS file: /cvsroot/dxr3plugin/dxr3/dxr3.h,v
 retrieving revision 1.1.2.9
 diff -u -r1.1.2.9 dxr3.h
 --- dxr3.h	1 Aug 2005 17:45:33 -0000	1.1.2.9
-+++ dxr3.h	18 Apr 2006 21:38:56 -0000
++++ dxr3.h	28 Jan 2007 17:33:19 -0000
 @@ -29,8 +29,7 @@
      DXR3_RESET_HARDWARE,
      DXR3_FORCE_LETTER_BOX,
@@ -77,7 +77,7 @@ RCS file: /cvsroot/dxr3plugin/dxr3/dxr3configdata.c,v
 retrieving revision 1.4.2.10
 diff -u -r1.4.2.10 dxr3configdata.c
 --- dxr3configdata.c	2 Aug 2005 11:22:08 -0000	1.4.2.10
-+++ dxr3configdata.c	18 Apr 2006 21:38:56 -0000
++++ dxr3configdata.c	28 Jan 2007 17:33:19 -0000
 @@ -27,7 +27,6 @@
  cDxr3ConfigData::cDxr3ConfigData()
  {
@@ -92,7 +92,7 @@ RCS file: /cvsroot/dxr3plugin/dxr3/dxr3configdata.h,v
 retrieving revision 1.5.2.10
 diff -u -r1.5.2.10 dxr3configdata.h
 --- dxr3configdata.h	2 Aug 2005 11:22:08 -0000	1.5.2.10
-+++ dxr3configdata.h	18 Apr 2006 21:38:56 -0000
++++ dxr3configdata.h	28 Jan 2007 17:33:19 -0000
 @@ -78,14 +78,6 @@
      {
  	return m_forceletterbox = value;
@@ -119,11 +119,11 @@ diff -u -r1.5.2.10 dxr3configdata.h
 Index: dxr3demuxdevice.c
 ===================================================================
 RCS file: /cvsroot/dxr3plugin/dxr3/dxr3demuxdevice.c,v
-retrieving revision 1.1.2.14
-diff -u -r1.1.2.14 dxr3demuxdevice.c
---- dxr3demuxdevice.c	11 Feb 2006 10:49:08 -0000	1.1.2.14
-+++ dxr3demuxdevice.c	18 Apr 2006 21:38:56 -0000
-@@ -272,7 +272,7 @@
+retrieving revision 1.1.2.15
+diff -u -r1.1.2.15 dxr3demuxdevice.c
+--- dxr3demuxdevice.c	28 Jan 2007 16:51:15 -0000	1.1.2.15
++++ dxr3demuxdevice.c	28 Jan 2007 17:33:19 -0000
+@@ -271,7 +271,7 @@
      //printf("vBuf size = %d\n", m_vBuf.Available());
      //printf("aBuf size = %d\n", m_aBuf.Available());
      /*
@@ -132,7 +132,7 @@ diff -u -r1.1.2.14 dxr3demuxdevice.c
  	cDxr3Interface::Instance().SetAudioDigitalAC3(); // !!! FIXME
      */
  
-@@ -303,10 +303,6 @@
+@@ -302,10 +302,6 @@
  	aPts = 0;
  	vPts = 0;
  	bPlaySuc = false;
@@ -143,7 +143,7 @@ diff -u -r1.1.2.14 dxr3demuxdevice.c
      }
  
      // find start code
-@@ -452,7 +448,7 @@
+@@ -450,7 +446,7 @@
  	    }
  	    else if (pesFrame.GetPesDataType() == cDxr3PesFrame::PES_AUDIO_DATA
  		     && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
@@ -152,7 +152,7 @@ diff -u -r1.1.2.14 dxr3demuxdevice.c
  	    {
  		if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
  		    m_synchState == DXR3_DEMUX_SYNCHED)
-@@ -515,7 +511,7 @@
+@@ -513,7 +509,7 @@
  	    }
  	    else if (pesFrame.GetPesDataType() == cDxr3PesFrame::PES_PRIVATE_DATA
  		     && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
@@ -161,7 +161,7 @@ diff -u -r1.1.2.14 dxr3demuxdevice.c
  		     && !bAc3Dts)
  	    {
  		if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
-@@ -564,7 +560,7 @@
+@@ -562,7 +558,7 @@
  	    }
  	    else if (pesFrame.GetPesDataType() == cDxr3PesFrame::PES_PRIVATE_DATA
  		     && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
@@ -173,10 +173,10 @@ diff -u -r1.1.2.14 dxr3demuxdevice.c
 Index: dxr3device.c
 ===================================================================
 RCS file: /cvsroot/dxr3plugin/dxr3/dxr3device.c,v
-retrieving revision 1.2.2.31
-diff -u -r1.2.2.31 dxr3device.c
---- dxr3device.c	18 Apr 2006 21:33:19 -0000	1.2.2.31
-+++ dxr3device.c	18 Apr 2006 21:38:56 -0000
+retrieving revision 1.2.2.35
+diff -u -r1.2.2.35 dxr3device.c
+--- dxr3device.c	28 Jan 2007 17:16:41 -0000	1.2.2.35
++++ dxr3device.c	28 Jan 2007 17:33:19 -0000
 @@ -33,7 +33,6 @@
      m_Offset = 0;
      m_strBuf.erase(m_strBuf.begin(), m_strBuf.end());
@@ -213,7 +213,7 @@ diff -u -r1.2.2.31 dxr3device.c
      }
      else
      {
-@@ -282,7 +273,10 @@
+@@ -280,7 +271,10 @@
      int retLength = 0;
      int origLength = Length;
  
@@ -225,7 +225,7 @@ diff -u -r1.2.2.31 dxr3device.c
  
      if ((m_DemuxDevice.GetDemuxMode() == DXR3_DEMUX_TRICK_MODE &&
  	 m_DemuxDevice.GetTrickState() == DXR3_FREEZE) ||
-@@ -299,7 +293,7 @@
+@@ -296,7 +290,7 @@
  	{
  	    retLength = m_DemuxDevice.DemuxAudioPes((const uint8_t*)m_strBuf.data(), m_strBuf.length());
  	} else {
@@ -234,7 +234,7 @@ diff -u -r1.2.2.31 dxr3device.c
  	}
      }
      else if (m_PlayMode == pmAudioOnly)
-@@ -308,7 +302,7 @@
+@@ -305,7 +299,7 @@
      }
      else
      {
@@ -246,10 +246,10 @@ diff -u -r1.2.2.31 dxr3device.c
 Index: dxr3device.h
 ===================================================================
 RCS file: /cvsroot/dxr3plugin/dxr3/dxr3device.h,v
-retrieving revision 1.1.2.17
-diff -u -r1.1.2.17 dxr3device.h
---- dxr3device.h	18 Apr 2006 21:33:19 -0000	1.1.2.17
-+++ dxr3device.h	18 Apr 2006 21:38:56 -0000
+retrieving revision 1.1.2.18
+diff -u -r1.1.2.18 dxr3device.h
+--- dxr3device.h	7 Jan 2007 21:59:01 -0000	1.1.2.18
++++ dxr3device.h	28 Jan 2007 17:33:19 -0000
 @@ -78,7 +78,6 @@
  protected:
      ePlayMode m_PlayMode;
@@ -261,10 +261,10 @@ diff -u -r1.1.2.17 dxr3device.h
 Index: dxr3i18n.c
 ===================================================================
 RCS file: /cvsroot/dxr3plugin/dxr3/dxr3i18n.c,v
-retrieving revision 1.4.2.15
-diff -u -r1.4.2.15 dxr3i18n.c
---- dxr3i18n.c	18 Apr 2006 21:33:19 -0000	1.4.2.15
-+++ dxr3i18n.c	18 Apr 2006 21:38:56 -0000
+retrieving revision 1.4.2.16
+diff -u -r1.4.2.16 dxr3i18n.c
+--- dxr3i18n.c	8 Jun 2006 15:13:20 -0000	1.4.2.16
++++ dxr3i18n.c	28 Jan 2007 17:33:19 -0000
 @@ -301,52 +301,6 @@
  	"", // Czech
      },
@@ -278,7 +278,7 @@ diff -u -r1.4.2.15 dxr3i18n.c
 -	"", // Français
 -	"", // Norsk
 -	"AC3-ulostulo päälle",
--	"", // Polski
+-	"W³±cz wyj¶cie AC3",
 -	"Activa salida AC3",
 -	"", // ÅëëçíéêÜ (Greek)
 -	"", // Svenska
@@ -301,7 +301,7 @@ diff -u -r1.4.2.15 dxr3i18n.c
 -	"", // Français
 -	"", // Norsk
 -	"AC3-ulostulo pois",
--	"", // Polski
+-	"Wy³±cz wyj¶cie AC3",
 -	"Desactiva salida AC3",
 -	"", // ÅëëçíéêÜ (Greek)
 -	"", // Svenska
@@ -321,10 +321,10 @@ diff -u -r1.4.2.15 dxr3i18n.c
 Index: dxr3interface.c
 ===================================================================
 RCS file: /cvsroot/dxr3plugin/dxr3/dxr3interface.c,v
-retrieving revision 1.4.2.28
-diff -u -r1.4.2.28 dxr3interface.c
---- dxr3interface.c	18 Feb 2006 19:04:44 -0000	1.4.2.28
-+++ dxr3interface.c	18 Apr 2006 21:38:56 -0000
+retrieving revision 1.4.2.31
+diff -u -r1.4.2.31 dxr3interface.c
+--- dxr3interface.c	28 Jan 2007 16:51:15 -0000	1.4.2.31
++++ dxr3interface.c	28 Jan 2007 17:33:20 -0000
 @@ -139,26 +139,36 @@
  //! set audio output to digital ac3
  void cDxr3Interface::SetAudioDigitalAC3()
@@ -397,11 +397,11 @@ diff -u -r1.4.2.28 dxr3interface.c
 Index: dxr3interface.h
 ===================================================================
 RCS file: /cvsroot/dxr3plugin/dxr3/dxr3interface.h,v
-retrieving revision 1.2.2.17
-diff -u -r1.2.2.17 dxr3interface.h
---- dxr3interface.h	12 Dec 2005 17:16:15 -0000	1.2.2.17
-+++ dxr3interface.h	18 Apr 2006 21:38:56 -0000
-@@ -57,6 +57,19 @@
+retrieving revision 1.2.2.19
+diff -u -r1.2.2.19 dxr3interface.h
+--- dxr3interface.h	28 Jan 2007 16:51:15 -0000	1.2.2.19
++++ dxr3interface.h	28 Jan 2007 17:33:20 -0000
+@@ -56,6 +56,19 @@
      void SetAudioAnalog();
      void SetAudioDigitalPCM();
      void SetAudioDigitalAC3();
