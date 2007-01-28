@@ -20,6 +20,8 @@
  *
  */
 
+#include <linux/em8300.h>
+
 #include "dxr3device.h"
 #include "dxr3configdata.h"
 #include "dxr3interface.h"
@@ -327,7 +329,8 @@ int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
 // ==================================
 void cDxr3Device::SetVideoFormat(bool VideoFormat16_9)
 {
-    // Do we need this function?
+    cDxr3Interface::Instance().SetAspectRatio(
+	VideoFormat16_9 ? EM8300_ASPECTRATIO_16_9 : EM8300_ASPECTRATIO_4_3);
 }
 
 // ==================================

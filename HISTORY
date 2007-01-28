@@ -321,4 +321,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - add Polish translation (Mikolaj Tutak)
 - sync "make install" with VDR 1.4.2-2 (Ville Skyttä)
 - use cCondWait::SleepMs() instead of usleep (Ville Skyttä)
-- minor tweaks
+- various minor tweaks

@@ -172,10 +172,12 @@ int cDxr3PesFrame::ExtractVideoData(cDxr3SafeArray<uint8_t> esFrame)
 		switch ((esFrame[i + 7]) & 0xF0)
 		{
 		case 0x20:
-		    m_staticAspectRatio = m_aspectRatio = ASPECTRATIO_4_3;
+		    m_staticAspectRatio = m_aspectRatio =
+			EM8300_ASPECTRATIO_4_3;
 		    break;
 		case 0x30:
-		    m_staticAspectRatio = m_aspectRatio = ASPECTRATIO_16_9;
+		    m_staticAspectRatio = m_aspectRatio =
+			EM8300_ASPECTRATIO_16_9;
 		    break;
 		default:
 		    break;

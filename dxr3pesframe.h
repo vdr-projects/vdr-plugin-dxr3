@@ -26,10 +26,6 @@
 #include <stdint.h>
 
 // ==================================
-const int ASPECTRATIO_4_3 = 0;
-const int ASPECTRATIO_16_9 = 1;
-
-// ==================================
 enum eVideoFrameType
 {
     I_FRAME,
