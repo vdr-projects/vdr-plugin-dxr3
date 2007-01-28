@@ -234,7 +234,7 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 	 m_DemuxDevice.GetTrickState() == DXR3_FREEZE) ||
 	cDxr3Interface::Instance().IsExternalReleased())
     {
-	return -1;
+	return 0;
     }
 
     if (m_strBuf.length())
