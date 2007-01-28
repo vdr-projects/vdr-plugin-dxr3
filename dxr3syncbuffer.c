@@ -25,7 +25,6 @@
   sufficient control algorithm is implemented
 */
 
-#include <unistd.h>
 #include <sys/time.h>
 #include "dxr3syncbuffer.h"
 
@@ -376,7 +375,7 @@ void cDxr3SyncBuffer::WaitForSysClock(uint32_t pts, uint32_t delta)
     }
     else
     {
-	usleep(1); //* (pts - pSysClock->GetSysClock()));
+	cCondWait::SleepMs(3); //* (pts - pSysClock->GetSysClock()));
     }
 }
 
@@ -391,7 +390,7 @@ void cDxr3SyncBuffer::WaitForNextPut(void)
     }
     else
     {
-	usleep(1);
+	cCondWait::SleepMs(3);
     }
 }
 

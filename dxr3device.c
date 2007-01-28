@@ -234,8 +234,6 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 	 m_DemuxDevice.GetTrickState() == DXR3_FREEZE) ||
 	cDxr3Interface::Instance().IsExternalReleased())
     {
-	// Why is here so a huge time waster?
-	//usleep(1000000);
 	return -1;
     }
 
@@ -288,7 +286,6 @@ int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
 	 m_DemuxDevice.GetTrickState() == DXR3_FREEZE) ||
 	cDxr3Interface::Instance().IsExternalReleased())
     {
-	//usleep(1000000);
 	return 0;
     }
 

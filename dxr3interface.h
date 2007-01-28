@@ -25,7 +25,6 @@
 
 #include <stdlib.h>
 #include <stdint.h>
-#include <unistd.h>
 #include <linux/em8300.h>
 #include <sys/ioctl.h>
 

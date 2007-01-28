@@ -22,9 +22,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <unistd.h>
-#include "dxr3demuxdevice.h"
 #include <linux/em8300.h>
+#include "dxr3demuxdevice.h"
 #include "dxr3pesframe.h"
 #include "dxr3configdata.h"
 
@@ -348,7 +347,6 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
 			bPlaySuc = true;
 			//if (bPlayedFrame) return length;
 			bPlayedFrame = true;
-			//usleep(30000); // otherwise there is problem with audio (driver bug?)
 			m_dxr3Device.SetHorizontalSize(pesFrame.GetHorizontalSize());
 			m_dxr3Device.SetVerticalSize(pesFrame.GetVerticalSize());
 			m_dxr3Device.PlayVideoFrame(pesFrame.GetEsStart(), (int) (pesFrame.GetEsLength()), m_ReUseFrame);

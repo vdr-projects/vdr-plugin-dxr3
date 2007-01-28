@@ -20,7 +20,6 @@
  */
 
 #include <stdio.h>
-#include <unistd.h>
 #include <time.h>
 #include "dxr3outputthread.h"
 
@@ -117,7 +116,7 @@ void cDxr3AudioOutThread::Action()
 
 	if ((pts > SCR && abs((int)pts - (int)SCR) > AUDIO_OFFSET))
 	{
-	    usleep(10000);
+	    cCondWait::SleepMs(10);
 	}
     }
 }
@@ -199,7 +198,7 @@ void cDxr3VideoOutThread::Action()
 
 	    if ((pts > SCR && abs((int)pts - (int)SCR) > 7500 ))
 	    {
-		usleep(10000);
+		cCondWait::SleepMs(10);
 	    }
 	}
     }

@@ -874,7 +874,7 @@ void cDxr3Interface::ReOpenAudio()
 	{
 	    int bufsize = 0;
 	    ioctl(m_fdAudio, SNDCTL_DSP_GETODELAY, &bufsize);
-	    usleep(bufsize / 192 * 1000);
+	    cCondWait::SleepMs(bufsize / 192);
 
 	    delete m_pClock;
 	    close(m_fdAudio);
