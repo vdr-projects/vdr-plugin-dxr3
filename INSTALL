@@ -1,7 +1,9 @@
 Prerequisites:
 
 - Get the DXR3 drivers from http://sourceforge.net/projects/dxr3 ,
-  install, configure, test and verify the installation.
+  install, configure, test and verify the installation.  If you use
+  version 0.16.0 or later of the driver, be sure to load it in OSS
+  audio mode (audio_driver=oss parameter to the em8300 module).
 - Install VDR 1.4.x (or at least >= 1.3.42).
 - Install the libavcodec library from http://ffmpeg.sourceforge.net/
 
