@@ -20,6 +20,9 @@ private:
     const char *menuVideoModes[3];
     int newHideMenu;
     int newOsdFlushRate;
+    int newBrightness;
+    int newContrast;
+    int newSaturation;
 };
 
 

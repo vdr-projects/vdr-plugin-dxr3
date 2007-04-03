@@ -326,4 +326,6 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - sync "make install" with VDR 1.4.2-2 (Ville Skyttä)
 - use cCondWait::SleepMs() instead of usleep (Ville Skyttä)
 - avoid deprecation warnings with newish libavcodec (Ville Skyttä)
+- add brightness/contrast/saturation settings to setup (Ville Skyttä)
+- apply more settings immediately from setup menu (Ville Skyttä)
 - various minor tweaks
