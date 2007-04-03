@@ -13,7 +13,8 @@ VDR Plugin 'dxr3' Revision History
 2002-11-12: Version 0.1.1
 
 - Changed Makefile (needed for vdr 1.1.15)
-- The plugin should now work smoother under heavy system load (e.g. network traffic)
+- The plugin should now work smoother under heavy system load
+  (e.g. network traffic)
 
 2002-12-23: Version 0.1.2
 - Compiles now with gcc3.2.
@@ -58,8 +59,8 @@ smaller than 700.
 2003-03-23: Version 0.1.7
 - Added unix domain server interface to close and reopen dxr3 devices without
   stopping vdr (see dxr3_ux_client.pl script on how to use this).
-  Requested by Atte Manninen.
-  Thanks to Atte Manninen and Teemu Rantanen for testing and fixing some problems.
+  Requested by Atte Manninen, thanks to him and Teemu Rantanen for testing
+  and fixing some problems.
 - Added support for external player mode.
 - Some cosmetic changes.
 - Some changes to reduce cpu load.
@@ -69,14 +70,14 @@ smaller than 700.
 - Added buffered output for mp3-plugin audio data. This seems to improve audio
   quality significantly.
 - Reduced count of audio errors (wrong data rate).
-- Changed channel switch behavior (to remove audio disturbances => channel switching
-  is a little bit slower now).
+- Changed channel switch behavior (to remove audio disturbances => channel
+  switching is a little bit slower now).
 - Added exception handling for defect pes streams.
 - Added more checks by introducing a new pes parsing class.
-- Fixed buffer overrun problem. Because of the missing pll control a buffer overrun
-  happens after staying for a long time on the same channel. In older version
-  the output stopped after a buffer overrun. Now the buffer will be cleared and
-  the output will continue after about a second.
+- Fixed buffer overrun problem. Because of the missing pll control a buffer
+  overrun happens after staying for a long time on the same channel. In older
+  versions the output stopped after a buffer overrun. Now the buffer will be
+  cleared and the output will continue after about a second.
 - New buffer handling in PlayVideo.
 
 2003-03-23: Version 0.1.7a
@@ -91,9 +92,9 @@ smaller than 700.
 - Added support for video format setup parameter (no WSS support).
 - Fixed external player support (thanks to Seppo Ingalsuo).
 - Added volume support (thanks to Teemu Rantanen).
-- Fixed I-Frame display problem (cutting and fast forward/backwards in some streams).
-  Those who have problems with fast forward/backward might want to patch
-  vdr (use vdr_iframe_patch.diff / for vdr-1.1.29).
+- Fixed I-Frame display problem (cutting and fast forward/backwards in some
+  streams). Those who have problems with fast forward/backward might want to
+  patch vdr (use vdr_iframe_patch.diff / for vdr-1.1.29).
 - Reduced memory consumption.
 - Fixed problem with digital output setup parameter.
 - Fixed wrong bit error detection.
@@ -117,13 +118,13 @@ smaller than 700.
 2003-05-07: Version 0.2.0
 - Fixed compatibility problem with vdr version 1.1.31 and higher.
 - Fixed analog audio problem (spurious disturbances).
-- Added first cut mpeg1 support: It works quite good with vcd plugin. As far as I know
-  this doesn't work reliable together with analog plugin. Thanks to Gavin Hamill for
-  testing support and investigations with analog plugin.
+- Added first cut mpeg1 support: It works quite good with vcd plugin. As far
+  as I know this doesn't work reliable together with analog plugin. Thanks to
+  Gavin Hamill for testing support and investigations with analog plugin.
   No osd scaling for mpeg1 at the moment.
-- Changed channel switch behavior with respect to mpeg1 support (it doesn't seem
-  to be possible to switch between mpeg1 and mpeg2 without closing and reopening the
-  video device).
+- Changed channel switch behavior with respect to mpeg1 support (it doesn't
+  seem to be possible to switch between mpeg1 and mpeg2 without closing and
+  reopening the video device).
 - Improved lib sync.
 
 2003-08-10: Version 0.2.1
@@ -133,8 +134,8 @@ smaller than 700.
   to Jon Burgess.
 - Fixed incorrect ioctl-problem. Thanks to Jon Burgess.
 - Fixed wrong scaled osd problem when starting vdr without live stream.
-- Fixed external player problem when return to dxr3 output after using ac3 output.
-  Thanks to Jarkko Santala for reporting this one.
+- Fixed external player problem when return to dxr3 output after using ac3
+  output. Thanks to Jarkko Santala for reporting this one.
 - Fixed wrong assert-call. Thanks to Andre Neumann.
 
 2004-01-04: Version 0.2.2
@@ -172,7 +173,8 @@ smaller than 700.
   in every *.c file there can be something like this at the top of the file:
   /*
 	ToDo:
-		- cDxr3SyncBuffer::Push: XXX This is only a workaround until a sufficient control algorithm is implemented
+		- cDxr3SyncBuffer::Push: XXX This is only a workaround until
+                  a sufficient control algorithm is implemented
   */
 
   So it is easier to keep track of stuff, which needs more work.
@@ -188,11 +190,13 @@ smaller than 700.
   volume. Thanks to Jon Burgess <mplayer@jburgess.uklinux.net>
 - added patch for DVD subtitles. Thanks to Stuart Daines <s.daines@ntlworld.com>
 - fixed memory leak in dxr3osd.c - Thanks to Miika Pekkarinen <miipekk@ihme.org>
-- added Tools namespace, which has a fixed Rgb2YCrCb function in it (dxr3tools.h)
+- added Tools namespace, which has a fixed Rgb2YCrCb function in it
+  (dxr3tools.h)
 - kicked out Cmd in dxr3osd.h/c
 - added dxr3i18n.h/c
 - added Portuguese language support - thanks to Paulo Lopes <pmml@netvita.pt>
-- added Finnish language support - thanks to Hannu Savolainen <hannu@opensound.com>
+- added Finnish language support - thanks to Hannu Savolainen
+  <hannu@opensound.com>
 - added Swedish language support - thanks to Tomas Prybil <tomas@prybil.se>
 NOTE: I havent found time to include all of the languages, will be done in pre2
 - kicked out - i hope - some unneeded usleeps
@@ -219,14 +223,14 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - added dxr3cpu.c/h to get some infos about the cpu
 - added dxr3memcpy.c/h to get a little speedup - i hope
 - maybe a little audiofix: lastHeader in cDxr3AudioDecoder will now set to 0
-  with the constr. and not via Init()-function. So there should be now some lesser
-  audio scratches.
+  with the constr. and not via Init()-function. So there should be less audio
+  scratches now.
 - osd works now on every resolution (viva, viva plus,...)
 - added main-menu-entry
 - added in some parts some memory allocation tests
-- added fix for Makefile from vdr-portal.de -> should compile on more machines :)
-- added Tools::WriteInfoToOsd(...) - now some infos like "Releasing devices" are show
-  now on the osd again
+- added fix for Makefile from vdr-portal.de -> should compile on more machines
+- added Tools::WriteInfoToOsd(...) - now some info like "Releasing devices"
+  are shown on the osd again
 - fixed dxr3osd_subpicutre.c - thanks to Paavo Hartikainen <pahartik@sci.fi>
 
 
