@@ -93,7 +93,7 @@ void cDxr3AudioDecoder::Decode(const uint8_t* buf, int length, uint32_t pts,
     }
 
     int len;
-    int out_size;
+    int out_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;
 
     enum audioException
     {
@@ -141,9 +141,13 @@ void cDxr3AudioDecoder::Decode(const uint8_t* buf, int length, uint32_t pts,
     {
 	while (length > 0 && decodeAudio)
 	{
-	    len = avcodec_decode_audio(&Codec.codec_context,
-				       (short *)(&pcmbuf), &out_size,
-				       const_cast<uint8_t *>(buf), length);
+#if LIBAVCODEC_VERSION_INT < ((51<<16)+(29<<8)+0)
+	    len = avcodec_decode_audio(
+#else
+	    len = avcodec_decode_audio2(
+#endif
+		&Codec.codec_context, (short *)(&pcmbuf), &out_size,
+		const_cast<uint8_t *>(buf), length);
 	    if (len < 0 || out_size < 0)
 		throw WRONG_LENGTH;
 
