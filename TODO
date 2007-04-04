@@ -38,6 +38,13 @@ Troubleshooting, known problems, bugs, and workarounds related to this driver:
   text2skin plugin with the enElchi skin has been reported to work much
   better than other skins (even with OSD flush rate set to 0).
 
+* If VDR becomes unresponsive when using the MP3 or Muggle plugins, or
+  there are stuttering/stickiness problems with the DVD plugin, and
+  you're using a NPTL system, try disabling NPTL if possible (eg.
+  export LD_ASSUME_KERNEL=2.4.19 before starting VDR).  NPTL cannot be
+  disabled on all systems, and anyway it would be very nice if someone
+  found what the problem is, and would submit a patch.
+
 Other TODOs:
 ------------
 
