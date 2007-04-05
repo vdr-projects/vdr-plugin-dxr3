@@ -32,8 +32,7 @@ enum eDxr3OsdItem
     DXR3_RESET_HARDWARE,
     DXR3_FORCE_LETTER_BOX,
     DXR3_DIGITAL_OUT,
-    DXR3_ANALOG_OUT,
-    DXR3_AC3_OUT
+    DXR3_ANALOG_OUT
 };
 
 // ==================================
@@ -71,22 +70,6 @@ public:
 	else
 	    Add(new cDxr3OsdItem(hk(tr("Switch to digital audio output")),
 				 DXR3_DIGITAL_OUT));
-	/*
-	if (cDxr3ConfigData::Instance().GetUseDigitalOut())
-	{
-	    Add(new cDxr3OsdItem(hk("Analog output"), DXR3_ANALOG_OUT));
-
-	    if (cDxr3ConfigData::Instance().GetAc3OutPut())
-		Add(new cDxr3OsdItem(hk(tr("AC3 output off")), DXR3_AC3_OUT));
-	    else if (cDxr3Interface::Instance().IsAc3Present())
-		Add(new cDxr3OsdItem(hk(tr("AC3 output on")), DXR3_AC3_OUT));
-	}
-	else
-	{
-	    Add(new cDxr3OsdItem(hk(tr("Switch to digital audio output")),
-				 DXR3_DIGITAL_OUT));
-	}
-	*/
     }
 };
 

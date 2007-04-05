@@ -78,7 +78,6 @@ public:
 protected:
     ePlayMode m_PlayMode;
     cDxr3DemuxDevice m_DemuxDevice;
-    bool m_AC3Present;
     bool m_CalledBySet;
     std::string m_strBuf;
     int m_Offset;

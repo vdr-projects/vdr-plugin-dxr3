@@ -78,14 +78,6 @@ public:
     {
 	return m_forceletterbox = value;
     }
-    int GetAc3OutPut() const
-    {
-	return m_ac3output;
-    }
-    int SetAc3OutPut(int value)
-    {
-	return m_ac3output = value;
-    }
 
     eVideoMode GetVideoMode() const
     {
@@ -152,7 +144,6 @@ protected:
     eMenuMode m_menumode;
 
     int m_digitaloutput;
-    int m_ac3output;
     int m_card;
     int m_forceletterbox;
     int m_brightness;

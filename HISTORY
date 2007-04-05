@@ -320,7 +320,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - add work-in-progress AC3 patch to patches/ (Agneau Egare, Ville Skyttä)
 - use VDR's thread activity control features instead of our own (Luca Olivetti)
 
-200x-xx-xx: Version x.x.x
+200x-xx-xx: Version 0.2.7
 
 - add Polish translation (Mikolaj Tutak)
 - sync "make install" with VDR 1.4.2-2 (Ville Skyttä)
@@ -328,4 +328,5 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - avoid deprecation warnings with newish libavcodec (Ville Skyttä)
 - add brightness/contrast/saturation settings to setup (Ville Skyttä)
 - apply more settings immediately from setup menu (Ville Skyttä)
+- apply AC3 patch which was in patches/ in previous releases
 - various minor tweaks

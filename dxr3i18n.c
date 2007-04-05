@@ -301,52 +301,6 @@ const tI18nPhrase Phrases[] = {
 	"", // Czech
     },
     {
-	"AC3 output on",
-	"AC3 Ausgabe Ein",
-	"", // Slovenski
-	"Attiva uscita AC3",
-	"", // Nederlands
-	"", // Português
-	"", // Français
-	"", // Norsk
-	"AC3-ulostulo päälle",
-	"W³±cz wyj¶cie AC3",
-	"Activa salida AC3",
-	"", // ÅëëçíéêÜ (Greek)
-	"", // Svenska
-	"", // Românã
-	"", // Magyar
-	"Activa sortida AC3",
-	"", // ÀãááÚØÙ (Russian)
-	"", // Hrvatski
-	"", // Eesti
-	"", // Dansk
-	"", // Czech
-    },
-    {
-	"AC3 output off",
-	"AC3 Ausgabe Aus",
-	"", // Slovenski
-	"Disattiva uscita AC3",
-	"", // Nederlands
-	"", // Português
-	"", // Français
-	"", // Norsk
-	"AC3-ulostulo pois",
-	"Wy³±cz wyj¶cie AC3",
-	"Desactiva salida AC3",
-	"", // ÅëëçíéêÜ (Greek)
-	"", // Svenska
-	"", // Românã
-	"", // Magyar
-	"Desactiva sortida AC3",
-	"", // ÀãááÚØÙ (Russian)
-	"", // Hrvatski
-	"", // Eesti
-	"", // Dansk
-	"", // Czech
-    },
-    {
 	"Switch to digital audio output",
 	"Digitaler Ausgang",
 	"", // Slovenski

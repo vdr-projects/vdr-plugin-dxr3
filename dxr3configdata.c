@@ -27,7 +27,6 @@
 cDxr3ConfigData::cDxr3ConfigData()
 {
     m_digitaloutput = 0;
-    m_ac3output = 0;
     m_card = 0;
     m_forceletterbox = 0;
     m_videomode = PAL;

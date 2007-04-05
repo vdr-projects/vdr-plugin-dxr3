@@ -3,7 +3,7 @@
  *
  * See the README file for copyright information and how to reach the author.
  *
- * $Id: dxr3.c,v 1.1.2.28 2007/04/03 15:37:14 scop Exp $
+ * $Id: dxr3.c,v 1.1.2.29 2007/04/05 20:34:23 scop Exp $
  *
  */
 
@@ -46,21 +46,12 @@ eOSState cDxr3OsdItem::ProcessKey(eKeys Key)
 
 	case DXR3_ANALOG_OUT:
 	    cDxr3ConfigData::Instance().SetUseDigitalOut(0);
-	    cDxr3ConfigData::Instance().SetAc3OutPut(0);
 	    if (cDxr3Device::InstanceP())
 		cDxr3Device::InstanceP()->Reset();
 	    break;
 
 	case DXR3_DIGITAL_OUT:
 	    cDxr3ConfigData::Instance().SetUseDigitalOut(1);
-	    cDxr3ConfigData::Instance().SetAc3OutPut(0);
-	    if (cDxr3Device::InstanceP())
-		cDxr3Device::InstanceP()->Reset();
-	    break;
-
-	case DXR3_AC3_OUT:
-	    cDxr3ConfigData::Instance().SetAc3OutPut(
-		!cDxr3ConfigData::Instance().GetAc3OutPut());
 	    if (cDxr3Device::InstanceP())
 		cDxr3Device::InstanceP()->Reset();
 	    break;

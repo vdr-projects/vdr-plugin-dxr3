@@ -35,7 +35,6 @@ cDxr3Device::cDxr3Device() : m_DemuxDevice(cDxr3Interface::Instance())
     m_Offset = 0;
     m_strBuf.erase(m_strBuf.begin(), m_strBuf.end());
     m_spuDecoder = NULL;
-    m_AC3Present = false;
     m_CalledBySet = false;
 }
 
@@ -86,7 +85,6 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
 
     // should this really be here?
     m_Offset = 0;
-    m_AC3Present = false;
     m_strBuf.erase(m_strBuf.begin(), m_strBuf.end());
 
     if (PlayMode == pmAudioOnlyBlack)
@@ -108,17 +106,10 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
 	m_DemuxDevice.Stop();
     }
 
+    // TODO: what about AC3???
     if (cDxr3ConfigData::Instance().GetUseDigitalOut())
     {
-	if (cDxr3ConfigData::Instance().GetAc3OutPut() && m_CalledBySet)
-	{
-	    cDxr3Interface::Instance().SetAudioDigitalAC3(); // !!! FIXME
-	}
-	else
-	{
-	    cDxr3Interface::Instance().SetAudioDigitalPCM();
-	    cDxr3ConfigData::Instance().SetAc3OutPut(0);
-	}
+	cDxr3Interface::Instance().SetAudioDigitalPCM();
     }
     else
     {
@@ -282,7 +273,10 @@ int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
     int retLength = 0;
     int origLength = Length;
 
-    m_AC3Present = true;
+    bool isAc3 = ((Id & 0xF0) == 0x80) || Id == 0xbd;
+    
+    if (isAc3 && !cDxr3Interface::Instance().IsAudioModeAC3())
+	cDxr3Interface::Instance().SetAudioDigitalAC3();
 
     if ((m_DemuxDevice.GetDemuxMode() == DXR3_DEMUX_TRICK_MODE &&
 	 m_DemuxDevice.GetTrickState() == DXR3_FREEZE) ||
@@ -298,7 +292,7 @@ int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
 	{
 	    retLength = m_DemuxDevice.DemuxAudioPes((const uint8_t*)m_strBuf.data(), m_strBuf.length());
 	} else {
-	    retLength = m_DemuxDevice.DemuxPes((const uint8_t*)m_strBuf.data(), m_strBuf.length(), true);
+	    retLength = m_DemuxDevice.DemuxPes((const uint8_t*)m_strBuf.data(), m_strBuf.length(), isAc3);
 	}
     }
     else if (m_PlayMode == pmAudioOnly)
@@ -307,7 +301,7 @@ int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
     }
     else
     {
-	retLength = m_DemuxDevice.DemuxPes((const uint8_t*)Data, Length, true);
+	retLength = m_DemuxDevice.DemuxPes((const uint8_t*)Data, Length, isAc3);
     }
 
     Length -= retLength;

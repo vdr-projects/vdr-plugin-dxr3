@@ -139,25 +139,35 @@ void cDxr3Interface::SetAudioDigitalPCM()
 //! set audio output to digital ac3
 void cDxr3Interface::SetAudioDigitalAC3()
 {
-    if (m_audioMode != EM8300_AUDIOMODE_DIGITALAC3)
+    int ioval = 0;
+    Lock();
+
+    if (!m_ExternalReleased && m_audioMode != EM8300_AUDIOMODE_DIGITALAC3)
     {
-	int ioval = 0;
-	Lock();
-
-	if (!m_ExternalReleased && m_audioMode != EM8300_AUDIOMODE_DIGITALAC3)
+	m_audioMode = ioval = EM8300_AUDIOMODE_DIGITALAC3;
+	isyslog("dxr3: setting digital AC3 audio mode");
+	if (ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &ioval) < 0)
 	{
-	    m_audioMode = ioval = EM8300_AUDIOMODE_DIGITALAC3;
-	    isyslog("dxr3: setting digital AC3 audio mode");
-	    if (ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &ioval) < 0)
-	    {
-		esyslog("dxr3: unable to set AC3 audio mode: %m");
-	    }
-	    ReOpenAudio();
+	    esyslog("dxr3: unable to set AC3 audio mode: %m");
 	}
-
-	Unlock();
+	ReOpenAudio();
     }
+
+    Unlock();
 }
+
+
+// =================================
+//! get current audio mode
+int cDxr3Interface::GetAudioMode()
+{
+    int audioMode;
+    Lock();
+    ioctl(m_fdControl, EM8300_IOCTL_GET_AUDIOMODE, &audioMode);
+    Unlock();
+    return audioMode;
+}
+
 
 // ==================================
 //! set audio speed
@@ -591,7 +601,7 @@ void cDxr3Interface::PlayAudioFrame(cFixedLengthFrame* pFrame)
 
 	if (!m_ExternalReleased)
 	{
-	    if (!cDxr3ConfigData::Instance().GetAc3OutPut())
+	    if (!cDxr3Interface::Instance().IsAudioModeAC3())
 		ResampleVolume((short*)pFrame->GetData(), pFrame->GetCount());
 
 	    written = write(m_fdAudio, pFrame->GetData(), pFrame->GetCount());
@@ -619,7 +629,7 @@ void cDxr3Interface::PlayAudioFrame(uint8_t* pBuf, int length)
 
     if (!m_ExternalReleased)
     {
-	if (!cDxr3ConfigData::Instance().GetAc3OutPut())
+	if (!cDxr3Interface::Instance().IsAudioModeAC3())
 	    ResampleVolume((short*)pBuf, length);
 
 	if ((written = write(m_fdAudio, pBuf, length)) < 0)

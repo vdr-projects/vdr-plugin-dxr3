@@ -271,7 +271,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
     //printf("vBuf size = %d\n", m_vBuf.Available());
     //printf("aBuf size = %d\n", m_aBuf.Available());
     /*
-    if (cDxr3ConfigData::Instance().GetAc3OutPut())
+    if (cDxr3Interface::Instance().IsAudioModeAC3())
 	cDxr3Interface::Instance().SetAudioDigitalAC3(); // !!! FIXME
     */
 
@@ -302,10 +302,6 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
 	aPts = 0;
 	vPts = 0;
 	bPlaySuc = false;
-	/*
-	if (cDxr3ConfigData::Instance().GetAc3OutPut())
-	    cDxr3Interface::Instance().SetAudioDigitalAC3(); // !!! FIXME
-	*/
     }
 
     // find start code
@@ -450,7 +446,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
 	    }
 	    else if (pesFrame.GetPesDataType() == cDxr3PesFrame::PES_AUDIO_DATA
 		     && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
-		     && !cDxr3ConfigData::Instance().GetAc3OutPut())
+		     && !cDxr3Interface::Instance().IsAudioModeAC3())
 	    {
 		if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
 		    m_synchState == DXR3_DEMUX_SYNCHED)
@@ -513,7 +509,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
 	    }
 	    else if (pesFrame.GetPesDataType() == cDxr3PesFrame::PES_PRIVATE_DATA
 		     && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
-		     && !cDxr3ConfigData::Instance().GetAc3OutPut()
+		     && !cDxr3Interface::Instance().IsAudioModeAC3()
 		     && !bAc3Dts)
 	    {
 		if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
@@ -562,7 +558,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
 	    }
 	    else if (pesFrame.GetPesDataType() == cDxr3PesFrame::PES_PRIVATE_DATA
 		     && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
-		     && cDxr3ConfigData::Instance().GetAc3OutPut()
+		     && cDxr3Interface::Instance().IsAudioModeAC3()
 		     && bAc3Dts)
 	    {
 		if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||

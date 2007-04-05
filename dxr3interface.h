@@ -56,6 +56,19 @@ public:
     void SetAudioAnalog();
     void SetAudioDigitalPCM();
     void SetAudioDigitalAC3();
+    int GetAudioMode();
+    int IsAudioModeAnalog()
+    {
+	return GetAudioMode() == EM8300_AUDIOMODE_ANALOG;
+    }
+    int IsAudioModePCM()
+    {
+	return GetAudioMode() == EM8300_AUDIOMODE_DIGITALPCM;
+    }
+    int IsAudioModeAC3()
+    {
+	return GetAudioMode() == EM8300_AUDIOMODE_DIGITALAC3;
+    }
     void SetVolume(int volume)
     {
 	m_volume = volume;
