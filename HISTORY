@@ -328,5 +328,5 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - avoid deprecation warnings with newish libavcodec (Ville Skyttä)
 - add brightness/contrast/saturation settings to setup (Ville Skyttä)
 - apply more settings immediately from setup menu (Ville Skyttä)
-- apply AC3 patch which was in patches/ in previous releases
+- apply AC3 and WSS patches which were in patches/ in previous releases
 - various minor tweaks

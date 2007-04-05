@@ -422,20 +422,39 @@ uint32_t cDxr3Interface::GetAspectRatio() const
 void cDxr3Interface::SetAspectRatio(uint32_t ratio)
 {
     static int requestCounter = 0;
+    int wssmode;
+    int aspect;
 
     Lock();
 
     if (cDxr3ConfigData::Instance().GetForceLetterBox())
 	ratio = EM8300_ASPECTRATIO_16_9;
-    if (Setup.VideoFormat)
-	ratio = EM8300_ASPECTRATIO_4_3;
 
     if (!m_ExternalReleased && ratio != UNKNOWN_ASPECT_RATIO)
     {
 	if (ratio != m_aspectRatio && requestCounter > 50)
 	{
+	    if (Setup.VideoFormat)
+	    {
+		aspect = EM8300_ASPECTRATIO_4_3;
+#ifdef EM8300_IOCTL_SET_WSS
+		if (ratio == EM8300_ASPECTRATIO_16_9)
+		    wssmode = EM8300_WSS_16_9;
+		else
+		    wssmode = EM8300_WSS_OFF;
+		if (ioctl(m_fdControl, EM8300_IOCTL_SET_WSS, &wssmode) < 0)
+		{
+		    esyslog("dxr3: unable to set WSS: %m");
+		}
+#endif
+	    }
+	    else
+	    {
+		aspect = ratio;
+	    }
+
 	    requestCounter = 0;
-	    if (ioctl(m_fdControl, EM8300_IOCTL_SET_ASPECTRATIO, &ratio) < 0)
+	    if (ioctl(m_fdControl, EM8300_IOCTL_SET_ASPECTRATIO, &aspect) < 0)
 	    {
 		esyslog("dxr3: unable to set aspect ratio: %m");
 	    }

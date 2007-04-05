@@ -44,8 +44,12 @@ Troubleshooting, known problems, bugs, and workarounds related to this driver:
   disabled on all systems, and anyway it would be very nice if someone
   found what the problem is, and would submit a patch.
 
-Other TODOs:
-------------
+* Wide screen signaling (WSS) requires patching the em8300 driver, and
+  probably works only with ADV7170, see patches/em8300-adv7170-wss.patch
+  and http://thread.gmane.org/gmane.linux.vdr/17095
+
+Other (some possibly stale) TODOs:
+----------------------------------
 
 * set bcs
 * clean unneeded log entries
