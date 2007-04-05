@@ -15,6 +15,7 @@ Description:                  DXR3/Hollywood+ MPEG decoder card plugin which
                               allows using such a card as primary interface
                               for VDR.
 
-See the file COPYING for license information.
+See the file COPYING for copyright information.
 For installation instructions, see the file INSTALL.
-See TODO for a list of work in progress items, bugs and some workarounds.
+See TROUBLESHOOTING for a list of work in progress items, bugs and some
+workarounds.
