@@ -3,7 +3,7 @@
  *
  * See the README file for copyright information and how to reach the author.
  *
- * $Id: dxr3.c,v 1.1.2.29 2007/04/05 20:34:23 scop Exp $
+ * $Id: dxr3.c,v 1.1.2.30 2007/04/09 19:57:44 scop Exp $
  *
  */
 
@@ -129,6 +129,7 @@ private:
 public:
     cPluginDxr3();
     ~cPluginDxr3();
+
     const char *Version()
     {
 	return VERSION;
@@ -137,15 +138,14 @@ public:
     {
 	return tr(DESCRIPTION);
     }
-    const char *CommandLineHelp();
-    bool ProcessArgs(int argc, char *argv[]);
+
     bool Initialize();
-    bool Start();
-    void Housekeeping();
-    cMenuSetupPage *SetupMenu();
-    bool SetupParse(const char *Name, const char *Value);
+
     const char* MainMenuEntry();
     cOsdObject* MainMenuAction();
+
+    cMenuSetupPage *SetupMenu();
+    bool SetupParse(const char *Name, const char *Value);
 };
 
 // ==================================
@@ -163,24 +163,6 @@ cPluginDxr3::~cPluginDxr3()
 }
 
 // ==================================
-const char *cPluginDxr3::CommandLineHelp()
-{
-    return NULL;
-}
-
-// ==================================
-bool cPluginDxr3::ProcessArgs(int argc, char *argv[])
-{
-    return true;
-}
-
-// ==================================
-bool cPluginDxr3::Start()
-{
-    return true;
-}
-
-// ==================================
 bool cPluginDxr3::Initialize()
 {
     RegisterI18n(Phrases);
@@ -188,11 +170,6 @@ bool cPluginDxr3::Initialize()
     cDxr3Device::InstanceP();
 
     return true;
-}
-
-// ==================================
-void cPluginDxr3::Housekeeping()
-{
 }
 
 // ==================================
