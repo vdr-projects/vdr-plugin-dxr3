@@ -438,13 +438,16 @@ void cDxr3Interface::SetAspectRatio(uint32_t ratio)
 	    {
 		aspect = EM8300_ASPECTRATIO_4_3;
 #ifdef EM8300_IOCTL_SET_WSS
-		if (ratio == EM8300_ASPECTRATIO_16_9)
-		    wssmode = EM8300_WSS_16_9;
-		else
-		    wssmode = EM8300_WSS_OFF;
-		if (ioctl(m_fdControl, EM8300_IOCTL_SET_WSS, &wssmode) < 0)
+		if (cDxr3ConfigData::Instance().GetUseWSS())
 		{
-		    esyslog("dxr3: unable to set WSS: %m");
+		    if (ratio == EM8300_ASPECTRATIO_16_9)
+			wssmode = EM8300_WSS_16_9;
+		    else
+			wssmode = EM8300_WSS_OFF;
+		    if (ioctl(m_fdControl, EM8300_IOCTL_SET_WSS, &wssmode) < 0)
+		    {
+			esyslog("dxr3: unable to set WSS: %m");
+		    }
 		}
 #endif
 	    }

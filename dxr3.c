@@ -3,7 +3,7 @@
  *
  * See the README file for copyright information and how to reach the author.
  *
- * $Id: dxr3.c,v 1.1.2.30 2007/04/09 19:57:44 scop Exp $
+ * $Id: dxr3.c,v 1.1.2.31 2007/04/26 21:02:41 scop Exp $
  *
  */
 
@@ -80,6 +80,11 @@ cMenuSetupDxr3::cMenuSetupDxr3(void)
     menuVideoModes[2] = tr("NTSC");
     Add(new cMenuEditStraItem(tr("Video mode"),
 			      &newVideoMode, 3, menuVideoModes));
+    newUseWSS = cDxr3ConfigData::Instance().GetUseWSS();
+#ifdef EM8300_IOCTL_SET_WSS
+    Add(new cMenuEditBoolItem(tr("Use widescreen signaling (WSS)"),
+			      &newUseWSS));
+#endif
     newUseDigitalOut = cDxr3ConfigData::Instance().GetUseDigitalOut();
     Add(new cMenuEditBoolItem(tr("Digital audio output"), &newUseDigitalOut));
     newOsdFlushRate = cDxr3ConfigData::Instance().GetOsdFlushRate();
@@ -103,7 +108,10 @@ void cMenuSetupDxr3::Store(void)
     SetupStore("Saturation",
 	       cDxr3ConfigData::Instance().SetSaturation(newSaturation));
     SetupStore("Dxr3VideoMode",
-	       cDxr3ConfigData::Instance().SetVideoMode((eVideoMode) newVideoMode));
+	       cDxr3ConfigData::Instance().SetVideoMode(
+		   (eVideoMode) newVideoMode));
+    SetupStore("UseWSS",
+	       cDxr3ConfigData::Instance().SetUseWSS(newUseWSS));
     SetupStore("UseDigitalOut",
 	       cDxr3ConfigData::Instance().SetUseDigitalOut(newUseDigitalOut));
     SetupStore("OsdFlushRate",

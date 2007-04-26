@@ -18,6 +18,7 @@ private:
     int newDxr3Card;
     int newVideoMode;
     const char *menuVideoModes[3];
+    int newUseWSS;
     int newHideMenu;
     int newOsdFlushRate;
     int newBrightness;

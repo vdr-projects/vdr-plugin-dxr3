@@ -232,6 +232,29 @@ const tI18nPhrase Phrases[] = {
 	"", // Czech
     },
     {
+	"Use widescreen signaling (WSS)",
+	"", // Deutsch
+	"", // Slovenski
+	"", // Italiano
+	"", // Nederlands
+	"", // Português
+	"", // Français
+	"", // Norsk
+	"Käytä WSS-signalointia",
+	"", // Polski
+	"", // Español
+	"", // ÅëëçíéêÜ (Greek)
+	"", // Svenska
+	"", // Românã
+	"", // Magyar
+	"", // Català
+	"", // ÀãááÚØÙ (Russian)
+	"", // Hrvatski
+	"", // Eesti
+	"", // Dansk
+	"", // Czech
+    },
+    {
 	"Reset DXR3 hardware",
 	"Reset DXR3 Hardware",
 	"", // Slovenski

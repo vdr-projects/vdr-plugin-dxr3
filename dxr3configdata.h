@@ -139,10 +139,19 @@ public:
 	return m_osdflushrate = value;
     }
 
+    int GetUseWSS() const
+    {
+	return m_usewss;
+    }
+    int SetUseWSS(int value)
+    {
+	return m_usewss = value;
+    }
+
 protected:
     eVideoMode m_videomode;
+    int m_usewss;
     eMenuMode m_menumode;
-
     int m_digitaloutput;
     int m_card;
     int m_forceletterbox;
