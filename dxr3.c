@@ -3,7 +3,7 @@
  *
  * See the README file for copyright information and how to reach the author.
  *
- * $Id: dxr3.c,v 1.1.2.31 2007/04/26 21:02:41 scop Exp $
+ * $Id: dxr3.c,v 1.1.2.32 2007/04/28 19:00:10 scop Exp $
  *
  */
 
@@ -202,6 +202,11 @@ bool cPluginDxr3::SetupParse(const char *Name, const char *Value)
     if (!strcasecmp(Name, "Dxr3VideoMode"))
     {
 	cDxr3ConfigData::Instance().SetVideoMode((eVideoMode) atoi(Value));
+	return true;
+    }
+    if (!strcasecmp(Name, "UseWSS"))
+    {
+	cDxr3ConfigData::Instance().SetUseWSS(atoi(Value));
 	return true;
     }
     if (!strcasecmp(Name, "HideMenu"))
