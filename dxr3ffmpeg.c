@@ -23,6 +23,9 @@
 #include "dxr3configdata.h"
 #include <vdr/tools.h>
 
+// Only in private headers in >= ~2007-07 ffmpeg
+extern AVCodec mp2_decoder;
+
 // ==================================
 //! constructor
 cDxr3Ffmpeg::cDxr3Ffmpeg()

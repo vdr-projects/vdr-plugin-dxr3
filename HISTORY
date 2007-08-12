@@ -331,3 +331,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - apply AC3 and WSS patches which were in patches/ in previous releases
 - add setup option for enabling/disabling WSS (Ville Skyttä)
 - various minor tweaks
+
+200x-xx-xx: Version x.x.x
+
+- Fix build with >= ~2007-07 ffmpeg (Ville Skyttä)
