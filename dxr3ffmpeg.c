@@ -23,16 +23,15 @@
 #include "dxr3configdata.h"
 #include <vdr/tools.h>
 
-// Only in private headers in >= ~2007-07 ffmpeg
-extern AVCodec mp2_decoder;
-
 // ==================================
 //! constructor
 cDxr3Ffmpeg::cDxr3Ffmpeg()
 {
     avcodec_init();
-    // Register only codec(s) we'll need.
-    register_avcodec(&mp2_decoder);
+    // Only the MP2 decoder would be needed, but individual registration of
+    // codecs bundled with ffmpeg itself does not appear to be really supported
+    // as of ffmpeg 2007-07-xx and later.
+    avcodec_register_all();
 }
 
 // ==================================
