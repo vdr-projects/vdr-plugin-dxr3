@@ -335,3 +335,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 200x-xx-xx: Version x.x.x
 
 - Fix build with >= ~2007-07 ffmpeg (Ville Skyttä)
+- Drop support for < 1.4.0 VDR versions (Ville Skyttä)
