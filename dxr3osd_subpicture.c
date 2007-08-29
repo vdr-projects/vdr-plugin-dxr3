@@ -33,7 +33,12 @@ public:
 
 // ==================================
 //! constructor
+#if APIVERSNUM < 10509
 cDxr3SubpictureOsd::cDxr3SubpictureOsd(int Left, int Top) : cOsd(Left, Top)
+#else
+cDxr3SubpictureOsd::cDxr3SubpictureOsd(int Left, int Top, uint Level)
+    : cOsd(Left, Top, 0)
+#endif
 {
     shown = false;
     Palette = new cPalette(4);

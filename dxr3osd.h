@@ -10,7 +10,11 @@ class cDxr3OsdProvider : public cOsdProvider
 {
 public:
     cDxr3OsdProvider() {}
+#if APIVERSNUM < 10509
     virtual cOsd *CreateOsd(int Left, int Top);
+#else
+    virtual cOsd *CreateOsd(int Left, int Top, uint Level);
+#endif
 };
 
 #endif /*_DXR3_OSD_H_*/

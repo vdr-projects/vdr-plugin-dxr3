@@ -15,7 +15,11 @@ private:
     cTimeMs *last;
 
 public:
-    cDxr3SubpictureOsd(int Left, int Top/*, int SpuDev*/);
+#if APIVERSNUM < 10509
+    cDxr3SubpictureOsd(int Left, int Top);
+#else
+    cDxr3SubpictureOsd(int Left, int Top, uint Level);
+#endif
     ~cDxr3SubpictureOsd();
 
     eOsdError CanHandleAreas(const tArea *Areas, int NumAreas);
