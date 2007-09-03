@@ -46,18 +46,45 @@ cDxr3SubpictureOsd::cDxr3SubpictureOsd(int Left, int Top, uint Level)
     last->Set(-cDxr3ConfigData::Instance().GetOsdFlushRate());
     Spu = &cSPUEncoder::Instance();
 
+#if APIVERSNUM < 10509
     //Clears the OSD screen image
     Spu->Clear();
+#endif    
 }
 
 // ==================================
 cDxr3SubpictureOsd::~cDxr3SubpictureOsd()
 {
+#if APIVERSNUM < 10509
     //Remove the OSD from the screen
     Spu->StopSpu();
+#else
+    SetActive(false);
+#endif
     delete Palette;
     delete last;
 }
+
+#if APIVERSNUM >= 10509
+// ==================================
+void cDxr3SubpictureOsd::SetActive(bool On)
+{
+  if (On != Active())
+  {
+      // Clears the OSD screen image when it becomes active
+      // removes it from screen when it becomes inactive
+      cOsd::SetActive(On);
+      if (On)
+      {
+	  Spu->Clear();
+      }
+      else
+      {
+	  Spu->StopSpu();
+      }
+  }
+}
+#endif
 
 // ==================================
 eOsdError cDxr3SubpictureOsd::CanHandleAreas(const tArea *Areas, int NumAreas)
@@ -93,6 +120,10 @@ eOsdError cDxr3SubpictureOsd::CanHandleAreas(const tArea *Areas, int NumAreas)
 // ==================================
 void cDxr3SubpictureOsd::Flush()
 {
+#if APIVERSNUM >= 10509
+    if (!Active())
+        return;
+#endif
     if (last->Elapsed() < cDxr3ConfigData::Instance().GetOsdFlushRate())
 	return;
     last->Set();
