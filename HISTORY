@@ -338,3 +338,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - Fix build with VDR >= 1.5.9 (Ville Skyttä)
 - Drop support for VDR < 1.4.0 (Ville Skyttä)
 - Implement OSD level for VDR >= 1.5.9 (Luca Olivetti)
+- Fix subtitles for VDR >= 1.5.11 (Luca Olivetti)

@@ -117,6 +117,16 @@ eOsdError cDxr3SubpictureOsd::CanHandleAreas(const tArea *Areas, int NumAreas)
     return Result;
 }
 
+eOsdError cDxr3SubpictureOsd::SetAreas(const tArea *Areas, int NumAreas)
+{
+    if (shown)
+    {
+	Spu->Clear();
+	shown = false;
+    }
+    return cOsd::SetAreas(Areas, NumAreas);
+}
+
 // ==================================
 void cDxr3SubpictureOsd::Flush()
 {

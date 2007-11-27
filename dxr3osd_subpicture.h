@@ -26,6 +26,7 @@ public:
     ~cDxr3SubpictureOsd();
 
     eOsdError CanHandleAreas(const tArea *Areas, int NumAreas);
+    eOsdError SetAreas(const tArea *Areas, int NumAreas);
 
     void Flush();
 };
