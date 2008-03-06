@@ -37,7 +37,7 @@ public:
 cDxr3SubpictureOsd::cDxr3SubpictureOsd(int Left, int Top) : cOsd(Left, Top)
 #else
 cDxr3SubpictureOsd::cDxr3SubpictureOsd(int Left, int Top, uint Level)
-    : cOsd(Left, Top, 0)
+    : cOsd(Left, Top, Level)
 #endif
 {
     shown = false;
