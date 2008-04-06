@@ -332,7 +332,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - add setup option for enabling/disabling WSS (Ville Skyttä)
 - various minor tweaks
 
-200x-xx-xx: Version x.x.x
+2008-04-06: Version 0.2.8
 
 - Fix build with ffmpeg >= ~2007-07 (Ville Skyttä)
 - Fix build with VDR >= 1.5.9 (Ville Skyttä)
