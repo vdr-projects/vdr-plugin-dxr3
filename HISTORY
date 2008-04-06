@@ -339,3 +339,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - Drop support for VDR < 1.4.0 (Ville Skyttä)
 - Implement OSD level for VDR >= 1.5.9 (Luca Olivetti)
 - Fix subtitles for VDR >= 1.5.11 (Luca Olivetti, Sami Sundell)
+- Include VDR 1.6+ subtitle hack patch in patches/ (Luca Olivetti)
