@@ -340,3 +340,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - Implement OSD level for VDR >= 1.5.9 (Luca Olivetti)
 - Fix subtitles for VDR >= 1.5.11 (Luca Olivetti, Sami Sundell)
 - Include VDR 1.6+ subtitle hack patch in patches/ (Luca Olivetti)
+
+200x-xx-xx: Version x.x.x
+
+- Update Italian translation (Diego Pierotto)

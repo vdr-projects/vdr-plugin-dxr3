@@ -120,7 +120,7 @@ const tI18nPhrase Phrases[] = {
 	"Card number",
 	"Karte",
 	"", // Slovenski
-	"Scheda",
+	"Scheda numero",
 	"", // Nederlands
 	"", // Português
 	"", // Français
@@ -143,7 +143,7 @@ const tI18nPhrase Phrases[] = {
 	"Video mode",
 	"Videomodus",
 	"", // Slovenski
-	"Modo Video",
+	"Modalità Video",
 	"", // Nederlands
 	"", // Português
 	"", // Français
@@ -235,7 +235,7 @@ const tI18nPhrase Phrases[] = {
 	"Use widescreen signaling (WSS)",
 	"", // Deutsch
 	"", // Slovenski
-	"", // Italiano
+	"Utilizza segnale widescreen (WSS)",
 	"", // Nederlands
 	"", // Português
 	"", // Français
@@ -258,7 +258,7 @@ const tI18nPhrase Phrases[] = {
 	"Reset DXR3 hardware",
 	"Reset DXR3 Hardware",
 	"", // Slovenski
-	"Reset hardware DXR3",
+	"Reimposta hardware DXR3",
 	"", // Nederlands
 	"", // Português
 	"", // Français
@@ -281,7 +281,7 @@ const tI18nPhrase Phrases[] = {
 	"Toggle force letterbox",
 	"Letterbox erzwingen",
 	"", // Slovenski
-	"Commuta modo letterbox forzato ",
+	"Commuta modalità letterbox forzato",
 	"", // Nederlands
 	"", // Português
 	"", // Français
@@ -350,7 +350,7 @@ const tI18nPhrase Phrases[] = {
 	"DXR3: releasing devices",
 	"DXR3: Releasing Devices",
 	"", // Slovenski
-	"DXR3: liberando dispositivo",
+	"DXR3: rilascio dispositivo",
 	"", // Nederlands
 	"", // Português
 	"", // Français
@@ -465,7 +465,7 @@ const tI18nPhrase Phrases[] = {
 	"Hide main menu entry",
 	"Hauptmenüeintrag verstecken",
 	"", // Slovenski
-	"Nascondi voce menù",
+	"Nascondi voce menu princ.",
 	"", // Nederlands
 	"", // Português
 	"", // Français
@@ -488,7 +488,7 @@ const tI18nPhrase Phrases[] = {
 	"OSD flush rate (ms)",
 	"", // Deutsch
 	"", // Slovenski
-	"Tempo minimo rinfresco OSD (ms)",
+	"Tempo minimo aggiorn. OSD (ms)",
 	"", // Nederlands
 	"", // Português
 	"", // Français
