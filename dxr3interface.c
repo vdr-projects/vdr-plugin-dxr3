@@ -90,7 +90,7 @@ void cDxr3Interface::Stop()
 //! set audio output to analog
 void cDxr3Interface::SetAudioAnalog()
 {
-    int ioval = EM8300_AUDIOMODE_ANALOG;
+    uint32_t ioval = EM8300_AUDIOMODE_ANALOG;
 
     Lock();
 
@@ -120,7 +120,7 @@ void cDxr3Interface::SetAudioAnalog()
 //! set audio output to digital pcm
 void cDxr3Interface::SetAudioDigitalPCM()
 {
-    int ioval = EM8300_AUDIOMODE_DIGITALPCM;
+    uint32_t ioval = EM8300_AUDIOMODE_DIGITALPCM;
 
     Lock();
 
@@ -150,7 +150,7 @@ void cDxr3Interface::SetAudioDigitalPCM()
 //! set audio output to digital ac3
 void cDxr3Interface::SetAudioDigitalAC3()
 {
-    int ioval = EM8300_AUDIOMODE_DIGITALAC3;
+    uint32_t ioval = EM8300_AUDIOMODE_DIGITALAC3;
 
     Lock();
 
@@ -295,7 +295,7 @@ void cDxr3Interface::SetSpuPts(uint32_t pts)
 //! enable subpicture processing of the dxr3
 void cDxr3Interface::EnableSPU()
 {
-    int ioval = EM8300_SPUMODE_ON;
+    uint32_t ioval = EM8300_SPUMODE_ON;
 
     Lock();
 
@@ -318,7 +318,7 @@ void cDxr3Interface::EnableSPU()
 //! disable subpicture proeccesing of the dxr3
 void cDxr3Interface::DisableSPU()
 {
-    int ioval = EM8300_SPUMODE_OFF;
+    uint32_t ioval = EM8300_SPUMODE_OFF;
 
     Lock();
 
