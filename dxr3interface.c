@@ -177,7 +177,7 @@ void cDxr3Interface::SetAudioDigitalAC3()
 //! get current audio mode
 int cDxr3Interface::GetAudioMode()
 {
-    int audioMode;
+    int audioMode = EM8300_AUDIOMODE_DEFAULT;
     Lock();
     ioctl(m_fdControl, EM8300_IOCTL_GET_AUDIOMODE, &audioMode);
     Unlock();
@@ -278,9 +278,10 @@ void cDxr3Interface::SetPts(uint32_t pts)
 // ==================================
 void cDxr3Interface::SetSpuPts(uint32_t pts)
 {
-    pts = pts >> 1;
     if (!m_ExternalReleased)
     {
+	pts = pts >> 1;
+
 	if (pts > m_pClock->GetSysClock() &&
 	    pts - m_pClock->GetSysClock() < 100000)
 	{
@@ -346,10 +347,11 @@ void cDxr3Interface::DisableAudio()
     // we write zero buffers to dxr3
     if (!m_ExternalReleased)
     {
-	if (write(m_fdAudio, zerobuffer, ZEROBUFFER_SIZE) < 0) Resuscitation();
-	if (write(m_fdAudio, zerobuffer, ZEROBUFFER_SIZE) < 0) Resuscitation();
-	if (write(m_fdAudio, zerobuffer, ZEROBUFFER_SIZE) < 0) Resuscitation();
-	if (write(m_fdAudio, zerobuffer, ZEROBUFFER_SIZE) < 0) Resuscitation();
+	for (int i = 0; i < 4; i++)
+	{
+	    if (write(m_fdAudio, zerobuffer, ZEROBUFFER_SIZE) < 0)
+		Resuscitation();
+	}
     }
     Unlock();
 }
@@ -425,6 +427,7 @@ void cDxr3Interface::DisableOverlay()
 uint32_t cDxr3Interface::GetAspectRatio() const
 {
     int ioval = 0;
+
     Lock();
 
     if (!m_ExternalReleased)
@@ -436,6 +439,7 @@ uint32_t cDxr3Interface::GetAspectRatio() const
     }
 
     Unlock();
+
     return ioval;
 }
 
@@ -520,7 +524,6 @@ void cDxr3Interface::SetPlayMode()
 	ioctl(m_fdControl, EM8300_IOCTL_FLUSH, &ioval);
 	fsync(m_fdVideo);
 
-
 	ioval = EM8300_PLAYMODE_PLAY;
 	if (ioctl(m_fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval) < 0)
 	{
@@ -543,6 +546,7 @@ void cDxr3Interface::SetPlayMode()
 void cDxr3Interface::Pause()
 {
     int ioval = EM8300_PLAYMODE_PAUSED;
+
     Lock();
 
     if (!m_ExternalReleased)
@@ -559,6 +563,7 @@ void cDxr3Interface::Pause()
 void cDxr3Interface::SingleStep()
 {
     int ioval = EM8300_PLAYMODE_SINGLESTEP;
+
     Lock();
 
     if (!m_ExternalReleased)
@@ -610,7 +615,8 @@ void cDxr3Interface::PlayVideoFrame(cFixedLengthFrame* pFrame, int times)
 
 	SetAspectRatio(pFrame->GetAspectRatio());
 	uint32_t pts = pFrame->GetPts();
-	if (pts > 0) m_lastSeenPts = pts;
+	if (pts > 0)
+	    m_lastSeenPts = pts;
     }
 }
 
@@ -623,7 +629,8 @@ void cDxr3Interface::PlayVideoFrame(const uint8_t* pBuf, int length, int times)
     {
 	for (int i = 0; i < times; i++)
 	{
-	    if (write(m_fdVideo, pBuf, length) < 0) Resuscitation();
+	    if (write(m_fdVideo, pBuf, length) < 0)
+		Resuscitation();
 	}
     }
 
@@ -904,12 +911,11 @@ void cDxr3Interface::PlayBlackFrame()
 
     if (!m_ExternalReleased)
     {
-	if (write(m_fdVideo, blackframe, blackframeLength) < 0)
-	    Resuscitation();
-	if (write(m_fdVideo, blackframe, blackframeLength) < 0)
-	    Resuscitation();
-	if (write(m_fdVideo, blackframe, blackframeLength) < 0)
-	    Resuscitation();
+	for (int i = 0; i < 3; i++)
+	{
+	    if (write(m_fdVideo, blackframe, blackframeLength) < 0)
+		Resuscitation();
+	}
     }
     m_horizontal = 720;
     m_vertical = 576;
@@ -1149,7 +1155,8 @@ void cDxr3Interface::WriteSpu(const uint8_t* pBuf, int length)
 
     if (!m_ExternalReleased)
     {
-	if (write(m_fdSpu, pBuf, length) < 0) Resuscitation();
+	if (write(m_fdSpu, pBuf, length) < 0)
+	    Resuscitation();
     }
 
     Unlock();
