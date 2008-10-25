@@ -344,3 +344,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 200x-xx-xx: Version x.x.x
 
 - Update Italian translation (Diego Pierotto)
+- Error handling improvements (Ville Skyttä)

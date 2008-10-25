@@ -3,6 +3,7 @@
  *
  * Copyright (C) 2002-2004 Kai Möller
  * Copyright (C) 2004 Christian Gmeiner
+ * Copyright (C) 2005-2008 Ville Skyttä
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -89,18 +90,23 @@ void cDxr3Interface::Stop()
 //! set audio output to analog
 void cDxr3Interface::SetAudioAnalog()
 {
-    int ioval = 0;
+    int ioval = EM8300_AUDIOMODE_ANALOG;
+
     Lock();
 
-    if (!m_ExternalReleased && m_audioMode != EM8300_AUDIOMODE_ANALOG)
+    if (!m_ExternalReleased && m_audioMode != ioval)
     {
 	int prevMode = m_audioMode;
-	m_audioMode = ioval = EM8300_AUDIOMODE_ANALOG;
 	isyslog("dxr3: setting analog audio mode");
 	if (ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &ioval) < 0)
 	{
 	    esyslog("dxr3: unable to set analog audio mode: %m");
 	}
+	else
+	{
+	    m_audioMode = ioval;
+	}
+
 	if (prevMode ==	EM8300_AUDIOMODE_DIGITALAC3)
 	{
 	    ReOpenAudio();
@@ -114,18 +120,23 @@ void cDxr3Interface::SetAudioAnalog()
 //! set audio output to digital pcm
 void cDxr3Interface::SetAudioDigitalPCM()
 {
-    int ioval = 0;
+    int ioval = EM8300_AUDIOMODE_DIGITALPCM;
+
     Lock();
 
-    if (!m_ExternalReleased && m_audioMode != EM8300_AUDIOMODE_DIGITALPCM)
+    if (!m_ExternalReleased && m_audioMode != ioval)
     {
 	int prevMode = m_audioMode;
-	m_audioMode = ioval = EM8300_AUDIOMODE_DIGITALPCM;
 	isyslog("dxr3: setting digital PCM audio mode");
 	if (ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &ioval) < 0)
 	{
 	    esyslog("dxr3: unable to set digital PCM audio mode: %m");
 	}
+	else
+	{
+	    m_audioMode = ioval;
+	}
+
 	if (prevMode ==	 EM8300_AUDIOMODE_DIGITALAC3)
 	{
 	    ReOpenAudio();
@@ -139,17 +150,22 @@ void cDxr3Interface::SetAudioDigitalPCM()
 //! set audio output to digital ac3
 void cDxr3Interface::SetAudioDigitalAC3()
 {
-    int ioval = 0;
+    int ioval = EM8300_AUDIOMODE_DIGITALAC3;
+
     Lock();
 
-    if (!m_ExternalReleased && m_audioMode != EM8300_AUDIOMODE_DIGITALAC3)
+    if (!m_ExternalReleased && m_audioMode != ioval)
     {
-	m_audioMode = ioval = EM8300_AUDIOMODE_DIGITALAC3;
 	isyslog("dxr3: setting digital AC3 audio mode");
 	if (ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &ioval) < 0)
 	{
 	    esyslog("dxr3: unable to set AC3 audio mode: %m");
 	}
+	else
+	{
+	    m_audioMode = ioval;
+	}
+
 	ReOpenAudio();
     }
 
@@ -173,19 +189,17 @@ int cDxr3Interface::GetAudioMode()
 //! set audio speed
 void cDxr3Interface::SetAudioSpeed(uint32_t speed)
 {
-    if (m_audioDataRate != speed && speed != UNKNOWN_DATA_RATE)
+    if (!m_ExternalReleased && m_audioMode != EM8300_AUDIOMODE_DIGITALAC3 &&
+	m_audioDataRate != speed && speed != UNKNOWN_DATA_RATE)
     {
-	if (!m_ExternalReleased)
+	if (ioctl(m_fdAudio, SNDCTL_DSP_SPEED, &speed) < 0)
 	{
-	    if (m_audioMode != EM8300_AUDIOMODE_DIGITALAC3)
-	    {
-		if (ioctl(m_fdAudio, SNDCTL_DSP_SPEED, &speed) < 0)
-		{
-		    esyslog("dxr3: unable to set DSP speed to %d: %m", speed);
-		}
-	    }
+	    esyslog("dxr3: unable to set DSP speed to %d: %m", speed);
 	}
-	m_audioDataRate = speed;
+	else
+	{
+	    m_audioDataRate = speed;
+	}
     }
 }
 
@@ -193,20 +207,17 @@ void cDxr3Interface::SetAudioSpeed(uint32_t speed)
 //! set number of channels
 void cDxr3Interface::SetChannelCount(uint32_t count)
 {
-    if (m_audioChannelCount != count && count != UNKNOWN_CHANNEL_COUNT)
+    if (!m_ExternalReleased && m_audioMode != EM8300_AUDIOMODE_DIGITALAC3 &&
+	m_audioChannelCount != count && count != UNKNOWN_CHANNEL_COUNT)
     {
-	if (!m_ExternalReleased)
+	if (ioctl(m_fdAudio, SNDCTL_DSP_STEREO, &count) < 0)
 	{
-	    if (m_audioMode != EM8300_AUDIOMODE_DIGITALAC3)
-	    {
-		if (ioctl(m_fdAudio, SNDCTL_DSP_STEREO, &count) < 0)
-		{
-		    esyslog("dxr3: unable to set channel count to %d: %m",
-			    count);
-		}
-	    }
+	    esyslog("dxr3: unable to set channel count to %d: %m", count);
 	}
-	m_audioChannelCount = count;
+	else
+	{
+	    m_audioChannelCount = count;
+	}
     }
 }
 
@@ -221,8 +232,11 @@ void cDxr3Interface::SetAudioSampleSize(uint32_t sampleSize)
 	    esyslog("dxr3: unable to set audio sample size to %d: %m",
 		    sampleSize);
 	}
+	else
+	{
+	    m_audioSampleSize = sampleSize;
+	}
     }
-    m_audioSampleSize = sampleSize;
 }
 
 // clock
@@ -280,15 +294,19 @@ void cDxr3Interface::SetSpuPts(uint32_t pts)
 //! enable subpicture processing of the dxr3
 void cDxr3Interface::EnableSPU()
 {
-    int ioval = 0;
+    int ioval = EM8300_SPUMODE_ON;
+
     Lock();
 
-    if (!m_ExternalReleased && m_spuMode != EM8300_SPUMODE_ON)
+    if (!m_ExternalReleased && m_spuMode != ioval)
     {
-	m_spuMode = ioval = EM8300_SPUMODE_ON;
 	if (ioctl(m_fdControl, EM8300_IOCTL_SET_SPUMODE, &ioval) < 0)
 	{
 	    esyslog("dxr3: unable to enable subpicture mode: %m");
+	}
+	else
+	{
+	    m_spuMode = ioval;
 	}
     }
 
@@ -299,15 +317,19 @@ void cDxr3Interface::EnableSPU()
 //! disable subpicture proeccesing of the dxr3
 void cDxr3Interface::DisableSPU()
 {
-    int ioval = 0;
+    int ioval = EM8300_SPUMODE_OFF;
+
     Lock();
 
-    if (!m_ExternalReleased && m_spuMode != EM8300_SPUMODE_OFF)
+    if (!m_ExternalReleased && m_spuMode != ioval)
     {
-	m_spuMode = ioval = EM8300_SPUMODE_OFF;
 	if (ioctl(m_fdControl, EM8300_IOCTL_SET_SPUMODE, &ioval) < 0)
 	{
 	    esyslog("dxr3: unable to disable subpicture mode: %m");
+	}
+	else
+	{
+	    m_spuMode = ioval;
 	}
     }
 
