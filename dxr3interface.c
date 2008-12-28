@@ -890,6 +890,8 @@ void cDxr3Interface::ExternalReopenDevices()
 
 	    SetChannelCount(1);
 	    m_ExternalReleased = false;
+
+	    ConfigureDeviceAudio();
 	}
 
 	Resuscitation();
@@ -1044,8 +1046,20 @@ void cDxr3Interface::ConfigureDevice()
 	exit(1);
     }
 
-    // set audio mode
-    if (!cDxr3ConfigData::Instance().GetUseDigitalOut())
+    ConfigureDeviceAudio();
+}
+
+// ==================================
+//! setup device audio based on config
+void cDxr3Interface::ConfigureDeviceAudio()
+{
+    // TODO: AC3?
+    if (cDxr3ConfigData::Instance().GetUseDigitalOut())
+    {
+	dsyslog("dxr3: configure: audio mode: digital");
+	SetAudioDigitalPCM();
+    }
+    else
     {
 	dsyslog("dxr3: configure: audio mode: analog");
 	SetAudioAnalog();

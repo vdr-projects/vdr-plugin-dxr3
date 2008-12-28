@@ -106,16 +106,6 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
 	m_DemuxDevice.Stop();
     }
 
-    // TODO: what about AC3???
-    if (cDxr3ConfigData::Instance().GetUseDigitalOut())
-    {
-	cDxr3Interface::Instance().SetAudioDigitalPCM();
-    }
-    else
-    {
-	cDxr3Interface::Instance().SetAudioAnalog();
-    }
-
     return true;
 }
 

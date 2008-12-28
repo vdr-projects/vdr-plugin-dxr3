@@ -3,7 +3,7 @@
  *
  * See the README file for copyright information and how to reach the author.
  *
- * $Id: dxr3.c,v 1.1.2.36 2008/04/06 18:52:18 scop Exp $
+ * $Id: dxr3.c,v 1.1.2.37 2008/12/28 20:51:32 scop Exp $
  *
  */
 
@@ -152,6 +152,10 @@ public:
     const char* MainMenuEntry();
     cOsdObject* MainMenuAction();
 
+    virtual const char **SVDRPHelpPages(void);
+    virtual cString SVDRPCommand(const char *Command, const char *Option,
+				 int &ReplyCode);
+
     cMenuSetupPage *SetupMenu();
     bool SetupParse(const char *Name, const char *Value);
 };
@@ -249,6 +253,81 @@ const char* cPluginDxr3::MainMenuEntry()
 cOsdObject* cPluginDxr3::MainMenuAction()
 {
     return new cDxr3OsdMenu;
+}
+
+// ==================================
+// TODO: localize command descriptions?
+const char **cPluginDxr3::SVDRPHelpPages(void)
+{
+    static const char *HelpPages[] = {
+	"DON\n"
+	"    Start DXR3.",
+	"DOF\n"
+	"    Stop DXR3.",
+	"SAT\n"
+	"    Set saturation (0..999).",
+	"CON\n"
+	"    Set contrast (0..999).",
+	"BRI\n"
+	"    Set brightness (0..999).",
+	"SAO\n"
+	"    Switch to analog audio output.",
+	"SDO\n"
+	"    Switch to digital PCM audio output.",
+	"SAC3\n"
+	"    Switch to digital AC3 audio output.",
+	NULL
+    };
+
+    return HelpPages;
+}
+
+// TODO: localize returned strings?
+cString cPluginDxr3::SVDRPCommand(const char *Command, const char *Option,
+				  int &ReplyCode)
+{
+    if (!strcasecmp(Command, "DON"))
+    {
+	cDxr3Interface::Instance().ExternalReopenDevices();
+	return "DXR3 started";
+    }
+    if (!strcasecmp(Command, "DOF"))
+    {
+	cDxr3Interface::Instance().ExternalReleaseDevices();
+	return "DXR3 stopped";
+    }
+    if (!strcasecmp(Command, "BRI"))
+    {
+	cDxr3Interface::Instance().SetBrightness(atoi(Option));
+	return "Brightness set";
+    }
+    if (!strcasecmp(Command, "CON"))
+    {
+	cDxr3Interface::Instance().SetContrast(atoi(Option));
+	return "Contrast set";
+    }
+    if (!strcasecmp(Command, "SAT"))
+    {
+	cDxr3Interface::Instance().SetSaturation(atoi(Option));
+	return "Saturation set";
+    }
+    if (!strcasecmp(Command, "SDO"))
+    {
+	cDxr3Interface::Instance().SetAudioDigitalPCM();
+	return "Switched to digital PCM audio output";
+    }
+    if (!strcasecmp(Command, "SAO"))
+    {
+	cDxr3Interface::Instance().SetAudioAnalog();
+	return "Switched to analog audio output";
+    }
+    if (!strcasecmp(Command, "SAC3"))
+    {
+	cDxr3Interface::Instance().SetAudioDigitalAC3();
+	return "Switched to digital AC3 audio output";
+    }
+
+    return NULL;
 }
 
 VDRPLUGINCREATOR(cPluginDxr3); // Don't touch this!
