@@ -1,0 +1,72 @@
+# VDR plugin language source file.
+# Copyright (C) 2007 Klaus Schmidinger <kls@cadsoft.de>
+# This file is distributed under the same license as the VDR package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: VDR 1.5.7\n"
+"Report-Msgid-Bugs-To: dxr3plugin-users@lists.sourceforge.net\n"
+"POT-Creation-Date: 2008-12-28 23:17+0200\n"
+"PO-Revision-Date: 2008-12-28 23:17+0200\n"
+"Last-Translator: Christian Gmeiner <christian.gmeiner@gmail.com>\n"
+"Language-Team: <vdr@linuxtv.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "DXR3 Functions"
+msgstr "DXR3 Einstellungen"
+
+msgid "Hardware MPEG decoder"
+msgstr ""
+
+msgid "Reset DXR3 hardware"
+msgstr "Reset DXR3 Hardware"
+
+msgid "Toggle force letterbox"
+msgstr "Letterbox erzwingen"
+
+msgid "Switch to analog audio output"
+msgstr "Analoge Ausgabe"
+
+msgid "Switch to digital audio output"
+msgstr "Digitaler Ausgang"
+
+msgid "Brightness"
+msgstr "Helligkeit"
+
+msgid "Contrast"
+msgstr "Kontrast"
+
+msgid "Saturation"
+msgstr "Sättigung"
+
+msgid "PAL"
+msgstr "PAL"
+
+msgid "PAL60"
+msgstr "PAL60"
+
+msgid "NTSC"
+msgstr "NTSC"
+
+msgid "Video mode"
+msgstr "Videomodus"
+
+msgid "Use widescreen signaling (WSS)"
+msgstr ""
+
+msgid "Digital audio output"
+msgstr "Digitaler Audioausgang"
+
+msgid "OSD flush rate (ms)"
+msgstr ""
+
+msgid "Hide main menu entry"
+msgstr "Hauptmenüeintrag verstecken"
+
+msgid "Card number"
+msgstr "Karte"
+
+msgid "DXR3: releasing devices"
+msgstr "DXR3: Releasing Devices"

@@ -347,3 +347,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - Error handling improvements (Ville Skyttä)
 - Add SVDRP commands for device release/reopen, audio output settings,
   brightness/contrast/saturation (Krzysztof Parma, Ville Skyttä)
+- Switch to VDR 1.6's i18n system (Ville Skyttä)

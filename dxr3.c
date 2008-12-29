@@ -3,7 +3,7 @@
  *
  * See the README file for copyright information and how to reach the author.
  *
- * $Id: dxr3.c,v 1.1.2.39 2008/12/28 20:53:09 scop Exp $
+ * $Id: dxr3.c,v 1.1.2.40 2008/12/29 21:14:18 scop Exp $
  *
  */
 
@@ -13,11 +13,9 @@
 #include "dxr3configdata.h"
 #include "dxr3interface.h"
 #include "dxr3.h"
-#include "dxr3i18n.h"
 
 static const char VERSION[]       = "0.2.8+cvs";
-static const char DESCRIPTION[]   = "Hardware MPEG decoder";
-static const char MAINMENUENTRY[] = "DXR3";
+static const char DESCRIPTION[]   = trNOOP("Hardware MPEG decoder");
 
 #if APIVERSNUM && APIVERSNUM < 10400
 #error "This version of the DXR3 plugin needs VDR API version >= 1.4.0"
@@ -163,7 +161,7 @@ public:
 // ==================================
 cPluginDxr3::cPluginDxr3()
 {
-    // Initialize any member varaiables here.
+    // Initialize any member variables here.
     // DON'T DO ANYTHING ELSE THAT MAY HAVE SIDE EFFECTS, REQUIRE GLOBAL
     // VDR OBJECTS TO EXIST OR PRODUCE ANY OUTPUT!
     cDxr3ConfigData::Instance();
@@ -177,8 +175,6 @@ cPluginDxr3::~cPluginDxr3()
 // ==================================
 bool cPluginDxr3::Initialize()
 {
-    RegisterI18n(Phrases);
-
     cDxr3Device::InstanceP();
 
     return true;

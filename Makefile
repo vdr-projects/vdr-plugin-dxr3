@@ -1,7 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.1.2.27 2008/03/06 18:30:03 scop Exp $
+# $Id: Makefile,v 1.1.2.28 2008/12/29 21:14:18 scop Exp $
 
 # The official name of this plugin.
 # This name will be used in the '-P...' option of VDR to load the plugin.
@@ -57,14 +57,15 @@ DEFINES += -DUSE_XINE_SCALER
 
 ### The object files (add further files here):
 
-OBJS = $(PLUGIN).o dxr3multichannelaudio.o dxr3sysclock.o dxr3colormanager.o dxr3syncbuffer.o dxr3audiodecoder.o \
-dxr3blackframe.o dxr3nextpts.o dxr3pesframe.o dxr3demuxdevice.o dxr3configdata.o \
-dxr3ffmpeg.o dxr3interface_spu_encoder.o dxr3i18n.o \
-dxr3interface.o dxr3device.o dxr3outputthread.o dxr3osd.o dxr3osd_subpicture.o dxr3spudecoder.o
+OBJS = $(PLUGIN).o dxr3multichannelaudio.o dxr3sysclock.o dxr3colormanager.o \
+	dxr3syncbuffer.o dxr3audiodecoder.o dxr3blackframe.o dxr3nextpts.o \
+	dxr3pesframe.o dxr3demuxdevice.o dxr3configdata.o dxr3ffmpeg.o \
+	dxr3interface_spu_encoder.o dxr3interface.o dxr3device.o \
+	dxr3outputthread.o dxr3osd.o dxr3osd_subpicture.o dxr3spudecoder.o
 
 ### Default target:
 
-all: libvdr-$(PLUGIN).so
+all: libvdr-$(PLUGIN).so i18n
 
 ### Implicit rules:
 
@@ -79,6 +80,31 @@ $(DEPFILE): Makefile
 	@$(MAKEDEP) $(DEFINES) $(INCLUDES) $(OBJS:%.o=%.c) > $@
 
 -include $(DEPFILE)
+
+### Internationalization (I18N):
+
+PODIR     = po
+LOCALEDIR = $(VDRDIR)/locale
+I18Npo    = $(wildcard $(PODIR)/*.po)
+I18Nmsgs  = $(addprefix $(LOCALEDIR)/, $(addsuffix /LC_MESSAGES/vdr-$(PLUGIN).mo, $(notdir $(foreach file, $(I18Npo), $(basename $(file))))))
+I18Npot   = $(PODIR)/$(PLUGIN).pot
+
+%.mo: %.po
+	msgfmt -c -o $@ $<
+
+$(I18Npot): $(wildcard *.h *.c)
+	xgettext -C -cTRANSLATORS --no-wrap --no-location -k -ktr -ktrNOOP --msgid-bugs-address='dxr3plugin-users@lists.sourceforge.net' -o $@ $^
+
+%.po: $(I18Npot)
+	msgmerge -U --no-wrap --no-location --backup=none -q $@ $<
+	@touch $@
+
+$(I18Nmsgs): $(LOCALEDIR)/%/LC_MESSAGES/vdr-$(PLUGIN).mo: $(PODIR)/%.mo
+	@mkdir -p $(dir $@)
+	cp $< $@
+
+.PHONY: i18n
+i18n: $(I18Nmsgs)
 
 ### Targets:
 
@@ -96,6 +122,7 @@ dist: clean
 	@echo Distribution package created as $(PACKAGE).tgz
 
 clean:
+	@-rm -f $(PODIR)/*.mo $(PODIR)/*.pot
 	@-rm -f $(OBJS) $(DEPFILE) *.so* *.tgz core* *~ \#*
 
 #indent:

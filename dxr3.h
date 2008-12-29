@@ -1,6 +1,10 @@
 #ifndef _DXR3_H_
 #define _DXR3_H_
 
+#include <vdr/i18n.h>
+
+static const char MAINMENUENTRY[] = trNOOP("DXR3 Functions");
+
 // --- cMenuSetupDxr3 -------------------------------------------------------
 
 // ==================================
@@ -56,7 +60,7 @@ protected:
 class cDxr3OsdMenu : public cOsdMenu
 {
 public:
-    cDxr3OsdMenu(): cOsdMenu(tr("DXR3 Adjustment"))
+    cDxr3OsdMenu(): cOsdMenu(tr(MAINMENUENTRY))
     {
 	Clear();
 	SetHasHotkeys();
