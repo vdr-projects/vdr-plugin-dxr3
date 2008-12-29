@@ -1,7 +1,7 @@
 /*
  * dxr3nextpts.c
  *
- * Copyright (C) 2002-2004 Kai Möller
+ * Copyright (C) 2002-2004 Kai MÃ¶ller
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License

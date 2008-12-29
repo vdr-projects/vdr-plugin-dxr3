@@ -24,7 +24,7 @@ Troubleshooting, known problems, bugs, and workarounds related to this driver:
 * When cutting old recordings (made with VDR < 1.3.28 or something, newer
   ones should not be affected) from some channels, the still picture is
   stuck and won't move when you press 4 or 6 to fine tune the cutmarks.
-  Workaround: apply Reinhard Nißl's dvbplayer patch for VDR, see
+  Workaround: apply Reinhard NiÃŸl's dvbplayer patch for VDR, see
   http://home.vr-web.de/~rnissl/vdr-1.3.28-dvbplayer.patch
 
 * If the TV aspect ratio does not automatically adjust according to the

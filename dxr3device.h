@@ -1,7 +1,7 @@
 /*
  * dxr3device.h
  *
- * Copyright (C) 2002-2004 Kai Möller
+ * Copyright (C) 2002-2004 Kai MÃ¶ller
  * Copyright (C) 2004 Christian Gmeiner
  *
  * This program is free software; you can redistribute it and/or

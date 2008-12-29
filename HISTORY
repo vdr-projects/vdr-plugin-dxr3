@@ -239,104 +239,104 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - fixed output of anamorphic video when tv aspect is configured to 16:9 in
   DVB setup menu (Seppo Ingalsuo)
 - rewrote i18n support, improved Finnish translation and other bits
-  (Christian Gmeiner, Ville Skytt‰)
+  (Christian Gmeiner, Ville Skytt√§)
 - fixed void cDxr3Interface::SetAudioDigitalPCM() (Stephan Skrodzki)
 - added many comments into source (Christian Gmeiner)
 - using doxygen for docs (Christian Gmeiner)
 - made path to microcode configurable in Makefile (Sascha Volkenandt)
 - better default directories in Makefile (Christian Gmeiner, vdr-wiki.de folks)
 - use std:: instead of namespace std
-  (bug #1044069, Christian Gmeiner, Ville Skytt‰)
+  (bug #1044069, Christian Gmeiner, Ville Skytt√§)
 - fixed #includes: moved #include "dxr3osd.h" from dxr3interface.h to
   dxr3interface.c, removed not needed #includes (Christian Gmeiner)
 - added support for VDR 1.3.13 and later (Luca Olivetti, Peter Dittmann)
 - fixed checking of return falues when opening the em8300-* fifos
-  (Christian Gmeiner, Ville Skytt‰)
+  (Christian Gmeiner, Ville Skytt√§)
 - removed explicit linking with zlib (Christian Gmeiner)
-- compiles now with 3.4.x gcc's (Christian Gmeiner, Ville Skytt‰)
-- use $CXX for generating dependencies instead of hardcoded g++ (Ville Skytt‰)
+- compiles now with 3.4.x gcc's (Christian Gmeiner, Ville Skytt√§)
+- use $CXX for generating dependencies instead of hardcoded g++ (Ville Skytt√§)
 - added descriptions to audio and video output threads
-  (#1112673, Ville Skytt‰)
+  (#1112673, Ville Skytt√§)
 - fixed audio and video thread deletion in demux device destructor
-  (#1112674, Ville Skytt‰)
-- made "all" the default target in Makefile (Ville Skytt‰)
+  (#1112674, Ville Skytt√§)
+- made "all" the default target in Makefile (Ville Skytt√§)
 - avoid hang in pause mode with VDR >= 1.3.18 (Luca Olivetti)
 - avoid high CPU usage in pause mode (Luca Olivetti, Klaus Schmidinger)
 - improved GetSTC(): fixes DVB subtitles sync problems (Mikko Tuumanen)
 - limit OSD flush rate: prevents OSD from going berserk due to being
-  refreshed too often, see plugin settings (Luca Olivetti, Ville Skytt‰)
+  refreshed too often, see plugin settings (Luca Olivetti, Ville Skytt√§)
 - borrow better OSD scaling routines from the Xine plugin (Luca Olivetti)
 - improve original OSD scaler for small resolutions (#1014339, Luca Olivetti)
-- improve error checking, eliminate some compiler warnings (Ville Skytt‰)
+- improve error checking, eliminate some compiler warnings (Ville Skytt√§)
 - fix OSD going pink after returning from the MPlayer plugin; while at it,
   remove dxr3palettemanager.* and use VDR's cPalette
-  (Ville Skytt‰, Martin Cap, Luca Olivetti)
-- remove unused dxr3unixserversocket.* from 0.2.x (Ville Skytt‰)
-- fix sound with the MP3 plugin and VDR >= 1.3.18 (Antti J‰rvinen)
+  (Ville Skytt√§, Martin Cap, Luca Olivetti)
+- remove unused dxr3unixserversocket.* from 0.2.x (Ville Skytt√§)
+- fix sound with the MP3 plugin and VDR >= 1.3.18 (Antti J√§rvinen)
 - set aspect ratio and audio mode to unknown when releasing devices, fixes
   the setup eg. after returning from the MPlayer plugin
   (Luca Olivetti, Kimmo Vuorinen)
 - rework OSD color management, fixes eg. color "bleeding"
   (Luca Olivetti, Thomas Husterer)
-- sync SPU decoder with VDR 1.3.23 (Ville Skytt‰)
-- register only needed ffmpeg codec(s) (Marco Schl¸ﬂler)
-- fix crash at exit (Marco Schl¸ﬂler)
-- add support for mandatory subtitles (Marco Schl¸ﬂler)
+- sync SPU decoder with VDR 1.3.23 (Ville Skytt√§)
+- register only needed ffmpeg codec(s) (Marco Schl√º√üler)
+- fix crash at exit (Marco Schl√º√üler)
+- add support for mandatory subtitles (Marco Schl√º√üler)
 - avoid crashing with some corrupted streams (Jon Burgess)
 - remove optimized memcpy routines and related stuff, just use the glibc
-  one (Ville Skytt‰)
+  one (Ville Skytt√§)
 - clean up dead code for old VDR versions that hasn't worked for some time
-  anyway, VDR >= 1.3.11 is now required (Ville Skytt‰)
+  anyway, VDR >= 1.3.11 is now required (Ville Skytt√§)
 - improve recovery and avoid lockups caused by bad streams (Jon Burgess)
 - use VDR's facilities for logging (no more dxr3plugin.log), make it less
-  noisy (Ville Skytt‰, Christian Gmeiner)
-- add setup option for hiding the main menu entry (Ville Skytt‰)
+  noisy (Ville Skytt√§, Christian Gmeiner)
+- add setup option for hiding the main menu entry (Ville Skytt√§)
 - implement stereo/left/right audio channel switching (Malcolm Caldwell)
-- limit card number to sane values in config (Ville Skytt‰)
+- limit card number to sane values in config (Ville Skytt√§)
 - added Italian, Spanish and Catalan translations (Luca Olivetti)
 - don't override OSD's {Save,Restore}Region with dummies (Luca Olivetti)
 
 2005-08-27: Version 0.2.4
 
 - don't abort with lpcm frames containing an odd number of bytes, drop
-  the frame instead (Ville Skytt‰)
+  the frame instead (Ville Skytt√§)
 - fix crash on audio sync buffer push timeouts (Jon Burgess)
-- make the device class call cDevice's Mute() and Clear() (Ville Skytt‰)
+- make the device class call cDevice's Mute() and Clear() (Ville Skytt√§)
 
 2006-01-08: Version 0.2.5
 
-- sync default microcode location with em8300 0.15.2+ (Ville Skytt‰)
+- sync default microcode location with em8300 0.15.2+ (Ville Skytt√§)
 - improve device reset and error recovery, try to preserve aspect ratio and
-  audio mode etc (Luca Olivetti, Ville Skytt‰)
+  audio mode etc (Luca Olivetti, Ville Skytt√§)
 - remove image grab code, it's broken (crashes vdr) and would cause
-  maintenance problems with various 1.3.x vdr versions (Ville Skytt‰)
+  maintenance problems with various 1.3.x vdr versions (Ville Skytt√§)
 
 2006-04-30: Version 0.2.6
 
-- adapt to VDR 1.3.42-1.4.0, oldest supported is now 1.3.42 (Ville Skytt‰)
-- clean up leftovers from the image grab code removal in 0.2.5 (Ville Skytt‰)
-- add Czech i18n placeholders (Ville Skytt‰)
-- be less noisy about audio mode (non-)changes (Ville Skytt‰)
-- add work-in-progress AC3 patch to patches/ (Agneau Egare, Ville Skytt‰)
+- adapt to VDR 1.3.42-1.4.0, oldest supported is now 1.3.42 (Ville Skytt√§)
+- clean up leftovers from the image grab code removal in 0.2.5 (Ville Skytt√§)
+- add Czech i18n placeholders (Ville Skytt√§)
+- be less noisy about audio mode (non-)changes (Ville Skytt√§)
+- add work-in-progress AC3 patch to patches/ (Agneau Egare, Ville Skytt√§)
 - use VDR's thread activity control features instead of our own (Luca Olivetti)
 
 2007-05-08: Version 0.2.7
 
 - add Polish translation (Mikolaj Tutak)
-- sync "make install" with VDR 1.4.2-2 (Ville Skytt‰)
-- use cCondWait::SleepMs() instead of usleep (Ville Skytt‰)
-- avoid deprecation warnings with newish libavcodec (Ville Skytt‰)
-- add brightness/contrast/saturation settings to setup (Ville Skytt‰)
-- apply more settings immediately from setup menu (Ville Skytt‰)
+- sync "make install" with VDR 1.4.2-2 (Ville Skytt√§)
+- use cCondWait::SleepMs() instead of usleep (Ville Skytt√§)
+- avoid deprecation warnings with newish libavcodec (Ville Skytt√§)
+- add brightness/contrast/saturation settings to setup (Ville Skytt√§)
+- apply more settings immediately from setup menu (Ville Skytt√§)
 - apply AC3 and WSS patches which were in patches/ in previous releases
-- add setup option for enabling/disabling WSS (Ville Skytt‰)
+- add setup option for enabling/disabling WSS (Ville Skytt√§)
 - various minor tweaks
 
 2008-04-06: Version 0.2.8
 
-- Fix build with ffmpeg >= ~2007-07 (Ville Skytt‰)
-- Fix build with VDR >= 1.5.9 (Ville Skytt‰)
-- Drop support for VDR < 1.4.0 (Ville Skytt‰)
+- Fix build with ffmpeg >= ~2007-07 (Ville Skytt√§)
+- Fix build with VDR >= 1.5.9 (Ville Skytt√§)
+- Drop support for VDR < 1.4.0 (Ville Skytt√§)
 - Implement OSD level for VDR >= 1.5.9 (Luca Olivetti)
 - Fix subtitles for VDR >= 1.5.11 (Luca Olivetti, Sami Sundell)
 - Include VDR 1.6+ subtitle hack patch in patches/ (Luca Olivetti)
@@ -344,7 +344,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 200x-xx-xx: Version x.x.x
 
 - Update Italian translation (Diego Pierotto)
-- Error handling improvements (Ville Skytt‰)
+- Error handling improvements (Ville Skytt√§)
 - Add SVDRP commands for device release/reopen, audio output settings,
-  brightness/contrast/saturation (Krzysztof Parma, Ville Skytt‰)
-- Switch to VDR 1.6's i18n system (Ville Skytt‰)
+  brightness/contrast/saturation (Krzysztof Parma, Ville Skytt√§)
+- Switch to VDR 1.6's i18n system (Ville Skytt√§)

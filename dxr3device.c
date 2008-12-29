@@ -1,7 +1,7 @@
 /*
  * dxr3device.c
  *
- * Copyright (C) 2002-2004 Kai Möller
+ * Copyright (C) 2002-2004 Kai MÃ¶ller
  * Copyright (C) 2004 Christian Gmeiner
  *
  * This program is free software; you can redistribute it and/or
@@ -123,15 +123,15 @@ void cDxr3Device::TrickSpeed(int Speed)
     m_DemuxDevice.SetTrickMode(DXR3_FAST, Speed);
 
     /*
-	6 ... 1x vowärts
-	3 ... 2x vowärts
-	1 ... 2x vowärts
+	6 ... 1x vowÃ¤rts
+	3 ... 2x vowÃ¤rts
+	1 ... 2x vowÃ¤rts
 
-	6 ... 1x rückwärts
-	3 ... 2x rückwärts
-	1 ... 3x rückwärts
+	6 ... 1x rÃ¼ckwÃ¤rts
+	3 ... 2x rÃ¼ckwÃ¤rts
+	1 ... 3x rÃ¼ckwÃ¤rts
 
-	8 ... 1x vorwörts, wenn Pause gedrückt
+	8 ... 1x vorwÃ¶rts, wenn Pause gedrÃ¼ckt
     */
 
     /*
