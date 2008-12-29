@@ -4,7 +4,7 @@ Prerequisites:
   install, configure, test and verify the installation.  If you use
   version 0.16.0 or later of the driver, be sure to load it in OSS
   audio mode (audio_driver=oss parameter to the em8300 module).
-- Install VDR 1.4.x
+- Install VDR 1.6.x
 - Install the libavcodec library from http://ffmpeg.sourceforge.net/
 
 Installation:

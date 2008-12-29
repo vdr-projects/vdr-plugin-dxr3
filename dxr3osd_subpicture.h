@@ -13,16 +13,10 @@ private:
     bool shown;			///< is the osd shown?
     cPalette* Palette;		///< global palette (needed by all bitmaps)
     cTimeMs *last;
-#if APIVERSNUM >= 10509
 protected:
     virtual void SetActive(bool On);
-#endif
 public:
-#if APIVERSNUM < 10509
-    cDxr3SubpictureOsd(int Left, int Top);
-#else
     cDxr3SubpictureOsd(int Left, int Top, uint Level);
-#endif
     ~cDxr3SubpictureOsd();
 
     eOsdError CanHandleAreas(const tArea *Areas, int NumAreas);

@@ -35,17 +35,10 @@
 
 // ==================================
 // ! create osd at (Left, Top, Level)
-#if APIVERSNUM < 10509
-cOsd *cDxr3OsdProvider::CreateOsd(int Left, int Top)
-{
-    return new cDxr3SubpictureOsd(Left, Top);
-}
-#else
 cOsd *cDxr3OsdProvider::CreateOsd(int Left, int Top, uint Level)
 {
     return new cDxr3SubpictureOsd(Left, Top, Level);
 }
-#endif
 
 // Local variables:
 // mode: c++
