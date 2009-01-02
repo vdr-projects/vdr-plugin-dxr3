@@ -349,3 +349,8 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
   brightness/contrast/saturation (Krzysztof Parma, Ville Skyttä)
 - Switch to VDR 1.6's i18n system (Ville Skyttä)
 - Drop support for VDR < 1.6.0 (Ville Skyttä)
+
+200x-xx-xx: Version x.x.x
+
+- Apply brightness/contrast/saturation configuration settings when configuring
+  the device, e.g. on VDR startup (Ville Skyttä)

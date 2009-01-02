@@ -1046,6 +1046,17 @@ void cDxr3Interface::ConfigureDevice()
 	exit(1);
     }
 
+    // set brightness/contrast/saturation
+    m_bcs.brightness = cDxr3ConfigData::Instance().GetBrightness();
+    m_bcs.contrast = cDxr3ConfigData::Instance().GetContrast();
+    m_bcs.saturation = cDxr3ConfigData::Instance().GetSaturation();
+    dsyslog("dxr3: configure: brightness=%d,contrast=%d,saturation=%d",
+	    m_bcs.brightness, m_bcs.contrast, m_bcs.saturation);
+    if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) < 0)
+    {
+	esyslog("dxr3: unable to set brightness/contrast/saturation: %m");
+    }
+
     ConfigureDeviceAudio();
 }
 
