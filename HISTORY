@@ -341,7 +341,7 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - Fix subtitles for VDR >= 1.5.11 (Luca Olivetti, Sami Sundell)
 - Include VDR 1.6+ subtitle hack patch in patches/ (Luca Olivetti)
 
-200x-xx-xx: Version x.x.x
+2009-01-02: Version 0.2.9
 
 - Update Italian translation (Diego Pierotto)
 - Error handling improvements (Ville Skyttä)

@@ -3,7 +3,7 @@
  *
  * See the README file for copyright information and how to reach the author.
  *
- * $Id: dxr3.c,v 1.1.2.41 2008/12/29 21:50:23 scop Exp $
+ * $Id: dxr3.c,v 1.1.2.42 2009/01/02 17:04:21 scop Exp $
  *
  */
 
@@ -14,7 +14,7 @@
 #include "dxr3interface.h"
 #include "dxr3.h"
 
-static const char VERSION[]       = "0.2.8+cvs";
+static const char VERSION[]       = "0.2.9";
 static const char DESCRIPTION[]   = trNOOP("Hardware MPEG decoder");
 
 #if APIVERSNUM && APIVERSNUM < 10600
