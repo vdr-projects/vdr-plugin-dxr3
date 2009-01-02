@@ -354,3 +354,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 
 - Apply brightness/contrast/saturation configuration settings when configuring
   the device, e.g. on VDR startup (Ville Skyttä)
+- Error handling improvements (Ville Skyttä)

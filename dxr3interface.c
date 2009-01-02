@@ -52,7 +52,7 @@ static int Dxr3Open(const char *Name, int n, int Mode)
     const char *FileName = Dxr3Name(Name, n);
     int fd = open(FileName, Mode);
 
-    if (fd < 0)
+    if (fd == -1)
     {
 	esyslog("dxr3: unable to open %s: %m", FileName);
     }
@@ -98,7 +98,7 @@ void cDxr3Interface::SetAudioAnalog()
     {
 	int prevMode = m_audioMode;
 	isyslog("dxr3: setting analog audio mode");
-	if (ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &ioval) < 0)
+	if (ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &ioval) == -1)
 	{
 	    esyslog("dxr3: unable to set analog audio mode: %m");
 	}
@@ -128,7 +128,7 @@ void cDxr3Interface::SetAudioDigitalPCM()
     {
 	int prevMode = m_audioMode;
 	isyslog("dxr3: setting digital PCM audio mode");
-	if (ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &ioval) < 0)
+	if (ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &ioval) == -1)
 	{
 	    esyslog("dxr3: unable to set digital PCM audio mode: %m");
 	}
@@ -157,7 +157,7 @@ void cDxr3Interface::SetAudioDigitalAC3()
     if (!m_ExternalReleased && m_audioMode != ioval)
     {
 	isyslog("dxr3: setting digital AC3 audio mode");
-	if (ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &ioval) < 0)
+	if (ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &ioval) == -1)
 	{
 	    esyslog("dxr3: unable to set AC3 audio mode: %m");
 	}
@@ -192,7 +192,7 @@ void cDxr3Interface::SetAudioSpeed(uint32_t speed)
     if (!m_ExternalReleased && m_audioMode != EM8300_AUDIOMODE_DIGITALAC3 &&
 	m_audioDataRate != speed && speed != UNKNOWN_DATA_RATE)
     {
-	if (ioctl(m_fdAudio, SNDCTL_DSP_SPEED, &speed) < 0)
+	if (ioctl(m_fdAudio, SNDCTL_DSP_SPEED, &speed) == -1)
 	{
 	    esyslog("dxr3: unable to set DSP speed to %d: %m", speed);
 	}
@@ -210,7 +210,7 @@ void cDxr3Interface::SetChannelCount(uint32_t count)
     if (!m_ExternalReleased && m_audioMode != EM8300_AUDIOMODE_DIGITALAC3 &&
 	m_audioChannelCount != count && count != UNKNOWN_CHANNEL_COUNT)
     {
-	if (ioctl(m_fdAudio, SNDCTL_DSP_STEREO, &count) < 0)
+	if (ioctl(m_fdAudio, SNDCTL_DSP_STEREO, &count) == -1)
 	{
 	    esyslog("dxr3: unable to set channel count to %d: %m", count);
 	}
@@ -227,7 +227,7 @@ void cDxr3Interface::SetAudioSampleSize(uint32_t sampleSize)
 {
     if (!m_ExternalReleased)
     {
-	if (ioctl(m_fdAudio, SNDCTL_DSP_SAMPLESIZE, sampleSize) < 0)
+	if (ioctl(m_fdAudio, SNDCTL_DSP_SAMPLESIZE, sampleSize) == -1)
 	{
 	    esyslog("dxr3: unable to set audio sample size to %d: %m",
 		    sampleSize);
@@ -301,7 +301,7 @@ void cDxr3Interface::EnableSPU()
 
     if (!m_ExternalReleased && m_spuMode != ioval)
     {
-	if (ioctl(m_fdControl, EM8300_IOCTL_SET_SPUMODE, &ioval) < 0)
+	if (ioctl(m_fdControl, EM8300_IOCTL_SET_SPUMODE, &ioval) == -1)
 	{
 	    esyslog("dxr3: unable to enable subpicture mode: %m");
 	}
@@ -324,7 +324,7 @@ void cDxr3Interface::DisableSPU()
 
     if (!m_ExternalReleased && m_spuMode != ioval)
     {
-	if (ioctl(m_fdControl, EM8300_IOCTL_SET_SPUMODE, &ioval) < 0)
+	if (ioctl(m_fdControl, EM8300_IOCTL_SET_SPUMODE, &ioval) == -1)
 	{
 	    esyslog("dxr3: unable to disable subpicture mode: %m");
 	}
@@ -349,7 +349,7 @@ void cDxr3Interface::DisableAudio()
     {
 	for (int i = 0; i < 4; i++)
 	{
-	    if (write(m_fdAudio, zerobuffer, ZEROBUFFER_SIZE) < 0)
+	    if (write(m_fdAudio, zerobuffer, ZEROBUFFER_SIZE) == -1)
 		Resuscitation();
 	}
     }
@@ -374,7 +374,7 @@ void cDxr3Interface::EnableOverlay()
 
     int ioval = EM8300_OVERLAY_SIGNAL_WITH_VGA;
     // set overlay signal mode
-    if (ioctl(m_fdControl, EM8300_IOCTL_OVERLAY_SIGNALMODE, &ioval) < 0)
+    if (ioctl(m_fdControl, EM8300_IOCTL_OVERLAY_SIGNALMODE, &ioval) == -1)
     {
 	//######
 	esyslog("dxr3: unable to set overlay signal mode: %m");
@@ -386,7 +386,7 @@ void cDxr3Interface::EnableOverlay()
     scr.xsize = 1024;
     scr.ysize = 768;
 
-    if (ioctl(m_fdControl, EM8300_IOCTL_OVERLAY_SETSCREEN, &scr) < 0)
+    if (ioctl(m_fdControl, EM8300_IOCTL_OVERLAY_SETSCREEN, &scr) == -1)
     {
 	//######
 	esyslog("dxr3: unable to set up overlay screen: %m");
@@ -400,7 +400,7 @@ void cDxr3Interface::EnableOverlay()
     win.width = 1024;
     win.height = 768;
 
-    if (ioctl(m_fdControl, EM8300_IOCTL_OVERLAY_SETWINDOW, &win) < 0)
+    if (ioctl(m_fdControl, EM8300_IOCTL_OVERLAY_SETWINDOW, &win) == -1)
     {
 	//######
 	esyslog("dxr3: unable to set up overlay window: %m");
@@ -432,7 +432,7 @@ uint32_t cDxr3Interface::GetAspectRatio() const
 
     if (!m_ExternalReleased)
     {
-	if (ioctl(m_fdControl, EM8300_IOCTL_GET_ASPECTRATIO, &ioval) < 0)
+	if (ioctl(m_fdControl, EM8300_IOCTL_GET_ASPECTRATIO, &ioval) == -1)
 	{
 	    esyslog("dxr3: unable to get aspect ratio: %m");
 	}
@@ -470,7 +470,7 @@ void cDxr3Interface::SetAspectRatio(uint32_t ratio)
 			wssmode = EM8300_WSS_16_9;
 		    else
 			wssmode = EM8300_WSS_OFF;
-		    if (ioctl(m_fdControl, EM8300_IOCTL_SET_WSS, &wssmode) < 0)
+		    if (ioctl(m_fdControl, EM8300_IOCTL_SET_WSS, &wssmode) == -1)
 		    {
 			esyslog("dxr3: unable to set WSS: %m");
 		    }
@@ -483,7 +483,7 @@ void cDxr3Interface::SetAspectRatio(uint32_t ratio)
 	    }
 
 	    requestCounter = 0;
-	    if (ioctl(m_fdControl, EM8300_IOCTL_SET_ASPECTRATIO, &aspect) < 0)
+	    if (ioctl(m_fdControl, EM8300_IOCTL_SET_ASPECTRATIO, &aspect) == -1)
 	    {
 		esyslog("dxr3: unable to set aspect ratio: %m");
 	    }
@@ -525,7 +525,7 @@ void cDxr3Interface::SetPlayMode()
 	fsync(m_fdVideo);
 
 	ioval = EM8300_PLAYMODE_PLAY;
-	if (ioctl(m_fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval) < 0)
+	if (ioctl(m_fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval) == -1)
 	{
 	    esyslog("dxr3: unable to set play mode: %m");
 	}
@@ -533,7 +533,7 @@ void cDxr3Interface::SetPlayMode()
 	reg.reg = 0;
 	reg.val = MVCOMMAND_SYNC;
 
-	if (ioctl(m_fdControl, EM8300_IOCTL_WRITEREG, &reg) < 0)
+	if (ioctl(m_fdControl, EM8300_IOCTL_WRITEREG, &reg) == -1)
 	{
 	    esyslog("dxr3: unable to start em8300 sync engine: %m");
 	}
@@ -551,7 +551,7 @@ void cDxr3Interface::Pause()
 
     if (!m_ExternalReleased)
     {
-	if (ioctl(m_fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval) < 0)
+	if (ioctl(m_fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval) == -1)
 	{
 	    esyslog("dxr3: unable to set pause mode: %m");
 	}
@@ -568,7 +568,7 @@ void cDxr3Interface::SingleStep()
 
     if (!m_ExternalReleased)
     {
-	if (ioctl(m_fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval) < 0)
+	if (ioctl(m_fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval) == -1)
 	{
 	    esyslog("dxr3: unable to set single-step mode: %m");
 	}
@@ -598,7 +598,7 @@ void cDxr3Interface::PlayVideoFrame(cFixedLengthFrame* pFrame, int times)
 
 		while (written < pFrame->GetCount() && count >= 0)
 		{
-		    if ((count = write(m_fdVideo, pFrame->GetData() + written, pFrame->GetCount() - written)) < 0)
+		    if ((count = write(m_fdVideo, pFrame->GetData() + written, pFrame->GetCount() - written)) == -1)
 		    {
 			// an error occured
 			Resuscitation();
@@ -629,7 +629,7 @@ void cDxr3Interface::PlayVideoFrame(const uint8_t* pBuf, int length, int times)
     {
 	for (int i = 0; i < times; i++)
 	{
-	    if (write(m_fdVideo, pBuf, length) < 0)
+	    if (write(m_fdVideo, pBuf, length) == -1)
 		Resuscitation();
 	}
     }
@@ -656,7 +656,7 @@ void cDxr3Interface::PlayAudioFrame(cFixedLengthFrame* pFrame)
 		ResampleVolume((short*)pFrame->GetData(), pFrame->GetCount());
 
 	    written = write(m_fdAudio, pFrame->GetData(), pFrame->GetCount());
-	    if (written < 0)
+	    if (written == -1)
 	    {
 		esyslog("dxr3: unable to play audio frame: %m");
 		// TODO: Resuscitation() ?
@@ -683,7 +683,7 @@ void cDxr3Interface::PlayAudioFrame(uint8_t* pBuf, int length)
 	if (!cDxr3Interface::Instance().IsAudioModeAC3())
 	    ResampleVolume((short*)pBuf, length);
 
-	if ((written = write(m_fdAudio, pBuf, length)) < 0)
+	if ((written = write(m_fdAudio, pBuf, length)) == -1)
 	{
 	    esyslog("dxr3: unable to play audio frame: %m");
 	    Resuscitation();
@@ -747,7 +747,7 @@ void cDxr3Interface::ClaimDevices()
     // open control stream
     m_fdControl = Dxr3Open("", cDxr3ConfigData::Instance().GetDxr3Card(),
 			   O_WRONLY | O_SYNC);
-    if (m_fdControl < 0)
+    if (m_fdControl == -1)
     {
 	esyslog("dxr3: please verify that the em8300 modules are loaded");
 	exit(1);
@@ -765,7 +765,7 @@ void cDxr3Interface::ClaimDevices()
 		       O_WRONLY | O_SYNC);
 
     // everything ok?
-    if (m_fdVideo < 0 || m_fdAudio < 0 || m_fdSpu < 0)
+    if (m_fdVideo == -1 || m_fdAudio == -1 || m_fdSpu == -1)
     {
 	esyslog("dxr3: fatal: unable to open some em8300 devices");
 	exit(1);
@@ -802,7 +802,7 @@ void cDxr3Interface::ClaimDevices()
     ConfigureDevice();
 
     // get bcs values from driver
-    if (ioctl(m_fdControl, EM8300_IOCTL_GETBCS, &m_bcs) < 0)
+    if (ioctl(m_fdControl, EM8300_IOCTL_GETBCS, &m_bcs) == -1)
     {
 	esyslog("dxr3: failed to get brightness/contrast/saturation: %m");
     }
@@ -874,7 +874,8 @@ void cDxr3Interface::ExternalReopenDevices()
 	m_fdSpu = Dxr3Open("_sp", cDxr3ConfigData::Instance().GetDxr3Card(),
 			   O_WRONLY | O_SYNC);
 
-	if (m_fdControl < 0 || m_fdVideo < 0 || m_fdAudio < 0 || m_fdSpu <0)
+	if (m_fdControl == -1 || m_fdVideo == -1 || m_fdAudio == -1 ||
+	    m_fdSpu == -1)
 	{
 	    ExternalReleaseDevices();
 	}
@@ -915,7 +916,7 @@ void cDxr3Interface::PlayBlackFrame()
     {
 	for (int i = 0; i < 3; i++)
 	{
-	    if (write(m_fdVideo, blackframe, blackframeLength) < 0)
+	    if (write(m_fdVideo, blackframe, blackframeLength) == -1)
 		Resuscitation();
 	}
     }
@@ -932,7 +933,7 @@ void cDxr3Interface::ReOpenAudio()
 
     if (!m_ExternalReleased)
     {
-	if (m_fdAudio > -1)
+	if (m_fdAudio != -1)
 	{
 	    int bufsize = 0;
 	    ioctl(m_fdAudio, SNDCTL_DSP_GETODELAY, &bufsize);
@@ -1049,7 +1050,7 @@ void cDxr3Interface::ConfigureDevice()
     m_bcs.saturation = cDxr3ConfigData::Instance().GetSaturation();
     dsyslog("dxr3: configure: brightness=%d,contrast=%d,saturation=%d",
 	    m_bcs.brightness, m_bcs.contrast, m_bcs.saturation);
-    if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) < 0)
+    if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) == -1)
     {
 	esyslog("dxr3: unable to set brightness/contrast/saturation: %m");
     }
@@ -1177,7 +1178,7 @@ void cDxr3Interface::WriteSpu(const uint8_t* pBuf, int length)
 
     if (!m_ExternalReleased)
     {
-	if (write(m_fdSpu, pBuf, length) < 0)
+	if (write(m_fdSpu, pBuf, length) == -1)
 	    Resuscitation();
     }
 
@@ -1239,11 +1240,13 @@ void cDxr3Interface::ResetHardware()
 //! set brightness
 void cDxr3Interface::SetBrightness(int value)
 {
+    int oldval = m_bcs.brightness;
     m_bcs.brightness = value;
 
-    if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) < 0)
+    if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) == -1)
     {
 	esyslog("dxr3: unable to set brightness to %d: %m", value);
+	m_bcs.brightness = oldval;
     }
 }
 
@@ -1251,11 +1254,13 @@ void cDxr3Interface::SetBrightness(int value)
 //! set contrast
 void cDxr3Interface::SetContrast(int value)
 {
+    int oldval = m_bcs.contrast;
     m_bcs.contrast = value;
 
-    if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) < 0)
+    if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) == -1)
     {
 	esyslog("dxr3: unable to set contrast to %d: %m", value);
+	m_bcs.contrast = oldval;
     }
 }
 
@@ -1263,11 +1268,13 @@ void cDxr3Interface::SetContrast(int value)
 //! set saturation
 void cDxr3Interface::SetSaturation(int value)
 {
+    int oldval = m_bcs.saturation;
     m_bcs.saturation = value;
 
-    if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) < 0)
+    if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) == -1)
     {
 	esyslog("dxr3: unable to set saturation to %d: %m", value);
+	m_bcs.saturation = oldval;
     }
 }
 
