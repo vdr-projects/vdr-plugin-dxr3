@@ -3,7 +3,7 @@
  *
  * See the README file for copyright information and how to reach the author.
  *
- * $Id: dxr3.c,v 1.1.2.42 2009/01/02 17:04:21 scop Exp $
+ * $Id: dxr3.c,v 1.1.2.43 2009/01/02 22:59:57 scop Exp $
  *
  */
 
@@ -295,17 +295,20 @@ cString cPluginDxr3::SVDRPCommand(const char *Command, const char *Option,
     if (!strcasecmp(Command, "BRI"))
     {
 	cDxr3Interface::Instance().SetBrightness(atoi(Option));
-	return "Brightness set";
+	return cString::sprintf("Brightness set to %d",
+				cDxr3Interface::Instance().GetBrightness());
     }
     if (!strcasecmp(Command, "CON"))
     {
 	cDxr3Interface::Instance().SetContrast(atoi(Option));
-	return "Contrast set";
+	return cString::sprintf("Contrast set to %d",
+				cDxr3Interface::Instance().GetContrast());
     }
     if (!strcasecmp(Command, "SAT"))
     {
 	cDxr3Interface::Instance().SetSaturation(atoi(Option));
-	return "Saturation set";
+	return cString::sprintf("Saturation set to %d",
+				cDxr3Interface::Instance().GetSaturation());
     }
     if (!strcasecmp(Command, "SDO"))
     {

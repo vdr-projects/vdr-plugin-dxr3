@@ -1235,7 +1235,13 @@ void cDxr3Interface::ResetHardware()
     Unlock();
 }
 
-// set brightness/contrast/saturation
+// ==================================
+//! get brightness
+int cDxr3Interface::GetBrightness()
+{
+    return m_bcs.brightness;
+}
+
 // ==================================
 //! set brightness
 void cDxr3Interface::SetBrightness(int value)
@@ -1251,6 +1257,13 @@ void cDxr3Interface::SetBrightness(int value)
 }
 
 // ==================================
+//! get contrast
+int cDxr3Interface::GetContrast()
+{
+    return m_bcs.contrast;
+}
+
+// ==================================
 //! set contrast
 void cDxr3Interface::SetContrast(int value)
 {
@@ -1262,6 +1275,13 @@ void cDxr3Interface::SetContrast(int value)
 	esyslog("dxr3: unable to set contrast to %d: %m", value);
 	m_bcs.contrast = oldval;
     }
+}
+
+// ==================================
+//! get saturation
+int cDxr3Interface::GetSaturation()
+{
+    return m_bcs.saturation;
 }
 
 // ==================================
