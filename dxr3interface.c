@@ -1038,12 +1038,9 @@ void cDxr3Interface::ConfigureDevice()
 	dsyslog("dxr3: configure: video mode: NTSC");
 	videomode = EM8300_VIDEOMODE_NTSC;
     }
-
-    // make ioctl
     if (ioctl(m_fdControl, EM8300_IOCTL_SET_VIDEOMODE, &videomode) == -1)
     {
-	esyslog("dxr3: fatal: unable to set video mode: %m");
-	exit(1);
+	esyslog("dxr3: unable to set video mode: %m");
     }
 
     // set brightness/contrast/saturation
