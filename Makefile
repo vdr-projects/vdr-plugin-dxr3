@@ -37,7 +37,7 @@ APIVERSION = $(shell sed -ne '/define APIVERSION/s/^.*"\(.*\)".*$$/\1/p' $(VDRDI
 ### The name of the distribution archive:
 
 ARCHIVE = $(PLUGIN)-$(VERSION)
-PACKAGE = $(shell echo vdr-$(ARCHIVE) | sed -e 's/cvs$$/cvs'`date +%Y%m%d`/)
+PACKAGE = $(shell echo vdr-$(ARCHIVE) | sed -e 's/git$$/git'`date +%Y%m%d`/)
 
 ### Includes and Defines (add further entries here):
 
@@ -117,7 +117,8 @@ dist: clean
 	@mkdir $(TMPDIR)/$(ARCHIVE)
 	@cp -a * $(TMPDIR)/$(ARCHIVE)
 	@tar czf $(PACKAGE).tgz -C $(TMPDIR) \
-	   --owner=root --group=root --exclude CVS $(ARCHIVE)
+	   --owner=root --group=root --exclude .git --exclude .gitignore \
+	   $(ARCHIVE)
 	@-rm -rf $(TMPDIR)/$(ARCHIVE)
 	@echo Distribution package created as $(PACKAGE).tgz
 
