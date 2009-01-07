@@ -2,7 +2,7 @@
  * dxr3interface.c
  *
  * Copyright (C) 2002-2004 Kai Möller
- * Copyright (C) 2004 Christian Gmeiner
+ * Copyright (C) 2004-2009 Christian Gmeiner
  * Copyright (C) 2005-2008 Ville Skyttä
  *
  * This program is free software; you can redistribute it and/or
@@ -72,17 +72,6 @@ cDxr3Interface::cDxr3Interface() :
 cDxr3Interface::~cDxr3Interface()
 {
     ReleaseDevices();
-}
-
-// main
-// ==================================
-void cDxr3Interface::Start()
-{
-}
-
-// ==================================
-void cDxr3Interface::Stop()
-{
 }
 
 // audio
@@ -354,71 +343,6 @@ void cDxr3Interface::DisableAudio()
 	}
     }
     Unlock();
-}
-
-// ==================================
-//! enable overlay mode of the dxr3
-void cDxr3Interface::EnableOverlay()
-{
-    // first check if it is enabled already
-    if (m_OverlayActive)
-    {
-	return;
-    }
-
-    /*
-#define EM8300_OVERLAY_SIGNAL_ONLY 1
-#define EM8300_OVERLAY_SIGNAL_WITH_VGA 2
-#define EM8300_OVERLAY_VGA_ONLY 3
-    */
-
-    int ioval = EM8300_OVERLAY_SIGNAL_WITH_VGA;
-    // set overlay signal mode
-    if (ioctl(m_fdControl, EM8300_IOCTL_OVERLAY_SIGNALMODE, &ioval) == -1)
-    {
-	//######
-	esyslog("dxr3: unable to set overlay signal mode: %m");
-	return;
-    }
-
-    // setup overlay screen
-    em8300_overlay_screen_t scr;
-    scr.xsize = 1024;
-    scr.ysize = 768;
-
-    if (ioctl(m_fdControl, EM8300_IOCTL_OVERLAY_SETSCREEN, &scr) == -1)
-    {
-	//######
-	esyslog("dxr3: unable to set up overlay screen: %m");
-	return;
-    }
-
-    // setup overlay window
-    em8300_overlay_window_t win;
-    win.xpos = 0;
-    win.ypos = 0;
-    win.width = 1024;
-    win.height = 768;
-
-    if (ioctl(m_fdControl, EM8300_IOCTL_OVERLAY_SETWINDOW, &win) == -1)
-    {
-	//######
-	esyslog("dxr3: unable to set up overlay window: %m");
-	return;
-    }
-
-    m_OverlayActive = true;
-}
-
-// ==================================
-//! disable overlay mode of the dxr3
-void cDxr3Interface::DisableOverlay()
-{
-    // is it already disabled
-    if (!m_OverlayActive)
-    {
-	return;
-    }
 }
 
 // set/get functions
@@ -784,7 +708,6 @@ void cDxr3Interface::ClaimDevices()
     // set default values
     m_AudioActive = false;
     m_VideoActive = false;
-    m_OverlayActive = false;
     m_ExternalReleased = false;
     m_volume = 255;
     m_audioChannel = AUDIO_STEREO;

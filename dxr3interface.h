@@ -2,7 +2,7 @@
  * dxr3interface.h
  *
  * Copyright (C) 2002-2004 Kai Möller
- * Copyright (C) 2004 Christian Gmeiner
+ * Copyright (C) 2004-2009 Christian Gmeiner
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -47,10 +47,6 @@ class cDxr3Interface : public Singleton<cDxr3Interface>
 public:
     cDxr3Interface();
     ~cDxr3Interface();
-
-    // main
-    void Start();
-    void Stop();
 
     // audio
     void SetAudioAnalog();
@@ -108,8 +104,6 @@ public:
 	m_AudioActive = true;
     }
     void DisableAudio();
-    void EnableOverlay();
-    void DisableOverlay();
 
     // set/get functions
     uint32_t GetAspectRatio() const;
@@ -162,8 +156,6 @@ public:
     void ClearButton();
     void SetPalette(unsigned int *pal = NULL);
 
-    // overlay functions
-
     // helper functions for dxr3 main osd screen
     void ResetHardware();
 
@@ -200,7 +192,6 @@ private:
     int m_audioChannel;		///> 0=stereo, 1=left, 2=right audio channel
     bool m_AudioActive;		///< is audio active?
     bool m_VideoActive;		///< is video active?
-    bool m_OverlayActive;	///< is overlay active?
 
     // bcs
     em8300_bcs_t m_bcs;		///< BrightnessContrastSaturation values
