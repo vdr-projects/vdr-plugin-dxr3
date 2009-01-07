@@ -36,6 +36,11 @@ const int ZEROBUFFER_SIZE = 4096;
 uint8_t zerobuffer[ZEROBUFFER_SIZE] = {0};
 const uint32_t UNKNOWN_AUDIO_MODE = 9; // default, unused value
 
+static const char *DEV_DXR3_OSD   = "_sp";
+static const char *DEV_DXR3_VIDEO = "_mv";
+static const char *DEV_DXR3_OSS   = "_ma";
+static const char *DEV_DXR3_CONT  = "";
+
 // ==================================
 //! helper function to generate name
 static const char *Dxr3Name(const char *Name, int n)
@@ -669,7 +674,7 @@ void cDxr3Interface::PlayAudioLpcmFrame(uint8_t* pBuf, int length)
 void cDxr3Interface::ClaimDevices()
 {
     // open control stream
-    m_fdControl = Dxr3Open("", cDxr3ConfigData::Instance().GetDxr3Card(),
+    m_fdControl = Dxr3Open(DEV_DXR3_CONT, cDxr3ConfigData::Instance().GetDxr3Card(),
 			   O_WRONLY | O_SYNC);
     if (m_fdControl == -1)
     {
@@ -681,11 +686,11 @@ void cDxr3Interface::ClaimDevices()
     UploadMicroCode();
 
     ///< open multimedia streams
-    m_fdVideo = Dxr3Open("_mv", cDxr3ConfigData::Instance().GetDxr3Card(),
+    m_fdVideo = Dxr3Open(DEV_DXR3_VIDEO, cDxr3ConfigData::Instance().GetDxr3Card(),
 			 O_WRONLY | O_SYNC);
-    m_fdAudio = Dxr3Open("_ma", cDxr3ConfigData::Instance().GetDxr3Card(),
+    m_fdAudio = Dxr3Open(DEV_DXR3_OSS, cDxr3ConfigData::Instance().GetDxr3Card(),
 			 O_WRONLY | O_SYNC);
-    m_fdSpu = Dxr3Open("_sp", cDxr3ConfigData::Instance().GetDxr3Card(),
+    m_fdSpu = Dxr3Open(DEV_DXR3_OSD, cDxr3ConfigData::Instance().GetDxr3Card(),
 		       O_WRONLY | O_SYNC);
 
     // everything ok?
@@ -786,15 +791,15 @@ void cDxr3Interface::ExternalReopenDevices()
     if (m_ExternalReleased)
     {
 	// open control stream
-	m_fdControl = Dxr3Open("", cDxr3ConfigData::Instance().GetDxr3Card(),
+	m_fdControl = Dxr3Open(DEV_DXR3_CONT, cDxr3ConfigData::Instance().GetDxr3Card(),
 			       O_WRONLY | O_SYNC);
 
 	// open 'multimedia' streams
-	m_fdVideo = Dxr3Open("_mv", cDxr3ConfigData::Instance().GetDxr3Card(),
+	m_fdVideo = Dxr3Open(DEV_DXR3_VIDEO, cDxr3ConfigData::Instance().GetDxr3Card(),
 			     O_WRONLY | O_SYNC);
-	m_fdAudio = Dxr3Open("_ma", cDxr3ConfigData::Instance().GetDxr3Card(),
+	m_fdAudio = Dxr3Open(DEV_DXR3_OSS, cDxr3ConfigData::Instance().GetDxr3Card(),
 			     O_WRONLY | O_SYNC);
-	m_fdSpu = Dxr3Open("_sp", cDxr3ConfigData::Instance().GetDxr3Card(),
+	m_fdSpu = Dxr3Open(DEV_DXR3_OSD, cDxr3ConfigData::Instance().GetDxr3Card(),
 			   O_WRONLY | O_SYNC);
 
 	if (m_fdControl == -1 || m_fdVideo == -1 || m_fdAudio == -1 ||
