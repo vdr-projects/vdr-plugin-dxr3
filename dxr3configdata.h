@@ -35,14 +35,6 @@ enum eVideoMode
 };
 
 // ==================================
-// possible menu modes
-enum eMenuMode
-{
-    SUBPICTURE = 0,
-    MPEG
-};
-
-// ==================================
 //! global interface to access all config datas of this plugin
 /*
   With this singleton you can access very easy all possible
@@ -86,14 +78,6 @@ public:
     eVideoMode SetVideoMode(eVideoMode videoMode)
     {
 	return m_videomode = videoMode;
-    }
-    eMenuMode GetMenuMode() const
-    {
-	return m_menumode;
-    }
-    eMenuMode SetMenuMode(eMenuMode menuMode)
-    {
-	return m_menumode = menuMode;
     }
 
     int GetBrightness() const
@@ -151,7 +135,6 @@ public:
 protected:
     eVideoMode m_videomode;
     int m_usewss;
-    eMenuMode m_menumode;
     int m_digitaloutput;
     int m_card;
     int m_forceletterbox;
