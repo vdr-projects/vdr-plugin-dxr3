@@ -20,10 +20,10 @@ CXXFLAGS = -O2 -Wall -Woverloaded-virtual
 
 ### The directory environment:
 
-VDRDIR = /usr/include/vdr
-LIBDIR = .
+VDRDIR = ../../..
+LIBDIR = ../../lib
 TMPDIR = /tmp
-FFMDIR = /usr//include/libavcodec
+FFMDIR = /usr/local/include/ffmpeg
 EM8300 = /usr/include
 
 ### Allow user defined options to overwrite defaults:
