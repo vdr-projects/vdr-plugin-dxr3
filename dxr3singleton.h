@@ -28,26 +28,24 @@
   Is a nice solution to use only
   one instance of a class.
 */
-template<typename T>
-class Singleton
-{
+template <class T>
+class Singleton {
+public:
+    virtual ~Singleton()    {}
+    static T& Instance();
+
 protected:
     Singleton() {}
-    virtual ~Singleton() {}
 
-public:
-    static T& Instance()
-    {
-	static T m_Instance;
-	return m_Instance;
-    }
-
-    static T* InstanceP()
-    {
-	static T* m_InstanceP = new T;
-	return m_InstanceP;
-    }
+private:
+    Singleton(const Singleton&);
 };
+
+template <class T>
+T& Singleton<T>::Instance() {
+    static T instance;
+    return instance;
+}
 
 #endif /*_DXR3_SINGLETON_H_*/
 
