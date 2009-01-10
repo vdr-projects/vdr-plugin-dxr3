@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
 "Report-Msgid-Bugs-To: dxr3plugin-users@lists.sourceforge.net\n"
-"POT-Creation-Date: 2008-12-28 23:17+0200\n"
+"POT-Creation-Date: 2009-01-10 22:20+0200\n"
 "PO-Revision-Date: 2008-12-28 23:17+0200\n"
 "Last-Translator: Mikolaj Tutak <mtutak@nixz.net>\n"
 "Language-Team: <vdr@linuxtv.org>\n"
@@ -16,9 +16,6 @@ msgstr ""
 
 msgid "DXR3 Functions"
 msgstr "Ustawienia DXR3"
-
-msgid "Hardware MPEG decoder"
-msgstr "Sprzętowy dekoder MPEG"
 
 msgid "Reset DXR3 hardware"
 msgstr "Zerowanie dekodera DXR3"
@@ -31,6 +28,9 @@ msgstr "Przełącz w tryb dźwięku analogowego"
 
 msgid "Switch to digital audio output"
 msgstr "Przełącz w tryb dźwięku cyfrowego"
+
+msgid "Hardware MPEG decoder"
+msgstr "Sprzętowy dekoder MPEG"
 
 msgid "Brightness"
 msgstr "Jasność"

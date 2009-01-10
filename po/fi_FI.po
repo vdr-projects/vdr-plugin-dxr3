@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
 "Report-Msgid-Bugs-To: dxr3plugin-users@lists.sourceforge.net\n"
-"POT-Creation-Date: 2008-12-28 23:17+0200\n"
+"POT-Creation-Date: 2009-01-10 22:20+0200\n"
 "PO-Revision-Date: 2008-12-28 23:17+0200\n"
 "Last-Translator: Ville Skyttä <ville.skytta@iki.fi>\n"
 "Language-Team: <vdr@linuxtv.org>\n"
@@ -16,9 +16,6 @@ msgstr ""
 
 msgid "DXR3 Functions"
 msgstr "DXR3-toiminnot"
-
-msgid "Hardware MPEG decoder"
-msgstr "MPEG-purkukortti"
 
 msgid "Reset DXR3 hardware"
 msgstr "Palauta kortti alkutilaan"
@@ -31,6 +28,9 @@ msgstr "Kytke analoginen audioulostulo"
 
 msgid "Switch to digital audio output"
 msgstr "Kytke digitaalinen audioulostulo"
+
+msgid "Hardware MPEG decoder"
+msgstr "MPEG-purkukortti"
 
 msgid "Brightness"
 msgstr "Kirkkaus"
