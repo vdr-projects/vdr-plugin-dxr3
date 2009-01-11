@@ -71,6 +71,7 @@ public:
     }
 
     // audio
+    bool IsOssAudio();
     void SetAudioAnalog();
     void SetAudioDigitalPCM();
     void SetAudioDigitalAC3();

@@ -57,6 +57,20 @@ cDxr3Interface::~cDxr3Interface()
 }
 
 // audio
+bool cDxr3Interface::IsOssAudio() {
+
+    // try to open oss audio interface
+    int handle = Dxr3Open(DEV_DXR3_OSS, O_RDWR | O_NONBLOCK, false);
+
+    if (handle > -1) {
+        close(handle);
+        return true;
+    }
+
+    return false;
+}
+
+
 // ==================================
 //! set audio output to analog
 void cDxr3Interface::SetAudioAnalog()
