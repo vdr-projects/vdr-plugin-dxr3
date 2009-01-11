@@ -5,7 +5,7 @@ Prerequisites:
   version 0.16.0 or later of the driver, be sure to load it in OSS
   audio mode (audio_driver=oss parameter to the em8300 module).
 - Install VDR 1.6.x
-- Install the libavcodec library from http://ffmpeg.sourceforge.net/
+- Install FFmpeg from http://ffmpeg.mplayerhq.hu/
 
 Installation:
 
@@ -13,7 +13,7 @@ Installation:
   http://projects.vdr-developer.org/projects/show/plg-dxr3
 - Unpack the package into "PLUGINS/SRC" directory.
 - Make a symbolic link to this dxr3-plugin (ln -s dxr3-x.x.x dxr3).
-- Check FFMDIR and EM8300 in Makefile.
+- Check FFMPEG_INC, FFMPEG_LIBS and EM8300_INC in Makefile.
 - Check extra settings in Makefile: -DMICROCODE, -DUSE_XINE_SCALER
 - Call "make plugins" in the VDR root directory.
 - Make sure your DXR3 driver modules are loaded and ready to run.

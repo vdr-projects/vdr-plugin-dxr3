@@ -23,8 +23,18 @@ CXXFLAGS = -O2 -Wall -Woverloaded-virtual
 VDRDIR = ../../..
 LIBDIR = ../../lib
 TMPDIR = /tmp
-FFMDIR = /usr/local/include/ffmpeg
-EM8300 = /usr/include
+
+# Usually something like -I/path/to/ffmpeg, should work as is if FFmpeg was
+# installed properly and pkg-config is available.
+FFMPEG_INC = $(shell pkg-config --cflags-only-I libavcodec)
+
+# Usually something like -L/path/to/ffmpeg/libavcodec -lavcodec, should work
+# as is if FFmpeg was installed properly and pkg-config is available.
+FFMPEG_LIBS = $(shell pkg-config --libs libavcodec)
+
+# Usually something like -I/path/to/em8300/include,should work as is (empty)
+# if em8300 headers were installed properly.
+EM8300_INC = 
 
 ### Allow user defined options to overwrite defaults:
 
@@ -41,10 +51,10 @@ PACKAGE = $(shell echo vdr-$(ARCHIVE) | sed -e 's/git$$/git'`date +%Y%m%d`/)
 
 ### Includes and Defines (add further entries here):
 
-INCLUDES += -I$(VDRDIR)/include -I$(FFMDIR) -I$(FFMDIR)/libavcodec -I$(EM8300)
-LIBS     = -L$(FFMDIR)/libavcodec -lavcodec
-DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"'
-DEFINES += -D_GNU_SOURCE
+INCLUDES += -I$(VDRDIR)/include $(FFMPEG_INC) $(EM8300_INC)
+LIBS      = $(FFMPEG_LIBS)
+DEFINES  += -DPLUGIN_NAME_I18N='"$(PLUGIN)"'
+DEFINES  += -D_GNU_SOURCE
 
 # where is the microcode for the dxr3 located?  em8300 driver version 0.15.2
 # and later installs it by default to /lib/firmware/em8300.bin, and earlier
