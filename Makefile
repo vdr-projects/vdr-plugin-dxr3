@@ -117,8 +117,7 @@ dist: clean
 	@mkdir $(TMPDIR)/$(ARCHIVE)
 	@cp -a * $(TMPDIR)/$(ARCHIVE)
 	@tar czf $(PACKAGE).tgz -C $(TMPDIR) \
-	   --owner=root --group=root --exclude .git --exclude .gitignore \
-	   $(ARCHIVE)
+	   --owner=root --group=root --exclude .gitignore $(ARCHIVE)
 	@-rm -rf $(TMPDIR)/$(ARCHIVE)
 	@echo Distribution package created as $(PACKAGE).tgz
 
