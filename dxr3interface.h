@@ -31,9 +31,21 @@
 #include "dxr3vdrincludes.h"
 #include "dxr3configdata.h"
 #include "dxr3sysclock.h"
+#include "dxr3configdata.h"
 
 // ==================================
 class cFixedLengthFrame;
+
+class cDxr3Name {
+public:
+    cDxr3Name(const char *name, int n) {
+        snprintf(buffer, sizeof(buffer), "%s%s-%d", "/dev/em8300", name, n);
+    }
+    const char *operator*() { return buffer; }
+
+private:
+    char buffer[PATH_MAX];
+};
 
 // ==================================
 //! interafce to dxr3-card
@@ -47,6 +59,16 @@ class cDxr3Interface : public Singleton<cDxr3Interface>
 public:
     cDxr3Interface();
     ~cDxr3Interface();
+
+    static int Dxr3Open(const char *name, int mode, bool report_error = true) {
+        const char *filename = *cDxr3Name(name, cDxr3ConfigData::Instance().GetDxr3Card());
+        int fd = open(filename, mode);
+
+        if (report_error && (fd < 0)) {
+            LOG_ERROR_STR(filename);
+        }
+        return fd;
+    }
 
     // audio
     void SetAudioAnalog();
