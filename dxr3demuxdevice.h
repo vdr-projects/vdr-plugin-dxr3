@@ -26,7 +26,7 @@
 #include "dxr3generaldefines.h"
 #include "dxr3syncbuffer.h"
 #include "dxr3audiodecoder.h"
-#include "dxr3outputthread.h"
+#include "dxr3output.h"
 
 const int AUDIO_MAX_BUFFER_SIZE = 200;
 const int VIDEO_MAX_BUFFER_SIZE = 500;

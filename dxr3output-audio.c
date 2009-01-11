@@ -37,13 +37,6 @@ cDxr3AudioOutThread::cDxr3AudioOutThread(cDxr3Interface& dxr3Device,
     SetDescription("DXR3 audio output");
 }
 
-//! destructor
-cDxr3AudioOutThread::~cDxr3AudioOutThread()
-{
-    m_buffer.Stop();
-    Cancel(3);
-}
-
 // ==================================
 //! thread action
 void cDxr3AudioOutThread::Action()

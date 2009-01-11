@@ -34,13 +34,6 @@ cDxr3VideoOutThread::cDxr3VideoOutThread(cDxr3Interface& dxr3Device,
     SetDescription("DXR3 video output");
 }
 
-//! destructor
-cDxr3VideoOutThread::~cDxr3VideoOutThread()
-{
-    m_buffer.Stop();
-    Cancel(3);
-}
-
 // ==================================
 //! thread action
 void cDxr3VideoOutThread::Action()

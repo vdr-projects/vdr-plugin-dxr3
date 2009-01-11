@@ -1,5 +1,5 @@
 /*
- * dxr3outputthread.h
+ * dxr3output.h
  *
  * Copyright (C) 2002-2004 Kai Möller
  *
@@ -31,16 +31,11 @@ class cDxr3OutputThread : public cThread
 {
 public:
     cDxr3OutputThread(cDxr3Interface& dxr3Device, cDxr3SyncBuffer& buffer);
-    virtual ~cDxr3OutputThread()
-    {
-	Cancel();
+    virtual ~cDxr3OutputThread() {
+	m_buffer.Stop();
+	Cancel(3);
     };
-    /*
-    virtual void Start(void)
-    {
-	cThread::Start();
-    };
-    */
+
     bool NeedResync()
     {
 	return m_bNeedResync;
@@ -66,7 +61,6 @@ class cDxr3AudioOutThread : public cDxr3OutputThread
 {
 public:
     cDxr3AudioOutThread(cDxr3Interface& dxr3Device, cDxr3SyncBuffer& buffer);
-    virtual ~cDxr3AudioOutThread();
 
 protected:
     void Action();
@@ -81,7 +75,6 @@ class cDxr3VideoOutThread : public cDxr3OutputThread
 {
 public:
     cDxr3VideoOutThread(cDxr3Interface& dxr3Device, cDxr3SyncBuffer& buffer);
-    virtual ~cDxr3VideoOutThread();
 
 protected:
     void Action();
