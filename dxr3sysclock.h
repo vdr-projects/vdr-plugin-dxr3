@@ -22,8 +22,9 @@
 #ifndef _DXR3_SYSCLOCK_H_
 #define _DXR3_SYSCLOCK_H_
 
-#include "dxr3vdrincludes.h"
+#include <stdint.h>
 #include <linux/em8300.h>
+#include <vdr/thread.h>
 
 // ==================================
 // work with dxr3's clock

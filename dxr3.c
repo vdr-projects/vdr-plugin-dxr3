@@ -7,7 +7,7 @@
  *
  */
 
-#include "dxr3vdrincludes.h"
+#include <vdr/plugin.h>
 #include "dxr3device.h"
 #include "dxr3syncbuffer.h"
 #include "dxr3configdata.h"

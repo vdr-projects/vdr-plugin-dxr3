@@ -32,7 +32,7 @@
 
 #include <stdlib.h>
 #include <linux/dvb/osd.h>
-#include "dxr3vdrincludes.h"
+#include <vdr/osd.h>
 #include "dxr3palettemanager.h"
 #include "dxr3colormanager.h"
 #include "dxr3interface.h"

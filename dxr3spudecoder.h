@@ -22,7 +22,8 @@
 #ifndef _DXR3SPUDECODER_H_
 #define _DXR3SPUDECODER_H_
 
-#include "dxr3vdrincludes.h"
+#include <vdr/osd.h>
+#include <vdr/spu.h>
 #include <inttypes.h>
 
 // ==================================

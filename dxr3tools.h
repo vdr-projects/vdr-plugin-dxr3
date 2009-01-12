@@ -22,7 +22,8 @@
 #ifndef _DXR3TOOLS_H_
 #define _DXR3TOOLS_H_
 
-#include "dxr3vdrincludes.h"
+#include <string>
+#include <vdr/status.h>
 
 namespace Tools
 {

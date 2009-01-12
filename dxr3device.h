@@ -27,6 +27,7 @@
 #include "dxr3demuxdevice.h"
 #include "dxr3spudecoder.h"
 #include <string>
+#include <vdr/device.h>
 
 // ==================================
 // our device :)

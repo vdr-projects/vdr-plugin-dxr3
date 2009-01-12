@@ -27,6 +27,7 @@
 */
 
 #include <stdio.h>
+#include <algorithm>
 #include "dxr3audiodecoder.h"
 #include "dxr3pesframe.h"
 

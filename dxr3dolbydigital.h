@@ -22,7 +22,8 @@
 #ifndef _DXR3_DOLBYDIGITAL_H_
 #define _DXR3_DOLBYDIGITAL_H_
 
-#include "dxr3vdrincludes.h"
+#include <vdr/thread.h>
+#include <vdr/audio.h>
 
 // ==================================
 //! interface to vdr to output dolby digital via dxr3

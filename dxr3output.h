@@ -22,7 +22,6 @@
 #ifndef _DXR3OUTPUTTHREAD_H_
 #define _DXR3OUTPUTTHREAD_H_
 
-#include "dxr3vdrincludes.h"
 #include "dxr3syncbuffer.h"
 #include "dxr3audiodecoder.h"
 

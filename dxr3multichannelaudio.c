@@ -7,8 +7,9 @@
  */
 
 #include <malloc.h>
-#include "dxr3multichannelaudio.h"
+#include <algorithm>
 #include <vdr/ringbuffer.h>
+#include "dxr3multichannelaudio.h"
 
 //#define DEBUG(x...) printf(x)
 #define DEBUG(x...)

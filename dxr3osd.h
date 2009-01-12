@@ -1,7 +1,6 @@
 #ifndef _DXR3_OSD_H_
 #define _DXR3_OSD_H_
 
-#include "dxr3vdrincludes.h"
 #include "dxr3interface_spu_encoder.h"
 
 // ==================================

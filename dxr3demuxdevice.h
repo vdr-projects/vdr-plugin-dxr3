@@ -22,7 +22,6 @@
 #ifndef __DXR3_DEMUX_DEVICE_H
 #define __DXR3_DEMUX_DEVICE_H
 
-#include "dxr3vdrincludes.h"
 #include "dxr3generaldefines.h"
 #include "dxr3syncbuffer.h"
 #include "dxr3audiodecoder.h"

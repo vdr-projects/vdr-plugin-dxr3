@@ -1,7 +1,8 @@
 #ifndef _DXR3MULTICHANNELAUDIO_H_
 #define _DXR3MULTICHANNELAUDIO_H_
 
-#include "dxr3vdrincludes.h"
+#include <vdr/tools.h>
+#include <vdr/thread.h>
 
 class cAudioEncapsulator;
 class cRingBufferFrame;

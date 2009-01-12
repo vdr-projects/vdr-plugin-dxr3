@@ -24,7 +24,7 @@
 
 #include <unistd.h>
 #include <stdint.h>
-#include "dxr3vdrincludes.h"
+#include <vdr/thread.h>
 #include "dxr3singleton.h"
 
 // ==================================

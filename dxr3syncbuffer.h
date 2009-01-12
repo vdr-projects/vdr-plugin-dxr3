@@ -24,7 +24,7 @@
 
 #include <stdint.h>
 
-#include "dxr3vdrincludes.h"
+#include <vdr/ringbuffer.h>
 #include "dxr3interface.h"
 #include "dxr3generaldefines.h"
 #include "dxr3nextpts.h"

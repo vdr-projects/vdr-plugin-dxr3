@@ -27,8 +27,9 @@
 #include <stdint.h>
 #include <linux/em8300.h>
 #include <sys/ioctl.h>
+#include <linux/limits.h>
 
-#include "dxr3vdrincludes.h"
+#include <vdr/tools.h>
 #include "dxr3configdata.h"
 #include "dxr3sysclock.h"
 #include "dxr3configdata.h"
