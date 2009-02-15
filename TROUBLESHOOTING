@@ -35,7 +35,10 @@ Troubleshooting, known problems, bugs, and workarounds related to this driver:
   extent be reduced by using (increasing) the OSD flush rate option in
   plugin settings.  For many people, using the skinelchi plugin or the
   text2skin plugin with the enElchi skin has been reported to work much
-  better than other skins (even with OSD flush rate set to 0).
+  better than other skins (even with OSD flush rate set to 0).  Other
+  things to look at include turning antialiasing off in VDR's setup, and
+  applying patches/vdr-dxr3subtitlehack.patch to VDR sources, especially
+  if using DVB subtitles.
 
 * If VDR becomes unresponsive when using the MP3 or Muggle plugins, or
   there are stuttering/stickiness problems with the DVD plugin, and
