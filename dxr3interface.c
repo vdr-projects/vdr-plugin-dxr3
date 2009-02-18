@@ -368,7 +368,6 @@ uint32_t cDxr3Interface::GetAspectRatio() const
 void cDxr3Interface::SetAspectRatio(uint32_t ratio)
 {
     static int requestCounter = 0;
-    int wssmode;
     int aspect;
 
     Lock();
@@ -386,6 +385,7 @@ void cDxr3Interface::SetAspectRatio(uint32_t ratio)
 #ifdef EM8300_IOCTL_SET_WSS
 		if (cDxr3ConfigData::Instance().GetUseWSS())
 		{
+		    int wssmode;
 		    if (ratio == EM8300_ASPECTRATIO_16_9)
 			wssmode = EM8300_WSS_16_9;
 		    else
