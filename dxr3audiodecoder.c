@@ -38,10 +38,13 @@ const int LPCM_HEADER_LENGTH = 7;
 //! constructor
 cDxr3AudioDecoder::cDxr3AudioDecoder() : rbuf(50000), ac3dtsDecoder(&rbuf)
 {
-    decoderOpened = false;
     audioSynched = false;
-    volume = 255;
     Codec.id = CODEC_ID_MP2;
+
+    // check if codec is available
+    if (!cDxr3Ffmpeg::Instance().FindCodec(Codec)) {
+        exit(-1);
+    }
 
     Init();
 
@@ -63,22 +66,13 @@ void cDxr3AudioDecoder::Init()
 {
     // (re)init codec
     cDxr3Ffmpeg::Instance().CloseCodec(Codec);
-    if (cDxr3Ffmpeg::Instance().FindCodec(Codec))
-    {
 	cDxr3Ffmpeg::Instance().OpenCodec(Codec);
 	rate = channels = -1;
-	frameSize = Codec.codec_context.frame_size;
-	decoderOpened = true;
 	foundHeader = false;
 	decodeAudio = true;
 
 	//lastHeader[0] = 0xFF;
 	//lastHeader[1] = lastHeader[2] = lastHeader[3] = 0;
-    }
-    else
-    {
-	decoderOpened = false;
-    }
 }
 
 // ==================================
@@ -86,13 +80,6 @@ void cDxr3AudioDecoder::Init()
 void cDxr3AudioDecoder::Decode(const uint8_t* buf, int length, uint32_t pts,
 			       cDxr3SyncBuffer &aBuf)
 {
-    if (!decoderOpened)
-    {
-	// No decoder is open, so it
-	// is better to stop here.
-	return;
-    }
-
     int len;
     int out_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;
 
