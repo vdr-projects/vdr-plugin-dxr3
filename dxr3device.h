@@ -35,8 +35,7 @@
   cDxr3Device is the interface for VDR devices.
   Is is the part, which VDR "talks" with our plugin.
 */
-class cDxr3Device : public cDevice, public Singleton<cDxr3Device>
-{
+class cDxr3Device : public cDevice {
 public:
     cDxr3Device();
     cDxr3Device(cDxr3Interface& demuxDevice);

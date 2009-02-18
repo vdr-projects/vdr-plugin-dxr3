@@ -33,7 +33,7 @@ eOSState cDxr3OsdItem::ProcessKey(eKeys Key)
 	{
 	case DXR3_RESET_HARDWARE:
 	    cDxr3Interface::Instance().ResetHardware();
-	    cDxr3Device::Instance().Reset();
+	    //cDxr3Device::Instance().Reset();
 	    break;
 
 	case DXR3_FORCE_LETTER_BOX:
@@ -43,12 +43,12 @@ eOSState cDxr3OsdItem::ProcessKey(eKeys Key)
 
 	case DXR3_ANALOG_OUT:
 	    cDxr3ConfigData::Instance().SetUseDigitalOut(0);
-	    cDxr3Device::Instance().Reset();
+	    //cDxr3Device::Instance().Reset();
 	    break;
 
 	case DXR3_DIGITAL_OUT:
 	    cDxr3ConfigData::Instance().SetUseDigitalOut(1);
-	    cDxr3Device::Instance().Reset();
+	    //cDxr3Device::Instance().Reset();
 	    break;
 	}
     }
@@ -120,7 +120,7 @@ void cMenuSetupDxr3::Store(void)
     cDxr3Interface::Instance().SetBrightness(newBrightness);
     cDxr3Interface::Instance().SetContrast(newContrast);
     cDxr3Interface::Instance().SetSaturation(newSaturation);
-    cDxr3Device::Instance().Reset();
+    //cDxr3Device::Instance().Reset();
 }
 
 // ==================================
@@ -171,7 +171,7 @@ cPluginDxr3::~cPluginDxr3()
 // ==================================
 bool cPluginDxr3::Initialize()
 {
-    cDxr3Device::Instance();
+    new cDxr3Device();
 
     return true;
 }
