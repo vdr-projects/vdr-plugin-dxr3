@@ -24,6 +24,7 @@
 
 #include <assert.h>
 #include <stdint.h>
+#include "Uncopyable.h"
 
 // ==================================
 enum eVideoFrameType
@@ -81,8 +82,7 @@ private:
 
 // ==================================
 // pes - packetized elementary stream
-class cDxr3PesFrame
-{
+class cDxr3PesFrame : private Uncopyable {
 public:
 
     // ==================================
@@ -248,10 +248,6 @@ protected:
 
 protected:
     static const uint32_t MAX_PES_HEADER_SIZE;
-
-private:
-    cDxr3PesFrame(cDxr3PesFrame&); // no copy constructor
-
 };
 
 #endif /*_DXR3PESFRAME_H_*/

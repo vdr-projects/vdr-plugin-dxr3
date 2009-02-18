@@ -28,6 +28,7 @@
 #include "dxr3interface.h"
 #include "dxr3generaldefines.h"
 #include "dxr3nextpts.h"
+#include "Uncopyable.h"
 
 // ==================================
 const uint32_t UNKNOWN_CHANNEL_COUNT = 0xFFFFFFFF;
@@ -115,8 +116,7 @@ private:
 };
 
 // ==================================
-class cDxr3SyncBuffer : public cRingBuffer
-{
+class cDxr3SyncBuffer : public cRingBuffer, private Uncopyable {
 public:
     enum eSyncBufferException
     {
@@ -185,7 +185,6 @@ protected:
 
 private:
     cDxr3SyncBuffer(); // you are not allowed to use this constructor
-    cDxr3SyncBuffer(cDxr3SyncBuffer&); // no constructor
 };
 
 #endif /*_DXR3SYNCBUFFER_H_*/

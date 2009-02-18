@@ -29,11 +29,11 @@
 #include "dxr3ffmpeg.h"
 #include "dxr3syncbuffer.h"
 #include "dxr3multichannelaudio.h"
+#include "Uncopyable.h"
 
 // ==================================
 // decode audio to mp2 or use DD :)
-class cDxr3AudioDecoder
-{
+class cDxr3AudioDecoder : private Uncopyable {
 public:
     cDxr3AudioDecoder();
     ~cDxr3AudioDecoder();
@@ -72,8 +72,6 @@ private:
     int channels;
     uint8_t lastHeader[4];
     uint8_t pcmbuf[AVCODEC_MAX_AUDIO_FRAME_SIZE];
-
-    cDxr3AudioDecoder(cDxr3AudioDecoder&); // no copy constructor
 };
 
 #endif /*_DXR3_AUDIODECODER_H_*/

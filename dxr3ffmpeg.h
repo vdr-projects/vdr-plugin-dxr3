@@ -29,6 +29,7 @@ extern "C"
 
 #include <string.h>
 #include "dxr3singleton.h"
+#include "Uncopyable.h"
 
 // ==================================
 //! a codec used by this plugin
@@ -51,8 +52,7 @@ struct Dxr3Codec
   the audiodecoder, but in future i want to use
   it for ohter nice stuff :)
 */
-class cDxr3Ffmpeg : public Singleton<cDxr3Ffmpeg>
-{
+class cDxr3Ffmpeg : public Singleton<cDxr3Ffmpeg>, private Uncopyable {
 public:
     cDxr3Ffmpeg();
     ~cDxr3Ffmpeg() {}
@@ -60,9 +60,6 @@ public:
     bool FindCodec(struct Dxr3Codec& Codec);
     bool OpenCodec(struct Dxr3Codec& Codec);
     void CloseCodec(struct Dxr3Codec& Codec);
-
-private:
-    cDxr3Ffmpeg(cDxr3Ffmpeg&); // no copy constructor
 };
 
 #endif /*_DXR3_FFMPEG_H_*/
