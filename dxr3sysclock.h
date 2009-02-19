@@ -51,10 +51,6 @@ protected:
     int m_fdspu;
     uint32_t m_offset;
     cMutex mutex;
-
-protected:
-    cDxr3SysClock(); // you are not allowed to use this contructor
-    cDxr3SysClock(cDxr3SysClock&); // no copy constructor
 };
 
 #endif /*_DXR3_SYSCLOCK_H_*/
