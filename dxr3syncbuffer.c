@@ -290,23 +290,13 @@ cFixedLengthFrame* cDxr3SyncBuffer::Push(const uint8_t* pStart, int length, uint
 // ==================================
 void cDxr3SyncBuffer::Pop(void)
 {
-    if (m_count)
-    {
-	uint32_t nextPts = 0;
-	uint32_t tmpBuffer = m_next;
-	for (int i = 0; i < m_count && nextPts == 0; ++i)
-	{
-	    if (tmpBuffer) tmpBuffer = --tmpBuffer ? tmpBuffer : (Size() - 1);
-	    nextPts = m_pBuffer[tmpBuffer].GetPts();
-	}
-
-	m_next++;
-	m_count--;
-	m_next %= Size();
-	if (m_next == m_nextFree)
-	{
-	    m_next = m_nextFree = m_count = 0;
-	}
+    if (m_count) {
+        m_next++;
+        m_count--;
+        m_next %= Size();
+        if (m_next == m_nextFree) {
+            m_next = m_nextFree = m_count = 0;
+        }
     }
     EnablePut();
 }
