@@ -24,25 +24,19 @@
 
 #include "dxr3syncbuffer.h"
 #include "dxr3audiodecoder.h"
+#include "Uncopyable.h"
 
 // ==================================
-class cDxr3OutputThread : public cThread
-{
+class cDxr3OutputThread : public cThread, private Uncopyable {
 public:
     cDxr3OutputThread(cDxr3Interface& dxr3Device, cDxr3SyncBuffer& buffer);
     virtual ~cDxr3OutputThread() {
-	m_buffer.Stop();
-	Cancel(3);
+        m_buffer.Stop();
+        Cancel(3);
     };
 
-    bool NeedResync()
-    {
-	return m_bNeedResync;
-    };
-    void ClearResyncRequest()
-    {
-	m_bNeedResync = false;
-    };
+    bool NeedResync() const     { return m_bNeedResync; }
+    void ClearResyncRequest()   { m_bNeedResync = false; }
 
 protected:
     virtual void Action() = 0;
@@ -50,37 +44,24 @@ protected:
     cDxr3Interface& m_dxr3Device;
     cDxr3SyncBuffer& m_buffer;
     bool m_bNeedResync;
-
-private:
-    cDxr3OutputThread(cDxr3OutputThread&); // no copy constructor
 };
 
 // ==================================
-class cDxr3AudioOutThread : public cDxr3OutputThread
-{
+class cDxr3AudioOutThread : public cDxr3OutputThread {
 public:
     cDxr3AudioOutThread(cDxr3Interface& dxr3Device, cDxr3SyncBuffer& buffer);
 
 protected:
     void Action();
-
-private:
-    //cDxr3AudioOutThread(); // no standard constructor
-    cDxr3AudioOutThread(cDxr3AudioOutThread&); // no copy constructor
 };
 
 // ==================================
-class cDxr3VideoOutThread : public cDxr3OutputThread
-{
+class cDxr3VideoOutThread : public cDxr3OutputThread {
 public:
     cDxr3VideoOutThread(cDxr3Interface& dxr3Device, cDxr3SyncBuffer& buffer);
 
 protected:
     void Action();
-
-private:
-    //cDxr3VideoOutThread(); // no standard constructor
-    cDxr3VideoOutThread(cDxr3VideoOutThread&); // no copy constructor
 };
 
 #endif /*_DXR3OUTPUTTHREAD_H_*/

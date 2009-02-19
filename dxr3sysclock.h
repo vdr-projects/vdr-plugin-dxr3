@@ -25,11 +25,11 @@
 #include <stdint.h>
 #include <linux/em8300.h>
 #include <vdr/thread.h>
+#include "Uncopyable.h"
 
 // ==================================
 // work with dxr3's clock
-class cDxr3SysClock
-{
+class cDxr3SysClock : private Uncopyable {
 public:
     cDxr3SysClock(int fd_control, int fd_video, int fd_spu):
 	m_fdcontrol(fd_control),

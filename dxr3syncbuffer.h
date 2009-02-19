@@ -35,8 +35,7 @@ const uint32_t UNKNOWN_DATA_RATE = 0xFFFFFFFF;
 const uint32_t UNKNOWN_ASPECT_RATIO = 0xFFFFFFFF;
 
 // ==================================
-class cFixedLengthFrame
-{
+class cFixedLengthFrame : private Uncopyable {
 public:
     cFixedLengthFrame();
     ~cFixedLengthFrame();
@@ -107,11 +106,6 @@ protected:
 
     static uint32_t m_staticAudioChannelCount;
     static uint32_t m_staticAudioDataRate;
-
-private:
-    //cFixedLengthFrame(); // you are not allowed to use this constructor
-    cFixedLengthFrame(cFixedLengthFrame&); // no copy constructor
-
 };
 
 // ==================================
