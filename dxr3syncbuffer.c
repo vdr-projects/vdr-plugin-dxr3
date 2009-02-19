@@ -299,10 +299,6 @@ void cDxr3SyncBuffer::Pop(void)
 	    if (tmpBuffer) tmpBuffer = --tmpBuffer ? tmpBuffer : (Size() - 1);
 	    nextPts = m_pBuffer[tmpBuffer].GetPts();
 	}
-	if (nextPts != 30)
-	{
-	    cDxr3NextPts::Instance().SetNextPts(nextPts);
-	}
 
 	m_next++;
 	m_count--;
@@ -358,7 +354,6 @@ void cDxr3SyncBuffer::Clear(void)
 	m_bPutBlock = false;
     }
     cFixedLengthFrame::Clear();
-    cDxr3NextPts::Instance().Clear();
 }
 
 // ==================================
