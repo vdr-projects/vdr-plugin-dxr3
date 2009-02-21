@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <time.h>
 #include "dxr3output.h"
+#include "dxr3audio.h"
 
 // ==================================
 const int AUDIO_OFFSET = 4500;
@@ -73,7 +74,7 @@ void cDxr3AudioOutThread::Action()
 		if (pts && (pts < SCR) && ((SCR - pts) > 5000))
 		{
 		    m_dxr3Device.SetSysClock(pts + 1 * AUDIO_OFFSET);
-		    m_dxr3Device.PlayAudioFrame(pNext);
+		    PlayFrame(pNext);
 		    if (m_buffer.IsPolled())
 		    {
 			m_buffer.Clear();
@@ -82,7 +83,7 @@ void cDxr3AudioOutThread::Action()
 		}
 		else
 		{
-		    m_dxr3Device.PlayAudioFrame(pNext);
+		    PlayFrame(pNext);
 		    m_buffer.Pop();
 		}
 	    }
@@ -90,7 +91,7 @@ void cDxr3AudioOutThread::Action()
 	    {
 		if (abs((int)pts - (int)SCR) < (AUDIO_OFFSET ))
 		{
-		    m_dxr3Device.PlayAudioFrame(pNext);
+		    PlayFrame(pNext);
 		    m_buffer.Pop();
 		}
 	    }
@@ -101,6 +102,12 @@ void cDxr3AudioOutThread::Action()
 	    cCondWait::SleepMs(10);
 	}
     }
+}
+
+void cDxr3AudioOutThread::PlayFrame(cFixedLengthFrame *frame)
+{
+    audioOutput->changeVolume((short *)frame->GetData(), (size_t)frame->GetCount());
+    m_dxr3Device.PlayAudioFrame(frame);
 }
 
 #undef SCR

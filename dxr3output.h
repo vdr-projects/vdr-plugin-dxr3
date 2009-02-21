@@ -26,6 +26,8 @@
 #include "dxr3audiodecoder.h"
 #include "Uncopyable.h"
 
+class iAudio;
+
 // ==================================
 class cDxr3OutputThread : public cThread, private Uncopyable {
 public:
@@ -51,8 +53,15 @@ class cDxr3AudioOutThread : public cDxr3OutputThread {
 public:
     cDxr3AudioOutThread(cDxr3Interface& dxr3Device, cDxr3SyncBuffer& buffer);
 
+    void setAudio(iAudio *a)    { audioOutput = a; }
+
 protected:
     void Action();
+
+private:
+    iAudio *audioOutput;
+
+    void PlayFrame(cFixedLengthFrame *frame);
 };
 
 // ==================================

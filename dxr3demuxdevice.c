@@ -43,7 +43,6 @@ cDxr3DemuxDevice::cDxr3DemuxDevice(cDxr3Interface& dxr3Device) :
 	esyslog("dxr3: fatal: unable to allocate memory for audio thread");
 	exit(1);
     }
-    m_pAudioThread->Start();
 
     m_pVideoThread = new cDxr3VideoOutThread(dxr3Device, m_vBuf);
     if (!m_pVideoThread)
@@ -53,6 +52,13 @@ cDxr3DemuxDevice::cDxr3DemuxDevice(cDxr3Interface& dxr3Device) :
     }
     m_pVideoThread->Start();
     m_aDecoder.Init();
+}
+
+void cDxr3DemuxDevice::setAudio(iAudio *a)
+{
+    audioOut = a;
+    m_pAudioThread->setAudio(audioOut);
+    m_pAudioThread->Start();
 }
 
 // ==================================

@@ -29,6 +29,8 @@
 #include <string>
 #include <vdr/device.h>
 
+class iAudio;
+
 // ==================================
 // our device :)
 /*!
@@ -86,6 +88,9 @@ protected:
     //uint8_t m_pBuffer[MAX_VIDEO_BUFFER_SIZE];
     //cDxr3StartStopThread* m_pStartStopThread;
     cDxr3SpuDecoder* m_spuDecoder;
+
+private:
+    iAudio *audioOut;
 };
 
 #endif /*_DXR3_DEVICE_H_*/

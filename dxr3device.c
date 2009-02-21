@@ -27,6 +27,7 @@
 #include "dxr3interface.h"
 #include "dxr3tools.h"
 #include "dxr3osd.h"
+#include "dxr3audio.h"
 
 // ==================================
 //! constructor
@@ -36,15 +37,22 @@ cDxr3Device::cDxr3Device() : m_DemuxDevice(cDxr3Interface::Instance())
     m_strBuf.erase(m_strBuf.begin(), m_strBuf.end());
     m_spuDecoder = NULL;
     m_CalledBySet = false;
+
+    // TODO: this will be later the place,
+    //       where we will decide what kind of
+    //       audio output system we will use.
+    audioOut = new iAudio();
+
+    m_DemuxDevice.setAudio(audioOut);
 }
 
 // ==================================
 cDxr3Device::~cDxr3Device()
 {
+    delete audioOut;
+
     if (m_spuDecoder)
-    {
-	delete m_spuDecoder;
-    }
+        delete m_spuDecoder;
 }
 
 // ==================================
@@ -264,7 +272,7 @@ int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
     int origLength = Length;
 
     bool isAc3 = ((Id & 0xF0) == 0x80) || Id == 0xbd;
-    
+
     if (isAc3 && !cDxr3Interface::Instance().IsAudioModeAC3())
 	cDxr3Interface::Instance().SetAudioDigitalAC3();
 
@@ -321,18 +329,19 @@ void cDxr3Device::SetVideoFormat(bool VideoFormat16_9)
 //! sets volume for audio output
 void cDxr3Device::SetVolumeDevice(int Volume)
 {
-    cDxr3Interface::Instance().SetVolume(Volume);
+    audioOut->setVolume(Volume);
 }
 
 // ==================================
 //! sets audio channel for audio output (stereo, mono left, mono right)
 void cDxr3Device::SetAudioChannelDevice(int AudioChannel)
 {
-    cDxr3Interface::Instance().SetAudioChannel(AudioChannel);
+    audioOut->setAudioChannel(AudioChannel);
 }
-int cDxr3Device::GetAudioChannelDevice(void)
+
+int cDxr3Device::GetAudioChannelDevice()
 {
-    return cDxr3Interface::Instance().GetAudioChannel();
+    return audioOut->getAudioChannel();
 }
 
 // ==================================
