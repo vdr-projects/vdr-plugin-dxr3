@@ -77,30 +77,8 @@ public:
     void SetAudioDigitalPCM();
     void SetAudioDigitalAC3();
     int GetAudioMode();
-    int IsAudioModeAnalog()
-    {
-	return GetAudioMode() == EM8300_AUDIOMODE_ANALOG;
-    }
-    int IsAudioModePCM()
-    {
-	return GetAudioMode() == EM8300_AUDIOMODE_DIGITALPCM;
-    }
-    int IsAudioModeAC3()
-    {
-	return GetAudioMode() == EM8300_AUDIOMODE_DIGITALAC3;
-    }
-    void SetVolume(int volume)
-    {
-	m_volume = volume;
-    }
-    void SetAudioChannel(int audiochannel)
-    {
-	m_audioChannel = audiochannel;
-    }
-    int GetAudioChannel(void)
-    {
-	return m_audioChannel;
-    }
+    int IsAudioModeAC3()    { return GetAudioMode() == EM8300_AUDIOMODE_DIGITALAC3; }
+
     void SetAudioSpeed(uint32_t speed);
     void SetChannelCount(uint32_t count);
     void SetAudioSampleSize(uint32_t sampleSize);
@@ -156,8 +134,6 @@ public:
     void PlayVideoFrame(cFixedLengthFrame* pFrame, int times = 1);
     void PlayVideoFrame(const uint8_t* pBuf, int length, int times = 1);
     void PlayAudioFrame(cFixedLengthFrame* pFrame);
-    void PlayAudioFrame(uint8_t* pBuf, int length);
-    void PlayAudioLpcmFrame(uint8_t* pBuf, int length);
 
     // external device access
     void ExternalReleaseDevices();
@@ -212,8 +188,6 @@ private:
     uint32_t m_audioMode;
     uint32_t m_spuMode;
     bool m_ExternalReleased;	///< is dxr3 used by e.g. mplayer?
-    int m_volume;		///< volumevalue (0...255)
-    int m_audioChannel;		///> 0=stereo, 1=left, 2=right audio channel
     bool m_AudioActive;		///< is audio active?
     bool m_VideoActive;		///< is video active?
 
@@ -226,7 +200,6 @@ private:
     void UploadMicroCode();
     void ConfigureDevice();
     void ConfigureDeviceAudio();
-    void ResampleVolume(short* pcmbuf, int size);
     void ClaimDevices();
     void ReleaseDevices();
     void Resuscitation();

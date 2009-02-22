@@ -560,104 +560,24 @@ void cDxr3Interface::PlayVideoFrame(const uint8_t* pBuf, int length, int times)
 // ==================================
 void cDxr3Interface::PlayAudioFrame(cFixedLengthFrame* pFrame)
 {
-    // XXX: Call this only with we are not in external mode?
-    int written = 0;
+    // TODO can this method get called, when external released?
 
-    if (m_AudioActive)
-    {
-	Lock();
+    if (m_AudioActive && !m_ExternalReleased) {
+        Lock();
 
-	SetAudioSpeed(pFrame->GetDataRate());
-	SetChannelCount(pFrame->GetChannelCount());
+        SetAudioSpeed(pFrame->GetDataRate());
+        SetChannelCount(pFrame->GetChannelCount());
 
-	if (!m_ExternalReleased)
-	{
-	    if (!cDxr3Interface::Instance().IsAudioModeAC3())
-		ResampleVolume((short*)pFrame->GetData(), pFrame->GetCount());
+        int written = write(m_fdAudio, pFrame->GetData(), pFrame->GetCount());
+        if (written == -1) {
+            esyslog("dxr3: unable to play audio frame: %m");
+            // TODO: Resuscitation() ?
+        } else if (written != pFrame->GetCount()) {
+            esyslog("dxr3: unable to play whole audio frame, skipped"
+                    " %d bytes", pFrame->GetCount() - written);
+        }
 
-	    written = write(m_fdAudio, pFrame->GetData(), pFrame->GetCount());
-	    if (written == -1)
-	    {
-		esyslog("dxr3: unable to play audio frame: %m");
-		// TODO: Resuscitation() ?
-	    }
-	    else if (written != pFrame->GetCount())
-	    {
-		esyslog("dxr3: unable to play whole audio frame, skipped"
-			" %d bytes", pFrame->GetCount() - written);
-	    }
-	}
-
-	Unlock();
-    }
-}
-
-// ==================================
-void cDxr3Interface::PlayAudioFrame(uint8_t* pBuf, int length)
-{
-    int written = 0;
-    Lock();
-
-    if (!m_ExternalReleased)
-    {
-	if (!cDxr3Interface::Instance().IsAudioModeAC3())
-	    ResampleVolume((short*)pBuf, length);
-
-	if ((written = write(m_fdAudio, pBuf, length)) == -1)
-	{
-	    esyslog("dxr3: unable to play audio frame: %m");
-	    Resuscitation();
-	}
-	else if (written != length)
-	{
-	    esyslog("dxr3: unable to play whole audio frame, skipped %d bytes",
-		    length - written);
-	}
-    }
-
-    Unlock();
-}
-
-// ==================================
-void cDxr3Interface::PlayAudioLpcmFrame(uint8_t* pBuf, int length)
-{
-    if (length > (LPCM_HEADER_LENGTH + 2))
-    {
-	uint8_t* pFrame = new uint8_t[length - LPCM_HEADER_LENGTH];
-	// only even number of bytes are allowed
-	assert(!((length - LPCM_HEADER_LENGTH) % 2));
-
-	for (int i = LPCM_HEADER_LENGTH; i < length; i += 2)
-	{
-	    pFrame[i - LPCM_HEADER_LENGTH] = pBuf[i + 1];
-	    pFrame[i - LPCM_HEADER_LENGTH + 1] = pBuf[i];
-	}
-
-	int codedSpeed = (pBuf[5] >> 4) & 0x03;
-	int speed = 0;
-
-	switch (codedSpeed)
-	{
-	case 1:
-	    speed = 96000;
-	    break;
-
-	case 2:
-	    speed = 44100;
-	    break;
-
-	case 3:
-	    speed = 32000;
-	    break;
-
-	default:
-	    speed = 48000;
-	    break;
-	}
-
-	SetAudioSpeed(speed);
-	PlayAudioFrame(pFrame, length - LPCM_HEADER_LENGTH);
-	delete[] pFrame;
+        Unlock();
     }
 }
 
@@ -701,8 +621,6 @@ void cDxr3Interface::ClaimDevices()
     m_AudioActive = false;
     m_VideoActive = false;
     m_ExternalReleased = false;
-    m_volume = 255;
-    m_audioChannel = AUDIO_STEREO;
     m_horizontal = 720;
     m_vertical = 576;
     m_audioChannelCount = UNKNOWN_CHANNEL_COUNT;
@@ -1006,36 +924,6 @@ void cDxr3Interface::Resuscitation()
     }
     dsyslog("dxr3: resuscitation: reopening devices took %ld seconds",
 	    endt - startt);
-}
-
-// ==================================
-//! pcm resampling function
-void cDxr3Interface::ResampleVolume(short* pcmbuf, int size)
-{
-    if (m_volume == 0)
-    {
-	memset(pcmbuf, 0, size);
-    }
-    if (m_volume < 255 || m_audioChannel != AUDIO_STEREO)
-    {
-	int factor = (int)pow (2.0, (double)m_volume/32 + 8.0) - 1;
-	//int factor = (int)pow (2.0, (double)m_volume/16) - 1;
-	for (int i = 0; i < size / (int)sizeof(short); i++)
-	{
-	    if (m_audioChannel == AUDIO_MONO_RIGHT && !(i & 0x1))
-	    {
-		pcmbuf[i] = pcmbuf[i+1];
-	    }
-	    if (m_audioChannel == AUDIO_MONO_LEFT  &&  (i & 0x1))
-	    {
-		pcmbuf[i] = pcmbuf[i-1];
-	    }
-	    else if (m_volume < 255)
-	    {
-		pcmbuf[i] = (((int)pcmbuf[i]) * factor) / 65536;
-	    }
-	}
-    }
 }
 
 // ==================================

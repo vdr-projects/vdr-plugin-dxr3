@@ -106,7 +106,10 @@ void cDxr3AudioOutThread::Action()
 
 void cDxr3AudioOutThread::PlayFrame(cFixedLengthFrame *frame)
 {
-    audioOutput->changeVolume((short *)frame->GetData(), (size_t)frame->GetCount());
+    if (!cDxr3Interface::Instance().IsAudioModeAC3()) {
+        audioOutput->changeVolume((short *)frame->GetData(), (size_t)frame->GetCount());
+    }
+
     m_dxr3Device.PlayAudioFrame(frame);
 }
 
