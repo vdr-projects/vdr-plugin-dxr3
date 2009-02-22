@@ -190,7 +190,7 @@ void cDxr3Device::Freeze()
 // ==================================
 void cDxr3Device::Mute()
 {
-    m_DemuxDevice.SetTrickMode(DXR3_FAST);
+    audioOut->mute();
     cDevice::Mute();
 }
 
