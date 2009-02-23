@@ -564,7 +564,7 @@ void cDxr3Interface::PlayAudioFrame(cFixedLengthFrame* pFrame)
     if (m_AudioActive && !m_ExternalReleased) {
         Lock();
 
-        SetAudioSpeed(pFrame->GetDataRate());
+        SetAudioSpeed(pFrame->GetSampleRate());
         SetChannelCount(pFrame->GetChannelCount());
 
         int written = write(m_fdAudio, pFrame->GetData(), pFrame->GetCount());

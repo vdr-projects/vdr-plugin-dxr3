@@ -38,7 +38,7 @@ cFixedLengthFrame::cFixedLengthFrame() :
 {
 
     m_audioChannelCount = UNKNOWN_CHANNEL_COUNT;
-    m_audioDataRate = UNKNOWN_DATA_RATE;
+    m_audioSampleRate = UNKNOWN_DATA_RATE;
     m_videoAspectRatio = UNKNOWN_ASPECT_RATIO;
 }
 
@@ -105,10 +105,6 @@ void cFixedLengthFrame::SetPts(uint32_t pts)
 {
     m_pts = pts;
 }
-
-// ==================================
-uint32_t cFixedLengthFrame::m_staticAudioDataRate = 0;
-
 
 // ==================================
 //! constructor
@@ -252,7 +248,7 @@ cFixedLengthFrame* cDxr3SyncBuffer::Push(const uint8_t* pStart, int length, uint
 	lastIndex = m_nextFree;
 	m_pBuffer[m_nextFree].CopyFrame(pStart, length, pts, type);
 	m_pBuffer[m_nextFree].SetChannelCount(UNKNOWN_CHANNEL_COUNT);
-	m_pBuffer[m_nextFree].SetDataRate(UNKNOWN_DATA_RATE);
+	m_pBuffer[m_nextFree].SetSampleRate(UNKNOWN_DATA_RATE);
 	m_pBuffer[m_nextFree].SetAspectRatio(UNKNOWN_ASPECT_RATIO);
 	m_nextFree++;
 	m_count++;
@@ -342,7 +338,6 @@ void cDxr3SyncBuffer::Clear(void)
 	EnablePut();
 	m_bPutBlock = false;
     }
-    cFixedLengthFrame::Clear();
 }
 
 // ==================================

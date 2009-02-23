@@ -52,40 +52,18 @@ public:
     {
 	    m_audioChannelCount = channelCount;
     }
-    void SetDataRate(uint32_t dataRate)
+    void SetSampleRate(uint32_t sampleRate)
     {
-	if (m_audioDataRate != UNKNOWN_DATA_RATE)
-	    m_staticAudioDataRate = m_audioDataRate = dataRate;
-	else
-	    m_audioDataRate = m_staticAudioDataRate;
-    };
+	    m_audioSampleRate = sampleRate;
+    }
     void SetAspectRatio(uint32_t aspectRatio)
     {
 	m_videoAspectRatio = aspectRatio;
     };
-    uint32_t GetChannelCount(void)
-    {
-	return m_audioChannelCount;
-    }
-    uint32_t GetDataRate(void)
-    {
-	return ((m_audioDataRate == m_staticAudioDataRate ||
-		 !m_staticAudioDataRate) ?
-		m_audioDataRate : m_staticAudioDataRate);
-    };
-    uint32_t GetAspectRatio(void)
-    {
-	return m_videoAspectRatio;
-    };
-    eFrameType GetFrameType(void)
-    {
-	return m_type;
-    }
-
-    static void Clear(void)
-    {
-	m_staticAudioDataRate = 0;
-    };
+    uint32_t GetChannelCount()  { return m_audioChannelCount; }
+    uint32_t GetSampleRate()    { return m_audioSampleRate; }
+    uint32_t GetAspectRatio()   { return m_videoAspectRatio; }
+    eFrameType GetFrameType()   { return m_type; }
 
 protected:
     uint8_t* m_pData;
@@ -95,10 +73,8 @@ protected:
     eFrameType m_type;
 
     uint32_t m_audioChannelCount;
-    uint32_t m_audioDataRate;
+    uint32_t m_audioSampleRate;
     uint32_t m_videoAspectRatio;
-
-    static uint32_t m_staticAudioDataRate;
 };
 
 // ==================================

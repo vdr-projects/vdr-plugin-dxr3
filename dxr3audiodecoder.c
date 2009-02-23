@@ -162,7 +162,7 @@ void cDxr3AudioDecoder::Decode(const uint8_t* buf, int length, uint32_t pts,
 		{
 		    // TODO: should we break out of the loop on push timeout?
 		    pTempFrame->SetChannelCount(channels);
-		    pTempFrame->SetDataRate(rate);
+		    pTempFrame->SetSampleRate(rate);
 		}
 	    }
 	    length -= len;
@@ -240,7 +240,7 @@ void cDxr3AudioDecoder::DecodeLpcm(const uint8_t* buf, int length,
 	if (pTempFrame)
 	{
 	    pTempFrame->SetChannelCount(1);
-	    pTempFrame->SetDataRate(speed);
+	    pTempFrame->SetSampleRate(speed);
 	}
 	delete[] pFrame;
     }
