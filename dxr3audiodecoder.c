@@ -146,13 +146,13 @@ void cDxr3AudioDecoder::Decode(const uint8_t* buf, int length, uint32_t pts,
 		if (rate != -1) throw UNEXPECTED_PARAMETER_CHANGE;
 		rate = Codec.codec_context.sample_rate;
 	    }
-	    if (Codec.codec_context.channels != channels + 1)
+	    if (Codec.codec_context.channels != channels)
 	    {
 		dsyslog("dxr3: audiodecoder: channels=%d",
 			Codec.codec_context.channels);
 		if (channels != -1)
 		    throw UNEXPECTED_PARAMETER_CHANGE;
-		channels = (Codec.codec_context.channels == 2) ? 1 : 0;
+		channels = Codec.codec_context.channels;
 	    }
 	    if (out_size)
 	    {

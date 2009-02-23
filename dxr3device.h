@@ -40,7 +40,6 @@ class iAudio;
 class cDxr3Device : public cDevice {
 public:
     cDxr3Device();
-    cDxr3Device(cDxr3Interface& demuxDevice);
     ~cDxr3Device();
 
     virtual void MakePrimaryDevice(bool On);
@@ -84,9 +83,6 @@ protected:
     std::string m_strBuf;
     int m_Offset;
 
-    //virtual bool SetPlayMode(ePlayMode PlayMode);
-    //uint8_t m_pBuffer[MAX_VIDEO_BUFFER_SIZE];
-    //cDxr3StartStopThread* m_pStartStopThread;
     cDxr3SpuDecoder* m_spuDecoder;
 
 private:

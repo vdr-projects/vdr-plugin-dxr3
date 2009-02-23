@@ -107,7 +107,6 @@ void cFixedLengthFrame::SetPts(uint32_t pts)
 }
 
 // ==================================
-uint32_t cFixedLengthFrame::m_staticAudioChannelCount = 0;
 uint32_t cFixedLengthFrame::m_staticAudioDataRate = 0;
 
 

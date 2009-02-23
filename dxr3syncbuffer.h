@@ -50,11 +50,8 @@ public:
     void SetPts(uint32_t pts);
     void SetChannelCount(uint32_t channelCount)
     {
-	if (channelCount != UNKNOWN_CHANNEL_COUNT)
-	    m_staticAudioChannelCount = m_audioChannelCount = channelCount;
-	else
-	    m_audioChannelCount = m_staticAudioChannelCount;
-    };
+	    m_audioChannelCount = channelCount;
+    }
     void SetDataRate(uint32_t dataRate)
     {
 	if (m_audioDataRate != UNKNOWN_DATA_RATE)
@@ -68,10 +65,8 @@ public:
     };
     uint32_t GetChannelCount(void)
     {
-	return ((m_audioChannelCount == m_staticAudioChannelCount ||
-		 !m_staticAudioChannelCount)?
-		m_audioChannelCount : m_staticAudioChannelCount);
-    };
+	return m_audioChannelCount;
+    }
     uint32_t GetDataRate(void)
     {
 	return ((m_audioDataRate == m_staticAudioDataRate ||
@@ -90,7 +85,6 @@ public:
     static void Clear(void)
     {
 	m_staticAudioDataRate = 0;
-	m_staticAudioChannelCount = 0;
     };
 
 protected:
@@ -104,7 +98,6 @@ protected:
     uint32_t m_audioDataRate;
     uint32_t m_videoAspectRatio;
 
-    static uint32_t m_staticAudioChannelCount;
     static uint32_t m_staticAudioDataRate;
 };
 

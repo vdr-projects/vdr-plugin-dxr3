@@ -192,17 +192,16 @@ void cDxr3Interface::SetAudioSpeed(uint32_t speed)
 //! set number of channels
 void cDxr3Interface::SetChannelCount(uint32_t count)
 {
+    // 0 = mono, 1 = stereo
+    uint32_t ioval = count - 1;
+
     if (!m_ExternalReleased && m_audioMode != EM8300_AUDIOMODE_DIGITALAC3 &&
-	m_audioChannelCount != count && count != UNKNOWN_CHANNEL_COUNT)
-    {
-	if (ioctl(m_fdAudio, SNDCTL_DSP_STEREO, &count) == -1)
-	{
-	    esyslog("dxr3: unable to set channel count to %d: %m", count);
-	}
-	else
-	{
-	    m_audioChannelCount = count;
-	}
+        m_audioChannelCount != count) {
+        if (ioctl(m_fdAudio, SNDCTL_DSP_STEREO, &ioval) == -1) {
+            esyslog("dxr3: unable to set channel count to %d: %m", count);
+        } else {
+            m_audioChannelCount = count;
+        }
     }
 }
 
