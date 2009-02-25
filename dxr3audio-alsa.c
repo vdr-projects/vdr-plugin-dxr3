@@ -22,13 +22,23 @@
 using namespace std;
 
 #include "dxr3audio-alsa.h"
+#include "dxr3configdata.h"
 
 void cAudioAlsa::openDevice()
 {
-    string device = "default";
+    // generate alsa card name
+    int card = cDxr3ConfigData::Instance().GetDxr3Card();
+    string cardname = "EM8300";
+
+    if (card > 0) {
+        cardname.append("_" + card);
+    }
+    string device = "default:CARD=" + cardname;
+
+
     releaseDevice();
 
-    dsyslog("opening alsa device %s", device.c_str());
+    dsyslog("[dxr3-audio-alsa] opening device %s", device.c_str());
     int err = snd_pcm_open(&handle, device.c_str(), SND_PCM_STREAM_PLAYBACK, 0);
 
     if (err < 0) {
