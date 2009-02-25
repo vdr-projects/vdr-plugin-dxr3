@@ -26,11 +26,11 @@
 class cAudioOss : public iAudio {
 public:
     cAudioOss() : iAudio(), fd(-1) {}
-    ~cAudioOss();
+    ~cAudioOss() {}
 
     virtual void openDevice();
     virtual void releaseDevice();
-    virtual void setup(SampleContext ctx);
+    virtual void setup(const SampleContext& ctx);
     virtual void write(uchar* data, size_t size);
     virtual void setAudioMode(AudioMode m);
 

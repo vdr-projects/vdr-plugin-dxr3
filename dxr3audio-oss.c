@@ -26,13 +26,11 @@
 
 static const char *DEV_DXR3_OSS   = "_ma";
 
-cAudioOss::~cAudioOss()
-{
-    close(fd);
-}
-
 void cAudioOss::openDevice()
 {
+    if (open)
+        return;
+
     fd = cDxr3Interface::Dxr3Open(DEV_DXR3_OSS, O_RDWR | O_NONBLOCK);
 
     if (!fd) {
@@ -47,14 +45,21 @@ void cAudioOss::openDevice()
         dsyslog("[dxr3-audio-oss] audio mode: analog");
         setAudioMode(Analog);
     }
+
+    open = true;
 }
 
 void cAudioOss::releaseDevice()
 {
+    if (!open)
+        return;
+
     close(fd);
+
+    open = false;
 }
 
-void cAudioOss::setup(SampleContext ctx)
+void cAudioOss::setup(const SampleContext& ctx)
 {
     // set sample rate
     if (curContext.samplerate != ctx.samplerate) {
@@ -82,7 +87,7 @@ void cAudioOss::write(uchar* data, size_t size)
 
 void cAudioOss::setAudioMode(AudioMode mode)
 {
-    uint32_t ioval;
+    uint32_t ioval = 0;
 
     switch (mode) {
     case Analog:

@@ -34,7 +34,7 @@ public:
 
     virtual void openDevice();
     virtual void releaseDevice();
-    virtual void setup(SampleContext ctx);
+    virtual void setup(const SampleContext& ctx);
     virtual void write(uchar* data, size_t size);
     virtual void setAudioMode(AudioMode m);
 

@@ -37,12 +37,12 @@ public:
         Ac3,
     };
 
-    iAudio() : vol(0), audioChannel(0)  { memset(&curContext, 0, sizeof(SampleContext)); }
+    iAudio() : open(false), vol(0), audioChannel(0)  { memset(&curContext, 0, sizeof(SampleContext)); }
     virtual ~iAudio() {}
 
     virtual void openDevice() = 0;
     virtual void releaseDevice() = 0;
-    virtual void setup(SampleContext ctx) = 0;
+    virtual void setup(const SampleContext& ctx) = 0;
     virtual void write(uchar* data, size_t size) = 0;
 
     void setVolume(int v)   { vol = v; }
@@ -59,6 +59,7 @@ public:
 
 
 protected:
+    bool open;
     int vol;
     int audioChannel;
     SampleContext curContext;

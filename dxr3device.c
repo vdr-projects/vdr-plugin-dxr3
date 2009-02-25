@@ -43,6 +43,7 @@ cDxr3Device::cDxr3Device() : m_DemuxDevice(cDxr3Interface::Instance())
     //       audio output system we will use.
     audioOut = new cAudioOss();
     //audioOut = new cAudioAlsa();
+    audioOut->openDevice();
 
     m_DemuxDevice.setAudio(audioOut);
 }
@@ -50,6 +51,7 @@ cDxr3Device::cDxr3Device() : m_DemuxDevice(cDxr3Interface::Instance())
 // ==================================
 cDxr3Device::~cDxr3Device()
 {
+    audioOut->releaseDevice();
     delete audioOut;
 
     if (m_spuDecoder)

@@ -26,6 +26,9 @@ using namespace std;
 
 void cAudioAlsa::openDevice()
 {
+    if (open)
+        return;
+
     // generate alsa card name
     int card = cDxr3ConfigData::Instance().GetDxr3Card();
     string cardname = "EM8300";
@@ -35,9 +38,6 @@ void cAudioAlsa::openDevice()
     }
     string device = "default:CARD=" + cardname;
 
-
-    releaseDevice();
-
     dsyslog("[dxr3-audio-alsa] opening device %s", device.c_str());
     int err = snd_pcm_open(&handle, device.c_str(), SND_PCM_STREAM_PLAYBACK, 0);
 
@@ -45,18 +45,25 @@ void cAudioAlsa::openDevice()
         esyslog("[dxr3-audio-alsa] Playback open error: %s", snd_strerror(err));
         exit(1);
     }
+
+    open = true;
 }
 
 void cAudioAlsa::releaseDevice()
 {
+    if (!open)
+        return;
+
     if (handle) {
         snd_pcm_drain(handle);
         snd_pcm_close(handle);
         handle = NULL;
     }
+
+    open = false;
 }
 
-void cAudioAlsa::setup(SampleContext ctx)
+void cAudioAlsa::setup(const SampleContext& ctx)
 {
     // look if ctx is different
     if (curContext.channels == ctx.channels && curContext.samplerate == ctx.samplerate) {
@@ -94,7 +101,7 @@ void cAudioAlsa::setup(SampleContext ctx)
     }
 
     // set samplerate
-    err = snd_pcm_hw_params_set_rate_near(handle, alsa_hwparams, &ctx.samplerate, NULL);
+    err = snd_pcm_hw_params_set_rate_near(handle, alsa_hwparams, (unsigned int *)&ctx.samplerate, NULL);
     if (err < 0) {
         esyslog("[dxr3-audio-alsa] Unable to set samplerate %d: %s", ctx.samplerate, snd_strerror(err));
     }
