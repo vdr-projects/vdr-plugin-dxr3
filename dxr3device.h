@@ -23,13 +23,13 @@
 #ifndef _DXR3_DEVICE_H_
 #define _DXR3_DEVICE_H_
 
-#include "dxr3interface.h"
-#include "dxr3demuxdevice.h"
-#include "dxr3spudecoder.h"
 #include <string>
 #include <vdr/device.h>
 
-class iAudio;
+#include "dxr3interface.h"
+#include "dxr3demuxdevice.h"
+#include "dxr3spudecoder.h"
+#include "dxr3audio.h"
 
 // ==================================
 // our device :)
@@ -75,6 +75,8 @@ public:
 	SetPlayMode(m_PlayMode);
 	m_CalledBySet = false;
     }
+
+    iAudio *getAudioOutput() const      { return audioOut; }
 
 protected:
     ePlayMode m_PlayMode;

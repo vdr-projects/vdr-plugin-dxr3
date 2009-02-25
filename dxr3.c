@@ -271,50 +271,42 @@ const char **cPluginDxr3::SVDRPHelpPages(void)
 cString cPluginDxr3::SVDRPCommand(const char *Command, const char *Option,
 				  int &ReplyCode)
 {
-    if (!strcasecmp(Command, "DON"))
-    {
-	cDxr3Interface::Instance().ExternalReopenDevices();
-	return "DXR3 started";
+    if (!strcasecmp(Command, "DON")) {
+        cDxr3Interface::Instance().ExternalReopenDevices();
+        return "DXR3 started";
     }
-    if (!strcasecmp(Command, "DOF"))
-    {
-	cDxr3Interface::Instance().ExternalReleaseDevices();
-	return "DXR3 stopped";
+    if (!strcasecmp(Command, "DOF")) {
+        cDxr3Interface::Instance().ExternalReleaseDevices();
+        return "DXR3 stopped";
     }
-    if (!strcasecmp(Command, "BRI"))
-    {
-	cDxr3Interface::Instance().SetBrightness(atoi(Option));
-	return cString::sprintf("Brightness set to %d",
+    if (!strcasecmp(Command, "BRI")) {
+        cDxr3Interface::Instance().SetBrightness(atoi(Option));
+        return cString::sprintf("Brightness set to %d",
 				cDxr3Interface::Instance().GetBrightness());
     }
-    if (!strcasecmp(Command, "CON"))
-    {
-	cDxr3Interface::Instance().SetContrast(atoi(Option));
-	return cString::sprintf("Contrast set to %d",
+    if (!strcasecmp(Command, "CON")) {
+        cDxr3Interface::Instance().SetContrast(atoi(Option));
+        return cString::sprintf("Contrast set to %d",
 				cDxr3Interface::Instance().GetContrast());
     }
-    if (!strcasecmp(Command, "SAT"))
-    {
-	cDxr3Interface::Instance().SetSaturation(atoi(Option));
-	return cString::sprintf("Saturation set to %d",
+    if (!strcasecmp(Command, "SAT")) {
+        cDxr3Interface::Instance().SetSaturation(atoi(Option));
+        return cString::sprintf("Saturation set to %d",
 				cDxr3Interface::Instance().GetSaturation());
     }
-/*    if (!strcasecmp(Command, "SDO"))
-    {
-	cDxr3Interface::Instance().SetAudioDigitalPCM();
-	return "Switched to digital PCM audio output";
+    if (!strcasecmp(Command, "SDO")) {
+        device->getAudioOutput()->setAudioMode(iAudio::DigitalPcm);
+        return "Switched to digital PCM audio output";
     }
-    if (!strcasecmp(Command, "SAO"))
-    {
-	cDxr3Interface::Instance().SetAudioAnalog();
-	return "Switched to analog audio output";
+    if (!strcasecmp(Command, "SAO")) {
+        device->getAudioOutput()->setAudioMode(iAudio::Analog);
+        return "Switched to analog audio output";
     }
-    if (!strcasecmp(Command, "SAC3"))
-    {
-	cDxr3Interface::Instance().SetAudioDigitalAC3();
-	return "Switched to digital AC3 audio output";
+    if (!strcasecmp(Command, "SAC3")) {
+        device->getAudioOutput()->setAudioMode(iAudio::Ac3);
+        return "Switched to digital AC3 audio output";
     }
-*/
+
     return NULL;
 }
 
