@@ -36,7 +36,6 @@ cDxr3Device::cDxr3Device() : m_DemuxDevice(cDxr3Interface::Instance())
 {
     m_Offset = 0;
     m_spuDecoder = NULL;
-    m_CalledBySet = false;
 
     // TODO: this will be later the place,
     //       where we will decide what kind of

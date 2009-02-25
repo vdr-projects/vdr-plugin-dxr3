@@ -71,9 +71,7 @@ public:
     // helper function
     void Reset()
     {
-	m_CalledBySet = true;
-	SetPlayMode(m_PlayMode);
-	m_CalledBySet = false;
+        SetPlayMode(m_PlayMode);
     }
 
     iAudio *getAudioOutput() const      { return audioOut; }
@@ -81,7 +79,6 @@ public:
 protected:
     ePlayMode m_PlayMode;
     cDxr3DemuxDevice m_DemuxDevice;
-    bool m_CalledBySet;
     std::string m_strBuf;
     int m_Offset;
 
