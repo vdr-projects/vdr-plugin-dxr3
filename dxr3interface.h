@@ -181,7 +181,6 @@ private:
 
     void UploadMicroCode();
     void ConfigureDevice();
-    void ConfigureDeviceAudio();
     void ClaimDevices();
     void ReleaseDevices();
     void Resuscitation();

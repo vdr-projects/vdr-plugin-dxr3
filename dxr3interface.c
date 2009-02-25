@@ -34,7 +34,6 @@
 const int LPCM_HEADER_LENGTH = 7;
 const int ZEROBUFFER_SIZE = 4096;
 uint8_t zerobuffer[ZEROBUFFER_SIZE] = {0};
-const uint32_t UNKNOWN_AUDIO_MODE = 9; // default, unused value
 
 static const char *DEV_DXR3_OSD   = "_sp";
 static const char *DEV_DXR3_VIDEO = "_mv";
@@ -523,8 +522,6 @@ void cDxr3Interface::ExternalReopenDevices()
 	    }
 
 	    m_ExternalReleased = false;
-
-	    ConfigureDeviceAudio();
 	}
 
 	Resuscitation();
@@ -649,24 +646,19 @@ void cDxr3Interface::ConfigureDevice()
     uint32_t videomode = 0;
 
     // set video mode
-    if (cDxr3ConfigData::Instance().GetVideoMode() == PAL)
-    {
-	dsyslog("dxr3: configure: video mode: PAL");
-	videomode = EM8300_VIDEOMODE_PAL;
+    if (cDxr3ConfigData::Instance().GetVideoMode() == PAL) {
+        dsyslog("dxr3: configure: video mode: PAL");
+        videomode = EM8300_VIDEOMODE_PAL;
+    } else if (cDxr3ConfigData::Instance().GetVideoMode() == PAL60) {
+        dsyslog("dxr3: configure: video mode: PAL60");
+        videomode = EM8300_VIDEOMODE_PAL60;
+    } else {
+        dsyslog("dxr3: configure: video mode: NTSC");
+        videomode = EM8300_VIDEOMODE_NTSC;
     }
-    else if (cDxr3ConfigData::Instance().GetVideoMode() == PAL60)
-    {
-	dsyslog("dxr3: configure: video mode: PAL60");
-	videomode = EM8300_VIDEOMODE_PAL60;
-    }
-    else
-    {
-	dsyslog("dxr3: configure: video mode: NTSC");
-	videomode = EM8300_VIDEOMODE_NTSC;
-    }
-    if (ioctl(m_fdControl, EM8300_IOCTL_SET_VIDEOMODE, &videomode) == -1)
-    {
-	esyslog("dxr3: unable to set video mode: %m");
+
+    if (ioctl(m_fdControl, EM8300_IOCTL_SET_VIDEOMODE, &videomode) == -1) {
+        esyslog("dxr3: unable to set video mode: %m");
     }
 
     // set brightness/contrast/saturation
@@ -675,30 +667,9 @@ void cDxr3Interface::ConfigureDevice()
     m_bcs.saturation = cDxr3ConfigData::Instance().GetSaturation();
     dsyslog("dxr3: configure: brightness=%d,contrast=%d,saturation=%d",
 	    m_bcs.brightness, m_bcs.contrast, m_bcs.saturation);
-    if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) == -1)
-    {
-	esyslog("dxr3: unable to set brightness/contrast/saturation: %m");
+    if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) == -1) {
+        esyslog("dxr3: unable to set brightness/contrast/saturation: %m");
     }
-
-    ConfigureDeviceAudio();
-}
-
-// ==================================
-//! setup device audio based on config
-void cDxr3Interface::ConfigureDeviceAudio()
-{
-    /*
-    // TODO: AC3?
-    if (cDxr3ConfigData::Instance().GetUseDigitalOut())
-    {
-	dsyslog("dxr3: configure: audio mode: digital");
-	SetAudioDigitalPCM();
-    }
-    else
-    {
-	dsyslog("dxr3: configure: audio mode: analog");
-	SetAudioAnalog();
-    }*/
 }
 
 // ==================================
