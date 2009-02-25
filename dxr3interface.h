@@ -73,15 +73,9 @@ public:
 
     // audio
     bool IsOssAudio();
-    void SetAudioAnalog();
-    void SetAudioDigitalPCM();
-    void SetAudioDigitalAC3();
-    int GetAudioMode();
-    int IsAudioModeAC3()    { return GetAudioMode() == EM8300_AUDIOMODE_DIGITALAC3; }
+    int OssSetPlayMode(uint32_t mode);
 
-    void SetAudioSpeed(uint32_t speed);
-    void SetChannelCount(uint32_t count);
-    void SetAudioSampleSize(uint32_t sampleSize);
+    int IsAudioModeAC3()    { return 0; }
 
     // clock
     void SetSysClock(uint32_t scr);
@@ -133,15 +127,11 @@ public:
     void SingleStep();
     void PlayVideoFrame(cFixedLengthFrame* pFrame, int times = 1);
     void PlayVideoFrame(const uint8_t* pBuf, int length, int times = 1);
-    void PlayAudioFrame(cFixedLengthFrame* pFrame);
 
     // external device access
     void ExternalReleaseDevices();
     void ExternalReopenDevices();
-    bool IsExternalReleased() const
-    {
-	return m_ExternalReleased;
-    }
+    bool IsExternalReleased() const     { return m_ExternalReleased; }
 
     // tools
     void PlayBlackFrame();
@@ -171,21 +161,16 @@ private:
     // file handles
     int m_fdControl;		///< filehandle for contol fifo of dxr3 card
     int m_fdVideo;		///< filehandle for video fifo of dxr3 card
-    int m_fdAudio;		///< filehandle for audio fifo of dxr3 card
     int m_fdSpu;		///< filehandle for spu fifo of dxr3 card
     uint32_t m_lastSeenPts;
 
     // dxr3 clock
     cDxr3SysClock* m_pClock;	///< clock used for sync
 
-    uint32_t m_audioChannelCount; ///< how many channels in the current audiostream
-    uint32_t m_audioDataRate;	///< which rate is used for the current audiostream
     int m_aspectDelayCounter;
     uint32_t m_aspectRatio;	///< current used aspect ratio
     uint32_t m_horizontal;	///< horizontal size of current videostream
     uint32_t m_vertical;	///< vertical size of current videostream
-    uint32_t m_audioSampleSize;	///< how big is the sample size for the current audiostream
-    uint32_t m_audioMode;
     uint32_t m_spuMode;
     bool m_ExternalReleased;	///< is dxr3 used by e.g. mplayer?
     bool m_AudioActive;		///< is audio active?
@@ -193,9 +178,6 @@ private:
 
     // bcs
     em8300_bcs_t m_bcs;		///< BrightnessContrastSaturation values
-
-    // spu
-    //cDxr3InterfaceSpu m_SpuInterface;
 
     void UploadMicroCode();
     void ConfigureDevice();

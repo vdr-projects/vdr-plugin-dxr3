@@ -44,7 +44,7 @@ static const char *DEV_DXR3_CONT  = "";
 // ==================================
 //! constructor
 cDxr3Interface::cDxr3Interface() :
-    m_fdControl(-1), m_fdVideo(-1), m_fdAudio(-1), m_fdSpu(-1)
+    m_fdControl(-1), m_fdVideo(-1), m_fdSpu(-1)
 {
     ClaimDevices();
 }
@@ -57,8 +57,8 @@ cDxr3Interface::~cDxr3Interface()
 }
 
 // audio
-bool cDxr3Interface::IsOssAudio() {
-
+bool cDxr3Interface::IsOssAudio()
+{
     // try to open oss audio interface
     int handle = Dxr3Open(DEV_DXR3_OSS, O_RDWR | O_NONBLOCK, false);
 
@@ -70,157 +70,9 @@ bool cDxr3Interface::IsOssAudio() {
     return false;
 }
 
-
-// ==================================
-//! set audio output to analog
-void cDxr3Interface::SetAudioAnalog()
+int cDxr3Interface::OssSetPlayMode(uint32_t mode)
 {
-    uint32_t ioval = EM8300_AUDIOMODE_ANALOG;
-
-    Lock();
-
-    if (!m_ExternalReleased && m_audioMode != ioval)
-    {
-	int prevMode = m_audioMode;
-	isyslog("dxr3: setting analog audio mode");
-	if (ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &ioval) == -1)
-	{
-	    esyslog("dxr3: unable to set analog audio mode: %m");
-	}
-	else
-	{
-	    m_audioMode = ioval;
-	}
-
-	if (prevMode ==	EM8300_AUDIOMODE_DIGITALAC3)
-	{
-	    ReOpenAudio();
-	}
-    }
-
-    Unlock();
-}
-
-// ==================================
-//! set audio output to digital pcm
-void cDxr3Interface::SetAudioDigitalPCM()
-{
-    uint32_t ioval = EM8300_AUDIOMODE_DIGITALPCM;
-
-    Lock();
-
-    if (!m_ExternalReleased && m_audioMode != ioval)
-    {
-	int prevMode = m_audioMode;
-	isyslog("dxr3: setting digital PCM audio mode");
-	if (ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &ioval) == -1)
-	{
-	    esyslog("dxr3: unable to set digital PCM audio mode: %m");
-	}
-	else
-	{
-	    m_audioMode = ioval;
-	}
-
-	if (prevMode ==	 EM8300_AUDIOMODE_DIGITALAC3)
-	{
-	    ReOpenAudio();
-	}
-    }
-
-    Unlock();
-}
-
-// ==================================
-//! set audio output to digital ac3
-void cDxr3Interface::SetAudioDigitalAC3()
-{
-    uint32_t ioval = EM8300_AUDIOMODE_DIGITALAC3;
-
-    Lock();
-
-    if (!m_ExternalReleased && m_audioMode != ioval)
-    {
-	isyslog("dxr3: setting digital AC3 audio mode");
-	if (ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &ioval) == -1)
-	{
-	    esyslog("dxr3: unable to set AC3 audio mode: %m");
-	}
-	else
-	{
-	    m_audioMode = ioval;
-	}
-
-	ReOpenAudio();
-    }
-
-    Unlock();
-}
-
-
-// =================================
-//! get current audio mode
-int cDxr3Interface::GetAudioMode()
-{
-    int audioMode = EM8300_AUDIOMODE_DEFAULT;
-    Lock();
-    ioctl(m_fdControl, EM8300_IOCTL_GET_AUDIOMODE, &audioMode);
-    Unlock();
-    return audioMode;
-}
-
-
-// ==================================
-//! set audio speed
-void cDxr3Interface::SetAudioSpeed(uint32_t speed)
-{
-    if (!m_ExternalReleased && m_audioMode != EM8300_AUDIOMODE_DIGITALAC3 &&
-	m_audioDataRate != speed && speed != UNKNOWN_DATA_RATE)
-    {
-	if (ioctl(m_fdAudio, SNDCTL_DSP_SPEED, &speed) == -1)
-	{
-	    esyslog("dxr3: unable to set DSP speed to %d: %m", speed);
-	}
-	else
-	{
-	    m_audioDataRate = speed;
-	}
-    }
-}
-
-// ==================================
-//! set number of channels
-void cDxr3Interface::SetChannelCount(uint32_t count)
-{
-    // 0 = mono, 1 = stereo
-    uint32_t ioval = count - 1;
-
-    if (!m_ExternalReleased && m_audioMode != EM8300_AUDIOMODE_DIGITALAC3 &&
-        m_audioChannelCount != count) {
-        if (ioctl(m_fdAudio, SNDCTL_DSP_STEREO, &ioval) == -1) {
-            esyslog("dxr3: unable to set channel count to %d: %m", count);
-        } else {
-            m_audioChannelCount = count;
-        }
-    }
-}
-
-// ==================================
-//! set audio sample size
-void cDxr3Interface::SetAudioSampleSize(uint32_t sampleSize)
-{
-    if (!m_ExternalReleased)
-    {
-	if (ioctl(m_fdAudio, SNDCTL_DSP_SAMPLESIZE, sampleSize) == -1)
-	{
-	    esyslog("dxr3: unable to set audio sample size to %d: %m",
-		    sampleSize);
-	}
-	else
-	{
-	    m_audioSampleSize = sampleSize;
-	}
-    }
+    return ioctl(m_fdControl, EM8300_IOCTL_SET_AUDIOMODE, &mode);
 }
 
 // clock
@@ -325,18 +177,8 @@ void cDxr3Interface::DisableSPU()
 //! disable audio output of dxr3
 void cDxr3Interface::DisableAudio()
 {
-    m_AudioActive = false;
-
     Lock();
-    // we write zero buffers to dxr3
-    if (!m_ExternalReleased)
-    {
-	for (int i = 0; i < 4; i++)
-	{
-	    if (write(m_fdAudio, zerobuffer, ZEROBUFFER_SIZE) == -1)
-		Resuscitation();
-	}
-    }
+    m_AudioActive = false;
     Unlock();
 }
 
@@ -557,30 +399,6 @@ void cDxr3Interface::PlayVideoFrame(const uint8_t* pBuf, int length, int times)
 }
 
 // ==================================
-void cDxr3Interface::PlayAudioFrame(cFixedLengthFrame* pFrame)
-{
-    // TODO can this method get called, when external released?
-
-    if (m_AudioActive && !m_ExternalReleased) {
-        Lock();
-
-        SetAudioSpeed(pFrame->GetSampleRate());
-        SetChannelCount(pFrame->GetChannelCount());
-
-        int written = write(m_fdAudio, pFrame->GetData(), pFrame->GetCount());
-        if (written == -1) {
-            esyslog("dxr3: unable to play audio frame: %m");
-            // TODO: Resuscitation() ?
-        } else if (written != pFrame->GetCount()) {
-            esyslog("dxr3: unable to play whole audio frame, skipped"
-                    " %d bytes", pFrame->GetCount() - written);
-        }
-
-        Unlock();
-    }
-}
-
-// ==================================
 void cDxr3Interface::ClaimDevices()
 {
     // open control stream
@@ -596,11 +414,10 @@ void cDxr3Interface::ClaimDevices()
 
     ///< open multimedia streams
     m_fdVideo = Dxr3Open(DEV_DXR3_VIDEO, O_WRONLY | O_SYNC);
-    m_fdAudio = Dxr3Open(DEV_DXR3_OSS, O_WRONLY | O_SYNC);
     m_fdSpu = Dxr3Open(DEV_DXR3_OSD, O_WRONLY | O_SYNC);
 
     // everything ok?
-    if (m_fdVideo == -1 || m_fdAudio == -1 || m_fdSpu == -1)
+    if (m_fdVideo == -1 || m_fdSpu == -1)
     {
 	esyslog("dxr3: fatal: unable to open some em8300 devices");
 	exit(1);
@@ -622,11 +439,6 @@ void cDxr3Interface::ClaimDevices()
     m_ExternalReleased = false;
     m_horizontal = 720;
     m_vertical = 576;
-    m_audioChannelCount = UNKNOWN_CHANNEL_COUNT;
-    m_audioDataRate = 0;
-    m_audioSampleSize = 0;
-
-    m_audioMode = UNKNOWN_AUDIO_MODE;
     m_aspectRatio = UNKNOWN_ASPECT_RATIO;
     m_spuMode = EM8300_SPUMODE_OFF;
 
@@ -645,7 +457,6 @@ void cDxr3Interface::ClaimDevices()
     }
 
     PlayBlackFrame();
-    SetChannelCount(1);
 }
 
 // ==================================
@@ -663,12 +474,7 @@ void cDxr3Interface::ReleaseDevices()
 	close(m_fdSpu);
     m_fdSpu = -1;
 
-    if (m_fdAudio > -1)
-	close(m_fdAudio);
-    m_fdAudio = -1;
-
     m_aspectRatio = UNKNOWN_ASPECT_RATIO;
-    m_audioMode = UNKNOWN_AUDIO_MODE;
     m_ExternalReleased = true;
     delete m_pClock;
     m_pClock = NULL;
@@ -699,10 +505,9 @@ void cDxr3Interface::ExternalReopenDevices()
 
 	// open 'multimedia' streams
 	m_fdVideo = Dxr3Open(DEV_DXR3_VIDEO, O_WRONLY | O_SYNC);
-	m_fdAudio = Dxr3Open(DEV_DXR3_OSS, O_WRONLY | O_SYNC);
 	m_fdSpu = Dxr3Open(DEV_DXR3_OSD, O_WRONLY | O_SYNC);
 
-	if (m_fdControl == -1 || m_fdVideo == -1 || m_fdAudio == -1 ||
+	if (m_fdControl == -1 || m_fdVideo == -1 ||
 	    m_fdSpu == -1)
 	{
 	    ExternalReleaseDevices();
@@ -717,7 +522,6 @@ void cDxr3Interface::ExternalReopenDevices()
 		exit(1);
 	    }
 
-	    SetChannelCount(1);
 	    m_ExternalReleased = false;
 
 	    ConfigureDeviceAudio();
@@ -758,7 +562,7 @@ void cDxr3Interface::PlayBlackFrame()
 void cDxr3Interface::ReOpenAudio()
 {
     Lock();
-
+/*
     if (!m_ExternalReleased)
     {
 	if (m_fdAudio != -1)
@@ -772,15 +576,10 @@ void cDxr3Interface::ReOpenAudio()
 
 	    m_fdAudio = Dxr3Open(DEV_DXR3_OSS, O_WRONLY | O_SYNC);
 
-	    uint32_t tmpAudioDataRate = m_audioDataRate;
-	    uint32_t tmpAudioChannelCount = m_audioChannelCount;
-	    m_audioDataRate = m_audioChannelCount = 0;
 	    m_pClock = new cDxr3SysClock(m_fdControl, m_fdVideo, m_fdSpu);
-	    SetAudioSpeed(tmpAudioDataRate);
-	    SetChannelCount(tmpAudioChannelCount);
 	}
     }
-
+*/
     Unlock();
 }
 
@@ -888,6 +687,7 @@ void cDxr3Interface::ConfigureDevice()
 //! setup device audio based on config
 void cDxr3Interface::ConfigureDeviceAudio()
 {
+    /*
     // TODO: AC3?
     if (cDxr3ConfigData::Instance().GetUseDigitalOut())
     {
@@ -898,7 +698,7 @@ void cDxr3Interface::ConfigureDeviceAudio()
     {
 	dsyslog("dxr3: configure: audio mode: analog");
 	SetAudioAnalog();
-    }
+    }*/
 }
 
 // ==================================

@@ -21,10 +21,28 @@
 #ifndef _AUDIO_H_
 #define _AUDIO_H_
 
+#include <vdr/tools.h>  // for uchar
+
+struct SampleContext {
+   unsigned int channels;
+   unsigned int samplerate;
+};
+
 class iAudio {
 public:
+    enum AudioMode {
+        Analog,
+        DigitalPcm,
+        Ac3,
+    };
+
     iAudio() : vol(0), audioChannel(0)  {}
     virtual ~iAudio() {}
+
+    virtual void openDevice() = 0;
+    virtual void releaseDevice() = 0;
+    virtual void setup(SampleContext ctx) = 0;
+    virtual void write(uchar* data, size_t size) = 0;
 
     void setVolume(int v)   { vol = v; }
     void mute()             { setVolume(0); }
@@ -33,9 +51,17 @@ public:
     void setAudioChannel(int channel)   { audioChannel = channel; }
     int getAudioChannel()               { return audioChannel; }
 
+    virtual void setAudioMode(AudioMode m) = 0;
+    AudioMode getAudioMode()            { return mode; }
+
+    bool isAudioModeAC3()   { return mode == Ac3; }
+
+
 protected:
     int vol;
     int audioChannel;
+    SampleContext curContext;
+    AudioMode mode;
 };
 
 #endif /*_AUDIO_H_*/

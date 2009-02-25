@@ -27,7 +27,7 @@
 #include "dxr3interface.h"
 #include "dxr3tools.h"
 #include "dxr3osd.h"
-#include "dxr3audio.h"
+#include "dxr3audio-oss.h"
 
 // ==================================
 //! constructor
@@ -41,7 +41,8 @@ cDxr3Device::cDxr3Device() : m_DemuxDevice(cDxr3Interface::Instance())
     // TODO: this will be later the place,
     //       where we will decide what kind of
     //       audio output system we will use.
-    audioOut = new iAudio();
+    audioOut = new cAudioOss();
+    audioOut->openDevice();
 
     m_DemuxDevice.setAudio(audioOut);
 }
@@ -49,6 +50,7 @@ cDxr3Device::cDxr3Device() : m_DemuxDevice(cDxr3Interface::Instance())
 // ==================================
 cDxr3Device::~cDxr3Device()
 {
+    audioOut->releaseDevice();
     delete audioOut;
 
     if (m_spuDecoder)
@@ -81,14 +83,11 @@ bool cDxr3Device::CanReplay() const
 // ==================================
 bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
 {
-    if (PlayMode == pmExtern_THIS_SHOULD_BE_AVOIDED)
-    {
-	Tools::WriteInfoToOsd(tr("DXR3: releasing devices"));
-	cDxr3Interface::Instance().ExternalReleaseDevices();
-    }
-    else
-    {
-	cDxr3Interface::Instance().ExternalReopenDevices();
+    if (PlayMode == pmExtern_THIS_SHOULD_BE_AVOIDED) {
+        Tools::WriteInfoToOsd(tr("DXR3: releasing devices"));
+        cDxr3Interface::Instance().ExternalReleaseDevices();
+    } else {
+        cDxr3Interface::Instance().ExternalReopenDevices();
     }
 
     // should this really be here?
@@ -273,8 +272,8 @@ int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
 
     bool isAc3 = ((Id & 0xF0) == 0x80) || Id == 0xbd;
 
-    if (isAc3 && !cDxr3Interface::Instance().IsAudioModeAC3())
-	cDxr3Interface::Instance().SetAudioDigitalAC3();
+    if (isAc3 && !audioOut->isAudioModeAC3())
+        audioOut->setAudioMode(iAudio::Ac3);
 
     if ((m_DemuxDevice.GetDemuxMode() == DXR3_DEMUX_TRICK_MODE &&
 	 m_DemuxDevice.GetTrickState() == DXR3_FREEZE) ||

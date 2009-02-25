@@ -106,11 +106,18 @@ void cDxr3AudioOutThread::Action()
 
 void cDxr3AudioOutThread::PlayFrame(cFixedLengthFrame *frame)
 {
+    // update audio context
+    SampleContext ctx;
+    ctx.samplerate = frame->GetSampleRate();
+    ctx.channels = frame->GetChannelCount();
+    audioOutput->setup(ctx);
+
+    // volume changes
     if (!cDxr3Interface::Instance().IsAudioModeAC3()) {
         audioOutput->changeVolume((short *)frame->GetData(), (size_t)frame->GetCount());
     }
 
-    m_dxr3Device.PlayAudioFrame(frame);
+    audioOutput->write(frame->GetData(), frame->GetCount());
 }
 
 #undef SCR

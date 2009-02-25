@@ -124,22 +124,13 @@ void cMenuSetupDxr3::Store(void)
 }
 
 // ==================================
-class cPluginDxr3 : public cPlugin
-{
-private:
-    // Add any member variables or functions you may need here.
+class cPluginDxr3 : public cPlugin {
 public:
     cPluginDxr3();
     ~cPluginDxr3();
 
-    const char *Version()
-    {
-	return VERSION;
-    }
-    const char *Description()
-    {
-	return tr(DESCRIPTION);
-    }
+    const char *Version()       { return VERSION; }
+    const char *Description()   { return tr(DESCRIPTION); }
 
     bool Initialize();
 
@@ -152,6 +143,9 @@ public:
 
     cMenuSetupPage *SetupMenu();
     bool SetupParse(const char *Name, const char *Value);
+
+private:
+    cDxr3Device *device;
 };
 
 // ==================================
@@ -171,8 +165,7 @@ cPluginDxr3::~cPluginDxr3()
 // ==================================
 bool cPluginDxr3::Initialize()
 {
-    new cDxr3Device();
-
+    device = new cDxr3Device();
     return true;
 }
 
@@ -306,7 +299,7 @@ cString cPluginDxr3::SVDRPCommand(const char *Command, const char *Option,
 	return cString::sprintf("Saturation set to %d",
 				cDxr3Interface::Instance().GetSaturation());
     }
-    if (!strcasecmp(Command, "SDO"))
+/*    if (!strcasecmp(Command, "SDO"))
     {
 	cDxr3Interface::Instance().SetAudioDigitalPCM();
 	return "Switched to digital PCM audio output";
@@ -321,7 +314,7 @@ cString cPluginDxr3::SVDRPCommand(const char *Command, const char *Option,
 	cDxr3Interface::Instance().SetAudioDigitalAC3();
 	return "Switched to digital AC3 audio output";
     }
-
+*/
     return NULL;
 }
 
