@@ -26,6 +26,7 @@
 class cAudioOss : public iAudio {
 public:
     cAudioOss() : iAudio(), fd(-1) {}
+    ~cAudioOss();
 
     virtual void openDevice();
     virtual void releaseDevice();

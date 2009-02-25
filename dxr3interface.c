@@ -30,11 +30,6 @@
 #include "dxr3syncbuffer.h"
 #include "dxr3osd.h"
 
-// ==================================
-const int LPCM_HEADER_LENGTH = 7;
-const int ZEROBUFFER_SIZE = 4096;
-uint8_t zerobuffer[ZEROBUFFER_SIZE] = {0};
-
 static const char *DEV_DXR3_OSD   = "_sp";
 static const char *DEV_DXR3_VIDEO = "_mv";
 static const char *DEV_DXR3_OSS   = "_ma";

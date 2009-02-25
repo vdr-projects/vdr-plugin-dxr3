@@ -6,6 +6,11 @@
 
 static const char *DEV_DXR3_OSS   = "_ma";
 
+cAudioOss::~cAudioOss()
+{
+    close(fd);
+}
+
 void cAudioOss::openDevice()
 {
     fd = cDxr3Interface::Dxr3Open(DEV_DXR3_OSS, O_RDWR | O_NONBLOCK);

@@ -44,93 +44,32 @@ class cDxr3ConfigData : public Singleton<cDxr3ConfigData>
 {
 public:
     cDxr3ConfigData();
-    ~cDxr3ConfigData() {}
 
-    int GetUseDigitalOut() const
-    {
-	return m_digitaloutput;
-    }
-    int SetUseDigitalOut(int value)
-    {
-	return m_digitaloutput = value;
-    }
-    int GetDxr3Card() const
-    {
-	return m_card;
-    }
-    int SetDxr3Card(int value)
-    {
-	return m_card = value;
-    }
-    int GetForceLetterBox() const
-    {
-	return m_forceletterbox;
-    }
-    int SetForceLetterBox(int value)
-    {
-	return m_forceletterbox = value;
-    }
+    int GetUseDigitalOut() const        { return m_digitaloutput; }
+    int SetUseDigitalOut(int value)     { return m_digitaloutput = value; }
+    int GetDxr3Card() const             { return m_card; }
+    int SetDxr3Card(int value)          { return m_card = value; }
+    int GetForceLetterBox() const       { return m_forceletterbox; }
+    int SetForceLetterBox(int value)    { return m_forceletterbox = value; }
 
-    eVideoMode GetVideoMode() const
-    {
-	return m_videomode;
-    }
-    eVideoMode SetVideoMode(eVideoMode videoMode)
-    {
-	return m_videomode = videoMode;
-    }
+    eVideoMode GetVideoMode() const         { return m_videomode; }
+    eVideoMode SetVideoMode(eVideoMode m)   { return m_videomode = m; }
 
-    int GetBrightness() const
-    {
-	return m_brightness;
-    }
-    int SetBrightness(int value)
-    {
-	return m_brightness = value;
-    }
-    int GetContrast() const
-    {
-	return m_contrast;
-    }
-    int SetContrast(int value)
-    {
-	return m_contrast = value;
-    }
-    int GetSaturation() const
-    {
-	return m_saturation;
-    }
-    int SetSaturation(int value)
-    {
-	return m_saturation = value;
-    }
+    int GetBrightness() const           { return m_brightness; }
+    int SetBrightness(int value)        { return m_brightness = value; }
+    int GetContrast() const             { return m_contrast; }
+    int SetContrast(int value)          { return m_contrast = value; }
+    int GetSaturation() const           { return m_saturation; }
+    int SetSaturation(int value)        { return m_saturation = value; }
 
-    int GetHideMenu() const
-    {
-	return m_hidemenu;
-    }
-    int SetHideMenu(int value)
-    {
-	return m_hidemenu = value;
-    }
+    int GetHideMenu() const             { return m_hidemenu; }
+    int SetHideMenu(int value)          { return m_hidemenu = value; }
 
-    unsigned int GetOsdFlushRate() const
-    {
-	return (unsigned) m_osdflushrate;
-    }
-    int SetOsdFlushRate(int value)
-    {
-	return m_osdflushrate = value;
-    }
+    unsigned int GetOsdFlushRate() const    { return m_osdflushrate; }
+    int SetOsdFlushRate(unsigned int value) { return m_osdflushrate = value; }
 
-    int GetUseWSS() const
-    {
-	return m_usewss;
-    }
-    int SetUseWSS(int value)
-    {
-	return m_usewss = value;
-    }
+    int GetUseWSS() const               { return m_usewss; }
+    int SetUseWSS(int value)            { return m_usewss = value; }
 
 protected:
     eVideoMode m_videomode;
@@ -142,7 +81,7 @@ protected:
     int m_contrast;
     int m_saturation;
     int m_hidemenu;
-    int m_osdflushrate;
+    unsigned int m_osdflushrate;
 };
 
 #endif /*_DXR3_CONFIGDATA_H_*/
