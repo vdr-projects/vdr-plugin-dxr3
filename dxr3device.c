@@ -35,7 +35,6 @@
 cDxr3Device::cDxr3Device() : m_DemuxDevice(cDxr3Interface::Instance())
 {
     m_Offset = 0;
-    m_strBuf.erase(m_strBuf.begin(), m_strBuf.end());
     m_spuDecoder = NULL;
     m_CalledBySet = false;
 
