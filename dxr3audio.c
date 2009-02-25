@@ -29,8 +29,8 @@ const static int AUDIO_STEREO = 0;
 const static int AUDIO_MONO_LEFT = 1;
 const static int AUDIO_MONO_RIGHT = 2;
 
-void iAudio::changeVolume(int16_t* pcmbuf, size_t size) {
-
+void iAudio::changeVolume(int16_t* pcmbuf, size_t size)
+{
     if (vol == 0) {
 	    memset(pcmbuf, 0, size);
     } else if (vol < MAXVOLUME) {
@@ -44,23 +44,23 @@ void iAudio::changeVolume(int16_t* pcmbuf, size_t size) {
             pcmbuf++;
             size--;
         }
+    }
 
-        // respect audio channel setting
-        if (audioChannel == AUDIO_STEREO)
-        	return;
+    // respect audio channel setting
+    if (audioChannel == AUDIO_STEREO)
+        return;
 
-        if (audioChannel == AUDIO_MONO_RIGHT) {
+    if (audioChannel == AUDIO_MONO_RIGHT) {
 
-        	for (unsigned int i = 0; i < size / sizeof(short); i++) {
-        		if (!(i & 0x1))
-        			pcmbuf[i] = pcmbuf[i+1];
-        	}
-        } else if (audioChannel == AUDIO_MONO_LEFT) {
+        for (unsigned int i = 0; i < size / sizeof(short); i++) {
+            if (!(i & 0x1))
+                pcmbuf[i] = pcmbuf[i+1];
+        }
+    } else if (audioChannel == AUDIO_MONO_LEFT) {
 
-           	for (unsigned int i = 0; i < size / sizeof(short); i++) {
-           		if ((i & 0x1))
-           			pcmbuf[i] = pcmbuf[i-1];
-           	}
+        for (unsigned int i = 0; i < size / sizeof(short); i++) {
+            if ((i & 0x1))
+                pcmbuf[i] = pcmbuf[i-1];
         }
     }
 }
