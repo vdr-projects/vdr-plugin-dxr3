@@ -21,6 +21,7 @@
 #ifndef _AUDIO_H_
 #define _AUDIO_H_
 
+#include <string.h>
 #include <vdr/tools.h>  // for uchar
 
 struct SampleContext {
@@ -36,7 +37,7 @@ public:
         Ac3,
     };
 
-    iAudio() : vol(0), audioChannel(0)  {}
+    iAudio() : vol(0), audioChannel(0)  { memset(&curContext, 0, sizeof(SampleContext)); }
     virtual ~iAudio() {}
 
     virtual void openDevice() = 0;

@@ -28,6 +28,7 @@
 #include "dxr3tools.h"
 #include "dxr3osd.h"
 #include "dxr3audio-oss.h"
+#include "dxr3audio-alsa.h"
 
 // ==================================
 //! constructor
@@ -42,6 +43,7 @@ cDxr3Device::cDxr3Device() : m_DemuxDevice(cDxr3Interface::Instance())
     //       where we will decide what kind of
     //       audio output system we will use.
     audioOut = new cAudioOss();
+    //audioOut = new cAudioAlsa();
 
     m_DemuxDevice.setAudio(audioOut);
 }

@@ -32,6 +32,9 @@ FFMPEG_INC = $(shell pkg-config --cflags-only-I libavcodec)
 # as is if FFmpeg was installed properly and pkg-config is available.
 FFMPEG_LIBS = $(shell pkg-config --libs libavcodec)
 
+ALSA_INC = $(shell pkg-config --cflags-only-I alsa)
+ALSA_LIBS = $(shell pkg-config --libs alsa)
+
 # Usually something like -I/path/to/em8300/include,should work as is (empty)
 # if em8300 headers were installed properly.
 EM8300_INC = 
@@ -51,8 +54,8 @@ PACKAGE = $(shell echo vdr-$(ARCHIVE) | sed -e 's/git$$/git'`date +%Y%m%d`/)
 
 ### Includes and Defines (add further entries here):
 
-INCLUDES += -I$(VDRDIR)/include $(FFMPEG_INC) $(EM8300_INC)
-LIBS      = $(FFMPEG_LIBS)
+INCLUDES += -I$(VDRDIR)/include $(FFMPEG_INC) $(EM8300_INC) $(ALSA_INC)
+LIBS      = $(FFMPEG_LIBS) $(ALSA_LIBS)
 DEFINES  += -DPLUGIN_NAME_I18N='"$(PLUGIN)"'
 DEFINES  += -D_GNU_SOURCE
 
@@ -72,7 +75,7 @@ OBJS = $(PLUGIN).o dxr3multichannelaudio.o dxr3sysclock.o dxr3colormanager.o \
 	dxr3pesframe.o dxr3demuxdevice.o dxr3configdata.o dxr3ffmpeg.o \
 	dxr3interface_spu_encoder.o dxr3interface.o dxr3device.o \
 	dxr3output.o dxr3output-video.o dxr3output-audio.o dxr3osd.o dxr3spudecoder.o \
-	dxr3audio-oss.o
+	dxr3audio-oss.o dxr3audio-alsa.o
 
 ### Default target:
 
