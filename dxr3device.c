@@ -86,8 +86,10 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
     if (PlayMode == pmExtern_THIS_SHOULD_BE_AVOIDED) {
         Tools::WriteInfoToOsd(tr("DXR3: releasing devices"));
         cDxr3Interface::Instance().ExternalReleaseDevices();
+        audioOut->releaseDevice();
     } else {
         cDxr3Interface::Instance().ExternalReopenDevices();
+        audioOut->openDevice();
     }
 
     // should this really be here?
