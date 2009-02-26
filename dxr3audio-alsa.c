@@ -55,7 +55,7 @@ void cAudioAlsa::releaseDevice()
         return;
 
     if (handle) {
-        snd_pcm_drain(handle);
+        snd_pcm_drop(handle);
         snd_pcm_close(handle);
         handle = NULL;
     }
