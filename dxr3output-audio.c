@@ -110,7 +110,13 @@ void cDxr3AudioOutThread::PlayFrame(cFixedLengthFrame *frame)
     SampleContext ctx;
     ctx.samplerate = frame->GetSampleRate();
     ctx.channels = frame->GetChannelCount();
-    audioOutput->setup(ctx);
+
+    // TODO find cause why we need this workaround
+    if (ctx.samplerate != -1 && ctx.channels != -1) {
+        audioOutput->setup(ctx);
+    } else {
+        dsyslog("[fixme] samplerate: %d channels: %d", ctx.samplerate, ctx.channels);
+    }
 
     // volume changes
     if (!cDxr3Interface::Instance().IsAudioModeAC3()) {
