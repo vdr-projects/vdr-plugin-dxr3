@@ -167,7 +167,6 @@ private:
     // dxr3 clock
     cDxr3SysClock* m_pClock;	///< clock used for sync
 
-    int m_aspectDelayCounter;
     uint32_t m_aspectRatio;	///< current used aspect ratio
     uint32_t m_horizontal;	///< horizontal size of current videostream
     uint32_t m_vertical;	///< vertical size of current videostream
@@ -190,11 +189,11 @@ protected:
 
     static void Lock()
     {
-	cDxr3Interface::m_pMutex->Lock();
+        cDxr3Interface::m_pMutex->Lock();
     }
     static void Unlock()
     {
-	cDxr3Interface::m_pMutex->Unlock();
+        cDxr3Interface::m_pMutex->Unlock();
     }
 };
 

@@ -40,41 +40,26 @@ class iAudio;
 // extract video and audio
 class cDxr3DemuxDevice : private Uncopyable {
 public:
-    cDxr3DemuxDevice();
     cDxr3DemuxDevice(cDxr3Interface& dxr3Device);
     ~cDxr3DemuxDevice();
 
     void setAudio(iAudio *a);
 
-    void Stop(void);
-    void Resync(void);
-    void Clear(void);
-    void Init(void);
-    void SetTvMode(void);
-    void SetAudioOnlyMode(void);
-    void SetVideoOnlyMode(void);
-    void SetReplayMode(void);
+    void Stop();
+    void Resync();
+    void Clear();
+    void SetReplayMode();
     void SetTrickMode(eDxr3TrickState trickState, int Speed = 1);
 
     int DemuxPes(const uint8_t* buf, int length, bool bAc3Dts = false);
     int DemuxAudioPes(const uint8_t* buf, int length);
     void StillPicture(const uint8_t* buf, int length);
 
-    eDxr3DemuxMode GetDemuxMode(void)
-    {
-	return m_demuxMode;
-    };
-    eDxr3TrickState GetTrickState(void)
-    {
-	return m_trickState;
-    };
-    bool Poll(int TimeoutMs)
-    {
-	return  m_aBuf.Poll(TimeoutMs) && m_vBuf.Poll(TimeoutMs);
-	/*
-	return  m_demuxMode == DXR3_DEMUX_AUDIO_ONLY_MODE ?
-	    m_aBuf.Poll(TimeoutMs) : m_aBuf.Poll(TimeoutMs);
-	*/
+    eDxr3DemuxMode GetDemuxMode()   { return m_demuxMode; }
+    eDxr3TrickState GetTrickState() { return m_trickState; };
+
+    bool Poll(int TimeoutMs)  {
+        return  m_aBuf.Poll(TimeoutMs) && m_vBuf.Poll(TimeoutMs);
     };
 
 protected:
