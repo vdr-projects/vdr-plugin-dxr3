@@ -63,7 +63,7 @@ public:
     virtual void SetVideoFormat(bool VideoFormat16_9);
     virtual void SetVolumeDevice(int Volume);
     virtual void SetAudioChannelDevice(int AudioChannel);
-    virtual int GetAudioChannelDevice(void);
+    virtual int GetAudioChannelDevice();
 
     // osd
     virtual cSpuDecoder *GetSpuDecoder();
@@ -79,9 +79,6 @@ public:
 protected:
     ePlayMode m_PlayMode;
     cDxr3DemuxDevice m_DemuxDevice;
-    std::string m_strBuf;
-    int m_Offset;
-
     cDxr3SpuDecoder* m_spuDecoder;
 
 private:

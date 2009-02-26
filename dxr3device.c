@@ -34,7 +34,6 @@
 //! constructor
 cDxr3Device::cDxr3Device() : m_DemuxDevice(cDxr3Interface::Instance())
 {
-    m_Offset = 0;
     m_spuDecoder = NULL;
 
     // TODO: this will be later the place,
@@ -91,10 +90,6 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
         cDxr3Interface::Instance().ExternalReopenDevices();
         audioOut->openDevice();
     }
-
-    // should this really be here?
-    m_Offset = 0;
-    m_strBuf.erase(m_strBuf.begin(), m_strBuf.end());
 
     if (PlayMode == pmAudioOnlyBlack)
     {
@@ -166,8 +161,6 @@ void cDxr3Device::TrickSpeed(int Speed)
 void cDxr3Device::Clear()
 {
     m_DemuxDevice.Clear();
-    m_Offset = 0;
-    m_strBuf.erase(m_strBuf.begin(), m_strBuf.end());
     cDevice::Clear();
 }
 
@@ -176,9 +169,6 @@ void cDxr3Device::Clear()
 void cDxr3Device::Play()
 {
     m_DemuxDevice.SetReplayMode();
-    m_Offset = 0;
-    ///< free buffer
-    m_strBuf.erase(m_strBuf.begin(), m_strBuf.end());
 }
 
 // ==================================
@@ -206,11 +196,9 @@ void cDxr3Device::StillPicture(const uchar *Data, int Length)
 bool cDxr3Device::Poll(cPoller &Poller, int TimeoutMs)
 {
     if ((m_DemuxDevice.GetDemuxMode() == DXR3_DEMUX_TRICK_MODE &&
-	 m_DemuxDevice.GetTrickState() == DXR3_FREEZE) ||
-	cDxr3Interface::Instance().IsExternalReleased())
-    {
-	cCondWait::SleepMs(TimeoutMs);
-	return false;
+	 m_DemuxDevice.GetTrickState() == DXR3_FREEZE) || cDxr3Interface::Instance().IsExternalReleased()) {
+        cCondWait::SleepMs(TimeoutMs);
+        return false;
     }
     return m_DemuxDevice.Poll(TimeoutMs); // Poller.Poll(TimeoutMs);
 }
@@ -219,102 +207,27 @@ bool cDxr3Device::Poll(cPoller &Poller, int TimeoutMs)
 //! actually plays the given data block as video
 int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 {
-    int retLength = 0;
-    int origLength = Length;
-
-    if ((m_DemuxDevice.GetDemuxMode() == DXR3_DEMUX_TRICK_MODE &&
-	 m_DemuxDevice.GetTrickState() == DXR3_FREEZE) ||
-	cDxr3Interface::Instance().IsExternalReleased())
-    {
-	return 0;
+    if (m_PlayMode == pmAudioOnly) {
+        return m_DemuxDevice.DemuxAudioPes(Data, Length);
+    } else {
+        return m_DemuxDevice.DemuxPes(Data, Length);
     }
-
-    if (m_strBuf.length())
-    {
-	m_strBuf.append((const char*)Data, Length);
-
-	if (m_PlayMode == pmAudioOnly)
-	{
-	    retLength = m_DemuxDevice.DemuxAudioPes((const uint8_t*)m_strBuf.data(), m_strBuf.length());
-	}
-	else
-	{
-	    retLength = m_DemuxDevice.DemuxPes((const uint8_t*)m_strBuf.data(), m_strBuf.length());
-	}
-    }
-    else if (m_PlayMode == pmAudioOnly)
-    {
-	retLength = m_DemuxDevice.DemuxAudioPes((const uint8_t*)Data, Length);
-    }
-    else
-    {
-	retLength = m_DemuxDevice.DemuxPes((const uint8_t*)Data, Length);
-    }
-
-    Length -= retLength;
-
-    if (m_strBuf.length())
-    {
-	m_strBuf.erase(m_strBuf.length() - retLength, retLength);
-    }
-    else if (Length)
-    {
-	m_strBuf.append((const char*)(Data + retLength), Length);
-    }
-
-    return origLength;
 }
 
 // ==================================
 // plays additional audio streams, like Dolby Digital
 int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
 {
-    int retLength = 0;
-    int origLength = Length;
-
     bool isAc3 = ((Id & 0xF0) == 0x80) || Id == 0xbd;
 
     if (isAc3 && !audioOut->isAudioModeAC3())
         audioOut->setAudioMode(iAudio::Ac3);
 
-    if ((m_DemuxDevice.GetDemuxMode() == DXR3_DEMUX_TRICK_MODE &&
-	 m_DemuxDevice.GetTrickState() == DXR3_FREEZE) ||
-	cDxr3Interface::Instance().IsExternalReleased())
-    {
-	return 0;
+    if (m_PlayMode == pmAudioOnly) {
+        return m_DemuxDevice.DemuxAudioPes(Data, Length);
+    } else {
+        return m_DemuxDevice.DemuxPes(Data, Length);
     }
-
-    if (m_strBuf.length())
-    {
-	m_strBuf.append((const char*)Data, Length);
-	if (m_PlayMode == pmAudioOnly)
-	{
-	    retLength = m_DemuxDevice.DemuxAudioPes((const uint8_t*)m_strBuf.data(), m_strBuf.length());
-	} else {
-	    retLength = m_DemuxDevice.DemuxPes((const uint8_t*)m_strBuf.data(), m_strBuf.length(), isAc3);
-	}
-    }
-    else if (m_PlayMode == pmAudioOnly)
-    {
-	retLength = m_DemuxDevice.DemuxAudioPes((const uint8_t*) Data, Length);
-    }
-    else
-    {
-	retLength = m_DemuxDevice.DemuxPes((const uint8_t*)Data, Length, isAc3);
-    }
-
-    Length -= retLength;
-
-    if (m_strBuf.length())
-    {
-	m_strBuf.erase(m_strBuf.length() - retLength, retLength);
-    }
-    else if (Length)
-    {
-	m_strBuf.append((const char*)(Data + retLength), Length);
-    }
-
-    return origLength;
 }
 
 // additional functions
@@ -347,11 +260,10 @@ int cDxr3Device::GetAudioChannelDevice()
 
 // ==================================
 // get spudecoder
-cSpuDecoder *cDxr3Device::GetSpuDecoder(void)
+cSpuDecoder *cDxr3Device::GetSpuDecoder()
 {
-    if (!m_spuDecoder && IsPrimaryDevice())
-    {
-	m_spuDecoder = new cDxr3SpuDecoder();
+    if (!m_spuDecoder && IsPrimaryDevice()) {
+        m_spuDecoder = new cDxr3SpuDecoder();
     }
     return m_spuDecoder;
 }
