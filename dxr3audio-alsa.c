@@ -39,7 +39,7 @@ void cAudioAlsa::openDevice()
     string device = "default:CARD=" + cardname;
 
     dsyslog("[dxr3-audio-alsa] opening device %s", device.c_str());
-    int err = snd_pcm_open(&handle, device.c_str(), SND_PCM_STREAM_PLAYBACK, 0);
+    int err = snd_pcm_open(&handle, device.c_str(), SND_PCM_STREAM_PLAYBACK, SND_PCM_NONBLOCK);
 
     if (err < 0) {
         esyslog("[dxr3-audio-alsa] Playback open error: %s", snd_strerror(err));
@@ -74,7 +74,13 @@ void cAudioAlsa::setup(const SampleContext& ctx)
     dsyslog("[dxr3-audio-alsa] changing num of channels to %d (old %d)", ctx.channels, curContext.channels);
 
     snd_pcm_hw_params_t* alsa_hwparams;
+    snd_pcm_sw_params_t* alsa_swparams;
+
     snd_pcm_hw_params_alloca(&alsa_hwparams);
+    snd_pcm_sw_params_alloca(&alsa_swparams);
+
+    //
+    // set hardware settings
 
     int err = snd_pcm_hw_params_any(handle, alsa_hwparams);
     if (err < 0) {
@@ -100,8 +106,10 @@ void cAudioAlsa::setup(const SampleContext& ctx)
         esyslog("[dxr3-audio-alsa] Unable to set channels %d: %s", ctx.channels, snd_strerror(err));
     }
 
+    unsigned int sr = ctx.samplerate;
+
     // set samplerate
-    err = snd_pcm_hw_params_set_rate_near(handle, alsa_hwparams, (unsigned int *)&ctx.samplerate, NULL);
+    err = snd_pcm_hw_params_set_rate_near(handle, alsa_hwparams, &sr, NULL);
     if (err < 0) {
         esyslog("[dxr3-audio-alsa] Unable to set samplerate %d: %s", ctx.samplerate, snd_strerror(err));
     }
@@ -122,6 +130,51 @@ void cAudioAlsa::setup(const SampleContext& ctx)
     err = snd_pcm_prepare(handle);
     if (err < 0) {
         esyslog("[dxr3-audio-alsa] Cannot prepare audio interface for use: %s", snd_strerror(err));
+    }
+
+    //
+    // set software settings
+
+    err = snd_pcm_sw_params_current(handle, alsa_swparams);
+    if (err < 0) {
+        esyslog("[dxr3-audio-alsa] Cannot get current sw params: %s", snd_strerror(err));
+    }
+
+    static snd_pcm_uframes_t chunk_size = 1024;
+
+    // start playing when one period has been written
+    err = snd_pcm_sw_params_set_start_threshold(handle, alsa_swparams, chunk_size);
+    if (err < 0) {
+        esyslog("[dxr3-audio-alsa] Failed to set chunk_size: %s", snd_strerror(err));
+    }
+
+    snd_pcm_uframes_t boundary;
+#if SND_LIB_VERSION >= 0x000901
+    err = snd_pcm_sw_params_get_boundary(alsa_swparams, &boundary);
+    if (err < 0) {
+        esyslog("[dxr3-audio-alsa] Failed to get boundary: %s", snd_strerror(err));
+    }
+#else
+    boundary = 0x7fffffff;
+#endif
+
+    // disable underrun reporting
+    err = snd_pcm_sw_params_set_stop_threshold(handle, alsa_swparams, boundary);
+    if (err < 0) {
+        esyslog("[dxr3-audio-alsa] Failed to disable underrun reporting: %s", snd_strerror(err));
+    }
+
+#if SND_LIB_VERSION >= 0x000901
+    // play silence when there is an underrun
+    err = snd_pcm_sw_params_set_silence_size(handle, alsa_swparams, boundary);
+    if (err < 0) {
+        esyslog("[dxr3-audio-alsa] Failed to enable silence mode: %s", snd_strerror(err));
+    }
+#endif
+
+    err = snd_pcm_sw_params(handle, alsa_swparams);
+    if (err < 0) {
+        esyslog("[dxr3-audio-alsa] Failed to set sw params: %s", snd_strerror(err));
     }
 
     curContext.channels = ctx.channels;
@@ -198,4 +251,3 @@ void cAudioAlsa::Xrun()
     esyslog("[dxr3-audio-alsa]: read/write error FATAL exiting");
     exit(-1);
 }
-
