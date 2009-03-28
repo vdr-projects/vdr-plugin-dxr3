@@ -358,3 +358,4 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - Add French translation (#55, Michaël Nival)
 - Better defaults for FFmpeg and EM8300 in Makefile (#53, Ville Skyttä,
   Michaël Nival).
+- Code cleanups (Christian Gmeiner)

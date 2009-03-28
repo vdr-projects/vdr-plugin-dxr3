@@ -26,7 +26,10 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#include "dxr3ffmpeg.h"
+extern "C" {
+#    include <libavcodec/avcodec.h>
+}
+
 #include "dxr3syncbuffer.h"
 #include "dxr3multichannelaudio.h"
 #include "Uncopyable.h"
@@ -59,7 +62,8 @@ public:
 private:
     bool HeadCheck(unsigned long head);
 
-    struct Dxr3Codec Codec;
+    AVCodec *audio;
+    AVCodecContext *contextAudio;
 
     cRingBufferFrame rbuf;
     cMultichannelAudio ac3dtsDecoder;

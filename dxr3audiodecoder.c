@@ -38,15 +38,29 @@ const int LPCM_HEADER_LENGTH = 7;
 //! constructor
 cDxr3AudioDecoder::cDxr3AudioDecoder() : rbuf(50000), ac3dtsDecoder(&rbuf)
 {
-    audioSynched = false;
-    Codec.id = CODEC_ID_MP2;
+    // setup ffmpeg
+    avcodec_init();
+    avcodec_register_all();
 
-    // check if codec is available
-    if (!cDxr3Ffmpeg::Instance().FindCodec(Codec)) {
+    audioSynched = false;
+
+    // look for decoder
+    audio = avcodec_find_decoder(CODEC_ID_MP3);
+
+    if (!audio) {
+        esyslog("[dxr3-decoder] no suitable audio codec found.");
+        esyslog("[dxr3-decoder] check your ffmpeg installation.");
         exit(-1);
     }
 
-    Init();
+    // create a new codec context
+    contextAudio = avcodec_alloc_context();
+    int ret = avcodec_open(contextAudio, audio);
+
+    if (ret < 0) {
+        esyslog("[dxr3-decoder] failed to open codec %s.", audio->name);
+        exit(-1);
+    }
 
     lastHeader[0] = 0xFF;
     lastHeader[1] = lastHeader[2] = lastHeader[3] = 0;
@@ -57,16 +71,24 @@ cDxr3AudioDecoder::cDxr3AudioDecoder() : rbuf(50000), ac3dtsDecoder(&rbuf)
 cDxr3AudioDecoder::~cDxr3AudioDecoder()
 {
     // close codec, if it is open
-    cDxr3Ffmpeg::Instance().CloseCodec(Codec);
+	avcodec_close(contextAudio);
 }
 
 // ==================================
 //! (re)init ffmpeg codec
 void cDxr3AudioDecoder::Init()
 {
-    // (re)init codec
-    cDxr3Ffmpeg::Instance().CloseCodec(Codec);
-	cDxr3Ffmpeg::Instance().OpenCodec(Codec);
+	avcodec_close(contextAudio);
+
+    // create a new codec context
+    contextAudio = avcodec_alloc_context();
+    int ret = avcodec_open(contextAudio, audio);
+
+    if (ret < 0) {
+        esyslog("[dxr3-decoder] failed to open codec %s.", audio->name);
+        exit(-1);
+    }
+
 	rate = channels = -1;
 	foundHeader = false;
 	decodeAudio = true;
@@ -134,25 +156,25 @@ void cDxr3AudioDecoder::Decode(const uint8_t* buf, int length, uint32_t pts,
 #else
 	    len = avcodec_decode_audio2(
 #endif
-		&Codec.codec_context, (short *)(&pcmbuf), &out_size,
+		contextAudio, (short *)(&pcmbuf), &out_size,
 		const_cast<uint8_t *>(buf), length);
 	    if (len < 0 || out_size < 0)
 		throw WRONG_LENGTH;
 
-	    if (Codec.codec_context.sample_rate != rate)
+	    if (contextAudio->sample_rate != rate)
 	    {
 		dsyslog("dxr3: audiodecoder: sample rate=%d",
-			Codec.codec_context.sample_rate);
+				contextAudio->sample_rate);
 		if (rate != -1) throw UNEXPECTED_PARAMETER_CHANGE;
-		rate = Codec.codec_context.sample_rate;
+		rate = contextAudio->sample_rate;
 	    }
-	    if (Codec.codec_context.channels != channels)
+	    if (contextAudio->channels != channels)
 	    {
 		dsyslog("dxr3: audiodecoder: channels=%d",
-			Codec.codec_context.channels);
+				contextAudio->channels);
 		if (channels != -1)
 		    throw UNEXPECTED_PARAMETER_CHANGE;
-		channels = Codec.codec_context.channels;
+		channels = contextAudio->channels;
 	    }
 	    if (out_size)
 	    {
