@@ -245,10 +245,6 @@ cOsdObject* cPluginDxr3::MainMenuAction()
 const char **cPluginDxr3::SVDRPHelpPages(void)
 {
     static const char *HelpPages[] = {
-	"DON\n"
-	"    Start DXR3.",
-	"DOF\n"
-	"    Stop DXR3.",
 	"SAT\n"
 	"    Set saturation (0..999).",
 	"CON\n"
@@ -271,14 +267,6 @@ const char **cPluginDxr3::SVDRPHelpPages(void)
 cString cPluginDxr3::SVDRPCommand(const char *Command, const char *Option,
 				  int &ReplyCode)
 {
-    if (!strcasecmp(Command, "DON")) {
-        cDxr3Interface::Instance().ExternalReopenDevices();
-        return "DXR3 started";
-    }
-    if (!strcasecmp(Command, "DOF")) {
-        cDxr3Interface::Instance().ExternalReleaseDevices();
-        return "DXR3 stopped";
-    }
     if (!strcasecmp(Command, "BRI")) {
         cDxr3Interface::Instance().SetBrightness(atoi(Option));
         return cString::sprintf("Brightness set to %d",

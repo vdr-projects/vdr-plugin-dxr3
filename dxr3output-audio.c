@@ -52,8 +52,7 @@ void cDxr3AudioOutThread::Action()
 
 	if (pNext) pts = pNext->GetPts();
 
-	if ((pts && abs((int)pts-(int)SCR) > 30000) ||
-	    m_dxr3Device.IsExternalReleased())
+	if ((pts && abs((int)pts-(int)SCR) > 30000))
 	{
 	    m_buffer.Clear();
 	    m_bNeedResync = true;

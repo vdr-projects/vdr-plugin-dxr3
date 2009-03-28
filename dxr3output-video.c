@@ -86,13 +86,6 @@ void cDxr3VideoOutThread::Action()
 		}
 	    }
 
-
-	    if (m_dxr3Device.IsExternalReleased())
-	    {
-		m_bNeedResync = true;
-		m_buffer.Clear();
-	    }
-
 	    if ((pts > SCR && abs((int)pts - (int)SCR) > 7500 ))
 	    {
 		cCondWait::SleepMs(10);

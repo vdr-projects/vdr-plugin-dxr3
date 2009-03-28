@@ -128,10 +128,9 @@ public:
     void PlayVideoFrame(cFixedLengthFrame* pFrame, int times = 1);
     void PlayVideoFrame(const uint8_t* pBuf, int length, int times = 1);
 
-    // external device access
-    void ExternalReleaseDevices();
-    void ExternalReopenDevices();
-    bool IsExternalReleased() const     { return m_ExternalReleased; }
+    // device access
+    void ClaimDevices();
+    void ReleaseDevices();
 
     // tools
     void PlayBlackFrame();
@@ -171,7 +170,6 @@ private:
     uint32_t m_horizontal;	///< horizontal size of current videostream
     uint32_t m_vertical;	///< vertical size of current videostream
     uint32_t m_spuMode;
-    bool m_ExternalReleased;	///< is dxr3 used by e.g. mplayer?
     bool m_AudioActive;		///< is audio active?
     bool m_VideoActive;		///< is video active?
 
@@ -180,8 +178,6 @@ private:
 
     void UploadMicroCode();
     void ConfigureDevice();
-    void ClaimDevices();
-    void ReleaseDevices();
     void Resuscitation();
 
 protected:

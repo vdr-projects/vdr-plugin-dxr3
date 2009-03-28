@@ -73,21 +73,13 @@ int cDxr3Interface::OssSetPlayMode(uint32_t mode)
 // ==================================
 void cDxr3Interface::SetSysClock(uint32_t scr)
 {
-    if (!m_ExternalReleased)
-    {
 	m_pClock->SetSysClock(scr);
-    }
 }
 
 // ==================================
 uint32_t cDxr3Interface::GetSysClock() const
 {
-    uint32_t ret = 0;
-    if (!m_ExternalReleased)
-    {
-	ret = m_pClock->GetSysClock();
-    }
-    return ret;
+	return m_pClock->GetSysClock();
 }
 
 // ==================================
@@ -99,17 +91,12 @@ int64_t cDxr3Interface::GetPts()
 // ==================================
 void cDxr3Interface::SetPts(uint32_t pts)
 {
-    if (!m_ExternalReleased)
-    {
 	m_pClock->SetPts(pts);
-    }
 }
 
 // ==================================
 void cDxr3Interface::SetSpuPts(uint32_t pts)
 {
-    if (!m_ExternalReleased)
-    {
 	pts = pts >> 1;
 
 	if (pts > m_pClock->GetSysClock() &&
@@ -117,7 +104,6 @@ void cDxr3Interface::SetSpuPts(uint32_t pts)
 	{
 	    m_pClock->SetSpuPts(pts);
 	}
-    }
 }
 
 // state changes
@@ -129,7 +115,7 @@ void cDxr3Interface::EnableSPU()
 
     Lock();
 
-    if (!m_ExternalReleased && m_spuMode != ioval)
+    if (m_spuMode != ioval)
     {
 	if (ioctl(m_fdControl, EM8300_IOCTL_SET_SPUMODE, &ioval) == -1)
 	{
@@ -152,7 +138,7 @@ void cDxr3Interface::DisableSPU()
 
     Lock();
 
-    if (!m_ExternalReleased && m_spuMode != ioval)
+    if (m_spuMode != ioval)
     {
 	if (ioctl(m_fdControl, EM8300_IOCTL_SET_SPUMODE, &ioval) == -1)
 	{
@@ -185,13 +171,10 @@ uint32_t cDxr3Interface::GetAspectRatio() const
 
     Lock();
 
-    if (!m_ExternalReleased)
-    {
 	if (ioctl(m_fdControl, EM8300_IOCTL_GET_ASPECTRATIO, &ioval) == -1)
 	{
 	    esyslog("dxr3: unable to get aspect ratio: %m");
 	}
-    }
 
     Unlock();
 
@@ -210,7 +193,7 @@ void cDxr3Interface::SetAspectRatio(uint32_t ratio)
     if (cDxr3ConfigData::Instance().GetForceLetterBox())
 	ratio = EM8300_ASPECTRATIO_16_9;
 
-    if (!m_ExternalReleased && ratio != UNKNOWN_ASPECT_RATIO)
+    if (ratio != UNKNOWN_ASPECT_RATIO)
     {
 	if (ratio != m_aspectRatio && requestCounter > 50)
 	{
@@ -273,8 +256,6 @@ void cDxr3Interface::SetPlayMode()
 
     Lock();
 
-    if (!m_ExternalReleased)
-    {
 	ioval = EM8300_SUBDEVICE_AUDIO;
 	ioctl(m_fdControl, EM8300_IOCTL_FLUSH, &ioval);
 	fsync(m_fdVideo);
@@ -292,7 +273,6 @@ void cDxr3Interface::SetPlayMode()
 	{
 	    esyslog("dxr3: unable to start em8300 sync engine: %m");
 	}
-    }
 
     Unlock();
 }
@@ -304,13 +284,10 @@ void cDxr3Interface::Pause()
 
     Lock();
 
-    if (!m_ExternalReleased)
-    {
 	if (ioctl(m_fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval) == -1)
 	{
 	    esyslog("dxr3: unable to set pause mode: %m");
 	}
-    }
 
     Unlock();
 }
@@ -321,13 +298,10 @@ void cDxr3Interface::SingleStep()
 
     Lock();
 
-    if (!m_ExternalReleased)
-    {
 	if (ioctl(m_fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval) == -1)
 	{
 	    esyslog("dxr3: unable to set single-step mode: %m");
 	}
-    }
 
     Unlock();
 }
@@ -342,28 +316,25 @@ void cDxr3Interface::PlayVideoFrame(cFixedLengthFrame* pFrame, int times)
     {
 	Lock();
 
-	if (!m_ExternalReleased)
+	for (int i = 0; i < times; i++)
 	{
-	    for (int i = 0; i < times; i++)
-	    {
-		if (times > 1)
-		{
-		    dsyslog("dxr3: playvideoframe: times=%d", times);
-		}
+	if (times > 1)
+	{
+		dsyslog("dxr3: playvideoframe: times=%d", times);
+	}
 
-		while (written < pFrame->GetCount() && count >= 0)
+	while (written < pFrame->GetCount() && count >= 0)
+	{
+		if ((count = write(m_fdVideo, pFrame->GetData() + written, pFrame->GetCount() - written)) == -1)
 		{
-		    if ((count = write(m_fdVideo, pFrame->GetData() + written, pFrame->GetCount() - written)) == -1)
-		    {
-			// an error occured
-			Resuscitation();
-		    }
-		    written += count;
+		// an error occured
+		Resuscitation();
 		}
+		written += count;
+	}
 
-		// reset
-		written = 0;
-	    }
+	// reset
+	written = 0;
 	}
 
 	Unlock();
@@ -380,14 +351,11 @@ void cDxr3Interface::PlayVideoFrame(const uint8_t* pBuf, int length, int times)
 {
     Lock();
 
-    if (!m_ExternalReleased)
-    {
 	for (int i = 0; i < times; i++)
 	{
 	    if (write(m_fdVideo, pBuf, length) == -1)
 		Resuscitation();
 	}
-    }
 
     Unlock();
 }
@@ -395,6 +363,11 @@ void cDxr3Interface::PlayVideoFrame(const uint8_t* pBuf, int length, int times)
 // ==================================
 void cDxr3Interface::ClaimDevices()
 {
+    // devices already open
+    if (m_fdControl > -1 && m_fdVideo > -1 && m_fdSpu > -1) {
+        return;
+    }
+
     // open control stream
     m_fdControl = Dxr3Open(DEV_DXR3_CONT, O_WRONLY | O_SYNC);
     if (m_fdControl == -1)
@@ -424,13 +397,15 @@ void cDxr3Interface::ClaimDevices()
     if (!m_pClock)
     {
 	esyslog("dxr3: fatal: unable to allocate memory for em8300 clock");
+	close(m_fdControl);
+	close(m_fdVideo);
+	close(m_fdSpu);
 	exit(1);
     }
 
     // set default values
     m_AudioActive = false;
     m_VideoActive = false;
-    m_ExternalReleased = false;
     m_horizontal = 720;
     m_vertical = 576;
     m_aspectRatio = UNKNOWN_ASPECT_RATIO;
@@ -456,75 +431,25 @@ void cDxr3Interface::ClaimDevices()
 // ==================================
 void cDxr3Interface::ReleaseDevices()
 {
-    if (m_fdControl > -1)
-	close(m_fdControl);
-    m_fdControl = -1;
+    if (m_fdControl > -1) {
+    	close(m_fdControl);
+    	m_fdControl = -1;
+    }
 
-    if (m_fdVideo > -1)
-	close(m_fdVideo);
-    m_fdVideo = -1;
+    if (m_fdVideo > -1) {
+		close(m_fdVideo);
+		m_fdVideo = -1;
+    }
 
-    if (m_fdSpu > -1)
-	close(m_fdSpu);
-    m_fdSpu = -1;
+    if (m_fdSpu > -1) {
+		close(m_fdSpu);
+		m_fdSpu = -1;
+    }
 
     m_aspectRatio = UNKNOWN_ASPECT_RATIO;
-    m_ExternalReleased = true;
     delete m_pClock;
     m_pClock = NULL;
 }
-
-// external device access
-// ==================================
-//! release devices, so mplayer-plugin, for instance,
-//! can access the dxr3
-void cDxr3Interface::ExternalReleaseDevices()
-{
-    Lock();
-    if (!m_ExternalReleased)
-	ReleaseDevices();
-    Unlock();
-}
-
-// ==================================
-//! reopen devices for using in the dxr3 plugin
-void cDxr3Interface::ExternalReopenDevices()
-{
-    Lock();
-
-    if (m_ExternalReleased)
-    {
-	// open control stream
-	m_fdControl = Dxr3Open(DEV_DXR3_CONT, O_WRONLY | O_SYNC);
-
-	// open 'multimedia' streams
-	m_fdVideo = Dxr3Open(DEV_DXR3_VIDEO, O_WRONLY | O_SYNC);
-	m_fdSpu = Dxr3Open(DEV_DXR3_OSD, O_WRONLY | O_SYNC);
-
-	if (m_fdControl == -1 || m_fdVideo == -1 ||
-	    m_fdSpu == -1)
-	{
-	    ExternalReleaseDevices();
-	}
-	else
-	{
-	    m_pClock = new cDxr3SysClock(m_fdControl, m_fdVideo, m_fdSpu);
-	    if (!m_pClock)
-	    {
-		esyslog("dxr3: fatal: failed to allocate memory for em8300"
-			" system clock in reopen");
-		exit(1);
-	    }
-
-	    m_ExternalReleased = false;
-	}
-
-	Resuscitation();
-    }
-
-    Unlock();
-}
-
 
 // tools
 // ==================================
@@ -536,14 +461,12 @@ void cDxr3Interface::PlayBlackFrame()
 
     Lock();
 
-    if (!m_ExternalReleased)
-    {
 	for (int i = 0; i < 3; i++)
 	{
 	    if (write(m_fdVideo, blackframe, blackframeLength) == -1)
 		Resuscitation();
 	}
-    }
+
     m_horizontal = 720;
     m_vertical = 576;
 
@@ -726,11 +649,8 @@ void cDxr3Interface::ClearOsd()
     ed.data[0]= i >> 8;
     ed.data[1]= i & 0xff;
 
-    if (!m_ExternalReleased)
-    {
 	WriteSpu((const uint8_t*) &ed, (int) ed.count);
 	ClearButton();
-    }
 }
 
 // ==================================
@@ -738,11 +658,8 @@ void cDxr3Interface::WriteSpu(const uint8_t* pBuf, int length)
 {
     Lock();
 
-    if (!m_ExternalReleased)
-    {
 	if (write(m_fdSpu, pBuf, length) == -1)
 	    Resuscitation();
-    }
 
     Unlock();
 }

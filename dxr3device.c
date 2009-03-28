@@ -82,32 +82,30 @@ bool cDxr3Device::CanReplay() const
 // ==================================
 bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
 {
-    if (PlayMode == pmExtern_THIS_SHOULD_BE_AVOIDED) {
-        Tools::WriteInfoToOsd(tr("DXR3: releasing devices"));
-        cDxr3Interface::Instance().ExternalReleaseDevices();
-        audioOut->releaseDevice();
-    } else {
-        cDxr3Interface::Instance().ExternalReopenDevices();
+    if (PlayMode != pmExtern_THIS_SHOULD_BE_AVOIDED) {
+        cDxr3Interface::Instance().ClaimDevices();
         audioOut->openDevice();
     }
 
-    if (PlayMode == pmAudioOnlyBlack)
-    {
-	m_PlayMode = pmAudioOnly;
-    }
-    else
-    {
-	m_PlayMode = PlayMode;
-    }
+    dsyslog("setting playmode %d", PlayMode);
 
-    if (m_PlayMode == pmAudioVideo)
-    {
-	m_DemuxDevice.SetReplayMode();
-    }
+    switch (PlayMode) {
+    case pmExtern_THIS_SHOULD_BE_AVOIDED:
+        Tools::WriteInfoToOsd(tr("DXR3: releasing devices"));
+        cDxr3Interface::Instance().ReleaseDevices();
+        audioOut->releaseDevice();
+        break;
 
-    if (m_PlayMode == pmNone)
-    {
-	m_DemuxDevice.Stop();
+    case pmNone:
+        //m_DemuxDevice.Stop();
+        break;
+
+    case pmAudioVideo:
+    case pmAudioOnly:
+    case pmAudioOnlyBlack:
+    case pmVideoOnly:
+
+        m_PlayMode = PlayMode;
     }
 
     return true;
@@ -196,7 +194,7 @@ void cDxr3Device::StillPicture(const uchar *Data, int Length)
 bool cDxr3Device::Poll(cPoller &Poller, int TimeoutMs)
 {
     if ((m_DemuxDevice.GetDemuxMode() == DXR3_DEMUX_TRICK_MODE &&
-	 m_DemuxDevice.GetTrickState() == DXR3_FREEZE) || cDxr3Interface::Instance().IsExternalReleased()) {
+	 m_DemuxDevice.GetTrickState() == DXR3_FREEZE)) {
         cCondWait::SleepMs(TimeoutMs);
         return false;
     }
