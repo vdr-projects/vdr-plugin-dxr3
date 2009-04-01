@@ -309,11 +309,13 @@ void cDxr3Interface::SingleStep()
 // ==================================
 void cDxr3Interface::PlayVideoFrame(cFixedLengthFrame* pFrame, int times)
 {
+    if (!m_VideoActive) {
+        return;
+    }
+
     int written = 0;
     int count = 0;
 
-    if (m_VideoActive)
-    {
 	Lock();
 
 	for (int i = 0; i < times; i++)
@@ -343,7 +345,6 @@ void cDxr3Interface::PlayVideoFrame(cFixedLengthFrame* pFrame, int times)
 	uint32_t pts = pFrame->GetPts();
 	if (pts > 0)
 	    m_lastSeenPts = pts;
-    }
 }
 
 // ==================================
@@ -561,18 +562,20 @@ void cDxr3Interface::UploadMicroCode()
 //! config and setup device via ioctl calls
 void cDxr3Interface::ConfigureDevice()
 {
-    uint32_t videomode = 0;
+    uint32_t videomode = cDxr3ConfigData::Instance().GetVideoMode();
 
-    // set video mode
-    if (cDxr3ConfigData::Instance().GetVideoMode() == PAL) {
+    switch (videomode) {
+    case PAL:
         dsyslog("dxr3: configure: video mode: PAL");
-        videomode = EM8300_VIDEOMODE_PAL;
-    } else if (cDxr3ConfigData::Instance().GetVideoMode() == PAL60) {
+        break;
+
+    case PAL60:
         dsyslog("dxr3: configure: video mode: PAL60");
-        videomode = EM8300_VIDEOMODE_PAL60;
-    } else {
+        break;
+
+    case NTSC:
         dsyslog("dxr3: configure: video mode: NTSC");
-        videomode = EM8300_VIDEOMODE_NTSC;
+        break;
     }
 
     if (ioctl(m_fdControl, EM8300_IOCTL_SET_VIDEOMODE, &videomode) == -1) {

@@ -24,14 +24,15 @@
 #define _DXR3_CONFIGDATA_H_
 
 #include "dxr3singleton.h"
+#include <linux/em8300.h>
 
 // ==================================
 //! possible video modes
 enum eVideoMode
 {
-    PAL = 0,		///< use PAL as videomode
-    PAL60,		///< use PAL60 as videomode
-    NTSC		///< use NTSC as videomode
+    PAL      = EM8300_VIDEOMODE_PAL,
+    PAL60    = EM8300_VIDEOMODE_PAL60,
+    NTSC     = EM8300_VIDEOMODE_NTSC
 };
 
 // ==================================
