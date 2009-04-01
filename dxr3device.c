@@ -123,35 +123,6 @@ void cDxr3Device::TrickSpeed(int Speed)
     dsyslog("dxr3: device: tricspeed: %d", Speed);
 
     m_DemuxDevice.SetTrickMode(DXR3_FAST, Speed);
-
-    /*
-	6 ... 1x vowärts
-	3 ... 2x vowärts
-	1 ... 2x vowärts
-
-	6 ... 1x rückwärts
-	3 ... 2x rückwärts
-	1 ... 3x rückwärts
-
-	8 ... 1x vorwörts, wenn Pause gedrückt
-    */
-
-    /*
-#define EM8300_PLAYMODE_PAUSED          1
-#define EM8300_PLAYMODE_SLOWFORWARDS    2
-#define EM8300_PLAYMODE_SLOWBACKWARDS   3
-#define EM8300_PLAYMODE_SINGLESTEP      4
-    */
-    /*
-    if (Speed == 8)
-    {
-	cDxr3Interface::Instance().SingleStep();
-    }
-    else
-    {
-	m_DemuxDevice.SetTrickMode(DXR3_FAST);
-    }
-    */
 }
 
 // ==================================
