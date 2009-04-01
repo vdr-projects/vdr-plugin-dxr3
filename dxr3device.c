@@ -205,11 +205,7 @@ bool cDxr3Device::Poll(cPoller &Poller, int TimeoutMs)
 //! actually plays the given data block as video
 int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 {
-    if (m_PlayMode == pmAudioOnly) {
-        return m_DemuxDevice.DemuxAudioPes(Data, Length);
-    } else {
-        return m_DemuxDevice.DemuxPes(Data, Length);
-    }
+    return m_DemuxDevice.DemuxPes(Data, Length);
 }
 
 // ==================================
