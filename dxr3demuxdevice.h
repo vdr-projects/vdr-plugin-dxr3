@@ -34,8 +34,6 @@ const int AUIDO_MAX_FRAME_SIZE = 5000;
 const int VIDEO_MAX_FRAME_SIZE = 3000;
 const uint32_t PRE_BUFFER_LENGTH = 0;
 
-class iAudio;
-
 // ==================================
 // extract video and audio
 class cDxr3DemuxDevice : private Uncopyable {
@@ -43,7 +41,7 @@ public:
     cDxr3DemuxDevice(cDxr3Interface& dxr3Device);
     ~cDxr3DemuxDevice();
 
-    void setAudio(iAudio *a);
+    void setAudio(iAudio *audio);
 
     void Stop();
     void Resync();
@@ -74,9 +72,6 @@ protected:
     cDxr3VideoOutThread* m_pVideoThread;
     uint32_t m_stopScr;
     int m_ReUseFrame;			// how often a frame should be used
-
-private:
-    iAudio *audioOut;
 };
 
 #endif // __DXR3_DEMUX_DEVICE_H

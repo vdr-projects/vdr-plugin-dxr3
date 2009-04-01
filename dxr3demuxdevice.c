@@ -52,10 +52,9 @@ cDxr3DemuxDevice::cDxr3DemuxDevice(cDxr3Interface& dxr3Device) :
     m_aDecoder.Init();
 }
 
-void cDxr3DemuxDevice::setAudio(iAudio *a)
+void cDxr3DemuxDevice::setAudio(iAudio *audio)
 {
-    audioOut = a;
-    m_pAudioThread->setAudio(audioOut);
+    m_pAudioThread->setAudio(audio);
     m_pAudioThread->Start();
 }
 
