@@ -57,17 +57,17 @@ bool cDxr3PesFrame::ExtractNextFrame(const uint8_t* pBuf, uint32_t length)
 	    {
 		if (pos + 9 + pesArray[pos + 8] < length)
 		{
-		    m_pEsStart = pBuf + pos + 9 + pesArray[pos + 8];
+			m_payload = pBuf + pos + 9 + pesArray[pos + 8];
 		    if ((((int)pesArray[pos + 4]) * (int)256 + (int)pesArray[pos + 5]) > 0)
 		    {
-			m_esLength = ((int)pesArray[pos + 4]) *
+		    	m_payloadLength = ((int)pesArray[pos + 4]) *
 			    (int)256 + (int)pesArray[pos + 5] + (int)6 -
 			    (9 + (int)pesArray[pos + 8]);
-			if (pos + 9 + pesArray[pos + 8] + m_esLength <= length)
+			if (pos + 9 + pesArray[pos + 8] + m_payloadLength <= length)
 			{
 			    m_bValid = true;
-			    m_pNextStart = m_pEsStart + m_esLength;
-			    m_remainingLength = pBuf + length - (m_pEsStart + m_esLength);
+			    m_pNextStart = m_payload + m_payloadLength;
+			    m_remainingLength = pBuf + length - (m_payload + m_payloadLength);
 			    if (pesArray[pos + 6] >> 6 == 2 &&
 				pesArray[pos + 7] >> 7 != 0)
 			    {
@@ -75,7 +75,7 @@ bool cDxr3PesFrame::ExtractNextFrame(const uint8_t* pBuf, uint32_t length)
 			    }
 			    if (m_pesDataType == PES_VIDEO_DATA)
 			    {
-				int retval = ExtractVideoData(pesArray.SubArray(pos + 9 + pesArray[pos + 8], m_esLength));
+				int retval = ExtractVideoData(pesArray.SubArray(pos + 9 + pesArray[pos + 8], m_payloadLength));
 				if (m_videoFrameType != UNKNOWN_FRAME && retval)
 				    m_offset = retval + pos + 9 + pesArray[pos + 8];
 			    }
@@ -86,8 +86,8 @@ bool cDxr3PesFrame::ExtractNextFrame(const uint8_t* pBuf, uint32_t length)
 	    else
 	    {
 		uint32_t fpos = pos + 6;
-		m_esLength = ((int)pesArray[pos + 4]) * (int)256 + (int)pesArray[pos + 5];
-		if (length >= pos + 6 + m_esLength)
+		m_payloadLength = ((int)pesArray[pos + 4]) * (int)256 + (int)pesArray[pos + 5];
+		if (length >= pos + 6 + m_payloadLength)
 		{
 		    while (pesArray[fpos] == 0xff)
 			++fpos; // skip stuffing bytes
@@ -110,14 +110,14 @@ bool cDxr3PesFrame::ExtractNextFrame(const uint8_t* pBuf, uint32_t length)
 			++fpos;
 		    }
 
-		    if (m_esLength) m_esLength = m_esLength - (fpos - pos - 6);
-		    m_pEsStart = pBuf + fpos;
-		    m_pNextStart = m_pEsStart + m_esLength;
-		    m_remainingLength = pBuf + length - (m_pEsStart + m_esLength);
+		    if (m_payloadLength) m_payloadLength = m_payloadLength - (fpos - pos - 6);
+		    m_payload = pBuf + fpos;
+		    m_pNextStart = m_payload + m_payloadLength;
+		    m_remainingLength = pBuf + length - (m_payload + m_payloadLength);
 		    m_bValid = true;
 		    if (m_pesDataType == PES_VIDEO_DATA)
 		    {
-			int retval = ExtractVideoData(pesArray.SubArray(fpos, m_esLength));
+			int retval = ExtractVideoData(pesArray.SubArray(fpos, m_payloadLength));
 			if (m_videoFrameType != UNKNOWN_FRAME && retval)
 			    m_offset = 0;
 		    }

@@ -105,8 +105,8 @@ public:
 	m_pesDataType(PES_UNKNOWN_DATA),
 	m_bValid(false),
 	m_pPesStart(0),
-	m_pEsStart(0),
-	m_esLength(0),
+	m_payload(0),
+	m_payloadLength(0),
 	m_pts(0),
 	m_videoFrameType(UNKNOWN_FRAME),
 	m_aspectRatio(m_staticAspectRatio),
@@ -133,16 +133,16 @@ public:
         return m_pPesStart;
     }
 
-    const uint8_t* GetEsStart() const
+    const uint8_t* GetPayload() const
     {
         assert(m_bValid);
-        return m_pEsStart;
+        return m_payload;
     }
 
-    uint32_t GetEsLength() const
+    uint32_t GetPayloadLength() const
     {
         assert(m_bValid);
-        return m_esLength;
+        return m_payloadLength;
     }
 
     const uint8_t* GetNextStart() const
@@ -213,8 +213,8 @@ protected:
         m_pesDataType = PES_UNKNOWN_DATA;
         m_bValid = false;
         m_pPesStart = 0;
-        m_pEsStart = 0;
-        m_esLength = 0;
+        m_payload = 0;
+        m_payloadLength = 0;
         m_pts = 0;
         m_videoFrameType = UNKNOWN_FRAME;
         m_aspectRatio = m_staticAspectRatio;
@@ -228,8 +228,8 @@ protected:
     ePesDataType m_pesDataType;
     bool m_bValid;
     const uint8_t* m_pPesStart;
-    const uint8_t* m_pEsStart;
-    uint32_t m_esLength;
+    const uint8_t* m_payload;
+    uint32_t m_payloadLength;
     uint32_t m_pts;
 
     eVideoFrameType m_videoFrameType;

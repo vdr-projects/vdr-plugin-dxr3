@@ -287,7 +287,7 @@ void cDxr3AudioDecoder::DecodeAc3Dts(const uint8_t* pPes, const uint8_t* buf,
 	{
 	    cDxr3PesFrame tempPes;
 	    tempPes.ExtractNextFrame(pFrame->Data(), pFrame->Count());
-	    int pesHeaderLength = (int) (tempPes.GetEsStart() - tempPes.GetPesStart());
+	    int pesHeaderLength = (int) (tempPes.GetPayload() - tempPes.GetPesStart());
 	    uint8_t* pData = pFrame->Data() + pesHeaderLength + LPCM_HEADER_LENGTH;
 
 	    for (int i = 0; i < pFrame->Count() - pesHeaderLength - LPCM_HEADER_LENGTH; i += 2)
