@@ -112,7 +112,6 @@ public:
 	m_aspectRatio(m_staticAspectRatio),
 	m_horizontalSize(m_staticHorizontalSize),
 	m_verticalSize(m_staticVerticalSize),
-	m_streamId(0),
 	m_pNextStart(0),
 	m_remainingLength(0),
 	m_offset(0) {};
@@ -190,13 +189,6 @@ public:
         return m_verticalSize;
     }
 
-    uint8_t GetStreamId() const
-    {
-        assert(m_bValid);
-        assert(m_pesDataType == PES_VIDEO_DATA);
-        return m_streamId;
-    }
-
     int GetOffset() const
     {
         assert(m_bValid);
@@ -228,7 +220,6 @@ protected:
         m_aspectRatio = m_staticAspectRatio;
         m_horizontalSize = m_staticHorizontalSize;
         m_verticalSize = m_staticVerticalSize;
-        m_streamId = 0;
         m_pNextStart = 0;
         m_remainingLength = 0;
         m_offset = 0;
@@ -245,7 +236,6 @@ protected:
     uint32_t m_aspectRatio;
     uint32_t m_horizontalSize;
     uint32_t m_verticalSize;
-    uint8_t m_streamId;
 
     const uint8_t* m_pNextStart;
     uint32_t m_remainingLength;

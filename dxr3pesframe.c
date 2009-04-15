@@ -253,7 +253,6 @@ bool cDxr3PesFrame::IsPesHeader(cDxr3SafeArray<uint8_t> header)
 	    ret = false;
 	    break;
 	}
-	m_streamId = header[3];
     }
 
     return ret;
