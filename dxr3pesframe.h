@@ -120,84 +120,93 @@ public:
     virtual ~cDxr3PesFrame() {}
 
     bool ExtractNextFrame(const uint8_t* pBuf, uint32_t length)
-	throw (ePesFrameError);
+    throw (ePesFrameError);
 
-    ePesDataType GetPesDataType(void) const
+    ePesDataType GetPesDataType() const
     {
-	assert(m_bValid);
-	return m_pesDataType;
-    };
-    const uint8_t* GetPesStart(void) const
-    {
-	assert(m_bValid);
-	return m_pPesStart;
-    };
-    const uint8_t* GetEsStart(void) const
-    {
-	assert(m_bValid);
-	return m_pEsStart;
-    };
-    uint32_t GetEsLength(void) const
-    {
-	assert(m_bValid);
-	return m_esLength;
-    };
+        assert(m_bValid);
+        return m_pesDataType;
+    }
 
-    const uint8_t* GetNextStart(void) const
+    const uint8_t* GetPesStart() const
     {
-	return m_pNextStart;
-    };
-    uint32_t GetRemainingLength(void) const
-    {
-	return m_remainingLength;
-    };
+        assert(m_bValid);
+        return m_pPesStart;
+    }
 
-    uint32_t GetPts(void) const
+    const uint8_t* GetEsStart() const
     {
-	assert(m_bValid);
-	return m_pts;
-    };
+        assert(m_bValid);
+        return m_pEsStart;
+    }
 
-    eVideoFrameType GetFrameType(void) const
+    uint32_t GetEsLength() const
     {
-	assert(m_bValid);
-	assert(m_pesDataType == PES_VIDEO_DATA);
-	return m_videoFrameType;
-    };
-    uint32_t GetAspectRatio(void) const
-    {
-	assert(m_bValid);
-	assert(m_pesDataType == PES_VIDEO_DATA);
-	return m_aspectRatio;
-    };
-    uint32_t GetHorizontalSize(void) const
-    {
-	assert(m_bValid);
-	assert(m_pesDataType == PES_VIDEO_DATA);
-	return m_horizontalSize;
-    };
-    uint32_t GetVerticalSize(void) const
-    {
-	assert(m_bValid);
-	assert(m_pesDataType == PES_VIDEO_DATA);
-	return m_verticalSize;
-    };
-    uint8_t GetStreamId(void) const
-    {
-	assert(m_bValid);
-	assert(m_pesDataType == PES_VIDEO_DATA);
-	return m_streamId;
-    };
-    int GetOffset(void) const
-    {
-	assert(m_bValid);
-	return m_offset;
-    };
+        assert(m_bValid);
+        return m_esLength;
+    }
 
-    bool IsValid(void)
+    const uint8_t* GetNextStart() const
     {
-	return m_bValid;
-    };
+        return m_pNextStart;
+    }
+
+    uint32_t GetRemainingLength() const
+    {
+        return m_remainingLength;
+    }
+
+    uint32_t GetPts() const
+    {
+        assert(m_bValid);
+        return m_pts;
+    }
+
+    eVideoFrameType GetFrameType() const
+    {
+        assert(m_bValid);
+        assert(m_pesDataType == PES_VIDEO_DATA);
+        return m_videoFrameType;
+    }
+
+    uint32_t GetAspectRatio() const
+    {
+        assert(m_bValid);
+        assert(m_pesDataType == PES_VIDEO_DATA);
+        return m_aspectRatio;
+    }
+
+    uint32_t GetHorizontalSize() const
+    {
+        assert(m_bValid);
+        assert(m_pesDataType == PES_VIDEO_DATA);
+        return m_horizontalSize;
+    }
+
+    uint32_t GetVerticalSize() const
+    {
+        assert(m_bValid);
+        assert(m_pesDataType == PES_VIDEO_DATA);
+        return m_verticalSize;
+    }
+
+    uint8_t GetStreamId() const
+    {
+        assert(m_bValid);
+        assert(m_pesDataType == PES_VIDEO_DATA);
+        return m_streamId;
+    }
+
+    int GetOffset() const
+    {
+        assert(m_bValid);
+        return m_offset;
+    }
+
+    bool IsValid()
+    {
+        return m_bValid;
+    }
 
 protected:
     bool IsPesHeader(cDxr3SafeArray<uint8_t> header)
@@ -207,22 +216,22 @@ protected:
     int ExtractVideoData(cDxr3SafeArray<uint8_t> esFrame)
 	throw (cDxr3SafeArray<uint8_t>::eSafeArrayException);
 
-    void InitData(void)
+    void InitData()
     {
-	m_pesDataType = PES_UNKNOWN_DATA;
-	m_bValid = false;
-	m_pPesStart = 0;
-	m_pEsStart = 0;
-	m_esLength = 0;
-	m_pts = 0;
-	m_videoFrameType = UNKNOWN_FRAME;
-	m_aspectRatio = m_staticAspectRatio;
-	m_horizontalSize = m_staticHorizontalSize;
-	m_verticalSize = m_staticVerticalSize;
-	m_streamId = 0;
-	m_pNextStart = 0;
-	m_remainingLength = 0;
-	m_offset = 0;
+        m_pesDataType = PES_UNKNOWN_DATA;
+        m_bValid = false;
+        m_pPesStart = 0;
+        m_pEsStart = 0;
+        m_esLength = 0;
+        m_pts = 0;
+        m_videoFrameType = UNKNOWN_FRAME;
+        m_aspectRatio = m_staticAspectRatio;
+        m_horizontalSize = m_staticHorizontalSize;
+        m_verticalSize = m_staticVerticalSize;
+        m_streamId = 0;
+        m_pNextStart = 0;
+        m_remainingLength = 0;
+        m_offset = 0;
     }
 
     ePesDataType m_pesDataType;
