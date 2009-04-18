@@ -194,7 +194,6 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
     static uint32_t lastPts = 0;
     static bool bPlaySuc = false;
     static bool bPlayedFrame = false;
-    int origLength = length;
 
     int scr = 0;
     int pcr = 0;
@@ -237,264 +236,256 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
         bPlaySuc = false;
     }
 
-    // find start code
-    try
-    {
-        cDxr3PesFrame pesFrame;
+    cDxr3PesFrame pesFrame;
 
-        if (!pesFrame.parse(buf, length)) {
-            return -1;
-        }
+    if (!pesFrame.parse(buf, length)) {
+        return -1;
+    }
+/*TODO: add to pes parser
+    if (pesFrame.GetPayloadLength() > (uint32_t) VIDEO_MAX_FRAME_SIZE) {
+        throw (cDxr3PesFrame::PES_GENERAL_ERROR);
+    };*/
+    if (pesFrame.GetPts() != lastPts) {
+        pts = lastPts = pesFrame.GetPts();
+    } else {
+        pts = 0;
+    }
 
-        if (pesFrame.GetPayloadLength() > (uint32_t) VIDEO_MAX_FRAME_SIZE) {
-            throw (cDxr3PesFrame::PES_GENERAL_ERROR);
-        };
-        if (pesFrame.GetPts() != lastPts) {
-            pts = lastPts = pesFrame.GetPts();
-        } else {
-            pts = 0;
-        }
+    if (pesFrame.GetPesDataType() == cDxr3PesFrame::PES_VIDEO_DATA) {
+        /*
+        m_dxr3Device.PlayVideoFrame(pesFrame.GetEsStart(),
+                                    (int) (pesFrame.GetPayloadLength()));
+        */
 
-        if (pesFrame.GetPesDataType() == cDxr3PesFrame::PES_VIDEO_DATA) {
-            /*
-            m_dxr3Device.PlayVideoFrame(pesFrame.GetEsStart(),
-                                        (int) (pesFrame.GetPayloadLength()));
-            */
-
-            if (m_demuxMode == DXR3_DEMUX_TRICK_MODE) {
-                switch (pesFrame.GetFrameType()) {
-                case I_FRAME:
-                    dsyslog("dxr3: demux: I-frame");
-                    m_dxr3Device.SingleStep();
-                    bPlaySuc = true;
-                    //if (bPlayedFrame) return length;
-                    bPlayedFrame = true;
-                    m_dxr3Device.SetHorizontalSize(pesFrame.GetHorizontalSize());
-                    m_dxr3Device.SetVerticalSize(pesFrame.GetVerticalSize());
-                    m_dxr3Device.PlayVideoFrame(pesFrame.GetPayload(), (int) (pesFrame.GetPayloadLength()), m_ReUseFrame);
-                    break;
-
-                case UNKNOWN_FRAME:
-                    dsyslog("dxr3: demux: unknown frame");
-                    if (bPlaySuc) {
-                        m_dxr3Device.PlayVideoFrame(pesFrame.GetPayload(), (int) (pesFrame.GetPayloadLength()), m_ReUseFrame);
-                    }
-                    break;
-
-                default:
-                    dsyslog("dxr3: demux: default frame");
-                    if (bPlaySuc) {
-                        m_dxr3Device.PlayVideoFrame(pesFrame.GetPayload(), (int) (pesFrame.GetOffset()), m_ReUseFrame);
-                    }
-
-                    bPlaySuc = false;
-                    break;
-                }
-
-            } else if (m_demuxMode == DXR3_DEMUX_VIDEO_ONLY_MODE) {
-                m_dxr3Device.PlayVideoFrame(pesFrame.GetPayload(), (int)(pesFrame.GetPayloadLength()));
-
-            } else if (m_synchState == DXR3_DEMUX_VIDEO_SYNCHED ||
-                     m_synchState == DXR3_DEMUX_SYNCHED) {
+        if (m_demuxMode == DXR3_DEMUX_TRICK_MODE) {
+            switch (pesFrame.GetFrameType()) {
+            case I_FRAME:
+                dsyslog("dxr3: demux: I-frame");
+                m_dxr3Device.SingleStep();
+                bPlaySuc = true;
+                //if (bPlayedFrame) return length;
+                bPlayedFrame = true;
                 m_dxr3Device.SetHorizontalSize(pesFrame.GetHorizontalSize());
                 m_dxr3Device.SetVerticalSize(pesFrame.GetVerticalSize());
-                while (!Poll(100));
+                m_dxr3Device.PlayVideoFrame(pesFrame.GetPayload(), (int) (pesFrame.GetPayloadLength()), m_ReUseFrame);
+                break;
+
+            case UNKNOWN_FRAME:
+                dsyslog("dxr3: demux: unknown frame");
+                if (bPlaySuc) {
+                    m_dxr3Device.PlayVideoFrame(pesFrame.GetPayload(), (int) (pesFrame.GetPayloadLength()), m_ReUseFrame);
+                }
+                break;
+
+            default:
+                dsyslog("dxr3: demux: default frame");
+                if (bPlaySuc) {
+                    m_dxr3Device.PlayVideoFrame(pesFrame.GetPayload(), (int) (pesFrame.GetOffset()), m_ReUseFrame);
+                }
+
+                bPlaySuc = false;
+                break;
+            }
+
+        } else if (m_demuxMode == DXR3_DEMUX_VIDEO_ONLY_MODE) {
+            m_dxr3Device.PlayVideoFrame(pesFrame.GetPayload(), (int)(pesFrame.GetPayloadLength()));
+
+        } else if (m_synchState == DXR3_DEMUX_VIDEO_SYNCHED ||
+                 m_synchState == DXR3_DEMUX_SYNCHED) {
+            m_dxr3Device.SetHorizontalSize(pesFrame.GetHorizontalSize());
+            m_dxr3Device.SetVerticalSize(pesFrame.GetVerticalSize());
+            while (!Poll(100));
+            cFixedLengthFrame* pTempFrame = m_vBuf.Push(pesFrame.GetPayload(), (int) (pesFrame.GetPayloadLength()), pts, ftVideo);
+
+            // TODO: rework me
+            //if (!pTempFrame) /* Push Timeout */
+            //    throw (cDxr3PesFrame::PES_GENERAL_ERROR);
+
+            pTempFrame->SetAspectRatio(pesFrame.GetAspectRatio());
+
+            m_aBuf.WakeUp();
+
+            if (m_vBuf.GetFillLevel() > 5 && m_synchState != DXR3_DEMUX_SYNCHED) {
+                m_synchState = DXR3_DEMUX_SYNCHED;
+                pcr = vPts - PRE_BUFFER_LENGTH;
+                m_dxr3Device.SetSysClock(pcr);
+                m_dxr3Device.SetPlayMode();
+                m_dxr3Device.EnableVideo();
+                m_dxr3Device.EnableAudio();
+                m_vBuf.Start();
+                m_aBuf.Start();
+            }
+        } else {
+            if (pesFrame.GetFrameType() == I_FRAME) {
+                vPts = pts;
+
+                m_dxr3Device.SetHorizontalSize(pesFrame.GetHorizontalSize());
+                m_dxr3Device.SetVerticalSize(pesFrame.GetVerticalSize());
                 cFixedLengthFrame* pTempFrame = m_vBuf.Push(pesFrame.GetPayload(), (int) (pesFrame.GetPayloadLength()), pts, ftVideo);
-                if (!pTempFrame) /* Push Timeout */
-                    throw (cDxr3PesFrame::PES_GENERAL_ERROR);
+                // TODO: rework me
+                //if (!pTempFrame) /* Push Timeout */
+                //    throw (cDxr3PesFrame::PES_GENERAL_ERROR);
 
                 pTempFrame->SetAspectRatio(pesFrame.GetAspectRatio());
 
-                m_aBuf.WakeUp();
-
-                if (m_vBuf.GetFillLevel() > 5 && m_synchState != DXR3_DEMUX_SYNCHED) {
+                if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED) {
                     m_synchState = DXR3_DEMUX_SYNCHED;
-                    pcr = vPts - PRE_BUFFER_LENGTH;
+                } else {
+                    m_synchState = DXR3_DEMUX_VIDEO_SYNCHED;
+                }
+                if (m_synchState == DXR3_DEMUX_SYNCHED) {
+                    if (!vPts) {
+                        vPts = aPts;
+                    }
+                    if (aPts < vPts) {
+                        pcr = aPts - PRE_BUFFER_LENGTH;
+                    } else {
+                        pcr = vPts - PRE_BUFFER_LENGTH;
+                    }
                     m_dxr3Device.SetSysClock(pcr);
                     m_dxr3Device.SetPlayMode();
                     m_dxr3Device.EnableVideo();
                     m_dxr3Device.EnableAudio();
                     m_vBuf.Start();
                     m_aBuf.Start();
-                }
-            } else {
-                if (pesFrame.GetFrameType() == I_FRAME) {
-                    vPts = pts;
-
-                    m_dxr3Device.SetHorizontalSize(pesFrame.GetHorizontalSize());
-                    m_dxr3Device.SetVerticalSize(pesFrame.GetVerticalSize());
-                    cFixedLengthFrame* pTempFrame = m_vBuf.Push(pesFrame.GetPayload(), (int) (pesFrame.GetPayloadLength()), pts, ftVideo);
-                    if (!pTempFrame) /* Push Timeout */
-                        throw (cDxr3PesFrame::PES_GENERAL_ERROR);
-
-                    pTempFrame->SetAspectRatio(pesFrame.GetAspectRatio());
-
-                    if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED) {
-                        m_synchState = DXR3_DEMUX_SYNCHED;
-                    } else {
-                        m_synchState = DXR3_DEMUX_VIDEO_SYNCHED;
-                    }
-                    if (m_synchState == DXR3_DEMUX_SYNCHED) {
-                        if (!vPts) {
-                            vPts = aPts;
-                        }
-                        if (aPts < vPts) {
-                            pcr = aPts - PRE_BUFFER_LENGTH;
-                        } else {
-                            pcr = vPts - PRE_BUFFER_LENGTH;
-                        }
-                        m_dxr3Device.SetSysClock(pcr);
-                        m_dxr3Device.SetPlayMode();
-                        m_dxr3Device.EnableVideo();
-                        m_dxr3Device.EnableAudio();
-                        m_vBuf.Start();
-                        m_aBuf.Start();
-                    }
                 }
             }
+        }
 
-        } else if (pesFrame.GetPesDataType() == cDxr3PesFrame::PES_AUDIO_DATA
-                 && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
-                 && !cDxr3Interface::Instance().IsAudioModeAC3()) {
-            if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
-                m_synchState == DXR3_DEMUX_SYNCHED) {
-                if (pts && m_synchState != DXR3_DEMUX_SYNCHED) {
-                    m_synchState = DXR3_DEMUX_SYNCHED;
-                    pcr = aPts - PRE_BUFFER_LENGTH;
-                    m_dxr3Device.SetSysClock(pcr);
-                    m_dxr3Device.SetPlayMode();
-                    m_dxr3Device.EnableVideo();
-                    m_dxr3Device.EnableAudio();
-                    m_vBuf.Start();
-                    m_aBuf.Start();
-                }
-                while(!Poll(100));
+    } else if (pesFrame.GetPesDataType() == cDxr3PesFrame::PES_AUDIO_DATA
+             && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
+             && !cDxr3Interface::Instance().IsAudioModeAC3()) {
+        if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
+            m_synchState == DXR3_DEMUX_SYNCHED) {
+            if (pts && m_synchState != DXR3_DEMUX_SYNCHED) {
+                m_synchState = DXR3_DEMUX_SYNCHED;
+                pcr = aPts - PRE_BUFFER_LENGTH;
+                m_dxr3Device.SetSysClock(pcr);
+                m_dxr3Device.SetPlayMode();
+                m_dxr3Device.EnableVideo();
+                m_dxr3Device.EnableAudio();
+                m_vBuf.Start();
+                m_aBuf.Start();
+            }
+            while(!Poll(100));
+            m_aDecoder.Decode(pesFrame.GetPayload(),
+                              (int) (pesFrame.GetPayloadLength()),
+                              pts, m_aBuf);
+
+        } else {
+            if (pts) {
+                aPts = pts;
+
                 m_aDecoder.Decode(pesFrame.GetPayload(),
                                   (int) (pesFrame.GetPayloadLength()),
                                   pts, m_aBuf);
 
-            } else {
-                if (pts) {
-                    aPts = pts;
-
-                    m_aDecoder.Decode(pesFrame.GetPayload(),
-                                      (int) (pesFrame.GetPayloadLength()),
+                if (m_synchState == DXR3_DEMUX_VIDEO_SYNCHED) {
+                    m_synchState = DXR3_DEMUX_SYNCHED;
+                } else {
+                    m_synchState = DXR3_DEMUX_AUDIO_SYNCHED;
+                }
+                if (m_synchState == DXR3_DEMUX_SYNCHED) {
+                    if (!vPts) {
+                        vPts = aPts;
+                    }
+                    if (aPts < vPts) {
+                        pcr = aPts - PRE_BUFFER_LENGTH;
+                    } else {
+                        pcr = vPts - PRE_BUFFER_LENGTH;
+                    }
+                    m_dxr3Device.SetSysClock(pcr);
+                    m_dxr3Device.SetPlayMode();
+                    m_dxr3Device.EnableVideo();
+                    m_dxr3Device.EnableAudio();
+                    m_vBuf.Start();
+                    m_aBuf.Start();
+                }
+            }
+        }
+    } else if (pesFrame.GetPesDataType() == cDxr3PesFrame::PES_PRIVATE_DATA
+             && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
+             && !cDxr3Interface::Instance().IsAudioModeAC3()
+             && !bAc3Dts) {
+        if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
+            m_synchState == DXR3_DEMUX_SYNCHED) {
+            m_aDecoder.DecodeLpcm(pesFrame.GetPayload(),
+                                  pesFrame.GetPayloadLength(), pts, m_aBuf);
+        } else {
+            if (pts) {
+                aPts = pts;
+                m_aDecoder.DecodeLpcm(pesFrame.GetPayload(),
+                                      pesFrame.GetPayloadLength(),
                                       pts, m_aBuf);
 
-                    if (m_synchState == DXR3_DEMUX_VIDEO_SYNCHED) {
-                        m_synchState = DXR3_DEMUX_SYNCHED;
+                if (m_synchState == DXR3_DEMUX_VIDEO_SYNCHED) {
+                    m_synchState = DXR3_DEMUX_SYNCHED;
+                } else {
+                    m_synchState = DXR3_DEMUX_AUDIO_SYNCHED;
+                }
+                if (m_synchState == DXR3_DEMUX_SYNCHED) {
+                    if (!vPts) {
+                        vPts = aPts;
+                    }
+                    if (aPts < vPts) {
+                        pcr = aPts - PRE_BUFFER_LENGTH;
                     } else {
-                        m_synchState = DXR3_DEMUX_AUDIO_SYNCHED;
+                        pcr = vPts - PRE_BUFFER_LENGTH;
                     }
-                    if (m_synchState == DXR3_DEMUX_SYNCHED) {
-                        if (!vPts) {
-                            vPts = aPts;
-                        }
-                        if (aPts < vPts) {
-                            pcr = aPts - PRE_BUFFER_LENGTH;
-                        } else {
-                            pcr = vPts - PRE_BUFFER_LENGTH;
-                        }
-                        m_dxr3Device.SetSysClock(pcr);
-                        m_dxr3Device.SetPlayMode();
-                        m_dxr3Device.EnableVideo();
-                        m_dxr3Device.EnableAudio();
-                        m_vBuf.Start();
-                        m_aBuf.Start();
-                    }
+                    m_dxr3Device.SetSysClock(pcr);
+                    m_dxr3Device.SetPlayMode();
+                    m_dxr3Device.EnableVideo();
+                    m_dxr3Device.EnableAudio();
+                    m_vBuf.Start();
+                    m_aBuf.Start();
                 }
             }
-        } else if (pesFrame.GetPesDataType() == cDxr3PesFrame::PES_PRIVATE_DATA
-                 && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
-                 && !cDxr3Interface::Instance().IsAudioModeAC3()
-                 && !bAc3Dts) {
-            if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
-                m_synchState == DXR3_DEMUX_SYNCHED) {
-                m_aDecoder.DecodeLpcm(pesFrame.GetPayload(),
-                                      pesFrame.GetPayloadLength(), pts, m_aBuf);
-            } else {
-                if (pts) {
-                    aPts = pts;
-                    m_aDecoder.DecodeLpcm(pesFrame.GetPayload(),
-                                          pesFrame.GetPayloadLength(),
-                                          pts, m_aBuf);
-
-                    if (m_synchState == DXR3_DEMUX_VIDEO_SYNCHED) {
-                        m_synchState = DXR3_DEMUX_SYNCHED;
-                    } else {
-                        m_synchState = DXR3_DEMUX_AUDIO_SYNCHED;
-                    }
-                    if (m_synchState == DXR3_DEMUX_SYNCHED) {
-                        if (!vPts) {
-                            vPts = aPts;
-                        }
-                        if (aPts < vPts) {
-                            pcr = aPts - PRE_BUFFER_LENGTH;
-                        } else {
-                            pcr = vPts - PRE_BUFFER_LENGTH;
-                        }
-                        m_dxr3Device.SetSysClock(pcr);
-                        m_dxr3Device.SetPlayMode();
-                        m_dxr3Device.EnableVideo();
-                        m_dxr3Device.EnableAudio();
-                        m_vBuf.Start();
-                        m_aBuf.Start();
-                    }
-                }
-            }
-        } else if (pesFrame.GetPesDataType() == cDxr3PesFrame::PES_PRIVATE_DATA
-                 && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
-                 && cDxr3Interface::Instance().IsAudioModeAC3()
-                 && bAc3Dts) {
-            if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
-                m_synchState == DXR3_DEMUX_SYNCHED) {
+        }
+    } else if (pesFrame.GetPesDataType() == cDxr3PesFrame::PES_PRIVATE_DATA
+             && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
+             && cDxr3Interface::Instance().IsAudioModeAC3()
+             && bAc3Dts) {
+        if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
+            m_synchState == DXR3_DEMUX_SYNCHED) {
+            m_aDecoder.DecodeAc3Dts(pesFrame.GetPesStart(),
+                                    pesFrame.GetPayload(),
+                                    pesFrame.GetPayloadLength(),
+                                    pts, m_aBuf);
+        } else {
+            if (pts) {
+                aPts = pts;
                 m_aDecoder.DecodeAc3Dts(pesFrame.GetPesStart(),
                                         pesFrame.GetPayload(),
                                         pesFrame.GetPayloadLength(),
                                         pts, m_aBuf);
-            } else {
-                if (pts) {
-                    aPts = pts;
-                    m_aDecoder.DecodeAc3Dts(pesFrame.GetPesStart(),
-                                            pesFrame.GetPayload(),
-                                            pesFrame.GetPayloadLength(),
-                                            pts, m_aBuf);
 
-                    if (m_synchState == DXR3_DEMUX_VIDEO_SYNCHED) {
-                        m_synchState = DXR3_DEMUX_SYNCHED;
+                if (m_synchState == DXR3_DEMUX_VIDEO_SYNCHED) {
+                    m_synchState = DXR3_DEMUX_SYNCHED;
+                } else {
+                    m_synchState = DXR3_DEMUX_AUDIO_SYNCHED;
+                }
+                if (m_synchState == DXR3_DEMUX_SYNCHED) {
+                    if (!vPts) {
+                        vPts = aPts;
+                    }
+                    if (aPts < vPts) {
+                        pcr = aPts - PRE_BUFFER_LENGTH;
                     } else {
-                        m_synchState = DXR3_DEMUX_AUDIO_SYNCHED;
+                        pcr = vPts - PRE_BUFFER_LENGTH;
                     }
-                    if (m_synchState == DXR3_DEMUX_SYNCHED) {
-                        if (!vPts) {
-                            vPts = aPts;
-                        }
-                        if (aPts < vPts) {
-                            pcr = aPts - PRE_BUFFER_LENGTH;
-                        } else {
-                            pcr = vPts - PRE_BUFFER_LENGTH;
-                        }
-                        m_dxr3Device.SetSysClock(pcr);
-                        m_dxr3Device.SetPlayMode();
-                        m_dxr3Device.EnableVideo();
-                        m_dxr3Device.EnableAudio();
-                        m_vBuf.Start();
-                        m_aBuf.Start();
-                    }
+                    m_dxr3Device.SetSysClock(pcr);
+                    m_dxr3Device.SetPlayMode();
+                    m_dxr3Device.EnableVideo();
+                    m_dxr3Device.EnableAudio();
+                    m_vBuf.Start();
+                    m_aBuf.Start();
                 }
             }
         }
-
-        //if (m_demuxMode == DXR3_DEMUX_TRICK_MODE) return origLength;
-        return length;
-    } catch (cDxr3PesFrame::ePesFrameError err) {
-        dsyslog("cDxr3DemuxDevice::DemuxPes() ePesFrameError skipping data and resync");
-        Resync();
-        return origLength;
-    } catch (cDxr3SyncBuffer::eSyncBufferException err) {
-        Stop();
-        return origLength;
     }
+
+    //if (m_demuxMode == DXR3_DEMUX_TRICK_MODE) return origLength;
+    return length;
 }
 
 // ==================================
@@ -507,40 +498,33 @@ int cDxr3DemuxDevice::DemuxAudioPes(const uint8_t* buf, int length)
     m_aBuf.SetDemuxMode(DXR3_DEMUX_REPLAY_MODE);
     m_vBuf.SetDemuxMode(DXR3_DEMUX_REPLAY_MODE);
 
-    try
-    {
-        cDxr3PesFrame pesFrame;
+    cDxr3PesFrame pesFrame;
 
-        if (!pesFrame.parse(buf, length)) {
-            return -1;
-        }
-
-        if (pesFrame.GetPesDataType() == cDxr3PesFrame::PES_PRIVATE_DATA) {
-            if (m_synchState != DXR3_DEMUX_AUDIO_SYNCHED &&
-                syncCounter > 2) {
-                m_synchState = DXR3_DEMUX_AUDIO_SYNCHED;
-                m_dxr3Device.SetPlayMode();
-                m_dxr3Device.EnableVideo();
-                m_dxr3Device.EnableAudio();
-                m_vBuf.Start();
-                m_aBuf.Start();
-            }
-            if (m_synchState != DXR3_DEMUX_AUDIO_SYNCHED &&
-                syncCounter <= 2) {
-                syncCounter++;
-            }
-            while (!m_aBuf.Poll(100));
-            m_aDecoder.DecodeLpcm(pesFrame.GetPayload(),
-                                  pesFrame.GetPayloadLength(), 0, m_aBuf);
-
-        }
-
-        return length;
-    } catch (cDxr3PesFrame::ePesFrameError err) {
-        dsyslog("cDxr3DemuxDevice::DemuxAudioPes() ePesFrameError skipping data and resync");
-        Stop();
-        return origLength;
+    if (!pesFrame.parse(buf, length)) {
+        return -1;
     }
+
+    if (pesFrame.GetPesDataType() == cDxr3PesFrame::PES_PRIVATE_DATA) {
+        if (m_synchState != DXR3_DEMUX_AUDIO_SYNCHED &&
+            syncCounter > 2) {
+            m_synchState = DXR3_DEMUX_AUDIO_SYNCHED;
+            m_dxr3Device.SetPlayMode();
+            m_dxr3Device.EnableVideo();
+            m_dxr3Device.EnableAudio();
+            m_vBuf.Start();
+            m_aBuf.Start();
+        }
+        if (m_synchState != DXR3_DEMUX_AUDIO_SYNCHED &&
+            syncCounter <= 2) {
+            syncCounter++;
+        }
+        while (!m_aBuf.Poll(100));
+        m_aDecoder.DecodeLpcm(pesFrame.GetPayload(),
+                              pesFrame.GetPayloadLength(), 0, m_aBuf);
+
+    }
+
+    return length;
 }
 
 // Local variables:

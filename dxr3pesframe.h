@@ -36,51 +36,6 @@ enum eVideoFrameType
 };
 
 // ==================================
-// XXX: Should we use here std:vector?
-template <class T>
-class cDxr3SafeArray
-{
-public:
-    // ==================================
-    enum eSafeArrayException
-    {
-	SAFE_ARRAY_INDEX_OUT_OF_BOUND
-    };
-
-    cDxr3SafeArray(T* pBuf, uint32_t length) :
-	m_pBuf(pBuf), m_length(length) {};
-    cDxr3SafeArray(const cDxr3SafeArray& from) :
-	m_pBuf(from.m_pBuf), m_length(from.m_length) {};
-    virtual ~cDxr3SafeArray() {};
-
-    T& operator[](uint32_t index) throw (eSafeArrayException)
-    {
-	if (index >= m_length)
-	    throw(SAFE_ARRAY_INDEX_OUT_OF_BOUND);
-	return m_pBuf[index];
-    };
-    cDxr3SafeArray SubArray(uint32_t offset, uint32_t length)
-    {
-	if (offset + length > m_length)
-	    throw(SAFE_ARRAY_INDEX_OUT_OF_BOUND);
-	return cDxr3SafeArray(m_pBuf + offset, length);
-    };
-
-    uint32_t GetLength(void)
-    {
-	return m_length;
-    };
-
-protected:
-    T* m_pBuf;
-    uint32_t m_length;
-
-private:
-    cDxr3SafeArray(); // no standard constructor
-};
-
-
-// ==================================
 // pes - packetized elementary stream
 class cDxr3PesFrame : private Uncopyable {
 public:
@@ -92,12 +47,6 @@ public:
 	PES_VIDEO_DATA,
 	PES_PRIVATE_DATA,
 	PES_UNKNOWN_DATA
-    };
-
-    // ==================================
-    enum ePesFrameError
-    {
-	PES_GENERAL_ERROR
     };
 
 public:
