@@ -38,8 +38,6 @@ bool cDxr3PesFrame::parse(const uint8_t *pes, uint32_t length)
         return false;
     }
 
-    m_bValid = true;
-
     // handle stream id
     switch (pes[3]) {
     case 0xBD: // private stream 1

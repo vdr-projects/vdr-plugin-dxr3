@@ -242,9 +242,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
     {
         cDxr3PesFrame pesFrame;
 
-        pesFrame.parse(buf, length);
-
-        if (!pesFrame.IsValid()) {
+        if (!pesFrame.parse(buf, length)) {
             return -1;
         }
 
@@ -513,12 +511,9 @@ int cDxr3DemuxDevice::DemuxAudioPes(const uint8_t* buf, int length)
     {
         cDxr3PesFrame pesFrame;
 
-        pesFrame.parse(buf, length);
-
-        if (!pesFrame.IsValid()) {
+        if (!pesFrame.parse(buf, length)) {
             return -1;
         }
-
 
         if (pesFrame.GetPesDataType() == cDxr3PesFrame::PES_PRIVATE_DATA) {
             if (m_synchState != DXR3_DEMUX_AUDIO_SYNCHED &&

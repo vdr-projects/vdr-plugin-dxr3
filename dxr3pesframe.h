@@ -103,7 +103,6 @@ public:
 public:
     cDxr3PesFrame() :
 	m_pesDataType(PES_UNKNOWN_DATA),
-	m_bValid(false),
 	m_pPesStart(0),
 	m_payload(0),
 	m_payloadLength(0),
@@ -122,78 +121,62 @@ public:
 
     ePesDataType GetPesDataType() const
     {
-        assert(m_bValid);
         return m_pesDataType;
     }
 
     const uint8_t* GetPesStart() const
     {
-        assert(m_bValid);
         return m_pPesStart;
     }
 
     const uint8_t* GetPayload() const
     {
-        assert(m_bValid);
         return m_payload;
     }
 
     uint32_t GetPayloadLength() const
     {
-        assert(m_bValid);
         return m_payloadLength;
     }
 
     uint32_t GetPts() const
     {
-        assert(m_bValid);
         return m_pts;
     }
 
     eVideoFrameType GetFrameType() const
     {
-        assert(m_bValid);
         assert(m_pesDataType == PES_VIDEO_DATA);
         return m_videoFrameType;
     }
 
     uint32_t GetAspectRatio() const
     {
-        assert(m_bValid);
         assert(m_pesDataType == PES_VIDEO_DATA);
         return m_aspectRatio;
     }
 
     uint32_t GetHorizontalSize() const
     {
-        assert(m_bValid);
         assert(m_pesDataType == PES_VIDEO_DATA);
         return m_horizontalSize;
     }
 
     uint32_t GetVerticalSize() const
     {
-        assert(m_bValid);
         assert(m_pesDataType == PES_VIDEO_DATA);
         return m_verticalSize;
     }
 
     int GetOffset() const
     {
-        assert(m_bValid);
         return m_offset;
-    }
-
-    bool IsValid()
-    {
-        return m_bValid;
     }
 
 protected:
     void InitData()
     {
         m_pesDataType = PES_UNKNOWN_DATA;
-        m_bValid = false;
         m_pPesStart = 0;
         m_payload = 0;
         m_payloadLength = 0;
@@ -208,7 +191,6 @@ protected:
     }
 
     ePesDataType m_pesDataType;
-    bool m_bValid;
     const uint8_t* m_pPesStart;
     const uint8_t* m_payload;
     uint32_t m_payloadLength;
