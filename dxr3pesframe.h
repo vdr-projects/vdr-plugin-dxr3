@@ -60,8 +60,6 @@ public:
 	m_aspectRatio(m_staticAspectRatio),
 	m_horizontalSize(m_staticHorizontalSize),
 	m_verticalSize(m_staticVerticalSize),
-	m_pNextStart(0),
-	m_remainingLength(0),
 	m_offset(0) {};
 
     virtual ~cDxr3PesFrame() {}
@@ -134,8 +132,6 @@ protected:
         m_aspectRatio = m_staticAspectRatio;
         m_horizontalSize = m_staticHorizontalSize;
         m_verticalSize = m_staticVerticalSize;
-        m_pNextStart = 0;
-        m_remainingLength = 0;
         m_offset = 0;
     }
 
@@ -150,8 +146,6 @@ protected:
     uint32_t m_horizontalSize;
     uint32_t m_verticalSize;
 
-    const uint8_t* m_pNextStart;
-    uint32_t m_remainingLength;
     int m_offset;
 
     static uint32_t m_staticAspectRatio;
