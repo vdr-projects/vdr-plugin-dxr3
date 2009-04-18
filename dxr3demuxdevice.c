@@ -492,7 +492,6 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
 int cDxr3DemuxDevice::DemuxAudioPes(const uint8_t* buf, int length)
 {
     static int syncCounter = 0;
-    int origLength = length;
 
     m_demuxMode = DXR3_DEMUX_AUDIO_ONLY_MODE;
     m_aBuf.SetDemuxMode(DXR3_DEMUX_REPLAY_MODE);

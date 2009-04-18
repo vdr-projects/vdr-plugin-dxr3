@@ -104,21 +104,19 @@ public:
     // set/get functions
     uint32_t GetAspectRatio() const;
     void SetAspectRatio(uint32_t ratio);
-    uint32_t GetHorizontalSize() const
+    uint32_t GetHorizontalSize() const    { return m_horizontal; }
+    uint32_t GetVerticalSize() const      { return m_vertical; }
+
+    void SetHorizontalSize(uint32_t value)
     {
-	return m_horizontal;
+        if (value > 0)
+            m_horizontal = value;
     }
-    void SetHorizontalSize(uint32_t horizontal)
+
+    void SetVerticalSize(uint32_t value)
     {
-	m_horizontal = horizontal;
-    };
-    uint32_t GetVerticalSize() const
-    {
-	return m_vertical;
-    }
-    void SetVerticalSize(uint32_t vertical)
-    {
-	m_vertical = vertical;
+        if (value > 0)
+            m_vertical = value;
     };
 
     // play functions

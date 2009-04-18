@@ -58,8 +58,8 @@ public:
 	m_pts(0),
 	m_videoFrameType(UNKNOWN_FRAME),
 	m_aspectRatio(m_staticAspectRatio),
-	m_horizontalSize(m_staticHorizontalSize),
-	m_verticalSize(m_staticVerticalSize),
+	m_horizontalSize(0),
+	m_verticalSize(0),
 	m_offset(0) {};
 
     virtual ~cDxr3PesFrame() {}
@@ -130,8 +130,8 @@ protected:
         m_pts = 0;
         m_videoFrameType = UNKNOWN_FRAME;
         m_aspectRatio = m_staticAspectRatio;
-        m_horizontalSize = m_staticHorizontalSize;
-        m_verticalSize = m_staticVerticalSize;
+        m_horizontalSize = 0;
+        m_verticalSize = 0;
         m_offset = 0;
     }
 
@@ -149,8 +149,6 @@ protected:
     int m_offset;
 
     static uint32_t m_staticAspectRatio;
-    static uint32_t m_staticHorizontalSize;
-    static uint32_t m_staticVerticalSize;
 
 protected:
     static const uint32_t MAX_PES_HEADER_SIZE;

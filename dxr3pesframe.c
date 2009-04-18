@@ -107,8 +107,6 @@ bool cDxr3PesFrame::parse(const uint8_t *pes, uint32_t length)
                 break;
             }
 
-            m_staticHorizontalSize = m_horizontalSize;
-            m_staticVerticalSize = m_verticalSize;
             m_staticAspectRatio = m_aspectRatio;
         }
     }
@@ -119,8 +117,6 @@ bool cDxr3PesFrame::parse(const uint8_t *pes, uint32_t length)
 
 // ==================================
 uint32_t cDxr3PesFrame::m_staticAspectRatio = EM8300_ASPECTRATIO_4_3;
-uint32_t cDxr3PesFrame::m_staticHorizontalSize = 720;
-uint32_t cDxr3PesFrame::m_staticVerticalSize = 576;
 
 // Local variables:
 // mode: c++
