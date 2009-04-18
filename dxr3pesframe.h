@@ -118,8 +118,7 @@ public:
 
     virtual ~cDxr3PesFrame() {}
 
-    bool parse(const uint8_t* pBuf, uint32_t length)
-    throw (ePesFrameError);
+    bool parse(const uint8_t *pes, uint32_t length);
 
     ePesDataType GetPesDataType() const
     {
@@ -143,11 +142,6 @@ public:
     {
         assert(m_bValid);
         return m_payloadLength;
-    }
-
-    const uint8_t* GetNextStart() const
-    {
-        return m_pNextStart;
     }
 
     uint32_t GetPts() const
@@ -196,13 +190,6 @@ public:
     }
 
 protected:
-    bool IsPesHeader(cDxr3SafeArray<uint8_t> header)
-	throw (cDxr3SafeArray<uint8_t>::eSafeArrayException);
-    void ExtractPts(cDxr3SafeArray<uint8_t> ptsData)
-	throw (cDxr3SafeArray<uint8_t>::eSafeArrayException);
-    int ExtractVideoData(cDxr3SafeArray<uint8_t> esFrame)
-	throw (cDxr3SafeArray<uint8_t>::eSafeArrayException);
-
     void InitData()
     {
         m_pesDataType = PES_UNKNOWN_DATA;
