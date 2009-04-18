@@ -29,7 +29,7 @@
 #include <vdr/tools.h>
 
 // ==================================
-bool cDxr3PesFrame::ExtractNextFrame(const uint8_t* pBuf, uint32_t length)
+bool cDxr3PesFrame::parse(const uint8_t* pBuf, uint32_t length)
     throw (ePesFrameError)
 {
     cDxr3SafeArray<uint8_t> pesArray((uint8_t*)pBuf, length);

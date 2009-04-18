@@ -242,7 +242,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
     {
         cDxr3PesFrame pesFrame;
 
-        pesFrame.ExtractNextFrame(buf, length);
+        pesFrame.parse(buf, length);
 
         if (!pesFrame.IsValid()) {
             return -1;
@@ -513,7 +513,7 @@ int cDxr3DemuxDevice::DemuxAudioPes(const uint8_t* buf, int length)
     {
         cDxr3PesFrame pesFrame;
 
-        pesFrame.ExtractNextFrame(buf, length);
+        pesFrame.parse(buf, length);
 
         if (!pesFrame.IsValid()) {
             return -1;

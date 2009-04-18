@@ -118,7 +118,7 @@ public:
 
     virtual ~cDxr3PesFrame() {}
 
-    bool ExtractNextFrame(const uint8_t* pBuf, uint32_t length)
+    bool parse(const uint8_t* pBuf, uint32_t length)
     throw (ePesFrameError);
 
     ePesDataType GetPesDataType() const
