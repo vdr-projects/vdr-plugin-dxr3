@@ -150,11 +150,6 @@ public:
         return m_pNextStart;
     }
 
-    uint32_t GetRemainingLength() const
-    {
-        return m_remainingLength;
-    }
-
     uint32_t GetPts() const
     {
         assert(m_bValid);
