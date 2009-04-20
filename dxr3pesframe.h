@@ -60,8 +60,7 @@ public:
 	m_videoFrameType(UNKNOWN_FRAME),
 	m_aspectRatio(m_staticAspectRatio),
 	m_horizontalSize(0),
-	m_verticalSize(0),
-	m_offset(0) {};
+	m_verticalSize(0) {}
 
     virtual ~cDxr3PesFrame() {}
 
@@ -116,11 +115,6 @@ public:
         return m_verticalSize;
     }
 
-    int GetOffset() const
-    {
-        return m_offset;
-    }
-
 private:
     void InitData()
     {
@@ -133,7 +127,6 @@ private:
         m_aspectRatio = m_staticAspectRatio;
         m_horizontalSize = 0;
         m_verticalSize = 0;
-        m_offset = 0;
     }
 
     ePesDataType m_pesDataType;
@@ -146,8 +139,6 @@ private:
     uint32_t m_aspectRatio;
     uint32_t m_horizontalSize;
     uint32_t m_verticalSize;
-
-    int m_offset;
 
     static uint32_t m_staticAspectRatio;
 

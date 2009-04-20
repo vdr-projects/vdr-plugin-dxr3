@@ -267,20 +267,20 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
                 bPlayedFrame = true;
                 m_dxr3Device.SetHorizontalSize(pesFrame.GetHorizontalSize());
                 m_dxr3Device.SetVerticalSize(pesFrame.GetVerticalSize());
-                m_dxr3Device.PlayVideoFrame(pesFrame.GetPayload(), (int) (pesFrame.GetPayloadLength()), m_ReUseFrame);
+                m_dxr3Device.PlayVideoFrame(pesFrame.GetPayload(), pesFrame.GetPayloadLength(), m_ReUseFrame);
                 break;
 
             case UNKNOWN_FRAME:
                 dsyslog("dxr3: demux: unknown frame");
                 if (bPlaySuc) {
-                    m_dxr3Device.PlayVideoFrame(pesFrame.GetPayload(), (int) (pesFrame.GetPayloadLength()), m_ReUseFrame);
+                    m_dxr3Device.PlayVideoFrame(pesFrame.GetPayload(), pesFrame.GetPayloadLength(), m_ReUseFrame);
                 }
                 break;
 
             default:
                 dsyslog("dxr3: demux: default frame");
                 if (bPlaySuc) {
-                    m_dxr3Device.PlayVideoFrame(pesFrame.GetPayload(), (int) (pesFrame.GetOffset()), m_ReUseFrame);
+                    m_dxr3Device.PlayVideoFrame(pesFrame.GetPayload(), pesFrame.GetPayloadLength(), m_ReUseFrame);
                 }
 
                 bPlaySuc = false;
