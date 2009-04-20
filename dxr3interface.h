@@ -178,7 +178,6 @@ private:
     void ConfigureDevice();
     void Resuscitation();
 
-protected:
     static cMutex* m_pMutex;	///< mutex for dxr3interface
 
     static void Lock()

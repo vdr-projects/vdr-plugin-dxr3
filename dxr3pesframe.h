@@ -121,7 +121,7 @@ public:
         return m_offset;
     }
 
-protected:
+private:
     void InitData()
     {
         m_pesDataType = PES_UNKNOWN_DATA;
@@ -156,7 +156,6 @@ protected:
     const int16_t *decoded;
     SampleContext ctx;
 
-protected:
     static const uint32_t MAX_PES_HEADER_SIZE;
 };
 

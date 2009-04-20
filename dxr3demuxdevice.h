@@ -60,7 +60,7 @@ public:
         return  m_aBuf.Poll(TimeoutMs) && m_vBuf.Poll(TimeoutMs);
     };
 
-protected:
+private:
     cDxr3Interface& m_dxr3Device;
     cDxr3SyncBuffer m_aBuf;
     cDxr3SyncBuffer m_vBuf;

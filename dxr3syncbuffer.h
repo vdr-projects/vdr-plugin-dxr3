@@ -65,7 +65,7 @@ public:
     uint32_t GetAspectRatio()   { return m_videoAspectRatio; }
     eFrameType GetFrameType()   { return m_type; }
 
-protected:
+private:
     uint8_t* m_pData;
     int m_count;
     int m_length;
@@ -123,7 +123,7 @@ public:
 	return Available() * 100 / Size();
     };
 
-protected:
+private:
     void ReceiverStopped(void);
 
     cFixedLengthFrame* m_pBuffer;
@@ -145,7 +145,6 @@ protected:
     cDxr3Interface& m_dxr3Device;
     bool m_bPollSync;
 
-private:
     cDxr3SyncBuffer(); // you are not allowed to use this constructor
 };
 

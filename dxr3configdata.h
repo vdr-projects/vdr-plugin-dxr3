@@ -72,7 +72,7 @@ public:
     int GetUseWSS() const               { return m_usewss; }
     int SetUseWSS(int value)            { return m_usewss = value; }
 
-protected:
+private:
     eVideoMode m_videomode;
     int m_usewss;
     int m_digitaloutput;

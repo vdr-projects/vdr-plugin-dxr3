@@ -39,13 +39,12 @@ public:
 
     virtual ~cDxr3SysClock() {};
 
-public:
     void SetSysClock(uint32_t scr);
     uint32_t GetSysClock(void);
     void SetPts(uint32_t pts);
     void SetSpuPts(uint32_t pts);
 
-protected:
+private:
     int m_fdcontrol;
     int m_fdvideo;
     int m_fdspu;
