@@ -368,17 +368,13 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
                 m_aBuf.Start();
             }
             while(!Poll(100));
-            m_aDecoder.Decode(pesFrame.GetPayload(),
-                              (int) (pesFrame.GetPayloadLength()),
-                              pts, m_aBuf);
+            m_aDecoder.Decode(&pesFrame, pts, m_aBuf);
 
         } else {
             if (pts) {
                 aPts = pts;
 
-                m_aDecoder.Decode(pesFrame.GetPayload(),
-                                  (int) (pesFrame.GetPayloadLength()),
-                                  pts, m_aBuf);
+                m_aDecoder.Decode(&pesFrame, pts, m_aBuf);
 
                 if (m_synchState == DXR3_DEMUX_VIDEO_SYNCHED) {
                     m_synchState = DXR3_DEMUX_SYNCHED;
@@ -409,14 +405,11 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
              && !bAc3Dts) {
         if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
             m_synchState == DXR3_DEMUX_SYNCHED) {
-            m_aDecoder.DecodeLpcm(pesFrame.GetPayload(),
-                                  pesFrame.GetPayloadLength(), pts, m_aBuf);
+            m_aDecoder.DecodeLpcm(&pesFrame, pts, m_aBuf);
         } else {
             if (pts) {
                 aPts = pts;
-                m_aDecoder.DecodeLpcm(pesFrame.GetPayload(),
-                                      pesFrame.GetPayloadLength(),
-                                      pts, m_aBuf);
+                m_aDecoder.DecodeLpcm(&pesFrame, pts, m_aBuf);
 
                 if (m_synchState == DXR3_DEMUX_VIDEO_SYNCHED) {
                     m_synchState = DXR3_DEMUX_SYNCHED;
@@ -518,8 +511,7 @@ int cDxr3DemuxDevice::DemuxAudioPes(const uint8_t* buf, int length)
             syncCounter++;
         }
         while (!m_aBuf.Poll(100));
-        m_aDecoder.DecodeLpcm(pesFrame.GetPayload(),
-                              pesFrame.GetPayloadLength(), 0, m_aBuf);
+        m_aDecoder.DecodeLpcm(&pesFrame, 0, m_aBuf);
 
     }
 

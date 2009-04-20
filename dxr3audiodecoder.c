@@ -99,8 +99,7 @@ void cDxr3AudioDecoder::Init()
 
 // ==================================
 //! decode given buffer
-void cDxr3AudioDecoder::Decode(const uint8_t* buf, int length, uint32_t pts,
-			       cDxr3SyncBuffer &aBuf)
+void cDxr3AudioDecoder::Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf)
 {
     int len;
     int out_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;
@@ -110,6 +109,9 @@ void cDxr3AudioDecoder::Decode(const uint8_t* buf, int length, uint32_t pts,
 	WRONG_LENGTH,
 	UNEXPECTED_PARAMETER_CHANGE
     };
+
+    const uint8_t *buf = frame->GetPayload();
+    int length = frame->GetPayloadLength();
 
     int i = 0;
     for (i = 0; i < length-4 && !foundHeader; i++)
@@ -215,9 +217,11 @@ void cDxr3AudioDecoder::Decode(const uint8_t* buf, int length, uint32_t pts,
 
 // ==================================
 //! decode lpcm
-void cDxr3AudioDecoder::DecodeLpcm(const uint8_t* buf, int length,
-				   uint32_t pts, cDxr3SyncBuffer &aBuf)
+void cDxr3AudioDecoder::DecodeLpcm(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf)
 {
+    const uint8_t *buf = frame->GetPayload();
+    int length = frame->GetPayloadLength();
+
     if (length > (LPCM_HEADER_LENGTH + 2))
     {
 	// only even number of bytes are allowed

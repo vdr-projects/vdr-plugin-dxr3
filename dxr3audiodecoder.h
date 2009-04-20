@@ -34,6 +34,8 @@ extern "C" {
 #include "dxr3multichannelaudio.h"
 #include "Uncopyable.h"
 
+class cDxr3PesFrame;
+
 // ==================================
 // decode audio to mp2 or use DD :)
 class cDxr3AudioDecoder : private Uncopyable {
@@ -43,10 +45,8 @@ public:
 
     void Init();
 
-    void Decode(const uint8_t* buf, int length, uint32_t pts,
-		cDxr3SyncBuffer &aBuf);
-    void DecodeLpcm(const uint8_t* buf, int length, uint32_t pts,
-		    cDxr3SyncBuffer &aBuf);
+    void Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf);
+    void DecodeLpcm(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf);
     void DecodeAc3Dts(const uint8_t* pPes, const uint8_t* buf, int length,
 		      uint32_t pts, cDxr3SyncBuffer &aBuf);
 
