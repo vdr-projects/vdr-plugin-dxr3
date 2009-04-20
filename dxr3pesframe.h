@@ -24,6 +24,7 @@
 
 #include <assert.h>
 #include <stdint.h>
+#include "dxr3audio.h"
 #include "Uncopyable.h"
 
 // ==================================
@@ -149,6 +150,11 @@ protected:
     int m_offset;
 
     static uint32_t m_staticAspectRatio;
+
+    // needed for audio
+    uint32_t decodedSize;
+    const int16_t *decoded;
+    SampleContext ctx;
 
 protected:
     static const uint32_t MAX_PES_HEADER_SIZE;
