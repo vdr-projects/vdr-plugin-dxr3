@@ -53,7 +53,7 @@ public:
 public:
     cDxr3PesFrame() :
 	m_pesDataType(PES_UNKNOWN_DATA),
-	m_pPesStart(0),
+	m_pesStart(0),
 	m_payload(0),
 	m_payloadLength(0),
 	m_pts(0),
@@ -74,7 +74,7 @@ public:
 
     const uint8_t* GetPesStart() const
     {
-        return m_pPesStart;
+        return m_pesStart;
     }
 
     const uint8_t* GetPayload() const
@@ -125,7 +125,7 @@ private:
     void InitData()
     {
         m_pesDataType = PES_UNKNOWN_DATA;
-        m_pPesStart = 0;
+        m_pesStart = 0;
         m_payload = 0;
         m_payloadLength = 0;
         m_pts = 0;
@@ -137,7 +137,7 @@ private:
     }
 
     ePesDataType m_pesDataType;
-    const uint8_t* m_pPesStart;
+    const uint8_t* m_pesStart;
     const uint8_t* m_payload;
     uint32_t m_payloadLength;
     uint32_t m_pts;

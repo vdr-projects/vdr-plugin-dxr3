@@ -55,6 +55,9 @@ bool cDxr3PesFrame::parse(const uint8_t *pes, uint32_t length)
         return false;
     }
 
+    // store start of pes frame
+    m_pesStart = pes;
+
     // read pes header len
     uint8_t pesHeaderDataLength = pes[8];
 
