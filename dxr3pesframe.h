@@ -116,19 +116,6 @@ public:
     }
 
 private:
-    void InitData()
-    {
-        m_pesDataType = PES_UNKNOWN_DATA;
-        m_pesStart = 0;
-        m_payload = 0;
-        m_payloadLength = 0;
-        m_pts = 0;
-        m_videoFrameType = UNKNOWN_FRAME;
-        m_aspectRatio = m_staticAspectRatio;
-        m_horizontalSize = 0;
-        m_verticalSize = 0;
-    }
-
     ePesDataType m_pesDataType;
     const uint8_t* m_pesStart;
     const uint8_t* m_payload;
