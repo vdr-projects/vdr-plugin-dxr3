@@ -341,39 +341,6 @@ void cDxr3SyncBuffer::Clear(void)
 }
 
 // ==================================
-void cDxr3SyncBuffer::WaitForSysClock(uint32_t pts, uint32_t delta)
-{
-    m_waitPts = pts;
-    m_waitDelta = delta;
-    if (!m_bPutBlock)
-    {
-	m_bWaitPts = true;
-	m_bGetBlock = true;
-	ReceiverStopped();
-	WaitForGet();
-    }
-    else
-    {
-	cCondWait::SleepMs(3); //* (pts - pSysClock->GetSysClock()));
-    }
-}
-
-// ==================================
-void cDxr3SyncBuffer::WaitForNextPut(void)
-{
-    if (!m_bPutBlock)
-     {
-	m_bGetBlock = true;
-	ReceiverStopped();
-	WaitForGet();
-    }
-    else
-    {
-	cCondWait::SleepMs(3);
-    }
-}
-
-// ==================================
 void cDxr3SyncBuffer::Start(void)
 {
     m_bStartReceiver = true;

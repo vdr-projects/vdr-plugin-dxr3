@@ -101,8 +101,6 @@ public:
 	m_bStopped = true;
     };
     void Start(void);
-    void WaitForSysClock(uint32_t pts, uint32_t delta);
-    void WaitForNextPut(void);
     void WakeUp(void);
     void WaitForReceiverStopped(void);
     void SetDemuxMode(eDxr3DemuxMode demuxMode)
