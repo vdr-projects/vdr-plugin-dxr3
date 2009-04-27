@@ -128,13 +128,10 @@ private:
     int m_count;
     int m_nextFree;
     int m_next;
-    bool m_bWaitPts;
     bool m_bPutBlock;
     bool m_bGetBlock;
     bool m_bStartReceiver;
     bool m_bStopped;
-    uint32_t m_waitPts;
-    uint32_t m_waitDelta;
     uint32_t m_lastPts;
     eDxr3DemuxMode m_demuxMode;
 

@@ -131,9 +131,6 @@ cDxr3SyncBuffer::cDxr3SyncBuffer(int frameCount, int frameLength,
     m_count = 0;
     m_nextFree = 0;
     m_next = 0;
-    m_bWaitPts = false;
-    m_waitPts = 0;
-    m_waitDelta = 0;
     m_lastPts = 0;
     m_bPutBlock = false;
     m_bGetBlock = false;
@@ -183,7 +180,6 @@ bool cDxr3SyncBuffer::Poll(int TimeoutMs)
 		int d_s, d_us, ms;
 		m_bPutBlock = true;
 		EnableGet();
-		m_bWaitPts = false;
 		WaitForPut();
 		gettimeofday(&tv, NULL);
 		d_s  = tv.tv_sec  - tv_start.tv_sec;
@@ -225,7 +221,6 @@ cFixedLengthFrame* cDxr3SyncBuffer::Push(const uint8_t* pStart, int length, uint
 	    int d_s, d_us, ms;
 	    m_bPutBlock = true;
 	    EnableGet();
-	    m_bWaitPts = false;
 	    WaitForPut();
 	    gettimeofday(&tv, NULL);
 	    d_s  = tv.tv_sec  - tv_start.tv_sec;
@@ -260,22 +255,10 @@ cFixedLengthFrame* cDxr3SyncBuffer::Push(const uint8_t* pStart, int length, uint
 	    Clear(); // XXX This is only a workaround until a sufficient control algorithm is implemented
 	    throw(SYNC_BUFFER_OVERRUN);
 	}
-	if (!m_bWaitPts)
-	{
-	    if (m_bStartReceiver)
-	    {
-		EnableGet();
-	    }
-	}
-	else
-	{
-	    if (m_waitPts < m_dxr3Device.GetSysClock() ||
-		m_waitPts - m_dxr3Device.GetSysClock() < m_waitDelta)
-	    {
-		EnableGet();
-		m_bWaitPts = false;
-	    }
-	}
+    if (m_bStartReceiver)
+    {
+        EnableGet();
+    }
 	break;
     }
 
@@ -330,7 +313,6 @@ void cDxr3SyncBuffer::Clear(void)
     m_nextFree = 0;
     m_count = 0;
     m_lastPts = 0;
-    m_bWaitPts = false;
     m_bStartReceiver = false;
     m_bPollSync = false;
     if (m_bPutBlock)
@@ -356,19 +338,7 @@ void cDxr3SyncBuffer::WakeUp(void)
 {
     if (m_bStartReceiver == true)
     {
-	if (!m_bWaitPts)
-	{
-	    EnableGet();
-	}
-	else
-	{
-	    if (m_waitPts < m_dxr3Device.GetSysClock() ||
-		m_waitPts - m_dxr3Device.GetSysClock() < m_waitDelta)
-	    {
-		EnableGet();
-		m_bWaitPts = false;
-	    }
-	}
+        EnableGet();
     }
 }
 
