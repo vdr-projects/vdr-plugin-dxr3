@@ -132,7 +132,6 @@ private:
     bool m_bGetBlock;
     bool m_bStartReceiver;
     bool m_bStopped;
-    uint32_t m_lastPts;
     eDxr3DemuxMode m_demuxMode;
 
     cCondVar receiverStopped;

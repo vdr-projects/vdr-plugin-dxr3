@@ -131,7 +131,6 @@ cDxr3SyncBuffer::cDxr3SyncBuffer(int frameCount, int frameLength,
     m_count = 0;
     m_nextFree = 0;
     m_next = 0;
-    m_lastPts = 0;
     m_bPutBlock = false;
     m_bGetBlock = false;
     m_bStartReceiver = false;
@@ -232,14 +231,6 @@ cFixedLengthFrame* cDxr3SyncBuffer::Push(const uint8_t* pStart, int length, uint
 	    }
 	}
 
-	if (pts == m_lastPts)
-	{
-	    pts = 0;
-	}
-	else
-	{
-	    m_lastPts = pts;
-	}
 	lastIndex = m_nextFree;
 	m_pBuffer[m_nextFree].CopyFrame(pStart, length, pts, type);
 	m_pBuffer[m_nextFree].SetChannelCount(UNKNOWN_CHANNEL_COUNT);
@@ -312,7 +303,6 @@ void cDxr3SyncBuffer::Clear(void)
     m_next = 0;
     m_nextFree = 0;
     m_count = 0;
-    m_lastPts = 0;
     m_bStartReceiver = false;
     m_bPollSync = false;
     if (m_bPutBlock)
