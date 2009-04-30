@@ -106,7 +106,6 @@ void cDxr3AudioDecoder::Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuff
     enum audioException
     {
 	WRONG_LENGTH,
-	UNEXPECTED_PARAMETER_CHANGE
     };
 
     const uint8_t *buf = frame->GetPayload();
@@ -183,10 +182,6 @@ void cDxr3AudioDecoder::Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuff
 	{
 	case WRONG_LENGTH:
 	    esyslog("dxr3: audiodecoder: wrong length");
-	    break;
-
-	case UNEXPECTED_PARAMETER_CHANGE:
-	    esyslog("dxr3: audiodecoder: unexpected parameter change");
 	    break;
 
 	default:
