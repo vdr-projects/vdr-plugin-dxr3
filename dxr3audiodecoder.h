@@ -50,9 +50,6 @@ public:
     void DecodeAc3Dts(const uint8_t* pPes, const uint8_t* buf, int length,
 		      uint32_t pts, cDxr3SyncBuffer &aBuf);
 
-    int GetRate() const         { return rate; }
-    int GetChannelCount() const { return channels; }
-
     void Reset()
     {
     	ac3dtsDecoder.Clear();
@@ -72,8 +69,6 @@ private:
     bool foundHeader;
     bool decodeAudio;
 
-    int rate;
-    int channels;
     uint8_t lastHeader[4];
     uint8_t pcmbuf[AVCODEC_MAX_AUDIO_FRAME_SIZE];
 };

@@ -89,8 +89,7 @@ void cDxr3AudioDecoder::Init()
         exit(-1);
     }
 
-	rate = channels = -1;
-	foundHeader = false;
+    foundHeader = false;
 	decodeAudio = true;
 
 	//lastHeader[0] = 0xFF;
@@ -163,21 +162,6 @@ void cDxr3AudioDecoder::Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuff
 	    if (len < 0 || out_size < 0)
 		throw WRONG_LENGTH;
 
-	    if (contextAudio->sample_rate != rate)
-	    {
-		dsyslog("dxr3: audiodecoder: sample rate=%d",
-				contextAudio->sample_rate);
-		if (rate != -1) throw UNEXPECTED_PARAMETER_CHANGE;
-		rate = contextAudio->sample_rate;
-	    }
-	    if (contextAudio->channels != channels)
-	    {
-		dsyslog("dxr3: audiodecoder: channels=%d",
-				contextAudio->channels);
-		if (channels != -1)
-		    throw UNEXPECTED_PARAMETER_CHANGE;
-		channels = contextAudio->channels;
-	    }
 	    if (out_size)
 	    {
 		cFixedLengthFrame* pTempFrame = aBuf.Push(pcmbuf,
@@ -185,8 +169,8 @@ void cDxr3AudioDecoder::Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuff
 		if (pTempFrame)
 		{
 		    // TODO: should we break out of the loop on push timeout?
-		    pTempFrame->SetChannelCount(channels);
-		    pTempFrame->SetSampleRate(rate);
+		    pTempFrame->SetChannelCount(contextAudio->channels);
+		    pTempFrame->SetSampleRate(contextAudio->sample_rate);
 		}
 	    }
 	    length -= len;
