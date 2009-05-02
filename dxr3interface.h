@@ -23,8 +23,6 @@
 #ifndef _DXR3_INTERFACE_H_
 #define _DXR3_INTERFACE_H_
 
-#include <stdlib.h>
-#include <stdint.h>
 #include <linux/em8300.h>
 #include <sys/ioctl.h>
 #include <linux/limits.h>
@@ -32,7 +30,6 @@
 #include <vdr/tools.h>
 #include "dxr3configdata.h"
 #include "dxr3sysclock.h"
-#include "dxr3configdata.h"
 
 // ==================================
 class cFixedLengthFrame;

@@ -23,8 +23,6 @@
  */
 
 #include <assert.h>
-#include <string.h>
-#include <inttypes.h>
 #include <math.h>
 
 #include "dxr3spudecoder.h"

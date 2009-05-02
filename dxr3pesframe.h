@@ -23,7 +23,6 @@
 #define _DXR3PESFRAME_H_
 
 #include <assert.h>
-#include <stdint.h>
 #include "dxr3audio.h"
 #include "Uncopyable.h"
 

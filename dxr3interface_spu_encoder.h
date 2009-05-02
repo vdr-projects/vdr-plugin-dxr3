@@ -30,12 +30,9 @@
 #ifndef _DXR3_INTERFACE_SPU_ENCODER_
 #define _DXR3_INTERFACE_SPU_ENCODER_
 
-#include <stdlib.h>
-#include <linux/dvb/osd.h>
 #include <vdr/osd.h>
 #include "dxr3colormanager.h"
 #include "dxr3interface.h"
-#include "dxr3singleton.h"
 
 // ==================================
 #define MAXWINDOWS	8

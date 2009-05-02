@@ -9,9 +9,6 @@
 
 #include <vdr/plugin.h>
 #include "dxr3device.h"
-#include "dxr3syncbuffer.h"
-#include "dxr3configdata.h"
-#include "dxr3interface.h"
 #include "dxr3.h"
 
 static const char VERSION[]       = "0.2.9+git";

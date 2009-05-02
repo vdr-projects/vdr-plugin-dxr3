@@ -19,13 +19,8 @@
  *
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <linux/em8300.h>
 #include "dxr3demuxdevice.h"
 #include "dxr3pesframe.h"
-#include "dxr3configdata.h"
 
 // ==================================
 //! constructor

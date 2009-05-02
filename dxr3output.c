@@ -19,7 +19,6 @@
  *
  */
 
-#include <stdio.h>
 #include <time.h>
 #include "dxr3output.h"
 

@@ -47,13 +47,8 @@
 	til the end of the line.
 **/
 
-
-#include <assert.h>
-
 #include "dxr3colormanager.h"
 #include <vdr/tools.h>
-#include <stdio.h>
-#include <string.h>
 
 // ==================================
 //! constructor

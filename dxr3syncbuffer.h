@@ -22,7 +22,6 @@
 #ifndef _DXR3SYNCBUFFER_H_
 #define _DXR3SYNCBUFFER_H_
 
-#include <stdint.h>
 
 #include <vdr/ringbuffer.h>
 #include "dxr3interface.h"

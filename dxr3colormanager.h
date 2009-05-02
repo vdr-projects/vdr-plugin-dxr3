@@ -39,8 +39,6 @@ private:
  *@author Stefan Schluenss
  */
 
-#include <stdio.h>
-
 #define OSD_SPU_CM_DUMP 0
 
 #define MAX_NO_OF_SECTIONS 15

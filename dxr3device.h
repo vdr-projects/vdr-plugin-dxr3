@@ -23,7 +23,7 @@
 #ifndef _DXR3_DEVICE_H_
 #define _DXR3_DEVICE_H_
 
-#include <string>
+//#include <string>
 #include <vdr/device.h>
 
 #include "dxr3interface.h"

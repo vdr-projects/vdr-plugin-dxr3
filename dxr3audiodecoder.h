@@ -23,9 +23,6 @@
 #ifndef _DXR3_AUDIODECODER_H_
 #define _DXR3_AUDIODECODER_H_
 
-#include <stdlib.h>
-#include <stdint.h>
-
 extern "C" {
 #    include <libavcodec/avcodec.h>
 }

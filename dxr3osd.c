@@ -20,11 +20,6 @@
  *
  */
 
-#include <linux/em8300.h>
-#include <signal.h>
-#include <sys/ioctl.h>
-#include <sys/unistd.h>
-
 #include "dxr3interface.h"
 
 #include "dxr3osd.h"

@@ -35,19 +35,19 @@ void cDxr3DolbyDigital::Play(const uchar *Data, int Length)
 }
 
 // ==================================
-// 
+//
 void cDxr3DolbyDigital::Mute(bool On)
 {
 }
 
 // ==================================
-// 
+//
 void cDxr3DolbyDigital::Clear()
 {
 }
 
 // ==================================
-// 
+//
 void cDxr3DolbyDigital::Action()
 {
 }

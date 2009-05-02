@@ -24,7 +24,6 @@
 
 #include <vdr/osd.h>
 #include <vdr/spu.h>
-#include <inttypes.h>
 
 // ==================================
 typedef struct sDxr3SpuPalDescr

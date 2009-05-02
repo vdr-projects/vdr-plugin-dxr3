@@ -21,11 +21,6 @@
  *
  */
 
-#include <assert.h>
-#include <math.h>
-#include <sys/soundcard.h>
-#include <linux/dvb/audio.h>
-
 #include "dxr3interface.h"
 #include "dxr3syncbuffer.h"
 #include "dxr3osd.h"
