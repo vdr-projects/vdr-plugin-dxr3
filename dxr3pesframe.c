@@ -23,10 +23,6 @@
 #include "dxr3pesframe.h"
 
 #include <linux/em8300.h>
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 #include <vdr/tools.h>
 
 // ==================================
