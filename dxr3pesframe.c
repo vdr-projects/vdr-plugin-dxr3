@@ -82,7 +82,7 @@ bool cDxr3PesFrame::parse(const uint8_t *pes, uint32_t length)
 
         // we can get some informations about the video payload
         // of this pes frame. For more informations have a look
-        // at http://dvd.sourceforge.net/dvdinfo/mpeghdrs.htm
+        // at http://dvd.sourceforge.net/dvdinfo/mpeghdrs.html
 
         const uint8_t *video = &pes[payloadStart];
 
