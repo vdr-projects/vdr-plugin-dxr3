@@ -23,6 +23,7 @@
 #include <time.h>
 #include "dxr3output.h"
 #include "dxr3audio.h"
+#include "dxr3pesframe.h"
 
 // ==================================
 const int AUDIO_OFFSET = 4500;
@@ -123,6 +124,19 @@ void cDxr3AudioOutThread::PlayFrame(cFixedLengthFrame *frame)
     }
 
     audioOutput->write(frame->GetData(), frame->GetCount());
+}
+
+void cDxr3AudioOutThread::PlayFrame(cDxr3PesFrame *frame)
+{
+    // update audio context
+    audioOutput->setup(frame->GetSampleContext());
+
+    // volume changes
+    if (!cDxr3Interface::Instance().IsAudioModeAC3()) {
+        audioOutput->changeVolume((short *)frame->GetDecoded(), (size_t)frame->GetDecodedSize());
+    }
+
+    audioOutput->write((uchar *)frame->GetDecoded(), frame->GetDecodedSize());
 }
 
 #undef SCR

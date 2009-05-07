@@ -114,6 +114,21 @@ public:
         return m_verticalSize;
     }
 
+    SampleContext GetSampleContext() const
+    {
+        return ctx;
+    }
+
+    uint32_t GetDecodedSize() const
+    {
+        return decodedSize;
+    }
+
+    const int16_t *GetDecoded()
+    {
+        return decoded;
+    }
+
 private:
     ePesDataType m_pesDataType;
     const uint8_t* m_pesStart;

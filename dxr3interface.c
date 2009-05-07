@@ -24,6 +24,7 @@
 #include "dxr3interface.h"
 #include "dxr3syncbuffer.h"
 #include "dxr3osd.h"
+#include "dxr3pesframe.h"
 
 static const char *DEV_DXR3_OSD   = "_sp";
 static const char *DEV_DXR3_VIDEO = "_mv";
@@ -354,6 +355,36 @@ void cDxr3Interface::PlayVideoFrame(const uint8_t* pBuf, int length, int times)
 	}
 
     Unlock();
+}
+
+// ==================================
+void cDxr3Interface::PlayVideoFrame(cDxr3PesFrame *frame)
+{
+    if (!m_VideoActive) {
+        return;
+    }
+
+    Lock();
+
+    const uint8_t *data = frame->GetPayload();
+    uint32_t len = frame->GetPayloadLength();
+
+    while (len > 0) {
+
+        int ret = write(m_fdVideo, data, len);
+
+        if (ret > 0) {
+            len -= ret;
+            data += ret;
+        }
+    }
+
+    Unlock();
+
+    SetAspectRatio(frame->GetAspectRatio());
+    uint32_t pts = frame->GetPts();
+    if (pts > 0)
+        m_lastSeenPts = pts;
 }
 
 // ==================================

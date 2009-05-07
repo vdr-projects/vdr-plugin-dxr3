@@ -33,6 +33,7 @@
 
 // ==================================
 class cFixedLengthFrame;
+class cDxr3PesFrame;
 
 class cDxr3Name {
 public:
@@ -122,6 +123,7 @@ public:
     void SingleStep();
     void PlayVideoFrame(cFixedLengthFrame* pFrame, int times = 1);
     void PlayVideoFrame(const uint8_t* pBuf, int length, int times = 1);
+    void PlayVideoFrame(cDxr3PesFrame *frame);
 
     // device access
     void ClaimDevices();

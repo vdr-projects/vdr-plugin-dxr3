@@ -62,6 +62,7 @@ private:
     iAudio *audioOutput;
 
     void PlayFrame(cFixedLengthFrame *frame);
+    void PlayFrame(cDxr3PesFrame *frame);
 };
 
 // ==================================
