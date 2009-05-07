@@ -2,7 +2,7 @@
  * dxr3audiodecoder.c
  *
  * Copyright (C) 2002-2004 Kai Möller
- * Copyright (C) 2004 Christian Gmeiner
+ * Copyright (C) 2004-2009 Christian Gmeiner
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -70,14 +70,14 @@ cDxr3AudioDecoder::cDxr3AudioDecoder() : rbuf(50000), ac3dtsDecoder(&rbuf)
 cDxr3AudioDecoder::~cDxr3AudioDecoder()
 {
     // close codec, if it is open
-	avcodec_close(contextAudio);
+    avcodec_close(contextAudio);
 }
 
 // ==================================
 //! (re)init ffmpeg codec
 void cDxr3AudioDecoder::Init()
 {
-	avcodec_close(contextAudio);
+    avcodec_close(contextAudio);
 
     // create a new codec context
     contextAudio = avcodec_alloc_context();
@@ -89,7 +89,7 @@ void cDxr3AudioDecoder::Init()
     }
 
     foundHeader = false;
-	decodeAudio = true;
+    decodeAudio = true;
 
 	//lastHeader[0] = 0xFF;
 	//lastHeader[1] = lastHeader[2] = lastHeader[3] = 0;
@@ -104,92 +104,79 @@ void cDxr3AudioDecoder::Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuff
 
     enum audioException
     {
-	WRONG_LENGTH,
+        WRONG_LENGTH,
     };
 
     const uint8_t *buf = frame->GetPayload();
     int length = frame->GetPayloadLength();
 
     int i = 0;
-    for (i = 0; i < length-4 && !foundHeader; i++)
-    {
-	unsigned int tempHead = *((unsigned int*)(buf+i));
-	if (HeadCheck(tempHead))
-	{
-	    if ((buf[i+2] & 0xFC) != (lastHeader[2] & 0xFC))
-	    {
-		dsyslog("dxr3: audiodecoder: found different audio header"
-			" (new: %#x, old: %#x), (re)initializing",
-			*((uint32_t*) lastHeader), *((uint32_t*) (buf+i)));
+    for (i = 0; i < length-4 && !foundHeader; i++) {
+        unsigned int tempHead = *((unsigned int*)(buf+i));
+        if (HeadCheck(tempHead)) {
+            if ((buf[i+2] & 0xFC) != (lastHeader[2] & 0xFC)) {
+            dsyslog("dxr3: audiodecoder: found different audio header"
+                " (new: %#x, old: %#x), (re)initializing",
+                *((uint32_t*) lastHeader), *((uint32_t*) (buf+i)));
 
-		Init();
-		lastHeader[0] = buf[i];
-		lastHeader[1] = buf[i+1];
-		lastHeader[2] = buf[i+2];
-		lastHeader[3] = buf[i+3];
-	    }
-	    foundHeader = true;
-	}
+            Init();
+            lastHeader[0] = buf[i];
+            lastHeader[1] = buf[i+1];
+            lastHeader[2] = buf[i+2];
+            lastHeader[3] = buf[i+3];
+            }
+        foundHeader = true;
+        }
     }
 
-    if (audioSynched)
-    {
-	// no header found
-	decodeAudio = true;
-    }
-    else
-    {
-	if (foundHeader && pts)
-	{
-	    decodeAudio = true;
-	    audioSynched = true;
-	}
+    if (audioSynched) {
+        // no header found
+        decodeAudio = true;
+    } else {
+        if (foundHeader && pts)
+        {
+            decodeAudio = true;
+            audioSynched = true;
+        }
     }
 
-    try
-    {
-	while (length > 0 && decodeAudio)
-	{
+    try {
+        while (length > 0 && decodeAudio) {
 #if LIBAVCODEC_VERSION_INT < ((51<<16)+(29<<8)+0)
-	    len = avcodec_decode_audio(
+            len = avcodec_decode_audio(
 #else
-	    len = avcodec_decode_audio2(
+            len = avcodec_decode_audio2(
 #endif
-		contextAudio, (short *)(&pcmbuf), &out_size,
-		const_cast<uint8_t *>(buf), length);
-	    if (len < 0 || out_size < 0)
-		throw WRONG_LENGTH;
+            contextAudio, (short *)(&pcmbuf), &out_size,
+            const_cast<uint8_t *>(buf), length);
+            if (len < 0 || out_size < 0)
+                throw WRONG_LENGTH;
 
-	    if (out_size)
-	    {
-		cFixedLengthFrame* pTempFrame = aBuf.Push(pcmbuf,
-							  out_size, pts);
-		if (pTempFrame)
-		{
-		    // TODO: should we break out of the loop on push timeout?
-		    pTempFrame->SetChannelCount(contextAudio->channels);
-		    pTempFrame->SetSampleRate(contextAudio->sample_rate);
-		}
-	    }
-	    length -= len;
-	    buf += len;
-	}
-    }
-    catch (audioException ex)
-    {
-	switch (ex)
-	{
-	case WRONG_LENGTH:
-	    esyslog("dxr3: audiodecoder: wrong length");
-	    break;
+            if (out_size) {
+                cFixedLengthFrame* pTempFrame = aBuf.Push(pcmbuf,
+                                      out_size, pts);
+                if (pTempFrame) {
+                    // TODO: should we break out of the loop on push timeout?
+                    pTempFrame->SetChannelCount(contextAudio->channels);
+                    pTempFrame->SetSampleRate(contextAudio->sample_rate);
+                }
+            }
+            length -= len;
+            buf += len;
+        }
+    } catch (audioException ex) {
+        switch (ex) {
+        case WRONG_LENGTH:
+            esyslog("dxr3: audiodecoder: wrong length");
+            break;
 
-	default:
-	    esyslog("dxr3: audiodecoder: unexpected exception");
-	    break;
-	}
-	esyslog("dxr3: audiodecoder: skipping %d broken data bytes", length);
+        default:
+            esyslog("dxr3: audiodecoder: unexpected exception");
+            break;
+        }
 
-	Init();
+        esyslog("dxr3: audiodecoder: skipping %d broken data bytes", length);
+        Init();
     }
 }
 
@@ -200,53 +187,48 @@ void cDxr3AudioDecoder::DecodeLpcm(cDxr3PesFrame *frame, uint32_t pts, cDxr3Sync
     const uint8_t *buf = frame->GetPayload();
     int length = frame->GetPayloadLength();
 
-    if (length > (LPCM_HEADER_LENGTH + 2))
-    {
-	// only even number of bytes are allowed
-	if ((length - LPCM_HEADER_LENGTH) % 2 != 0)
-	{
-	    esyslog("dxr3: audiodecoder: skipping %d lpcm bytes", length);
-	    return;
-	}
+    if (length > (LPCM_HEADER_LENGTH + 2)) {
+        // only even number of bytes are allowed
+        if ((length - LPCM_HEADER_LENGTH) % 2 != 0) {
+            esyslog("dxr3: audiodecoder: skipping %d lpcm bytes", length);
+            return;
+        }
 
-	uint8_t* pFrame = new uint8_t[length - LPCM_HEADER_LENGTH];
-	for (int i = LPCM_HEADER_LENGTH; i < length; i += 2)
-	{
-	    pFrame[i - LPCM_HEADER_LENGTH] = buf[i + 1];
-	    pFrame[i - LPCM_HEADER_LENGTH + 1] = buf[i];
-	}
+        uint8_t* pFrame = new uint8_t[length - LPCM_HEADER_LENGTH];
+        for (int i = LPCM_HEADER_LENGTH; i < length; i += 2) {
+            pFrame[i - LPCM_HEADER_LENGTH] = buf[i + 1];
+            pFrame[i - LPCM_HEADER_LENGTH + 1] = buf[i];
+        }
 
-	int codedSpeed = (buf[5] >> 4) & 0x03;
-	int speed = 0;
+        int codedSpeed = (buf[5] >> 4) & 0x03;
+        int speed = 0;
 
-	switch (codedSpeed)
-	{
-	case 1:
-	    speed = 96000;
-	    break;
+        switch (codedSpeed) {
+        case 1:
+            speed = 96000;
+            break;
 
-	case 2:
-	    speed = 44100;
-	    break;
+        case 2:
+            speed = 44100;
+            break;
 
-	case 3:
-	    speed = 32000;
-	    break;
+        case 3:
+            speed = 32000;
+            break;
 
-	default:
-	    speed = 48000;
-	    break;
-	}
+        default:
+            speed = 48000;
+            break;
+        }
 
-	cFixedLengthFrame* pTempFrame = aBuf.Push(pFrame,
-						  length - LPCM_HEADER_LENGTH,
-						  pts);
-	if (pTempFrame)
-	{
-	    pTempFrame->SetChannelCount(1);
-	    pTempFrame->SetSampleRate(speed);
-	}
-	delete[] pFrame;
+        cFixedLengthFrame* pTempFrame = aBuf.Push(pFrame,
+                              length - LPCM_HEADER_LENGTH,
+                              pts);
+        if (pTempFrame) {
+            pTempFrame->SetChannelCount(1);
+            pTempFrame->SetSampleRate(speed);
+        }
+        delete[] pFrame;
     }
 }
 
@@ -263,23 +245,21 @@ void cDxr3AudioDecoder::DecodeAc3Dts(const uint8_t* pPes, const uint8_t* buf,
     ac3dtsDecoder.Encapsulate(pBuf + headerLength, length);
 
     cFrame* pFrame = 0;
-    while ((pFrame = rbuf.Get()))
-    {
-	if (pFrame && pFrame->Count())
-	{
-	    cDxr3PesFrame tempPes;
-	    tempPes.parse(pFrame->Data(), pFrame->Count());
-	    int pesHeaderLength = (int) (tempPes.GetPayload() - tempPes.GetPesStart());
-	    uint8_t* pData = pFrame->Data() + pesHeaderLength + LPCM_HEADER_LENGTH;
+    while ((pFrame = rbuf.Get())) {
+        if (pFrame && pFrame->Count()) {
+            cDxr3PesFrame tempPes;
+            tempPes.parse(pFrame->Data(), pFrame->Count());
+            int pesHeaderLength = (int) (tempPes.GetPayload() - tempPes.GetPesStart());
+            uint8_t* pData = pFrame->Data() + pesHeaderLength + LPCM_HEADER_LENGTH;
 
-	    for (int i = 0; i < pFrame->Count() - pesHeaderLength - LPCM_HEADER_LENGTH; i += 2)
-	    {
-		std::swap(pData[i], pData[i + 1]);
-	    }
+            for (int i = 0; i < pFrame->Count() - pesHeaderLength - LPCM_HEADER_LENGTH; i += 2) {
+                std::swap(pData[i], pData[i + 1]);
+            }
 
-	    aBuf.Push(pFrame->Data() + pesHeaderLength + LPCM_HEADER_LENGTH, pFrame->Count() - pesHeaderLength - 7, tempPes.GetPts());
-	    if (pFrame) rbuf.Drop(pFrame);
-	}
+            aBuf.Push(pFrame->Data() + pesHeaderLength + LPCM_HEADER_LENGTH, pFrame->Count() - pesHeaderLength - 7, tempPes.GetPts());
+            if (pFrame)
+                rbuf.Drop(pFrame);
+        }
     }
 }
 
@@ -290,25 +270,16 @@ bool cDxr3AudioDecoder::HeadCheck(unsigned long head)
     bool retval = false;
 
     uint8_t* phead = (uint8_t*) (&head);
-    if (phead[0] != 0xFF)
-    {
-	retval = false;
-    }
-    else if (phead[1] != 0xFC && phead[1] != 0xFE)
-    {
-	retval = false;
-    }
-    else if ((phead[2] & 0xF0) == 0xF0)
-    {
-	retval = false;
-    }
-    else if ((phead[2] & 0xC) == 0xC)
-    {
-	retval = false;
-    }
-    else
-    {
-	retval = true;
+    if (phead[0] != 0xFF) {
+        retval = false;
+    } else if (phead[1] != 0xFC && phead[1] != 0xFE) {
+        retval = false;
+    } else if ((phead[2] & 0xF0) == 0xF0) {
+        retval = false;
+    } else if ((phead[2] & 0xC) == 0xC) {
+        retval = false;
+    } else {
+        retval = true;
     }
 
     return retval;
