@@ -321,8 +321,8 @@ void cColorManager::NewSection(int x)
 {
     int N = curRegion->N;
     if (N >= MAX_NO_OF_SECTIONS - 1) {
-	esyslog("dxr3: colormanager: bummer, too many sections (%d),"
-		" reusing last one", N);
+	//esyslog("dxr3: colormanager: bummer, too many sections (%d),"
+	//	" reusing last one", N);
 	return; // reuse last section, not optimal but there's no other way out
     }
     curSection  = new xSection(x);
