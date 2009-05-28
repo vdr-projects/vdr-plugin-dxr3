@@ -59,7 +59,9 @@ cDxr3Device::~cDxr3Device()
 // ==================================
 void cDxr3Device::MakePrimaryDevice(bool On)
 {
-    new cDxr3OsdProvider();
+    if (On) {
+        new cDxr3OsdProvider();
+    }
 }
 
 // replaying
