@@ -102,11 +102,6 @@ void cDxr3AudioDecoder::Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuff
     int len;
     int out_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;
 
-    enum audioException
-    {
-        WRONG_LENGTH,
-    };
-
     const uint8_t *buf = frame->GetPayload();
     int length = frame->GetPayloadLength();
 
@@ -140,43 +135,31 @@ void cDxr3AudioDecoder::Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuff
         }
     }
 
-    try {
-        while (length > 0 && decodeAudio) {
 #if LIBAVCODEC_VERSION_INT < ((51<<16)+(29<<8)+0)
-            len = avcodec_decode_audio(
+    len = avcodec_decode_audio(
 #else
-            len = avcodec_decode_audio2(
+    len = avcodec_decode_audio2(
 #endif
-            contextAudio, (short *)(&pcmbuf), &out_size,
-            const_cast<uint8_t *>(buf), length);
-            if (len < 0 || out_size < 0)
-                throw WRONG_LENGTH;
+    contextAudio, (short *)(&pcmbuf), &out_size, const_cast<uint8_t *>(buf), length);
 
-            if (out_size) {
-                cFixedLengthFrame* pTempFrame = aBuf.Push(pcmbuf,
-                                      out_size, pts);
-                if (pTempFrame) {
-                    // TODO: should we break out of the loop on push timeout?
-                    pTempFrame->SetChannelCount(contextAudio->channels);
-                    pTempFrame->SetSampleRate(contextAudio->sample_rate);
-                }
-            }
-            length -= len;
-            buf += len;
+    if (len < 0) {
+        esyslog("[dxr3-decoder] failed to decode audio");
+        return;
+    }
+
+    // can this happen?
+    if ((length - len) > 0) {
+        esyslog("[dxr3-decoder] TODO: more to decode");
+    }
+
+    if (out_size) {
+        cFixedLengthFrame* pTempFrame = aBuf.Push(pcmbuf,
+                              out_size, pts);
+        if (pTempFrame) {
+            // TODO: should we break out of the loop on push timeout?
+            pTempFrame->SetChannelCount(contextAudio->channels);
+            pTempFrame->SetSampleRate(contextAudio->sample_rate);
         }
-    } catch (audioException ex) {
-        switch (ex) {
-        case WRONG_LENGTH:
-            esyslog("dxr3: audiodecoder: wrong length");
-            break;
-
-        default:
-            esyslog("dxr3: audiodecoder: unexpected exception");
-            break;
-        }
-
-        esyslog("dxr3: audiodecoder: skipping %d broken data bytes", length);
-        Init();
     }
 }
 
