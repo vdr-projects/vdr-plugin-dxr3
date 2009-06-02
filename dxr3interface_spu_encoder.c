@@ -203,46 +203,6 @@ namespace XineScaler
  */
 #endif /* USE_XINE_SCALER */
 
-
-// ==================================
-// dec.
-cSpuData::~cSpuData()
-{
-    Clear();
-}
-
-// ==================================
-// free buffer and set it to 0
-void cSpuData::Clear()
-{
-    if (data)
-    {
-	free(data);
-	count = malloc_size = 0;
-    }
-}
-
-// ==================================
-// wirte a byte to spu buffer
-void cSpuData::WriteByte(uint8_t byte)
-{
-    if (count >= malloc_size)
-    {
-	data = (u_char*) realloc(data, malloc_size += 2048);
-    }
-    data[count++] = byte;
-}
-
-// ==================================
-void cSpuData::WriteNibble(int *higher_nibble, uint8_t nibble)
-{
-}
-
-// ==================================
-void cSpuData::WriteRle(int *higher_nibble, int length, int color)
-{
-}
-
 // ==================================
 cSPUEncoder::cSPUEncoder()
 {

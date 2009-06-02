@@ -54,31 +54,6 @@ struct sRectal
 };
 
 // ==================================
-// our spu(data) with all needed routines
-class cSpuData
-{
-public:
-    cSpuData(): count(0), malloc_size(0) {}
-    ~cSpuData();
-
-    void Clear();
-    u_char* GetData() const
-    {
-	return data;
-    }
-
-    // write operations
-    void WriteByte(uint8_t byte);
-    void WriteNibble(int *higher_nibble, uint8_t nibble);
-    void WriteRle(int *higher_nibble, int length, int color);
-
-private:
-    u_char *data;
-    size_t count;			// the count of bytes written
-    size_t malloc_size;			// size of data
-};
-
-// ==================================
 struct  pixbuf
 {
     int x, y;
