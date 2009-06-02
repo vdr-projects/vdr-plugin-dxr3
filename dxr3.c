@@ -29,22 +29,22 @@ eOSState cDxr3OsdItem::ProcessKey(eKeys Key)
 	switch (m_item)
 	{
 	case DXR3_RESET_HARDWARE:
-	    cDxr3Interface::Instance().ResetHardware();
+	    cDxr3Interface::instance()->ResetHardware();
 	    //cDxr3Device::Instance().Reset();
 	    break;
 
 	case DXR3_FORCE_LETTER_BOX:
-	    cDxr3ConfigData::Instance().SetForceLetterBox(
-		!cDxr3ConfigData::Instance().GetForceLetterBox());
+	    cDxr3ConfigData::instance()->SetForceLetterBox(
+		!cDxr3ConfigData::instance()->GetForceLetterBox());
 	    break;
 
 	case DXR3_ANALOG_OUT:
-	    cDxr3ConfigData::Instance().SetUseDigitalOut(0);
+	    cDxr3ConfigData::instance()->SetUseDigitalOut(0);
 	    //cDxr3Device::Instance().Reset();
 	    break;
 
 	case DXR3_DIGITAL_OUT:
-	    cDxr3ConfigData::Instance().SetUseDigitalOut(1);
+	    cDxr3ConfigData::instance()->SetUseDigitalOut(1);
 	    //cDxr3Device::Instance().Reset();
 	    break;
 	}
@@ -57,34 +57,34 @@ eOSState cDxr3OsdItem::ProcessKey(eKeys Key)
 // setup menu
 cMenuSetupDxr3::cMenuSetupDxr3(void)
 {
-    newBrightness = cDxr3ConfigData::Instance().GetBrightness();
+    newBrightness = cDxr3ConfigData::instance()->GetBrightness();
     Add(new cMenuEditIntItem(tr("Brightness"),
 			     &newBrightness, 0, 999));
-    newContrast = cDxr3ConfigData::Instance().GetContrast();
+    newContrast = cDxr3ConfigData::instance()->GetContrast();
     Add(new cMenuEditIntItem(tr("Contrast"),
 			     &newContrast, 0, 999));
-    newSaturation = cDxr3ConfigData::Instance().GetSaturation();
+    newSaturation = cDxr3ConfigData::instance()->GetSaturation();
     Add(new cMenuEditIntItem(tr("Saturation"),
 			     &newSaturation, 0, 999));
-    newVideoMode = (int) cDxr3ConfigData::Instance().GetVideoMode();
+    newVideoMode = (int) cDxr3ConfigData::instance()->GetVideoMode();
     menuVideoModes[0] = tr("PAL");
     menuVideoModes[1] = tr("PAL60");
     menuVideoModes[2] = tr("NTSC");
     Add(new cMenuEditStraItem(tr("Video mode"),
 			      &newVideoMode, 3, menuVideoModes));
-    newUseWSS = cDxr3ConfigData::Instance().GetUseWSS();
+    newUseWSS = cDxr3ConfigData::instance()->GetUseWSS();
 #ifdef EM8300_IOCTL_SET_WSS
     Add(new cMenuEditBoolItem(tr("Use widescreen signaling (WSS)"),
 			      &newUseWSS));
 #endif
-    newUseDigitalOut = cDxr3ConfigData::Instance().GetUseDigitalOut();
+    newUseDigitalOut = cDxr3ConfigData::instance()->GetUseDigitalOut();
     Add(new cMenuEditBoolItem(tr("Digital audio output"), &newUseDigitalOut));
-    newOsdFlushRate = cDxr3ConfigData::Instance().GetOsdFlushRate();
+    newOsdFlushRate = cDxr3ConfigData::instance()->GetOsdFlushRate();
     Add(new cMenuEditIntItem(tr("OSD flush rate (ms)"),
 			     &newOsdFlushRate, 0, 255));
-    newHideMenu = cDxr3ConfigData::Instance().GetHideMenu();
+    newHideMenu = cDxr3ConfigData::instance()->GetHideMenu();
     Add(new cMenuEditBoolItem(tr("Hide main menu entry"), &newHideMenu));
-    newDxr3Card = cDxr3ConfigData::Instance().GetDxr3Card();
+    newDxr3Card = cDxr3ConfigData::instance()->GetDxr3Card();
     Add(new cMenuEditIntItem(tr("Card number"),
 			     &newDxr3Card, 0, DXR3_MAX_CARDS - 1));
 }
@@ -94,30 +94,30 @@ cMenuSetupDxr3::cMenuSetupDxr3(void)
 void cMenuSetupDxr3::Store(void)
 {
     SetupStore("Brightness",
-	       cDxr3ConfigData::Instance().SetBrightness(newBrightness));
+	       cDxr3ConfigData::instance()->SetBrightness(newBrightness));
     SetupStore("Contrast",
-	       cDxr3ConfigData::Instance().SetContrast(newContrast));
+	       cDxr3ConfigData::instance()->SetContrast(newContrast));
     SetupStore("Saturation",
-	       cDxr3ConfigData::Instance().SetSaturation(newSaturation));
+	       cDxr3ConfigData::instance()->SetSaturation(newSaturation));
     SetupStore("Dxr3VideoMode",
-	       cDxr3ConfigData::Instance().SetVideoMode(
+	       cDxr3ConfigData::instance()->SetVideoMode(
 		   (eVideoMode) newVideoMode));
     SetupStore("UseWSS",
-	       cDxr3ConfigData::Instance().SetUseWSS(newUseWSS));
+	       cDxr3ConfigData::instance()->SetUseWSS(newUseWSS));
     SetupStore("UseDigitalOut",
-	       cDxr3ConfigData::Instance().SetUseDigitalOut(newUseDigitalOut));
+	       cDxr3ConfigData::instance()->SetUseDigitalOut(newUseDigitalOut));
     SetupStore("OsdFlushRate",
-	       cDxr3ConfigData::Instance().SetOsdFlushRate(newOsdFlushRate));
+	       cDxr3ConfigData::instance()->SetOsdFlushRate(newOsdFlushRate));
     SetupStore("HideMenu",
-	       cDxr3ConfigData::Instance().SetHideMenu(newHideMenu));
+	       cDxr3ConfigData::instance()->SetHideMenu(newHideMenu));
     SetupStore("Dxr3Card",
-	       cDxr3ConfigData::Instance().SetDxr3Card(newDxr3Card));
+	       cDxr3ConfigData::instance()->SetDxr3Card(newDxr3Card));
 
     // Apply (some of the) settings
-    cDxr3Interface::Instance().SetBrightness(newBrightness);
-    cDxr3Interface::Instance().SetContrast(newContrast);
-    cDxr3Interface::Instance().SetSaturation(newSaturation);
-    //cDxr3Device::Instance().Reset();
+    cDxr3Interface::instance()->SetBrightness(newBrightness);
+    cDxr3Interface::instance()->SetContrast(newContrast);
+    cDxr3Interface::instance()->SetSaturation(newSaturation);
+    //cDxr3Device::instance()->Reset();
 }
 
 // ==================================
@@ -151,7 +151,7 @@ cPluginDxr3::cPluginDxr3()
     // Initialize any member variables here.
     // DON'T DO ANYTHING ELSE THAT MAY HAVE SIDE EFFECTS, REQUIRE GLOBAL
     // VDR OBJECTS TO EXIST OR PRODUCE ANY OUTPUT!
-    cDxr3ConfigData::Instance();
+    cDxr3ConfigData::instance();
 }
 
 // ==================================
@@ -177,47 +177,47 @@ bool cPluginDxr3::SetupParse(const char *Name, const char *Value)
 {
     if (!strcasecmp(Name, "UseDigitalOut"))
     {
-	cDxr3ConfigData::Instance().SetUseDigitalOut(atoi(Value));
+	cDxr3ConfigData::instance()->SetUseDigitalOut(atoi(Value));
 	return true;
     }
     if (!strcasecmp(Name, "Dxr3Card"))
     {
-	cDxr3ConfigData::Instance().SetDxr3Card(atoi(Value));
+	cDxr3ConfigData::instance()->SetDxr3Card(atoi(Value));
 	return true;
     }
     if (!strcasecmp(Name, "Dxr3VideoMode"))
     {
-	cDxr3ConfigData::Instance().SetVideoMode((eVideoMode) atoi(Value));
+	cDxr3ConfigData::instance()->SetVideoMode((eVideoMode) atoi(Value));
 	return true;
     }
     if (!strcasecmp(Name, "UseWSS"))
     {
-	cDxr3ConfigData::Instance().SetUseWSS(atoi(Value));
+	cDxr3ConfigData::instance()->SetUseWSS(atoi(Value));
 	return true;
     }
     if (!strcasecmp(Name, "HideMenu"))
     {
-	cDxr3ConfigData::Instance().SetHideMenu(atoi(Value));
+	cDxr3ConfigData::instance()->SetHideMenu(atoi(Value));
 	return true;
     }
     if (!strcasecmp(Name, "OsdFlushRate"))
     {
-	cDxr3ConfigData::Instance().SetOsdFlushRate(atoi(Value));
+	cDxr3ConfigData::instance()->SetOsdFlushRate(atoi(Value));
 	return true;
     }
     if (!strcasecmp(Name, "Brightness"))
     {
-	cDxr3ConfigData::Instance().SetBrightness(atoi(Value));
+	cDxr3ConfigData::instance()->SetBrightness(atoi(Value));
 	return true;
     }
     if (!strcasecmp(Name, "Contrast"))
     {
-	cDxr3ConfigData::Instance().SetContrast(atoi(Value));
+	cDxr3ConfigData::instance()->SetContrast(atoi(Value));
 	return true;
     }
     if (!strcasecmp(Name, "Saturation"))
     {
-	cDxr3ConfigData::Instance().SetSaturation(atoi(Value));
+	cDxr3ConfigData::instance()->SetSaturation(atoi(Value));
 	return true;
     }
 
@@ -227,7 +227,7 @@ bool cPluginDxr3::SetupParse(const char *Name, const char *Value)
 // ==================================
 const char* cPluginDxr3::MainMenuEntry()
 {
-    return cDxr3ConfigData::Instance().GetHideMenu() ?
+    return cDxr3ConfigData::instance()->GetHideMenu() ?
 	NULL : tr(MAINMENUENTRY);
 }
 
@@ -265,19 +265,19 @@ cString cPluginDxr3::SVDRPCommand(const char *Command, const char *Option,
 				  int &ReplyCode)
 {
     if (!strcasecmp(Command, "BRI")) {
-        cDxr3Interface::Instance().SetBrightness(atoi(Option));
+        cDxr3Interface::instance()->SetBrightness(atoi(Option));
         return cString::sprintf("Brightness set to %d",
-				cDxr3Interface::Instance().GetBrightness());
+				cDxr3Interface::instance()->GetBrightness());
     }
     if (!strcasecmp(Command, "CON")) {
-        cDxr3Interface::Instance().SetContrast(atoi(Option));
+        cDxr3Interface::instance()->SetContrast(atoi(Option));
         return cString::sprintf("Contrast set to %d",
-				cDxr3Interface::Instance().GetContrast());
+				cDxr3Interface::instance()->GetContrast());
     }
     if (!strcasecmp(Command, "SAT")) {
-        cDxr3Interface::Instance().SetSaturation(atoi(Option));
+        cDxr3Interface::instance()->SetSaturation(atoi(Option));
         return cString::sprintf("Saturation set to %d",
-				cDxr3Interface::Instance().GetSaturation());
+				cDxr3Interface::instance()->GetSaturation());
     }
     if (!strcasecmp(Command, "SDO")) {
         device->getAudioOutput()->setAudioMode(iAudio::DigitalPcm);

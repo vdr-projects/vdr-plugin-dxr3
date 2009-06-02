@@ -38,7 +38,7 @@ void cAudioOss::openDevice()
         exit(1);
     }
 
-    if (cDxr3ConfigData::Instance().GetUseDigitalOut()) {
+    if (cDxr3ConfigData::instance()->GetUseDigitalOut()) {
         dsyslog("[dxr3-audio-oss] audio mode: digital");
         setAudioMode(DigitalPcm);
     } else {
@@ -105,7 +105,7 @@ void cAudioOss::setAudioMode(AudioMode mode)
 
     // we need to do it this way, as we dont have access
     // to the file handle for the conrtol sub device.
-    if (cDxr3Interface::Instance().OssSetPlayMode(ioval)) {
+    if (cDxr3Interface::instance()->OssSetPlayMode(ioval)) {
         this->mode = mode;
     }
 }

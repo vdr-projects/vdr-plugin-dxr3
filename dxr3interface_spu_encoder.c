@@ -302,7 +302,7 @@ int cSPUEncoder::Flush(cPalette *Palette)
 		| (Colors[i] & 0x00FF00) | ((Colors[i] & 0xFF0000) >> 16);
 	    palcolors[i] = Tools::Rgb2YCrCb(color);
 	}
-	cDxr3Interface::Instance().SetPalette(palcolors);
+	cDxr3Interface::instance()->SetPalette(palcolors);
     }
 
     // calculate osd size (actually dead code)
@@ -317,7 +317,7 @@ int cSPUEncoder::Flush(cPalette *Palette)
 
     if (m_encodeddata.count <= DATASIZE)
     {
-	cDxr3Interface::Instance().WriteSpu((uint8_t*) &m_encodeddata,
+	cDxr3Interface::instance()->WriteSpu((uint8_t*) &m_encodeddata,
 					    m_encodeddata.count);
 	return 0;
     }
@@ -365,8 +365,8 @@ void cSPUEncoder::EncodePixelbufRle(int x, int y, int w, int h, u_char *inbuf,
     pb.y = h;
 
 #ifdef USE_XINE_SCALER
-    int ws = cDxr3Interface::Instance().GetHorizontalSize();
-    int hs = cDxr3Interface::Instance().GetVerticalSize();
+    int ws = cDxr3Interface::instance()->GetHorizontalSize();
+    int hs = cDxr3Interface::instance()->GetVerticalSize();
     if (ws < 720 || hs < 576)
 	inbuf = XineScaler::ScaleBitmapLQ(inbuf, OSD_Screen2, 0, 0, OSDWIDTH,
 					  OSDHEIGHT, ws, hs, 0, 0, ws, hs,
@@ -658,7 +658,7 @@ void cSPUEncoder::StopSpu(void)
 
     /* 0xFF: end sequence */
     ed[9] = 0xFF;
-    cDxr3Interface::Instance().WriteSpu(ed, 10);
+    cDxr3Interface::instance()->WriteSpu(ed, 10);
 }
 
 // ==================================

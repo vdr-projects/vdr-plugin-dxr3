@@ -105,10 +105,10 @@ void cFixedLengthFrame::SetPts(uint32_t pts)
 
 // ==================================
 //! constructor
-cDxr3SyncBuffer::cDxr3SyncBuffer(int frameCount, int frameLength,
-				 cDxr3Interface& dxr3Device) :
-    cRingBuffer(frameCount, true), m_dxr3Device(dxr3Device)
+cDxr3SyncBuffer::cDxr3SyncBuffer(int frameCount, int frameLength) :
+    cRingBuffer(frameCount, true)
 {
+    m_dxr3Device = cDxr3Interface::instance();
     m_pBuffer = new cFixedLengthFrame[frameCount];
 
     // got we a valid m_pBuffer?
@@ -157,7 +157,7 @@ const int BUFFER_LIMIT_2 = 10;
 bool cDxr3SyncBuffer::Poll(int TimeoutMs)
 {
     bool retVal = true;
-    uint32_t currTime = m_dxr3Device.GetSysClock();
+    uint32_t currTime = m_dxr3Device->GetSysClock();
     struct timeval tv_start, tv;
     m_bPollSync = true;
     gettimeofday(&tv_start, NULL);
@@ -165,7 +165,7 @@ bool cDxr3SyncBuffer::Poll(int TimeoutMs)
         if (Available() >= Size() - (Size()*BUFFER_LIMIT/100)) {
             m_bPollSync = true;
             while ((Available() >= Size() - (Size()*BUFFER_LIMIT_2)/100) &&
-               ((m_dxr3Device.GetSysClock() - currTime) <
+               ((m_dxr3Device->GetSysClock() - currTime) <
                 ((uint32_t)TimeoutMs * (uint32_t)45)))
             {
                 int d_s, d_us, ms;

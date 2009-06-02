@@ -60,7 +60,7 @@ public:
     ~cDxr3Interface();
 
     static int Dxr3Open(const char *name, int mode, bool report_error = true) {
-        const char *filename = *cDxr3Name(name, cDxr3ConfigData::Instance().GetDxr3Card());
+        const char *filename = *cDxr3Name(name, cDxr3ConfigData::instance()->GetDxr3Card());
         int fd = open(filename, mode);
 
         if (report_error && (fd < 0)) {

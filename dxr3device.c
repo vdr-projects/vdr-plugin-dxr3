@@ -32,7 +32,7 @@
 
 // ==================================
 //! constructor
-cDxr3Device::cDxr3Device() : m_DemuxDevice(cDxr3Interface::Instance())
+cDxr3Device::cDxr3Device()
 {
     m_spuDecoder = NULL;
 
@@ -85,7 +85,7 @@ bool cDxr3Device::CanReplay() const
 bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
 {
     if (PlayMode != pmExtern_THIS_SHOULD_BE_AVOIDED) {
-        cDxr3Interface::Instance().ClaimDevices();
+        cDxr3Interface::instance()->ClaimDevices();
         audioOut->openDevice();
     }
 
@@ -94,7 +94,7 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
     switch (PlayMode) {
     case pmExtern_THIS_SHOULD_BE_AVOIDED:
         Tools::WriteInfoToOsd(tr("DXR3: releasing devices"));
-        cDxr3Interface::Instance().ReleaseDevices();
+        cDxr3Interface::instance()->ReleaseDevices();
         audioOut->releaseDevice();
         break;
 
@@ -116,7 +116,7 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
 // ==================================
 int64_t cDxr3Device::GetSTC()
 {
-    return cDxr3Interface::Instance().GetPts();
+    return cDxr3Interface::instance()->GetPts();
 }
 
 // ==================================
@@ -202,7 +202,7 @@ int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
 // ==================================
 void cDxr3Device::SetVideoFormat(bool VideoFormat16_9)
 {
-    cDxr3Interface::Instance().SetAspectRatio(
+    cDxr3Interface::instance()->SetAspectRatio(
 	VideoFormat16_9 ? EM8300_ASPECTRATIO_16_9 : EM8300_ASPECTRATIO_4_3);
 }
 

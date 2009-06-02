@@ -71,8 +71,8 @@ cDxr3Osd::cDxr3Osd(int Left, int Top, uint Level)
     shown = false;
     Palette = new cPalette(4);
     last = new cTimeMs();
-    last->Set(-cDxr3ConfigData::Instance().GetOsdFlushRate());
-    Spu = &cSPUEncoder::Instance();
+    last->Set(-cDxr3ConfigData::instance()->GetOsdFlushRate());
+    Spu = cSPUEncoder::instance();
 }
 
 // ==================================
@@ -148,7 +148,7 @@ void cDxr3Osd::Flush()
 {
     if (!Active())
         return;
-    if (last->Elapsed() < cDxr3ConfigData::Instance().GetOsdFlushRate())
+    if (last->Elapsed() < cDxr3ConfigData::instance()->GetOsdFlushRate())
 	return;
     last->Set();
 

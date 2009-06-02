@@ -69,7 +69,7 @@ public:
 	Add(new cDxr3OsdItem(hk(tr("Toggle force letterbox")),
 			     DXR3_FORCE_LETTER_BOX));
 
-	if (cDxr3ConfigData::Instance().GetUseDigitalOut())
+	if (cDxr3ConfigData::instance()->GetUseDigitalOut())
 	    Add(new cDxr3OsdItem(hk(tr("Switch to analog audio output")),
 				 DXR3_ANALOG_OUT));
 	else

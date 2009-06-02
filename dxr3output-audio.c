@@ -27,14 +27,13 @@
 
 // ==================================
 const int AUDIO_OFFSET = 4500;
-#define SCR m_dxr3Device.GetSysClock()
+#define SCR m_dxr3Device->GetSysClock()
 // ==================================
 
 // ==================================
 //! constr.
-cDxr3AudioOutThread::cDxr3AudioOutThread(cDxr3Interface& dxr3Device,
-					 cDxr3SyncBuffer& buffer) :
-    cDxr3OutputThread(dxr3Device, buffer)
+cDxr3AudioOutThread::cDxr3AudioOutThread(cDxr3SyncBuffer& buffer) :
+    cDxr3OutputThread(buffer)
 {
     SetDescription("DXR3 audio output");
 }
@@ -73,7 +72,7 @@ void cDxr3AudioOutThread::Action()
 
 		if (pts && (pts < SCR) && ((SCR - pts) > 5000))
 		{
-		    m_dxr3Device.SetSysClock(pts + 1 * AUDIO_OFFSET);
+		    m_dxr3Device->SetSysClock(pts + 1 * AUDIO_OFFSET);
 		    PlayFrame(pNext);
 		    if (m_buffer.IsPolled())
 		    {
@@ -119,7 +118,7 @@ void cDxr3AudioOutThread::PlayFrame(cFixedLengthFrame *frame)
     }
 
     // volume changes
-    if (!cDxr3Interface::Instance().IsAudioModeAC3()) {
+    if (!cDxr3Interface::instance()->IsAudioModeAC3()) {
         audioOutput->changeVolume((short *)frame->GetData(), (size_t)frame->GetCount());
     }
 
@@ -132,7 +131,7 @@ void cDxr3AudioOutThread::PlayFrame(cDxr3PesFrame *frame)
     audioOutput->setup(frame->GetSampleContext());
 
     // volume changes
-    if (!cDxr3Interface::Instance().IsAudioModeAC3()) {
+    if (!cDxr3Interface::instance()->IsAudioModeAC3()) {
         audioOutput->changeVolume((short *)frame->GetDecoded(), (size_t)frame->GetDecodedSize());
     }
 

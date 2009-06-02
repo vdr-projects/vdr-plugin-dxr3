@@ -1,7 +1,7 @@
 /*
  * dxr3singleton.h
  *
- * Copyright (C) 2004 Christian Gmeiner
+ * Copyright (C) 2004-2009 Christian Gmeiner
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -22,30 +22,43 @@
 #ifndef _DXR3_SINGLETON_H_
 #define _DXR3_SINGLETON_H_
 
-// ==================================
-//!  A singleton template.
-/*!
-  Is a nice solution to use only
-  one instance of a class.
-*/
+#include <memory>
+#include <vdr/thread.h>
+
 template <class T>
-class Singleton {
+class Singleton
+{
 public:
-    virtual ~Singleton()    {}
-    static T& Instance();
+    static T *instance() {
+
+        // use double-checked looking
+        // see http://en.wikipedia.org/wiki/Double-checked_locking
+        if (inst.get() == 0) {
+            m.Lock();
+            if (inst.get() == 0) {
+                inst = std::auto_ptr<T>(new T);
+            }
+            m.Unlock();
+        }
+
+        return inst.get();
+    }
+
+    virtual ~Singleton() { };
 
 protected:
-    Singleton() {}
+    Singleton() { }
 
 private:
-    Singleton(const Singleton&);
+    static std::auto_ptr<T> inst;
+    static cMutex m;
 };
 
-template <class T>
-T& Singleton<T>::Instance() {
-    static T instance;
-    return instance;
-}
+template<class T>
+std::auto_ptr<T> Singleton<T>::inst(0);
+
+template<class T>
+cMutex Singleton<T>::m;
 
 #endif /*_DXR3_SINGLETON_H_*/
 

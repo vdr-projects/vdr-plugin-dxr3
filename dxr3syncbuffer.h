@@ -84,8 +84,7 @@ public:
 	SYNC_BUFFER_OVERRUN
     };
 public:
-    cDxr3SyncBuffer(int frameCount, int frameLength,
-		    cDxr3Interface& dxr3Device);
+    cDxr3SyncBuffer(int frameCount, int frameLength);
     ~cDxr3SyncBuffer();
 
     virtual int Available(void);
@@ -135,7 +134,7 @@ private:
 
     cCondVar receiverStopped;
     cMutex receiverStoppedMutex;
-    cDxr3Interface& m_dxr3Device;
+    cDxr3Interface *m_dxr3Device;
     bool m_bPollSync;
 
     cDxr3SyncBuffer(); // you are not allowed to use this constructor

@@ -30,7 +30,7 @@ void cAudioAlsa::openDevice()
         return;
 
     // generate alsa card name
-    int card = cDxr3ConfigData::Instance().GetDxr3Card();
+    int card = cDxr3ConfigData::instance()->GetDxr3Card();
     string cardname = "EM8300";
 
     if (card > 0) {

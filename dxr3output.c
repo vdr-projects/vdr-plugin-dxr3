@@ -24,10 +24,9 @@
 
 // ==================================
 //! constructor
-cDxr3OutputThread::cDxr3OutputThread(cDxr3Interface& dxr3Device,
-				     cDxr3SyncBuffer& buffer) :
+cDxr3OutputThread::cDxr3OutputThread(cDxr3SyncBuffer& buffer) :
     cThread(),
-    m_dxr3Device(dxr3Device),
+    m_dxr3Device(cDxr3Interface::instance()),
     m_buffer(buffer),
     m_bNeedResync(false)
 {

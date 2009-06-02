@@ -23,13 +23,12 @@
 #include <time.h>
 #include "dxr3output.h"
 
-#define SCR m_dxr3Device.GetSysClock()
+#define SCR m_dxr3Device->GetSysClock()
 
 // ==================================
 //! constr.
-cDxr3VideoOutThread::cDxr3VideoOutThread(cDxr3Interface& dxr3Device,
-					 cDxr3SyncBuffer& buffer) :
-    cDxr3OutputThread(dxr3Device, buffer)
+cDxr3VideoOutThread::cDxr3VideoOutThread(cDxr3SyncBuffer& buffer) :
+    cDxr3OutputThread(buffer)
 {
     SetDescription("DXR3 video output");
 }
@@ -52,14 +51,14 @@ void cDxr3VideoOutThread::Action()
 
 	    if (pts > SCR && abs((int)pts - (int)SCR) < 7500)
 	    {
-		m_dxr3Device.SetPts(pts);
+		m_dxr3Device->SetPts(pts);
 	    }
 
 	    if (!pts || pts < SCR)
 	    {
 		if (m_buffer.Available())
 		{
-		    m_dxr3Device.PlayVideoFrame(pNext);
+		    m_dxr3Device->PlayVideoFrame(pNext);
 		    m_buffer.Pop();
 		}
 	    }
@@ -67,12 +66,12 @@ void cDxr3VideoOutThread::Action()
 	    {
 		if ((pts > SCR) && abs((int)pts - (int)SCR) < 7500)
 		{
-		    m_dxr3Device.SetPts(pts);
+		    m_dxr3Device->SetPts(pts);
 
 		    if (m_buffer.Available() && pNext->GetData() &&
 			pNext->GetCount())
 		    {
-			m_dxr3Device.PlayVideoFrame(pNext);
+			m_dxr3Device->PlayVideoFrame(pNext);
 			m_buffer.Pop();
 		    }
 		}
@@ -80,7 +79,7 @@ void cDxr3VideoOutThread::Action()
 		{
 		    if (pts < SCR)
 		    {
-			m_dxr3Device.PlayVideoFrame(pNext);
+			m_dxr3Device->PlayVideoFrame(pNext);
 			m_buffer.Pop();
 		    }
 		}

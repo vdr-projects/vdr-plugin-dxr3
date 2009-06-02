@@ -186,7 +186,7 @@ void cDxr3Interface::SetAspectRatio(uint32_t ratio)
 
     Lock();
 
-    if (cDxr3ConfigData::Instance().GetForceLetterBox())
+    if (cDxr3ConfigData::instance()->GetForceLetterBox())
 	ratio = EM8300_ASPECTRATIO_16_9;
 
     if (ratio != UNKNOWN_ASPECT_RATIO)
@@ -588,7 +588,7 @@ void cDxr3Interface::UploadMicroCode()
 //! config and setup device via ioctl calls
 void cDxr3Interface::ConfigureDevice()
 {
-    uint32_t videomode = cDxr3ConfigData::Instance().GetVideoMode();
+    uint32_t videomode = cDxr3ConfigData::instance()->GetVideoMode();
 
     switch (videomode) {
     case PAL:
@@ -609,9 +609,9 @@ void cDxr3Interface::ConfigureDevice()
     }
 
     // set brightness/contrast/saturation
-    m_bcs.brightness = cDxr3ConfigData::Instance().GetBrightness();
-    m_bcs.contrast = cDxr3ConfigData::Instance().GetContrast();
-    m_bcs.saturation = cDxr3ConfigData::Instance().GetSaturation();
+    m_bcs.brightness = cDxr3ConfigData::instance()->GetBrightness();
+    m_bcs.contrast = cDxr3ConfigData::instance()->GetContrast();
+    m_bcs.saturation = cDxr3ConfigData::instance()->GetSaturation();
     dsyslog("dxr3: configure: brightness=%d,contrast=%d,saturation=%d",
 	    m_bcs.brightness, m_bcs.contrast, m_bcs.saturation);
     if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) == -1) {

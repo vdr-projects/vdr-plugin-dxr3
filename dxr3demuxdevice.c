@@ -24,21 +24,21 @@
 
 // ==================================
 //! constructor
-cDxr3DemuxDevice::cDxr3DemuxDevice(cDxr3Interface& dxr3Device) :
-    m_dxr3Device(dxr3Device),
-    m_aBuf(AUDIO_MAX_BUFFER_SIZE, AUIDO_MAX_FRAME_SIZE, m_dxr3Device),
-    m_vBuf(VIDEO_MAX_BUFFER_SIZE, VIDEO_MAX_FRAME_SIZE, m_dxr3Device)
+cDxr3DemuxDevice::cDxr3DemuxDevice() :
+    m_dxr3Device(cDxr3Interface::instance()),
+    m_aBuf(AUDIO_MAX_BUFFER_SIZE, AUIDO_MAX_FRAME_SIZE),
+    m_vBuf(VIDEO_MAX_BUFFER_SIZE, VIDEO_MAX_FRAME_SIZE)
 {
     m_ReUseFrame = 1;
     m_synchState = DXR3_DEMUX_UNSYNCHED;
     m_demuxMode = DXR3_DEMUX_OFF_MODE;
-    m_pAudioThread = new cDxr3AudioOutThread(dxr3Device, m_aBuf);
+    m_pAudioThread = new cDxr3AudioOutThread(m_aBuf);
     if (!m_pAudioThread) {
         esyslog("dxr3: fatal: unable to allocate memory for audio thread");
         exit(1);
     }
 
-    m_pVideoThread = new cDxr3VideoOutThread(dxr3Device, m_vBuf);
+    m_pVideoThread = new cDxr3VideoOutThread(m_vBuf);
     if (!m_pVideoThread) {
         esyslog("dxr3: fatal: unable to allocate memory for video thread");
         exit(1);
@@ -65,8 +65,8 @@ cDxr3DemuxDevice::~cDxr3DemuxDevice()
 // stop demuxing process
 void cDxr3DemuxDevice::Stop()
 {
-    m_dxr3Device.DisableVideo();
-    m_dxr3Device.DisableAudio();
+    m_dxr3Device->DisableVideo();
+    m_dxr3Device->DisableAudio();
     m_vBuf.Clear();
     m_aBuf.Clear();
     m_vBuf.WakeUp();
@@ -77,15 +77,15 @@ void cDxr3DemuxDevice::Stop()
     m_synchState = DXR3_DEMUX_UNSYNCHED;
     m_demuxMode = DXR3_DEMUX_OFF_MODE;
 
-    m_dxr3Device.PlayBlackFrame();
-    m_dxr3Device.ReOpenAudio();
+    m_dxr3Device->PlayBlackFrame();
+    m_dxr3Device->ReOpenAudio();
 }
 
 // ==================================
 void cDxr3DemuxDevice::Resync()
 {
-    m_dxr3Device.DisableVideo();
-    m_dxr3Device.DisableAudio();
+    m_dxr3Device->DisableVideo();
+    m_dxr3Device->DisableAudio();
     m_vBuf.Clear();
     m_aBuf.Clear();
     m_vBuf.WakeUp();
@@ -100,8 +100,8 @@ void cDxr3DemuxDevice::Resync()
 // ==================================
 void cDxr3DemuxDevice::Clear()
 {
-    m_dxr3Device.DisableVideo();
-    m_dxr3Device.DisableAudio();
+    m_dxr3Device->DisableVideo();
+    m_dxr3Device->DisableAudio();
     m_vBuf.Clear();
     m_aBuf.Clear();
     m_vBuf.WakeUp();
@@ -121,10 +121,10 @@ void cDxr3DemuxDevice::SetReplayMode()
 	if (m_demuxMode == DXR3_DEMUX_TRICK_MODE &&
 	    m_trickState == DXR3_FREEZE)
 	{
-	    m_dxr3Device.SetPlayMode();
-	    m_dxr3Device.SetSysClock(m_stopScr);
-	    m_dxr3Device.EnableVideo();
-	    m_dxr3Device.EnableAudio();
+	    m_dxr3Device->SetPlayMode();
+	    m_dxr3Device->SetSysClock(m_stopScr);
+	    m_dxr3Device->EnableVideo();
+	    m_dxr3Device->EnableAudio();
 	    m_vBuf.Start();
 	    m_aBuf.Start();
 	    m_vBuf.WakeUp();
@@ -145,13 +145,13 @@ void cDxr3DemuxDevice::SetTrickMode(eDxr3TrickState trickState, int Speed)
 {
     m_demuxMode = DXR3_DEMUX_TRICK_MODE;
     m_trickState = trickState;
-    m_dxr3Device.DisableAudio();
+    m_dxr3Device->DisableAudio();
 
     if (m_demuxMode == DXR3_DEMUX_TRICK_MODE &&
 	m_trickState == DXR3_FREEZE)
     {
-	m_stopScr = m_dxr3Device.GetSysClock();
-	// m_dxr3Device.Pause();
+	m_stopScr = m_dxr3Device->GetSysClock();
+	// m_dxr3Device->Pause();
 	m_vBuf.Stop();
 	m_aBuf.Stop();
     }
@@ -171,7 +171,7 @@ void cDxr3DemuxDevice::StillPicture(const uint8_t* buf, int length)
     m_aBuf.Clear();
     m_demuxMode = DXR3_DEMUX_TRICK_MODE;
     m_trickState = DXR3_FREEZE;
-    m_dxr3Device.SingleStep();
+    m_dxr3Device->SingleStep();
 
     dsyslog("dxr3: demux: stillpicture length: %d", length);
 
@@ -193,7 +193,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
     int scr = 0;
     int pcr = 0;
 
-    scr = m_dxr3Device.GetSysClock();
+    scr = m_dxr3Device->GetSysClock();
 
     //printf("vBuf size = %d\n", m_vBuf.Available());
     //printf("aBuf size = %d\n", m_aBuf.Available());
@@ -248,7 +248,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
 
     if (pesFrame->GetPesDataType() == cDxr3PesFrame::PES_VIDEO_DATA) {
         /*
-        m_dxr3Device.PlayVideoFrame(pesFrame->GetEsStart(),
+        m_dxr3Device->PlayVideoFrame(pesFrame->GetEsStart(),
                                     (int) (pesFrame->GetPayloadLength()));
         */
 
@@ -256,26 +256,26 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
             switch (pesFrame->GetFrameType()) {
             case I_FRAME:
                 dsyslog("dxr3: demux: I-frame");
-                m_dxr3Device.SingleStep();
+                m_dxr3Device->SingleStep();
                 bPlaySuc = true;
                 //if (bPlayedFrame) return length;
                 bPlayedFrame = true;
-                m_dxr3Device.SetHorizontalSize(pesFrame->GetHorizontalSize());
-                m_dxr3Device.SetVerticalSize(pesFrame->GetVerticalSize());
-                m_dxr3Device.PlayVideoFrame(pesFrame->GetPayload(), pesFrame->GetPayloadLength(), m_ReUseFrame);
+                m_dxr3Device->SetHorizontalSize(pesFrame->GetHorizontalSize());
+                m_dxr3Device->SetVerticalSize(pesFrame->GetVerticalSize());
+                m_dxr3Device->PlayVideoFrame(pesFrame->GetPayload(), pesFrame->GetPayloadLength(), m_ReUseFrame);
                 break;
 
             case UNKNOWN_FRAME:
                 dsyslog("dxr3: demux: unknown frame");
                 if (bPlaySuc) {
-                    m_dxr3Device.PlayVideoFrame(pesFrame->GetPayload(), pesFrame->GetPayloadLength(), m_ReUseFrame);
+                    m_dxr3Device->PlayVideoFrame(pesFrame->GetPayload(), pesFrame->GetPayloadLength(), m_ReUseFrame);
                 }
                 break;
 
             default:
                 dsyslog("dxr3: demux: default frame");
                 if (bPlaySuc) {
-                    m_dxr3Device.PlayVideoFrame(pesFrame->GetPayload(), pesFrame->GetPayloadLength(), m_ReUseFrame);
+                    m_dxr3Device->PlayVideoFrame(pesFrame->GetPayload(), pesFrame->GetPayloadLength(), m_ReUseFrame);
                 }
 
                 bPlaySuc = false;
@@ -283,12 +283,12 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
             }
 
         } else if (m_demuxMode == DXR3_DEMUX_VIDEO_ONLY_MODE) {
-            m_dxr3Device.PlayVideoFrame(pesFrame->GetPayload(), (int)(pesFrame->GetPayloadLength()));
+            m_dxr3Device->PlayVideoFrame(pesFrame->GetPayload(), (int)(pesFrame->GetPayloadLength()));
 
         } else if (m_synchState == DXR3_DEMUX_VIDEO_SYNCHED ||
                  m_synchState == DXR3_DEMUX_SYNCHED) {
-            m_dxr3Device.SetHorizontalSize(pesFrame->GetHorizontalSize());
-            m_dxr3Device.SetVerticalSize(pesFrame->GetVerticalSize());
+            m_dxr3Device->SetHorizontalSize(pesFrame->GetHorizontalSize());
+            m_dxr3Device->SetVerticalSize(pesFrame->GetVerticalSize());
             while (!Poll(100));
             cFixedLengthFrame* pTempFrame = m_vBuf.Push(pesFrame->GetPayload(), (int) (pesFrame->GetPayloadLength()), pts, ftVideo);
 
@@ -303,10 +303,10 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
             if (m_vBuf.GetFillLevel() > 5 && m_synchState != DXR3_DEMUX_SYNCHED) {
                 m_synchState = DXR3_DEMUX_SYNCHED;
                 pcr = vPts - PRE_BUFFER_LENGTH;
-                m_dxr3Device.SetSysClock(pcr);
-                m_dxr3Device.SetPlayMode();
-                m_dxr3Device.EnableVideo();
-                m_dxr3Device.EnableAudio();
+                m_dxr3Device->SetSysClock(pcr);
+                m_dxr3Device->SetPlayMode();
+                m_dxr3Device->EnableVideo();
+                m_dxr3Device->EnableAudio();
                 m_vBuf.Start();
                 m_aBuf.Start();
             }
@@ -314,8 +314,8 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
             if (pesFrame->GetFrameType() == I_FRAME) {
                 vPts = pts;
 
-                m_dxr3Device.SetHorizontalSize(pesFrame->GetHorizontalSize());
-                m_dxr3Device.SetVerticalSize(pesFrame->GetVerticalSize());
+                m_dxr3Device->SetHorizontalSize(pesFrame->GetHorizontalSize());
+                m_dxr3Device->SetVerticalSize(pesFrame->GetVerticalSize());
                 cFixedLengthFrame* pTempFrame = m_vBuf.Push(pesFrame->GetPayload(), (int) (pesFrame->GetPayloadLength()), pts, ftVideo);
                 // TODO: rework me
                 //if (!pTempFrame) /* Push Timeout */
@@ -337,10 +337,10 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
                     } else {
                         pcr = vPts - PRE_BUFFER_LENGTH;
                     }
-                    m_dxr3Device.SetSysClock(pcr);
-                    m_dxr3Device.SetPlayMode();
-                    m_dxr3Device.EnableVideo();
-                    m_dxr3Device.EnableAudio();
+                    m_dxr3Device->SetSysClock(pcr);
+                    m_dxr3Device->SetPlayMode();
+                    m_dxr3Device->EnableVideo();
+                    m_dxr3Device->EnableAudio();
                     m_vBuf.Start();
                     m_aBuf.Start();
                 }
@@ -349,16 +349,16 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
 
     } else if (pesFrame->GetPesDataType() == cDxr3PesFrame::PES_AUDIO_DATA
              && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
-             && !cDxr3Interface::Instance().IsAudioModeAC3()) {
+             && !cDxr3Interface::instance()->IsAudioModeAC3()) {
         if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
             m_synchState == DXR3_DEMUX_SYNCHED) {
             if (pts && m_synchState != DXR3_DEMUX_SYNCHED) {
                 m_synchState = DXR3_DEMUX_SYNCHED;
                 pcr = aPts - PRE_BUFFER_LENGTH;
-                m_dxr3Device.SetSysClock(pcr);
-                m_dxr3Device.SetPlayMode();
-                m_dxr3Device.EnableVideo();
-                m_dxr3Device.EnableAudio();
+                m_dxr3Device->SetSysClock(pcr);
+                m_dxr3Device->SetPlayMode();
+                m_dxr3Device->EnableVideo();
+                m_dxr3Device->EnableAudio();
                 m_vBuf.Start();
                 m_aBuf.Start();
             }
@@ -385,10 +385,10 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
                     } else {
                         pcr = vPts - PRE_BUFFER_LENGTH;
                     }
-                    m_dxr3Device.SetSysClock(pcr);
-                    m_dxr3Device.SetPlayMode();
-                    m_dxr3Device.EnableVideo();
-                    m_dxr3Device.EnableAudio();
+                    m_dxr3Device->SetSysClock(pcr);
+                    m_dxr3Device->SetPlayMode();
+                    m_dxr3Device->EnableVideo();
+                    m_dxr3Device->EnableAudio();
                     m_vBuf.Start();
                     m_aBuf.Start();
                 }
@@ -396,7 +396,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
         }
     } else if (pesFrame->GetPesDataType() == cDxr3PesFrame::PES_PRIVATE_DATA
              && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
-             && !cDxr3Interface::Instance().IsAudioModeAC3()
+             && !cDxr3Interface::instance()->IsAudioModeAC3()
              && !bAc3Dts) {
         if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
             m_synchState == DXR3_DEMUX_SYNCHED) {
@@ -420,10 +420,10 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
                     } else {
                         pcr = vPts - PRE_BUFFER_LENGTH;
                     }
-                    m_dxr3Device.SetSysClock(pcr);
-                    m_dxr3Device.SetPlayMode();
-                    m_dxr3Device.EnableVideo();
-                    m_dxr3Device.EnableAudio();
+                    m_dxr3Device->SetSysClock(pcr);
+                    m_dxr3Device->SetPlayMode();
+                    m_dxr3Device->EnableVideo();
+                    m_dxr3Device->EnableAudio();
                     m_vBuf.Start();
                     m_aBuf.Start();
                 }
@@ -431,7 +431,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
         }
     } else if (pesFrame->GetPesDataType() == cDxr3PesFrame::PES_PRIVATE_DATA
              && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
-             && cDxr3Interface::Instance().IsAudioModeAC3()
+             && cDxr3Interface::instance()->IsAudioModeAC3()
              && bAc3Dts) {
         if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
             m_synchState == DXR3_DEMUX_SYNCHED) {
@@ -461,10 +461,10 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
                     } else {
                         pcr = vPts - PRE_BUFFER_LENGTH;
                     }
-                    m_dxr3Device.SetSysClock(pcr);
-                    m_dxr3Device.SetPlayMode();
-                    m_dxr3Device.EnableVideo();
-                    m_dxr3Device.EnableAudio();
+                    m_dxr3Device->SetSysClock(pcr);
+                    m_dxr3Device->SetPlayMode();
+                    m_dxr3Device->EnableVideo();
+                    m_dxr3Device->EnableAudio();
                     m_vBuf.Start();
                     m_aBuf.Start();
                 }
@@ -497,9 +497,9 @@ int cDxr3DemuxDevice::DemuxAudioPes(const uint8_t* buf, int length)
         if (m_synchState != DXR3_DEMUX_AUDIO_SYNCHED &&
             syncCounter > 2) {
             m_synchState = DXR3_DEMUX_AUDIO_SYNCHED;
-            m_dxr3Device.SetPlayMode();
-            m_dxr3Device.EnableVideo();
-            m_dxr3Device.EnableAudio();
+            m_dxr3Device->SetPlayMode();
+            m_dxr3Device->EnableVideo();
+            m_dxr3Device->EnableAudio();
             m_vBuf.Start();
             m_aBuf.Start();
         }
