@@ -114,20 +114,10 @@ public:
         return m_verticalSize;
     }
 
-    SampleContext GetSampleContext() const
-    {
-        return ctx;
-    }
-
-    uint32_t GetDecodedSize() const
-    {
-        return decodedSize;
-    }
-
-    const int16_t *GetDecoded()
-    {
-        return decoded;
-    }
+    // needed for audio
+    uint32_t decodedSize;
+    int16_t *decoded;
+    SampleContext ctx;
 
 private:
     ePesDataType m_pesDataType;
@@ -142,11 +132,6 @@ private:
     uint32_t m_verticalSize;
 
     static uint32_t m_staticAspectRatio;
-
-    // needed for audio
-    uint32_t decodedSize;
-    const int16_t *decoded;
-    SampleContext ctx;
 
     static const uint32_t MAX_PES_HEADER_SIZE;
 };
