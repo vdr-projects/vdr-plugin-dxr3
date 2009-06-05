@@ -289,7 +289,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
                  m_synchState == DXR3_DEMUX_SYNCHED) {
             m_dxr3Device->SetHorizontalSize(pesFrame->GetHorizontalSize());
             m_dxr3Device->SetVerticalSize(pesFrame->GetVerticalSize());
-            while (!Poll(100));
+            while (!Poll(100)) {}
             cFixedLengthFrame* pTempFrame = m_vBuf.Push(pesFrame->GetPayload(), (int) (pesFrame->GetPayloadLength()), pts, ftVideo);
 
             // TODO: rework me
@@ -362,7 +362,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
                 m_vBuf.Start();
                 m_aBuf.Start();
             }
-            while(!Poll(100));
+            while(!Poll(100)) {}
             m_aDecoder.Decode(pesFrame, pts, m_aBuf);
 
         } else {
@@ -507,7 +507,7 @@ int cDxr3DemuxDevice::DemuxAudioPes(const uint8_t* buf, int length)
             syncCounter <= 2) {
             syncCounter++;
         }
-        while (!m_aBuf.Poll(100));
+        while (!m_aBuf.Poll(100)) {}
         m_aDecoder.DecodeLpcm(pesFrame, 0, m_aBuf);
     }
 

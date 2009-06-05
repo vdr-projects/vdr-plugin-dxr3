@@ -202,8 +202,9 @@ void cAudioEncapsulator::PutData(const uchar *data, int len)
 {
     if (!muteData)
     {
-	if (!frameData)
+	if (!frameData) {
 	    DEBUG("PutData() without frame\n");
+	}
 	while (frameData && len > 0)
 	{
 	    int l = std::min(len, frameCount);
@@ -594,8 +595,9 @@ cMultichannelAudio::cMultichannelAudio(cRingBufferFrame *rb)
     encapsulator = 0;
     ringBuffer = rb;
     fixed = false;
-    if (!ringBuffer)
-	DEBUG("multichannel: no ringbuffer!");
+    if (!ringBuffer) {
+        DEBUG("multichannel: no ringbuffer!");
+    }
 }
 
 cMultichannelAudio::~cMultichannelAudio()
