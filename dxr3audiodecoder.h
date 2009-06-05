@@ -47,6 +47,9 @@ public:
     void DecodeAc3Dts(const uint8_t* pPes, const uint8_t* buf, int length,
 		      uint32_t pts, cDxr3SyncBuffer &aBuf);
 
+
+    void decode(cDxr3PesFrame *frame);
+
     void Reset()
     {
     	ac3dtsDecoder.Clear();
@@ -76,5 +79,6 @@ private:
 // mode: c++
 // c-file-style: "stroustrup"
 // c-file-offsets: ((inline-open . 0))
-// indent-tabs-mode: t
+// tab-width: 4;
+// indent-tabs-mode: nil
 // End:

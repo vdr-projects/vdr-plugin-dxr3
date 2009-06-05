@@ -8,9 +8,9 @@ class cAudioEncapsulator;
 class cRingBufferFrame;
 
 // ==================================
-// Based on AC3overDVB Patch maintained 
-// by Stefan Huelswitt 
-class cMultichannelAudio : public cMutex 
+// Based on AC3overDVB Patch maintained
+// by Stefan Huelswitt
+class cMultichannelAudio : public cMutex
 {
 private:
     cAudioEncapsulator *encapsulator;
@@ -40,5 +40,6 @@ public:
 // mode: c++
 // c-file-style: "stroustrup"
 // c-file-offsets: ((inline-open . 0))
-// indent-tabs-mode: t
+// tab-width: 4;
+// indent-tabs-mode: nil
 // End:

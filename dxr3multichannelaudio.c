@@ -783,5 +783,6 @@ void cMultichannelAudio::Encapsulate(uchar *b, int length)
 // mode: c++
 // c-file-style: "stroustrup"
 // c-file-offsets: ((inline-open . 0))
-// indent-tabs-mode: t
+// tab-width: 4;
+// indent-tabs-mode: nil
 // End:

@@ -23,10 +23,10 @@
 #include "dxr3sysclock.h"
 
 // ==================================
-void cDxr3SysClock::SetSysClock(uint32_t scr) 
+void cDxr3SysClock::SetSysClock(uint32_t scr)
 {
     uint32_t sc;
-    
+
     mutex.Lock();
     ioctl(m_fdcontrol, EM8300_IOCTL_SCR_GET, &sc);
     m_offset = scr - sc;
@@ -34,11 +34,11 @@ void cDxr3SysClock::SetSysClock(uint32_t scr)
 }
 
 // ==================================
-uint32_t cDxr3SysClock::GetSysClock(void) 
+uint32_t cDxr3SysClock::GetSysClock(void)
 {
     uint32_t sc;
     uint32_t retval;
-    
+
     mutex.Lock();
     ioctl(m_fdcontrol, EM8300_IOCTL_SCR_GET, &sc);
     retval = sc + m_offset;
@@ -48,10 +48,10 @@ uint32_t cDxr3SysClock::GetSysClock(void)
 }
 
 // ==================================
-void cDxr3SysClock::SetPts(uint32_t pts) 
+void cDxr3SysClock::SetPts(uint32_t pts)
 {
     uint32_t newPts = 0;
-    
+
     mutex.Lock();
     newPts =  pts - m_offset;
     ioctl(m_fdvideo, EM8300_IOCTL_VIDEO_SETPTS, &newPts);
@@ -59,7 +59,7 @@ void cDxr3SysClock::SetPts(uint32_t pts)
 }
 
 // ==================================
-void cDxr3SysClock::SetSpuPts(uint32_t pts) 
+void cDxr3SysClock::SetSpuPts(uint32_t pts)
 {
     uint32_t newPts = 0;
 
@@ -73,5 +73,6 @@ void cDxr3SysClock::SetSpuPts(uint32_t pts)
 // mode: c++
 // c-file-style: "stroustrup"
 // c-file-offsets: ((inline-open . 0))
-// indent-tabs-mode: t
+// tab-width: 4;
+// indent-tabs-mode: nil
 // End:

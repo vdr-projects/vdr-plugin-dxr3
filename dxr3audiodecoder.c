@@ -246,6 +246,40 @@ void cDxr3AudioDecoder::DecodeAc3Dts(const uint8_t* pPes, const uint8_t* buf,
     }
 }
 
+/**
+ * \brief decoded payload of frame
+ */
+void cDxr3AudioDecoder::decode(cDxr3PesFrame *frame)
+{
+    int len;
+    int out_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;
+
+    const uint8_t *buf = frame->GetPayload();
+    int length = frame->GetPayloadLength();
+
+#if LIBAVCODEC_VERSION_INT < ((51<<16)+(29<<8)+0)
+    len = avcodec_decode_audio(
+#else
+    len = avcodec_decode_audio2(
+#endif
+    contextAudio, frame->decoded, &out_size, const_cast<uint8_t *>(buf), length);
+
+    if (len < 0) {
+        esyslog("[dxr3-decoder] failed to decode audio");
+        frame->decodedSize = 0;
+        return;
+    }
+
+    // can this happen?
+    if ((length - len) > 0) {
+        esyslog("[dxr3-decoder] TODO: more to decode");
+    }
+
+    frame->decodedSize = len;
+    frame->ctx.channels = contextAudio->channels;
+    frame->ctx.samplerate = contextAudio->sample_rate;
+}
+
 // ==================================
 //! checking routine
 bool cDxr3AudioDecoder::HeadCheck(unsigned long head)
@@ -272,5 +306,6 @@ bool cDxr3AudioDecoder::HeadCheck(unsigned long head)
 // mode: c++
 // c-file-style: "stroustrup"
 // c-file-offsets: ((inline-open . 0))
-// indent-tabs-mode: t
+// tab-width: 4;
+// indent-tabs-mode: nil
 // End:
