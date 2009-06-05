@@ -140,7 +140,7 @@ public:
     void SetButton(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey,
 		   uint32_t palette);
     void ClearButton();
-    void SetPalette(unsigned int *pal = NULL);
+    void SetPalette(unsigned int *pal);
 
     // helper functions for dxr3 main osd screen
     void ResetHardware();

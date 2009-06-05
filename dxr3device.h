@@ -76,12 +76,10 @@ public:
 
     iAudio *getAudioOutput() const      { return audioOut; }
 
-protected:
+private:
     ePlayMode m_PlayMode;
     cDxr3DemuxDevice m_DemuxDevice;
     cDxr3SpuDecoder* m_spuDecoder;
-
-private:
     iAudio *audioOut;
 };
 
