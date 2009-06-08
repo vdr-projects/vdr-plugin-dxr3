@@ -69,37 +69,54 @@ int cDxr3Interface::OssSetPlayMode(uint32_t mode)
 // ==================================
 void cDxr3Interface::SetSysClock(uint32_t scr)
 {
-	m_pClock->SetSysClock(scr);
+    uint32_t sc;
+
+    Lock();
+    ioctl(m_fdControl, EM8300_IOCTL_SCR_GET, &sc);
+    m_offset = scr - sc;
+    Unlock();
 }
 
 // ==================================
-uint32_t cDxr3Interface::GetSysClock() const
+uint32_t cDxr3Interface::GetSysClock()
 {
-	return m_pClock->GetSysClock();
+    uint32_t sc;
+    uint32_t retval;
+
+    Lock();
+    ioctl(m_fdControl, EM8300_IOCTL_SCR_GET, &sc);
+    retval = sc + m_offset;
+    Unlock();
+
+    return retval;
+}
+
+// ==================================
+void cDxr3Interface::SetPts(uint32_t pts)
+{
+    uint32_t newPts = 0;
+
+    Lock();
+    newPts =  pts - m_offset;
+    ioctl(m_fdVideo, EM8300_IOCTL_VIDEO_SETPTS, &newPts);
+    Unlock();
+}
+
+// ==================================
+void cDxr3Interface::SetSpuPts(uint32_t pts)
+{
+    uint32_t newPts = 0;
+
+    Lock();
+    newPts = (pts - m_offset) << 1;  // fix for DVD subtitles
+    ioctl(m_fdSpu, EM8300_IOCTL_SPU_SETPTS, &newPts);
+    Unlock();
 }
 
 // ==================================
 int64_t cDxr3Interface::GetPts()
 {
     return m_lastSeenPts << 1;
-}
-
-// ==================================
-void cDxr3Interface::SetPts(uint32_t pts)
-{
-	m_pClock->SetPts(pts);
-}
-
-// ==================================
-void cDxr3Interface::SetSpuPts(uint32_t pts)
-{
-	pts = pts >> 1;
-
-	if (pts > m_pClock->GetSysClock() &&
-	    pts - m_pClock->GetSysClock() < 100000)
-	{
-	    m_pClock->SetSpuPts(pts);
-	}
 }
 
 // state changes
@@ -417,19 +434,6 @@ void cDxr3Interface::ClaimDevices()
 	exit(1);
     }
 
-    // create clock
-    m_pClock = new cDxr3SysClock(m_fdControl, m_fdVideo, m_fdSpu);
-
-    // everything ok?
-    if (!m_pClock)
-    {
-	esyslog("dxr3: fatal: unable to allocate memory for em8300 clock");
-	close(m_fdControl);
-	close(m_fdVideo);
-	close(m_fdSpu);
-	exit(1);
-    }
-
     // set default values
     m_AudioActive = false;
     m_VideoActive = false;
@@ -474,8 +478,6 @@ void cDxr3Interface::ReleaseDevices()
     }
 
     m_aspectRatio = UNKNOWN_ASPECT_RATIO;
-    delete m_pClock;
-    m_pClock = NULL;
 }
 
 // tools

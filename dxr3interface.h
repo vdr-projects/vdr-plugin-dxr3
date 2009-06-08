@@ -29,7 +29,6 @@
 
 #include <vdr/tools.h>
 #include "dxr3configdata.h"
-#include "dxr3sysclock.h"
 
 // ==================================
 class cFixedLengthFrame;
@@ -77,7 +76,7 @@ public:
 
     // clock
     void SetSysClock(uint32_t scr);
-    uint32_t GetSysClock() const;
+    uint32_t GetSysClock();
     void SetPts(uint32_t pts);
     void SetSpuPts(uint32_t pts);
     int64_t GetPts();
@@ -160,8 +159,8 @@ private:
     int m_fdSpu;		///< filehandle for spu fifo of dxr3 card
     uint32_t m_lastSeenPts;
 
-    // dxr3 clock
-    cDxr3SysClock* m_pClock;	///< clock used for sync
+    // clock
+    uint32_t m_offset;
 
     uint32_t m_aspectRatio;	///< current used aspect ratio
     uint32_t m_horizontal;	///< horizontal size of current videostream
