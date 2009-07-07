@@ -65,6 +65,9 @@ void cAudioAlsa::releaseDevice()
 
 void cAudioAlsa::setup(const SampleContext& ctx)
 {
+    if (!open)
+        return;
+
     // look if ctx is different
     if (curContext.channels == ctx.channels && curContext.samplerate == ctx.samplerate) {
         return;
@@ -186,6 +189,9 @@ void cAudioAlsa::setup(const SampleContext& ctx)
 
 void cAudioAlsa::write(uchar* data, size_t size)
 {
+    if (!open)
+        return;
+
     snd_pcm_uframes_t frames = size / bytesFrame;
 
     if (frames == 0) {

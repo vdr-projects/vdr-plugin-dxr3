@@ -61,6 +61,9 @@ void cAudioOss::releaseDevice()
 
 void cAudioOss::setup(const SampleContext& ctx)
 {
+    if (!open)
+        return;
+
     // set sample rate
     if (curContext.samplerate != ctx.samplerate) {
         dsyslog("[dxr3-audio-oss] changing samplerate to %d (old %d) ", ctx.samplerate, curContext.samplerate);
@@ -78,6 +81,9 @@ void cAudioOss::setup(const SampleContext& ctx)
 
 void cAudioOss::write(uchar* data, size_t size)
 {
+    if (!open)
+        return;
+
     size_t ret = WriteAllOrNothing(fd, data, size, 1000, 10);
 
     if (ret != size) {

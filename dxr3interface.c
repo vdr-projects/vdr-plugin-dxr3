@@ -264,6 +264,12 @@ void cDxr3Interface::SetAspectRatio(uint32_t ratio)
 //! set playing mode and start sync engine
 void cDxr3Interface::SetPlayMode()
 {
+    // this is the case, when SVDRP command DOF was used and
+    // should be ignored.
+    if (m_fdControl == -1) {
+        return;
+    }
+
     em8300_register_t reg;
     int ioval;
 

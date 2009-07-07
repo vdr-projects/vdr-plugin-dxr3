@@ -76,11 +76,14 @@ public:
 
     iAudio *getAudioOutput() const      { return audioOut; }
 
+    void turnPlugin(bool on);
+
 private:
     ePlayMode m_PlayMode;
     cDxr3DemuxDevice m_DemuxDevice;
     cDxr3SpuDecoder* m_spuDecoder;
     iAudio *audioOut;
+    bool pluginOn;
 };
 
 #endif /*_DXR3_DEVICE_H_*/

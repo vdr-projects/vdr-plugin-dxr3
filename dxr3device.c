@@ -32,7 +32,7 @@
 
 // ==================================
 //! constructor
-cDxr3Device::cDxr3Device()
+cDxr3Device::cDxr3Device() : pluginOn(true)
 {
     m_spuDecoder = NULL;
 
@@ -178,6 +178,10 @@ bool cDxr3Device::Poll(cPoller &Poller, int TimeoutMs)
 //! actually plays the given data block as video
 int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 {
+    if (!pluginOn) {
+        return Length;
+    }
+
     return m_DemuxDevice.DemuxPes(Data, Length);
 }
 
@@ -185,6 +189,10 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 // plays additional audio streams, like Dolby Digital
 int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
 {
+    if (!pluginOn) {
+        return Length;
+    }
+
     bool isAc3 = ((Id & 0xF0) == 0x80) || Id == 0xbd;
 
     if (isAc3 && !audioOut->isAudioModeAC3())
@@ -233,6 +241,49 @@ cSpuDecoder *cDxr3Device::GetSpuDecoder()
         m_spuDecoder = new cDxr3SpuDecoder();
     }
     return m_spuDecoder;
+}
+
+void cDxr3Device::turnPlugin(bool on)
+{
+    // we have support for a very unique thing.
+    // it is possible to release the current
+    // used dxr3 device and make it so usable
+    // for other programs.
+    // and the unique thing is that VDR can run
+    // without interrupting it.
+
+
+    if (on) {
+
+        // check if we already at 'on' state
+        if (pluginOn) {
+            return;
+        }
+
+        // get full control over device
+        cDxr3Interface::instance()->ClaimDevices();
+        audioOut->openDevice();
+
+        // enable pes packet processing
+        pluginOn = true;
+
+    } else {
+
+        // check if we already at 'off' state
+        if (!pluginOn) {
+            return;
+        }
+
+        // clear buffer
+        m_DemuxDevice.Clear();
+
+        // release device and give control to somebody else
+        cDxr3Interface::instance()->ReleaseDevices();
+        audioOut->releaseDevice();
+
+        // disable pes packet processing
+        pluginOn = false;
+    }
 }
 
 // Local variables:

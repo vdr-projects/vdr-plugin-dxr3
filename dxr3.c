@@ -254,6 +254,11 @@ const char **cPluginDxr3::SVDRPHelpPages(void)
 	"    Switch to digital PCM audio output.",
 	"SAC3\n"
 	"    Switch to digital AC3 audio output.",
+    "DON\n"
+    "    Start plugin - take control of dxr3 card.",
+    "DOF\n"
+    "    Stop plugin - release used dxr3 card so it can be used by e.g. MMS.",
+
 	NULL
     };
 
@@ -290,6 +295,12 @@ cString cPluginDxr3::SVDRPCommand(const char *Command, const char *Option,
     if (!strcasecmp(Command, "SAC3")) {
         device->getAudioOutput()->setAudioMode(iAudio::Ac3);
         return "Switched to digital AC3 audio output";
+    }
+    if (!strcasecmp(Command, "DON")) {
+        device->turnPlugin(true);
+    }
+    if (!strcasecmp(Command, "DOF")) {
+        device->turnPlugin(false);
     }
 
     return NULL;
