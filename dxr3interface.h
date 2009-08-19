@@ -133,13 +133,11 @@ public:
     // helper functions for dxr3 main osd screen
     void ResetHardware();
 
-    // get/set brightness/contrast/saturation
+    void updateBcsValues();
+    // get brightness/contrast/saturation
     int GetBrightness();
-    void SetBrightness(int value);
     int GetContrast();
-    void SetContrast(int value);
     int GetSaturation();
-    void SetSaturation(int value);
 
 private:
     // file handles

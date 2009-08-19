@@ -763,25 +763,22 @@ void cDxr3Interface::ResetHardware()
     Unlock();
 }
 
+void cDxr3Interface::updateBcsValues()
+{
+    // update m_bcs with values from settings
+    m_bcs.brightness = cDxr3ConfigData::instance()->GetBrightness();
+    m_bcs.contrast = cDxr3ConfigData::instance()->GetContrast();
+    m_bcs.saturation = cDxr3ConfigData::instance()->GetSaturation();
+
+    // update bcs values in hardware
+    CHECK(ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs));
+}
+
 // ==================================
 //! get brightness
 int cDxr3Interface::GetBrightness()
 {
     return m_bcs.brightness;
-}
-
-// ==================================
-//! set brightness
-void cDxr3Interface::SetBrightness(int value)
-{
-    int oldval = m_bcs.brightness;
-    m_bcs.brightness = value;
-
-    if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) == -1)
-    {
-	esyslog("dxr3: unable to set brightness to %d: %m", value);
-	m_bcs.brightness = oldval;
-    }
 }
 
 // ==================================
@@ -792,38 +789,10 @@ int cDxr3Interface::GetContrast()
 }
 
 // ==================================
-//! set contrast
-void cDxr3Interface::SetContrast(int value)
-{
-    int oldval = m_bcs.contrast;
-    m_bcs.contrast = value;
-
-    if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) == -1)
-    {
-	esyslog("dxr3: unable to set contrast to %d: %m", value);
-	m_bcs.contrast = oldval;
-    }
-}
-
-// ==================================
 //! get saturation
 int cDxr3Interface::GetSaturation()
 {
     return m_bcs.saturation;
-}
-
-// ==================================
-//! set saturation
-void cDxr3Interface::SetSaturation(int value)
-{
-    int oldval = m_bcs.saturation;
-    m_bcs.saturation = value;
-
-    if (ioctl(m_fdControl, EM8300_IOCTL_SETBCS, &m_bcs) == -1)
-    {
-	esyslog("dxr3: unable to set saturation to %d: %m", value);
-	m_bcs.saturation = oldval;
-    }
 }
 
 // ==================================

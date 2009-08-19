@@ -114,9 +114,7 @@ void cMenuSetupDxr3::Store(void)
 	       cDxr3ConfigData::instance()->SetDxr3Card(newDxr3Card));
 
     // Apply (some of the) settings
-    cDxr3Interface::instance()->SetBrightness(newBrightness);
-    cDxr3Interface::instance()->SetContrast(newContrast);
-    cDxr3Interface::instance()->SetSaturation(newSaturation);
+    cDxr3Interface::instance()->updateBcsValues();
     //cDxr3Device::instance()->Reset();
 }
 
@@ -269,20 +267,22 @@ const char **cPluginDxr3::SVDRPHelpPages(void)
 cString cPluginDxr3::SVDRPCommand(const char *Command, const char *Option,
 				  int &ReplyCode)
 {
+    int value = atoi(Option);
+
     if (!strcasecmp(Command, "BRI")) {
-        cDxr3Interface::instance()->SetBrightness(atoi(Option));
-        return cString::sprintf("Brightness set to %d",
-				cDxr3Interface::instance()->GetBrightness());
+        cDxr3ConfigData::instance()->SetBrightness(value);
+        cDxr3Interface::instance()->updateBcsValues();
+        return cString::sprintf("Brightness set to %d", value);
     }
     if (!strcasecmp(Command, "CON")) {
-        cDxr3Interface::instance()->SetContrast(atoi(Option));
-        return cString::sprintf("Contrast set to %d",
-				cDxr3Interface::instance()->GetContrast());
+        cDxr3ConfigData::instance()->SetContrast(value);
+        cDxr3Interface::instance()->updateBcsValues();
+        return cString::sprintf("Contrast set to %d", value);
     }
     if (!strcasecmp(Command, "SAT")) {
-        cDxr3Interface::instance()->SetSaturation(atoi(Option));
-        return cString::sprintf("Saturation set to %d",
-				cDxr3Interface::instance()->GetSaturation());
+        cDxr3ConfigData::instance()->SetSaturation(value);
+        cDxr3Interface::instance()->updateBcsValues();
+        return cString::sprintf("Saturation set to %d", value);
     }
     if (!strcasecmp(Command, "SDO")) {
         device->getAudioOutput()->setAudioMode(iAudio::DigitalPcm);
