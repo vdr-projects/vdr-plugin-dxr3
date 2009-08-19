@@ -52,8 +52,7 @@ private:
   driver and so to the card,
   so this is the layer between plugin and driver.
 */
-class cDxr3Interface : public Singleton<cDxr3Interface>
-{
+class cDxr3Interface : public Singleton<cDxr3Interface> {
 public:
     cDxr3Interface();
     ~cDxr3Interface();
@@ -104,17 +103,7 @@ public:
     uint32_t GetHorizontalSize() const    { return m_horizontal; }
     uint32_t GetVerticalSize() const      { return m_vertical; }
 
-    void SetHorizontalSize(uint32_t value)
-    {
-        if (value > 0)
-            m_horizontal = value;
-    }
-
-    void SetVerticalSize(uint32_t value)
-    {
-        if (value > 0)
-            m_vertical = value;
-    };
+    void setDimension(uint32_t horizontal, uint32_t vertical);
 
     // play functions
     void SetPlayMode();

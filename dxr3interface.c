@@ -259,6 +259,18 @@ void cDxr3Interface::SetAspectRatio(uint32_t ratio)
     Unlock();
 }
 
+
+void cDxr3Interface::setDimension(uint32_t horizontal, uint32_t vertical)
+{
+    if (horizontal > 0) {
+        m_horizontal = horizontal;
+    }
+
+    if (vertical > 0) {
+        m_vertical = vertical;
+    }
+}
+
 // play functions
 // ==================================
 //! set playing mode and start sync engine

@@ -260,8 +260,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
                 bPlaySuc = true;
                 //if (bPlayedFrame) return length;
                 bPlayedFrame = true;
-                m_dxr3Device->SetHorizontalSize(pesFrame->GetHorizontalSize());
-                m_dxr3Device->SetVerticalSize(pesFrame->GetVerticalSize());
+                m_dxr3Device->setDimension(pesFrame->GetHorizontalSize(), pesFrame->GetVerticalSize());
                 m_dxr3Device->PlayVideoFrame(pesFrame->GetPayload(), pesFrame->GetPayloadLength(), m_ReUseFrame);
                 break;
 
@@ -287,8 +286,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
 
         } else if (m_synchState == DXR3_DEMUX_VIDEO_SYNCHED ||
                  m_synchState == DXR3_DEMUX_SYNCHED) {
-            m_dxr3Device->SetHorizontalSize(pesFrame->GetHorizontalSize());
-            m_dxr3Device->SetVerticalSize(pesFrame->GetVerticalSize());
+            m_dxr3Device->setDimension(pesFrame->GetHorizontalSize(), pesFrame->GetVerticalSize());
             while (!Poll(100)) {}
             cFixedLengthFrame* pTempFrame = m_vBuf.Push(pesFrame->GetPayload(), (int) (pesFrame->GetPayloadLength()), pts, ftVideo);
 
@@ -314,8 +312,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
             if (pesFrame->GetFrameType() == I_FRAME) {
                 vPts = pts;
 
-                m_dxr3Device->SetHorizontalSize(pesFrame->GetHorizontalSize());
-                m_dxr3Device->SetVerticalSize(pesFrame->GetVerticalSize());
+                m_dxr3Device->setDimension(pesFrame->GetHorizontalSize(), pesFrame->GetVerticalSize());
                 cFixedLengthFrame* pTempFrame = m_vBuf.Push(pesFrame->GetPayload(), (int) (pesFrame->GetPayloadLength()), pts, ftVideo);
                 // TODO: rework me
                 //if (!pTempFrame) /* Push Timeout */
