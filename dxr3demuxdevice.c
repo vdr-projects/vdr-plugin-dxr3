@@ -121,7 +121,6 @@ void cDxr3DemuxDevice::SetReplayMode()
 	if (m_demuxMode == DXR3_DEMUX_TRICK_MODE &&
 	    m_trickState == DXR3_FREEZE)
 	{
-	    m_dxr3Device->SetPlayMode();
 	    m_dxr3Device->SetSysClock(m_stopScr);
 	    m_dxr3Device->EnableVideo();
 	    m_dxr3Device->EnableAudio();
@@ -302,7 +301,6 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
                 m_synchState = DXR3_DEMUX_SYNCHED;
                 pcr = vPts - PRE_BUFFER_LENGTH;
                 m_dxr3Device->SetSysClock(pcr);
-                m_dxr3Device->SetPlayMode();
                 m_dxr3Device->EnableVideo();
                 m_dxr3Device->EnableAudio();
                 m_vBuf.Start();
@@ -335,7 +333,6 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
                         pcr = vPts - PRE_BUFFER_LENGTH;
                     }
                     m_dxr3Device->SetSysClock(pcr);
-                    m_dxr3Device->SetPlayMode();
                     m_dxr3Device->EnableVideo();
                     m_dxr3Device->EnableAudio();
                     m_vBuf.Start();
@@ -353,7 +350,6 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
                 m_synchState = DXR3_DEMUX_SYNCHED;
                 pcr = aPts - PRE_BUFFER_LENGTH;
                 m_dxr3Device->SetSysClock(pcr);
-                m_dxr3Device->SetPlayMode();
                 m_dxr3Device->EnableVideo();
                 m_dxr3Device->EnableAudio();
                 m_vBuf.Start();
@@ -383,7 +379,6 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
                         pcr = vPts - PRE_BUFFER_LENGTH;
                     }
                     m_dxr3Device->SetSysClock(pcr);
-                    m_dxr3Device->SetPlayMode();
                     m_dxr3Device->EnableVideo();
                     m_dxr3Device->EnableAudio();
                     m_vBuf.Start();
@@ -418,7 +413,6 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
                         pcr = vPts - PRE_BUFFER_LENGTH;
                     }
                     m_dxr3Device->SetSysClock(pcr);
-                    m_dxr3Device->SetPlayMode();
                     m_dxr3Device->EnableVideo();
                     m_dxr3Device->EnableAudio();
                     m_vBuf.Start();
@@ -459,7 +453,6 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
                         pcr = vPts - PRE_BUFFER_LENGTH;
                     }
                     m_dxr3Device->SetSysClock(pcr);
-                    m_dxr3Device->SetPlayMode();
                     m_dxr3Device->EnableVideo();
                     m_dxr3Device->EnableAudio();
                     m_vBuf.Start();
@@ -494,7 +487,6 @@ int cDxr3DemuxDevice::DemuxAudioPes(const uint8_t* buf, int length)
         if (m_synchState != DXR3_DEMUX_AUDIO_SYNCHED &&
             syncCounter > 2) {
             m_synchState = DXR3_DEMUX_AUDIO_SYNCHED;
-            m_dxr3Device->SetPlayMode();
             m_dxr3Device->EnableVideo();
             m_dxr3Device->EnableAudio();
             m_vBuf.Start();

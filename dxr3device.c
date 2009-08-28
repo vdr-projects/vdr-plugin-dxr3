@@ -99,14 +99,13 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
         break;
 
     case pmNone:
-        //m_DemuxDevice.Stop();
+        cDxr3Interface::instance()->flushBuffers();
         break;
 
     case pmAudioVideo:
     case pmAudioOnly:
     case pmAudioOnlyBlack:
     case pmVideoOnly:
-
         m_PlayMode = PlayMode;
     }
 

@@ -273,8 +273,8 @@ int cSPUEncoder::Flush(cPalette *Palette)
     EncodePixelbufRle(0, 0, OSDWIDTH, OSDHEIGHT-1, OSD_Screen, 0,
 		      &m_encodeddata);
 
-    dsyslog("dxr3: cSPUEncoder::Flush: OSD data size: %d",
-	    m_encodeddata.count);
+//    dsyslog("dxr3: cSPUEncoder::Flush: OSD data size: %d",
+//	    m_encodeddata.count);
 
     if (m_encodeddata.count <= DATASIZE)
     {

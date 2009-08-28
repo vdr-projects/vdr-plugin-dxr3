@@ -106,7 +106,8 @@ public:
     void setDimension(uint32_t horizontal, uint32_t vertical);
 
     // play functions
-    void SetPlayMode();
+    void flushBuffers();
+
     void Pause();
     void SingleStep();
     void PlayVideoFrame(cFixedLengthFrame* pFrame, int times = 1);
