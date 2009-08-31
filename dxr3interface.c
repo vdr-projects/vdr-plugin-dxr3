@@ -650,45 +650,6 @@ void cDxr3Interface::Resuscitation()
 }
 
 // ==================================
-void cDxr3Interface::ClearOsd()
-{
-    encodedata ed;
-    int controlstart= 0;
-    int x1 = 0;
-    int& i = ed.count = 0;
-
-    // display duration...
-    ed.data[i++]= 0x00;
-    ed.data[i++]= 0x00; //durration before turn on command occurs
-    //in 90000/1024 units
-    // x1
-    ed.data[i++]= x1 >> 8;  //since this is the last command block, this
-    ed.data[i++]= x1 & 0xff; //points back to itself
-
-
-    // 0x01: start displaying
-    ed.data[i++]= 0x02;
-
-    // 0xFF: end sequence
-    ed.data[i++]= 0xFF;
-    if (!i&1)
-    {
-	ed.data[i++]= 0xff;
-    }
-
-    // x0
-    ed.data[2]= (controlstart) >> 8;
-    ed.data[3]= (controlstart) & 0xff;
-
-    // packet size
-    ed.data[0]= i >> 8;
-    ed.data[1]= i & 0xff;
-
-	WriteSpu((const uint8_t*) &ed, (int) ed.count);
-	ClearButton();
-}
-
-// ==================================
 void cDxr3Interface::WriteSpu(const uint8_t* pBuf, int length)
 {
     Lock();
