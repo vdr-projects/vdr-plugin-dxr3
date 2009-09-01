@@ -77,7 +77,7 @@ void cSpuEncoder::encode(cBitmap *bmap, int top, int left)
     // prepare datastructures
     memset(rleData.top, 0, sizeof(rleData.top));
     memset(rleData.bottom, 0, sizeof(rleData.bottom));
-    memset(&spu, 0, sizeof(spu));
+    memset(spu, 0, sizeof(spu));
 
     // get needed informations about used colors
     colors = bitmap->Colors(numColors);
