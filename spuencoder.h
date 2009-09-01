@@ -27,9 +27,22 @@
 #ifndef SPUENCODER_H
 #define SPUENCODER_H
 
+#include <stdint.h>
+
+static const int MAX_SPU_DATA = 65220;  // TODO vaidate this value
+
 class cSpuEncoder {
 public:
     void clearOsd();
+
+private:
+    uint8_t spu[MAX_SPU_DATA];
+    uint8_t *p;                 // pointer to current spu data
+    uint8_t nholder;            // nibble holder
+    uint32_t ncnt;              // nibble count
+    int32_t written;            // how much data are written
+
+    void writeNibble(uint8_t val);
 };
 
 #endif // SPUENCODER_H

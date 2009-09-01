@@ -65,3 +65,18 @@ void cSpuEncoder::clearOsd()
 
     cDxr3Interface::instance()->WriteSpu((uchar *)&d, 10);
 }
+
+void cSpuEncoder::writeNibble(uint8_t val) {
+
+    // look if we have an overflow
+    if (written == MAX_SPU_DATA) {
+        throw "overflow";
+    }
+
+    if (ncnt++ & 1) {
+        *p++ = nholder | ((val) & 0x0f);
+        written++;
+    } else {
+        nholder = (val << 4);
+    }
+}
