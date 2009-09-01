@@ -28,21 +28,29 @@
 #define SPUENCODER_H
 
 #include <stdint.h>
+#include <vdr/osd.h>
 
 static const int MAX_SPU_DATA = 65220;  // TODO vaidate this value
 
 class cSpuEncoder {
 public:
     void clearOsd();
+    void encode(cBitmap *bmap, int top, int left);
 
 private:
+    cBitmap *bitmap;
+
     uint8_t spu[MAX_SPU_DATA];
     uint8_t *p;                 // pointer to current spu data
     uint8_t nholder;            // nibble holder
     uint32_t ncnt;              // nibble count
     int32_t written;            // how much data are written
 
+    tColor opacity[16];
+    tColor palcolors[16];
+
     void writeNibble(uint8_t val);
+    void generateColorPalette();
 };
 
 #endif // SPUENCODER_H

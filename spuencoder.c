@@ -26,6 +26,7 @@
 
 #include "spuencoder.h"
 #include "dxr3interface.h"
+#include "dxr3tools.h"
 
 static const uint8_t CMD_FORCE_DISPLAYING   = 0x00;
 static const uint8_t CMD_STOP_DISPLAYING    = 0x02;
@@ -66,8 +67,20 @@ void cSpuEncoder::clearOsd()
     cDxr3Interface::instance()->WriteSpu((uchar *)&d, 10);
 }
 
-void cSpuEncoder::writeNibble(uint8_t val) {
+void cSpuEncoder::encode(cBitmap *bmap, int top, int left)
+{
+    // store internaly
+    bitmap = bmap;
 
+    // prepare datastructures
+    memset(&spu, 0, sizeof(spu));
+
+    // generate and upload color palette
+    generateColorPalette();
+}
+
+void cSpuEncoder::writeNibble(uint8_t val)
+{
     // look if we have an overflow
     if (written == MAX_SPU_DATA) {
         throw "overflow";
@@ -79,4 +92,27 @@ void cSpuEncoder::writeNibble(uint8_t val) {
     } else {
         nholder = (val << 4);
     }
+}
+
+void cSpuEncoder::generateColorPalette()
+{
+    // we need to convert the color we get from
+    // vdr, because it is stored in AARRGGBB
+    // and we need AA and RRGGBB separated to
+    // be able to convert color to yuv and set
+    // wanted opacity vales later on.
+
+    int num;
+    const tColor *colors = bitmap->Colors(num);
+
+    memset(&palcolors, 0, sizeof(palcolors));
+
+    for (int i = 0; i < num; i++) {
+        // separate AA and RRGGBB values
+        opacity[i] = (colors[i] & 0xff000000) >> 24;
+        palcolors[i] = Tools::Rgb2YCrCb(colors[i] & 0x00ffffff);
+    }
+
+    // upload color palette
+    cDxr3Interface::instance()->SetPalette(palcolors);
 }
