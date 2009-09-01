@@ -75,6 +75,12 @@ void cSpuEncoder::encode(cBitmap *bmap, int top, int left)
     // prepare datastructures
     memset(&spu, 0, sizeof(spu));
 
+    // get needed informations about used colors
+    colors = bitmap->Colors(numColors);
+
+    dsyslog("[dxr3-spuencoder] num colors %d", num);
+
+
     // generate and upload color palette
     generateColorPalette();
 }
@@ -102,12 +108,9 @@ void cSpuEncoder::generateColorPalette()
     // be able to convert color to yuv and set
     // wanted opacity vales later on.
 
-    int num;
-    const tColor *colors = bitmap->Colors(num);
-
     memset(&palcolors, 0, sizeof(palcolors));
 
-    for (int i = 0; i < num; i++) {
+    for (int i = 0; i < numColors; i++) {
         // separate AA and RRGGBB values
         opacity[i] = (colors[i] & 0xff000000) >> 24;
         palcolors[i] = Tools::Rgb2YCrCb(colors[i] & 0x00ffffff);

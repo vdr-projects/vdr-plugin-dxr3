@@ -46,6 +46,8 @@ private:
     uint32_t ncnt;              // nibble count
     int32_t written;            // how much data are written
 
+    int numColors;              // len of tColor array of current bitmap
+    const tColor* colors;       // pointer to tColor array from current bitmap
     tColor opacity[16];
     tColor palcolors[16];
 
