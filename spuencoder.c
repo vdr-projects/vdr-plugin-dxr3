@@ -71,6 +71,8 @@ void cSpuEncoder::encode(cBitmap *bmap, int top, int left)
 {
     // store internaly
     bitmap = bmap;
+    this->top = top;
+    this->left = left;
 
     // prepare datastructures
     memset(&spu, 0, sizeof(spu));

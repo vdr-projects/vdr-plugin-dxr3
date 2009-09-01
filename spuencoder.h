@@ -46,6 +46,7 @@ public:
 
 private:
     cBitmap *bitmap;
+    int top, left;              // start points of bitmap
 
     uint8_t spu[MAX_SPU_DATA];
     uint8_t *p;                 // pointer to current spu data
