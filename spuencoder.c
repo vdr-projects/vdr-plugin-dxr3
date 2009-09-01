@@ -143,4 +143,79 @@ void cSpuEncoder::generateColorPalette()
 
 void cSpuEncoder::generateSpuData(bool topAndBottom) throw (char const* )
 {
+    // reset pointer
+    p = &spu[4];
+
+    int bottomStart;
+
+    // copy rle encoded data into spu buffer
+    if (topAndBottom) {
+
+        memcpy(p, rleData.top, rleData.topLen);
+        p += rleData.topLen;
+
+        memcpy(p, rleData.bottom, rleData.bottomLen);
+        p += rleData.bottomLen;
+
+        bottomStart = 4 + rleData.topLen;
+        written = bottomStart + rleData.bottomLen;
+
+    } else {
+
+        memcpy(p, rleData.top, rleData.topLen);
+        p += rleData.topLen;
+
+        bottomStart = 4;
+        written = bottomStart + rleData.topLen;
+    }
+
+    // update size of pixel block
+    spu[2] = written >> 8;
+    spu[3] = written & 0xff;
+
+    int x1 = written;
+
+    // display duration
+    spu[written++] = 0x00;
+    spu[written++] = 0x00;      // duration before turn on command occurs (will not be used)
+
+    // x1
+    spu[written++] = x1 >> 8;   // since this is the last command block, this
+    spu[written++] = x1 & 0xff; // points back to itself
+
+    // 0x00: force displaying
+    spu[written++] = CMD_FORCE_DISPLAYING;
+
+    // 0x05: coordinates
+    uint32_t right = left + bitmap->Width() - 1;
+    uint32_t bottom = top + bitmap->Height() - 1;
+
+    dsyslog("top %d left %d", top, left);
+
+    spu[written++] = CMD_SET_DISPLAYAREA;
+    spu[written++] = left >> 4;
+    spu[written++] = ((left & 0xf) << 4) + (right >> 8);
+    spu[written++] = (right & 0xff);
+    spu[written++] = top >> 4;
+    spu[written++] = ((top & 0xf) << 4) + (bottom >> 8);
+    spu[written++] = (bottom & 0xff);
+
+    // 0x06: both fields' offsets
+    spu[written++] = CMD_SET_PIXEL_ADDRESES;
+    spu[written++] = 0x00;      // even start at index 4
+    spu[written++] = 0x04;
+    spu[written++] = bottomStart >> 8;
+    spu[written++] = bottomStart & 0xff;
+
+    // TODO write color-> palette index and alpha data
+
+    // 0xff: end sequence
+    spu[written++] = 0xff;
+    if (!(written & 1)) {
+        spu[written++] = 0xff;
+    }
+
+    // write overall packet size
+    spu[0] = written >> 8;
+    spu[1] = written & 0xff;
 }
