@@ -75,6 +75,8 @@ void cSpuEncoder::encode(cBitmap *bmap, int top, int left)
     this->left = left;
 
     // prepare datastructures
+    memset(rleData.top, 0, sizeof(rleData.top));
+    memset(rleData.bottom, 0, sizeof(rleData.bottom));
     memset(&spu, 0, sizeof(spu));
 
     // get needed informations about used colors
@@ -82,9 +84,26 @@ void cSpuEncoder::encode(cBitmap *bmap, int top, int left)
 
     dsyslog("[dxr3-spuencoder] num colors %d", numColors);
 
-
     // generate and upload color palette
     generateColorPalette();
+
+    // as we have only small space for all our spu data, we do here
+    // a little trick. If we run out of space, when using
+    // top and odd bottom, we try to use two times the top lines.
+    // this will gain some more free space. the osd may not look
+    // as good as with top and bottom lines, but its better to
+    // have a working and maybe not so sexy looking osd instead of a
+    // a broken osd.
+
+    try {
+        generateSpuData(true);
+    } catch (char const* e) {
+
+        dsyslog("[dxr3-spuencoder] %s", e);
+
+        // make a try with only even lines
+        generateSpuData(false);
+    }
 }
 
 void cSpuEncoder::writeNibble(uint8_t val)
@@ -120,4 +139,8 @@ void cSpuEncoder::generateColorPalette()
 
     // upload color palette
     cDxr3Interface::instance()->SetPalette(palcolors);
+}
+
+void cSpuEncoder::generateSpuData(bool topAndBottom) throw (char const* )
+{
 }

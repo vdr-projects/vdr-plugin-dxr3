@@ -63,6 +63,7 @@ private:
 
     void writeNibble(uint8_t val);
     void generateColorPalette();
+    void generateSpuData(bool topAndBottom) throw (char const* );
 };
 
 #endif // SPUENCODER_H
