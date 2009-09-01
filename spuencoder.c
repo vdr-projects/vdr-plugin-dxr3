@@ -78,7 +78,7 @@ void cSpuEncoder::encode(cBitmap *bmap, int top, int left)
     // get needed informations about used colors
     colors = bitmap->Colors(numColors);
 
-    dsyslog("[dxr3-spuencoder] num colors %d", num);
+    dsyslog("[dxr3-spuencoder] num colors %d", numColors);
 
 
     // generate and upload color palette

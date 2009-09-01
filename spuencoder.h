@@ -32,6 +32,13 @@
 
 static const int MAX_SPU_DATA = 65220;  // TODO vaidate this value
 
+struct sRle {
+    uint8_t top[MAX_SPU_DATA];
+    uint8_t bottom[MAX_SPU_DATA];
+    uint16_t topLen;
+    uint16_t bottomLen;
+};
+
 class cSpuEncoder {
 public:
     void clearOsd();
@@ -45,6 +52,8 @@ private:
     uint8_t nholder;            // nibble holder
     uint32_t ncnt;              // nibble count
     int32_t written;            // how much data are written
+
+    sRle rleData;               // storage for encoded data
 
     int numColors;              // len of tColor array of current bitmap
     const tColor* colors;       // pointer to tColor array from current bitmap
