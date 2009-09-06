@@ -80,7 +80,6 @@ public:
     int Flush(cPalette *Palette);
     void CopyBlockIntoOSD(int numWindow, int linewidth,
 			  int x0,int y0, int x1, int y1, const tIndex *data);
-    void StopSpu(void);
     void SetPalette(int numWindow, cPalette* commonPalette,
 		    cPalette* windowPalette);
     void Clear(void);

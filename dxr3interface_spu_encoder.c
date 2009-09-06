@@ -593,36 +593,6 @@ void cSPUEncoder::encode_do_control(int x, int y, encodedata* ed, pixbuf* pb)
 }
 
 // ==================================
-// Stop spu display
-void cSPUEncoder::StopSpu(void)
-{
-    uint8_t ed[10];
-    /* packet size */
-    ed[0] = 0;
-    ed[1] = 10;
-
-    /* pointer to the SP_DCSQT */
-    ed[2] = 0;
-    ed[3] = 4;
-
-    /* SP_DCSQT */
-    /* display duration... */
-    ed[4] = 0x00;
-    ed[5] = 0x00; //duration before turn on command occurs (will not be used)
-
-    /* pointer to next command block */
-    ed[6] = 0;  //since this is the last command block, this
-    ed[7] = 4;//points back to itself
-
-    /* 0x02: stop displaying */
-    ed[8] = 0x02;
-
-    /* 0xFF: end sequence */
-    ed[9] = 0xFF;
-    cDxr3Interface::instance()->WriteSpu(ed, 10);
-}
-
-// ==================================
 // we _only_ write usefull data
 void cSPUEncoder::CalculateActiveOsdArea()
 {

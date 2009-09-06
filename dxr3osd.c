@@ -21,6 +21,7 @@
  */
 
 #include "dxr3interface.h"
+#include "spuencoder.h"
 
 #include "dxr3osd.h"
 #include "dxr3interface_spu_encoder.h"
@@ -97,7 +98,7 @@ void cDxr3Osd::SetActive(bool On)
       }
       else
       {
-	  Spu->StopSpu();
+          cSpuEncoder::instance()->clearOsd();
       }
   }
 }
