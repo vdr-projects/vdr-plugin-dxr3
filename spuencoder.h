@@ -29,6 +29,7 @@
 
 #include <stdint.h>
 #include <vdr/osd.h>
+#include "dxr3singleton.h"
 
 static const int MAX_SPU_DATA = 65220;  // TODO vaidate this value
 
@@ -39,7 +40,7 @@ struct sRle {
     uint16_t bottomLen;
 };
 
-class cSpuEncoder {
+class cSpuEncoder : public Singleton<cSpuEncoder> {
 public:
     void clearOsd();
     void encode(cBitmap *bmap, int top, int left);
