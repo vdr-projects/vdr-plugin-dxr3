@@ -29,9 +29,11 @@
 
 #include <stdint.h>
 #include <vdr/osd.h>
+#include <queue>
 #include "dxr3singleton.h"
+#include "spuregion.h"
 
-static const int MAX_SPU_DATA = 65220;  // TODO vaidate this value
+static const int MAX_SPU_DATA = 65220;  // TODO validate this value
 
 struct sRle {
     uint8_t top[MAX_SPU_DATA];
@@ -56,6 +58,7 @@ private:
     int32_t written;            // how much data are written
 
     sRle rleData;               // storage for encoded data
+    std::queue<cSpuRegion *> regions;
 
     int numColors;              // len of tColor array of current bitmap
     const tColor* colors;       // pointer to tColor array from current bitmap
@@ -65,6 +68,10 @@ private:
     void writeNibble(uint8_t val);
     void generateColorPalette();
     void generateSpuData(bool topAndBottom) throw (char const* );
+
+    void clearRegions();
+
+    void rle4colors();
 };
 
 #endif // SPUENCODER_H

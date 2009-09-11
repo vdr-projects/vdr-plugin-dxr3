@@ -79,6 +79,9 @@ void cSpuEncoder::encode(cBitmap *bmap, int top, int left)
     memset(rleData.bottom, 0, sizeof(rleData.bottom));
     memset(spu, 0, sizeof(spu));
 
+    // free previouse used regions
+    clearRegions();
+
     // get needed informations about used colors
     colors = bitmap->Colors(numColors);
 
@@ -86,6 +89,20 @@ void cSpuEncoder::encode(cBitmap *bmap, int top, int left)
 
     // generate and upload color palette
     generateColorPalette();
+
+    // add one region
+    cSpuRegion *reg = new cSpuRegion();
+
+    for (int i = 0; i < numColors; i++) {
+        reg->addColIndex(bitmap->Index(colors[i]));
+    }
+
+    regions.push(reg);
+
+    dsyslog("[dxr3-spuencoder] rle data");
+
+    // encode whole bitmap with rle and store top and bottom lines
+    rle4colors();
 
     // as we have only small space for all our spu data, we do here
     // a little trick. If we run out of space, when using
@@ -104,6 +121,10 @@ void cSpuEncoder::encode(cBitmap *bmap, int top, int left)
         // make a try with only even lines
         generateSpuData(false);
     }
+
+    // we are ready to send generated spu data
+    dsyslog("[dxr3-spuencoder] spu packet size %d (bytes). %d left", written, (MAX_SPU_DATA - written));
+    cDxr3Interface::instance()->WriteSpu((uchar *)&spu, written);
 }
 
 void cSpuEncoder::writeNibble(uint8_t val)
@@ -218,4 +239,81 @@ void cSpuEncoder::generateSpuData(bool topAndBottom) throw (char const* )
     // write overall packet size
     spu[0] = written >> 8;
     spu[1] = written & 0xff;
+}
+
+void cSpuEncoder::clearRegions()
+{
+    while (!regions.empty()) {
+        cSpuRegion *reg = regions.front();
+        delete reg;
+        regions.pop();
+    }
+}
+
+void cSpuEncoder::rle4colors()
+{
+    int len;
+    p = rleData.top;
+
+    // first encode all top lines (0, 2, 4, ...) followed by
+    // all bottom lines (1, 3, 5, ...)
+
+    for (int i = 0; i < 2; i++) {
+
+        nholder = 0;
+        ncnt = 0;
+        written = 0;
+
+        if (i == 1) {
+            p = rleData.bottom;
+        }
+
+        for (int y = (0 + i); y < bitmap->Height(); y += 2) {
+
+            for (int x = 0; x < bitmap->Width(); x += len) {
+                tIndex color = *(bitmap->Data(x, y));
+
+                for (len = 1; x+len < bitmap->Width(); ++len) {
+                    if (*(bitmap->Data(x+len, y)) != color) {
+                        break;
+                    }
+                }
+
+                if (len < 0x04) {
+                    writeNibble((len << 2) | color);
+                } else if (len < 0x10) {
+                    writeNibble(len >> 2);
+                    writeNibble((len << 2) | color);
+                } else if (len < 0x40) {
+                    writeNibble(0);
+                    writeNibble(len >> 2);
+                    writeNibble((len << 2) | color);
+                } else if (x + len == bitmap->Width()) {
+                    writeNibble(0);
+                    writeNibble(0);
+                    writeNibble(0);
+                    writeNibble(color);
+                } else {
+                    if (len > 0xff) {
+                        len = 0xff;
+                    }
+                    writeNibble(0);
+                    writeNibble(len >> 6);
+                    writeNibble(len >> 2);
+                    writeNibble((len << 2) | color);
+                }
+            }
+
+            // end of line
+            if (ncnt & 1) {
+                writeNibble(0);
+            }
+        }
+
+        if (i == 0) {
+            rleData.topLen = written;
+        } else {
+            rleData.bottomLen = written;
+        }
+    }
 }
