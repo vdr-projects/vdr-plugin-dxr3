@@ -33,23 +33,23 @@ cSpuRegion::cSpuRegion() : startLine(0), endLine(0), usedSections(0)
 
 bool cSpuRegion::addColIndex(tIndex idx)
 {
-    sSection sec = sections[usedSections];
+    sSection *sec = &sections[usedSections];
 
-    if (sec.usedColors == MAX_COLORS) {
+    if (sec->usedColors == MAX_COLORS) {
         return false;
     }
 
-    sec.cmap[idx] = sec.usedColors;
-    sec.colIndex[sec.usedColors++] = idx;
+    sec->cmap[idx] = sec->usedColors;
+    sec->colIndex[sec->usedColors++] = idx;
     return true;
 }
 
 bool cSpuRegion::containsColIndex(tIndex idx)
 {
-    sSection sec = sections[usedSections];
+    sSection *sec = &sections[usedSections];
 
-    for (uint8_t i = 0; i < sec.usedColors; i++) {
-        if (sec.colIndex[i] == idx) {
+    for (uint8_t i = 0; i < sec->usedColors; i++) {
+        if (sec->colIndex[i] == idx) {
             return true;
         }
     }
