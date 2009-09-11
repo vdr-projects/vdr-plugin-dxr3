@@ -153,8 +153,8 @@ void cSpuEncoder::writeColorAndAlpha(sSection &sec, bool withCMD)
     if (withCMD) {
         spu[written++] = CMD_SET_ALPHA;
     }
-    spu[written++] = (opacity[sec.colIndex[3]] << 4) | (opacity[sec.colIndex[2]] & 0x0f);
-    spu[written++] = (opacity[sec.colIndex[1]] << 4) | (opacity[sec.colIndex[0]] & 0x0f);
+    spu[written++] = (opacity[sec.colIndex[0]] << 4) | (opacity[sec.colIndex[1]] & 0x0f);
+    spu[written++] = (opacity[sec.colIndex[2]] << 4) | (opacity[sec.colIndex[3]] & 0x0f);
 }
 
 void cSpuEncoder::generateColorPalette()
