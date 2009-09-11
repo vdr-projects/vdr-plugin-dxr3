@@ -142,6 +142,21 @@ void cSpuEncoder::writeNibble(uint8_t val)
     }
 }
 
+void cSpuEncoder::writeColorAndAlpha(sSection &sec, bool withCMD)
+{
+    if (withCMD) {
+        spu[written++] = CMD_SET_COLOR;
+    }
+    spu[written++] = (sec.colIndex[0] << 4) | (sec.colIndex[1] & 0x0f);
+    spu[written++] = (sec.colIndex[2] << 4) | (sec.colIndex[3] & 0x0f);
+
+    if (withCMD) {
+        spu[written++] = CMD_SET_ALPHA;
+    }
+    spu[written++] = (opacity[sec.colIndex[3]] << 4) | (opacity[sec.colIndex[2]] & 0x0f);
+    spu[written++] = (opacity[sec.colIndex[1]] << 4) | (opacity[sec.colIndex[0]] & 0x0f);
+}
+
 void cSpuEncoder::generateColorPalette()
 {
     // we need to convert the color we get from
@@ -228,7 +243,8 @@ void cSpuEncoder::generateSpuData(bool topAndBottom) throw (char const* )
     spu[written++] = bottomStart >> 8;
     spu[written++] = bottomStart & 0xff;
 
-    // TODO write color-> palette index and alpha data
+    // write color-> palette index and alpha data for the first region
+    writeColorAndAlpha(regions.front()->sections[0], true);
 
     // 0xff: end sequence
     spu[written++] = 0xff;
@@ -317,3 +333,4 @@ void cSpuEncoder::rle4colors()
         }
     }
 }
+
