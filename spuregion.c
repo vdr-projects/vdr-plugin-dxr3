@@ -31,6 +31,14 @@ cSpuRegion::cSpuRegion() : startLine(0), endLine(0), usedSections(0)
     memset(sections, 0, sizeof(sections));
 }
 
+uint8_t cSpuRegion::openSections()
+{
+    // return the count of open sections.
+    // keep in mind that it will return usedSections + 1
+    // to allow easy for-looping like used in stl containers.
+    return usedSections + 1;
+}
+
 bool cSpuRegion::addColIndex(tIndex idx)
 {
     sSection *sec = &sections[usedSections];

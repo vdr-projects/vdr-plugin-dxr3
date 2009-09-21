@@ -47,6 +47,8 @@ public:
     uint16_t endLine;
     sSection sections[15];  // sections per region
 
+    uint8_t openSections();
+
     bool addColIndex(tIndex idx);
     bool containsColIndex(tIndex idx);
 

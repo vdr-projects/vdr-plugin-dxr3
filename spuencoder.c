@@ -97,7 +97,7 @@ void cSpuEncoder::encode(cBitmap *bmap, int top, int left)
         reg->addColIndex(bitmap->Index(colors[i]));
     }
 
-    regions.push(reg);
+    regions.push_back(reg);
 
     dsyslog("[dxr3-spuencoder] rle data");
 
@@ -155,6 +155,52 @@ void cSpuEncoder::writeColorAndAlpha(sSection &sec, bool withCMD)
     }
     spu[written++] = (opacity[sec.colIndex[0]] << 4) | (opacity[sec.colIndex[1]] & 0x0f);
     spu[written++] = (opacity[sec.colIndex[2]] << 4) | (opacity[sec.colIndex[3]] & 0x0f);
+}
+
+void cSpuEncoder::writeRegionInformation()
+{
+    dsyslog("writting region definitions");
+
+    spu[written++] = CMD_CHG_COLCON;
+
+    int32_t size_fill = written;
+
+    spu[written++] = 0x00;  // total size of parameter area
+    spu[written++] = 0x00;  // will be filled later
+
+    for (size_t i = 1; i < regions.size(); i++) {
+        cSpuRegion *reg = regions[i];
+
+        // define region (LN_CTLI)
+        spu[written++] = (reg->startLine >> 8);
+        spu[written++] = reg->startLine & 0xff;
+        spu[written++] = (((reg->openSections() & 0x0f) << 4)| ((reg->endLine >> 8) & 0x0f));
+        spu[written++] = reg->endLine & 0xff;
+
+        for (size_t j = 0; j <= reg->openSections(); j++) {
+
+            sSection sec = reg->sections[i];
+
+            // define section (PXCTLI)
+            spu[written++] = (sec.startColumn >> 8) & 0x0f;
+            spu[written++] = sec.startColumn & 0xff;
+
+            // write color and alpha
+            writeColorAndAlpha(sec, false);
+        }
+    }
+
+    spu[written++] = 0x0f;  // end of parameter area
+    spu[written++] = 0xff;
+    spu[written++] = 0xff;
+    spu[written++] = 0xff;
+
+    // update size of 0x07 command
+    int32_t s = written - size_fill - 1;
+    dsyslog("size of 07 command %d", s);
+
+    spu[size_fill++] = s >> 8;
+    spu[size_fill++] = s & 0xff;
 }
 
 void cSpuEncoder::generateColorPalette()
@@ -259,11 +305,10 @@ void cSpuEncoder::generateSpuData(bool topAndBottom) throw (char const* )
 
 void cSpuEncoder::clearRegions()
 {
-    while (!regions.empty()) {
-        cSpuRegion *reg = regions.front();
-        delete reg;
-        regions.pop();
+    for (size_t i = 0; i < regions.size(); i++) {
+        delete regions[i];
     }
+    regions.clear();
 }
 
 void cSpuEncoder::rle4colors()

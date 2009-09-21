@@ -29,7 +29,7 @@
 
 #include <stdint.h>
 #include <vdr/osd.h>
-#include <queue>
+#include <vector>
 #include "dxr3singleton.h"
 #include "spuregion.h"
 
@@ -58,7 +58,7 @@ private:
     int32_t written;            // how much data are written
 
     sRle rleData;               // storage for encoded data
-    std::queue<cSpuRegion *> regions;
+    std::vector<cSpuRegion *> regions;
 
     int numColors;              // len of tColor array of current bitmap
     const tColor* colors;       // pointer to tColor array from current bitmap
@@ -67,6 +67,7 @@ private:
 
     void writeNibble(uint8_t val);
     void writeColorAndAlpha(sSection &sec, bool withCMD);
+    void writeRegionInformation();
     void generateColorPalette();
     void generateSpuData(bool topAndBottom) throw (char const* );
 
