@@ -292,6 +292,11 @@ void cSpuEncoder::generateSpuData(bool topAndBottom) throw (char const* )
     // write color-> palette index and alpha data for the first region
     writeColorAndAlpha(regions.front()->sections[0], true);
 
+    // write informations for other regions
+    if (regions.size() > 1) {
+        writeRegionInformation();
+    }
+
     // 0xff: end sequence
     spu[written++] = 0xff;
     if (!(written & 1)) {
