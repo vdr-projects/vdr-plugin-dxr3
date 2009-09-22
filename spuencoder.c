@@ -142,19 +142,19 @@ void cSpuEncoder::writeNibble(uint8_t val)
     }
 }
 
-void cSpuEncoder::writeColorAndAlpha(sSection &sec, bool withCMD)
+void cSpuEncoder::writeColorAndAlpha(sSection *sec, bool withCMD)
 {
     if (withCMD) {
         spu[written++] = CMD_SET_COLOR;
     }
-    spu[written++] = (sec.colIndex[0] << 4) | (sec.colIndex[1] & 0x0f);
-    spu[written++] = (sec.colIndex[2] << 4) | (sec.colIndex[3] & 0x0f);
+    spu[written++] = (sec->colIndex[0] << 4) | (sec->colIndex[1] & 0x0f);
+    spu[written++] = (sec->colIndex[2] << 4) | (sec->colIndex[3] & 0x0f);
 
     if (withCMD) {
         spu[written++] = CMD_SET_ALPHA;
     }
-    spu[written++] = (opacity[sec.colIndex[0]] << 4) | (opacity[sec.colIndex[1]] & 0x0f);
-    spu[written++] = (opacity[sec.colIndex[2]] << 4) | (opacity[sec.colIndex[3]] & 0x0f);
+    spu[written++] = (opacity[sec->colIndex[0]] << 4) | (opacity[sec->colIndex[1]] & 0x0f);
+    spu[written++] = (opacity[sec->colIndex[2]] << 4) | (opacity[sec->colIndex[3]] & 0x0f);
 }
 
 void cSpuEncoder::writeRegionInformation()
@@ -177,13 +177,13 @@ void cSpuEncoder::writeRegionInformation()
         spu[written++] = (((reg->openSections() & 0x0f) << 4)| ((reg->endLine >> 8) & 0x0f));
         spu[written++] = reg->endLine & 0xff;
 
-        for (size_t j = 0; j <= reg->openSections(); j++) {
+        for (size_t j = 0; j < reg->openSections(); j++) {
 
-            sSection sec = reg->sections[i];
+            sSection *sec = reg->section(i);
 
             // define section (PXCTLI)
-            spu[written++] = (sec.startColumn >> 8) & 0x0f;
-            spu[written++] = sec.startColumn & 0xff;
+            spu[written++] = (sec->startColumn >> 8) & 0x0f;
+            spu[written++] = sec->startColumn & 0xff;
 
             // write color and alpha
             writeColorAndAlpha(sec, false);
@@ -290,7 +290,7 @@ void cSpuEncoder::generateSpuData(bool topAndBottom) throw (char const* )
     spu[written++] = bottomStart & 0xff;
 
     // write color-> palette index and alpha data for the first region
-    writeColorAndAlpha(regions.front()->sections[0], true);
+    writeColorAndAlpha(regions.front()->section(0), true);
 
     // write informations for other regions
     if (regions.size() > 1) {

@@ -39,6 +39,15 @@ uint8_t cSpuRegion::openSections()
     return usedSections + 1;
 }
 
+sSection *cSpuRegion::section(uint8_t num)
+{
+    if (usedSections == MAX_SECTIONS) {
+        return NULL;
+    }
+
+    return &sections[num];
+}
+
 bool cSpuRegion::addColIndex(tIndex idx)
 {
     sSection *sec = &sections[usedSections];

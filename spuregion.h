@@ -30,6 +30,7 @@
 #include <vdr/osd.h>
 
 const static int MAX_COLORS = 4;
+const static int MAX_SECTIONS = 15; // we can support up to 15 sections per region
 
 struct sSection {
     uint16_t startColumn;
@@ -45,15 +46,16 @@ public:
 
     uint16_t startLine;
     uint16_t endLine;
-    sSection sections[15];  // sections per region
 
     uint8_t openSections();
+    sSection *section(uint8_t num);
 
     bool addColIndex(tIndex idx);
     bool containsColIndex(tIndex idx);
 
 private:
     uint8_t usedSections;
+    sSection sections[MAX_SECTIONS];
 };
 
 #endif // SPUREGION_H

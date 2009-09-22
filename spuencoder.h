@@ -66,7 +66,7 @@ private:
     tColor palcolors[16];
 
     void writeNibble(uint8_t val);
-    void writeColorAndAlpha(sSection &sec, bool withCMD);
+    void writeColorAndAlpha(sSection *sec, bool withCMD);
     void writeRegionInformation();
     void generateColorPalette();
     void generateSpuData(bool topAndBottom) throw (char const* );
