@@ -94,7 +94,7 @@ void cSpuEncoder::encode(cBitmap *bmap, int top, int left)
     cSpuRegion *reg = new cSpuRegion();
 
     for (int i = 0; i < numColors; i++) {
-        reg->addColIndex(bitmap->Index(colors[i]));
+        reg->addIndex(bitmap->Index(colors[i]));
     }
 
     regions.push_back(reg);

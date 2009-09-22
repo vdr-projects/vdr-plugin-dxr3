@@ -48,7 +48,7 @@ sSection *cSpuRegion::section(uint8_t num)
     return &sections[num];
 }
 
-bool cSpuRegion::addColIndex(tIndex idx)
+bool cSpuRegion::addIndex(tIndex idx)
 {
     sSection *sec = &sections[usedSections];
 
@@ -61,7 +61,7 @@ bool cSpuRegion::addColIndex(tIndex idx)
     return true;
 }
 
-bool cSpuRegion::containsColIndex(tIndex idx)
+bool cSpuRegion::containsIndex(tIndex idx)
 {
     sSection *sec = &sections[usedSections];
 

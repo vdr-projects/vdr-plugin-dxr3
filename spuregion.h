@@ -50,8 +50,8 @@ public:
     uint8_t openSections();
     sSection *section(uint8_t num);
 
-    bool addColIndex(tIndex idx);
-    bool containsColIndex(tIndex idx);
+    bool addIndex(tIndex idx);
+    bool containsIndex(tIndex idx);
 
 private:
     uint8_t usedSections;
