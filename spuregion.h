@@ -42,7 +42,7 @@ struct sSection {
 
 class cSpuRegion {
 public:
-    cSpuRegion();
+    cSpuRegion(uint16_t sLine);
 
     uint16_t startLine;
     uint16_t endLine;

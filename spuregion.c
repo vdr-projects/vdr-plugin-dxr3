@@ -26,7 +26,7 @@
 
 #include "spuregion.h"
 
-cSpuRegion::cSpuRegion() : startLine(0), endLine(0), usedSections(0)
+cSpuRegion::cSpuRegion(uint16_t sLine) : startLine(sLine), endLine(0), usedSections(0)
 {
     memset(sections, 0, sizeof(sections));
 }

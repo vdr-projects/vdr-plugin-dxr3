@@ -91,7 +91,7 @@ void cSpuEncoder::encode(cBitmap *bmap, int top, int left)
     generateColorPalette();
 
     // add one region
-    cSpuRegion *reg = new cSpuRegion();
+    cSpuRegion *reg = new cSpuRegion(0);
 
     for (int i = 0; i < numColors; i++) {
         reg->addIndex(bitmap->Index(colors[i]));
