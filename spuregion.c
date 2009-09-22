@@ -39,6 +39,16 @@ uint8_t cSpuRegion::openSections()
     return usedSections + 1;
 }
 
+bool cSpuRegion::newSection()
+{
+    if (usedSections + 1 == MAX_SECTIONS) {
+        return false;
+    }
+
+    usedSections++;
+    return true;
+}
+
 sSection *cSpuRegion::section(uint8_t num)
 {
     if (usedSections == MAX_SECTIONS) {

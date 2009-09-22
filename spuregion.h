@@ -48,6 +48,7 @@ public:
     uint16_t endLine;
 
     uint8_t openSections();
+    bool newSection();
     sSection *section(uint8_t num);
 
     bool addIndex(tIndex idx);
