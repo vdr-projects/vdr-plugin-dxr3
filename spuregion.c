@@ -62,6 +62,10 @@ bool cSpuRegion::addIndex(tIndex idx)
 {
     sSection *sec = &sections[usedSections];
 
+    if (containsIndex(idx)) {
+        return true;
+    }
+
     if (sec->usedColors == MAX_COLORS) {
         return false;
     }
