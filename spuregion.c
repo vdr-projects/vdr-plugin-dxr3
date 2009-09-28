@@ -51,7 +51,7 @@ bool cSpuRegion::newSection()
 
 sSection *cSpuRegion::section(uint8_t num)
 {
-    if (usedSections == MAX_SECTIONS) {
+    if (num >= MAX_SECTIONS) {
         return NULL;
     }
 
@@ -60,12 +60,11 @@ sSection *cSpuRegion::section(uint8_t num)
 
 bool cSpuRegion::addIndex(tIndex idx)
 {
-    sSection *sec = &sections[usedSections];
-
     if (containsIndex(idx)) {
         return true;
     }
 
+    sSection *sec = &sections[usedSections];
     if (sec->usedColors == MAX_COLORS) {
         return false;
     }
