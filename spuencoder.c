@@ -182,8 +182,15 @@ void cSpuEncoder::writeRegionInformation()
     spu[written++] = 0x00;  // total size of parameter area
     spu[written++] = 0x00;  // will be filled later
 
-    for (size_t i = 1; i < regions.size(); i++) {
+    for (size_t i = 0; i < regions.size(); i++) {
         cSpuRegion *reg = regions[i];
+
+        // we need to modify start and end line
+        // because both are values for the whole screen and
+        // we are working only on the bitmap to show.
+        // se simply add top coordinate to startLine and endLine
+        reg->startLine += this->top;
+        reg->endLine += this->top - 1;
 
         // define region (LN_CTLI)
         spu[written++] = (reg->startLine >> 8);
@@ -191,9 +198,12 @@ void cSpuEncoder::writeRegionInformation()
         spu[written++] = (((reg->openSections() & 0x0f) << 4)| ((reg->endLine >> 8) & 0x0f));
         spu[written++] = reg->endLine & 0xff;
 
-        for (size_t j = 0; j < reg->openSections(); j++) {
+        for (uint8_t j = 0; j < reg->openSections(); j++) {
 
-            sSection *sec = reg->section(i);
+            sSection *sec = reg->section(j);
+
+            // we also need to modify startColumn value
+            sec->startColumn += this->left;
 
             // define section (PXCTLI)
             spu[written++] = (sec->startColumn >> 8) & 0x0f;
