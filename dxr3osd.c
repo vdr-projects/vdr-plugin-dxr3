@@ -119,8 +119,7 @@ eOsdError cDxr3Osd::CanHandleAreas(const tArea *Areas, int NumAreas)
 	{
 	    if (Areas[i].bpp != 1 &&
 		Areas[i].bpp != 2 &&
-		Areas[i].bpp != 4 &&
-		Areas[i].bpp != 8)
+                Areas[i].bpp != 4)
 	    {
 		return oeBppNotSupported;
 	    }
