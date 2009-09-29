@@ -342,6 +342,127 @@ void cSpuEncoder::clearRegions()
 
 void cSpuEncoder::calculateRegions()
 {
+    // create temporay bitmap
+    data = new cBitmap(bitmap->Width(), bitmap->Height(), bitmap->Bpp(), bitmap->X0(), bitmap->Y0());
+
+    // we go through the whole bitmap and define
+    // spuregions and do remapping.
+
+    for (uint16_t y = 0; y < bitmap->Height(); /* y gets incremented in algorithgm */) {
+
+        cSpuRegion *reg = new cSpuRegion(y);
+        regions.push_back(reg);
+
+        tIndex prevIndex = 0xff;
+
+        // in this part of the algorithm, we go through one
+        // line of the osd and define sections for the current
+        // region.
+
+        for (uint16_t x = 0; x < bitmap->Width(); x++) {
+
+            // get current color
+            tIndex index = *(bitmap->Data(x, y));
+
+            if (prevIndex != index) {
+
+                // try to add it to current section
+                if (!reg->addIndex(index)) {
+
+                    // its time to create a new section
+                    // but before we continoue bring old
+                    // section into a well defined state
+                    reg->section(reg->openSections() - 1)->endColumn = x;
+
+                    dsyslog("new sectoin %d %d", y, x);
+                    // add a new section
+                    if (!reg->newSection()) {
+                        // TODO: what now?
+                        dsyslog("out of sections");
+                    }
+
+                    // set some start values for new section
+                    reg->section(reg->openSections() - 1)->startColumn = x;
+                    reg->addIndex(index);
+                }
+
+                prevIndex = index;
+            }
+        }
+
+        // go for sure that we have set an endColumn value. this might happen
+        // if only one section was needed.
+        reg->section(reg->openSections() - 1)->endColumn = bitmap->Width();
+
+        // next we need to find the optimal endLine for the current
+        // region. this is done by growing each section and then use
+        // the minimal value for the endLine
+
+        uint16_t endLine = 0;
+        bool doneLoop = false;
+
+        for (uint8_t i = 0; i < reg->openSections(); i++) {
+            sSection *sec = reg->section(i);
+            //dsyslog("section %d", i);
+
+            for (uint16_t y = reg->startLine; !doneLoop && y < bitmap->Height(); y++) {
+                for (uint16_t x = sec->startColumn; !doneLoop && x < sec->endColumn; x++) {
+
+                    tIndex idx = *(bitmap->Data(x, y));
+
+                    if (!reg->containsIndex(idx)) {
+
+                        if (endLine == 0) {
+                            endLine = y;
+                        } else {
+                            endLine = std::min(endLine, y);
+                        }
+
+                        doneLoop = true;
+                        dsyslog("loop done - color %d not found", idx);
+                    }
+                }
+            }
+
+            if (endLine == reg->startLine) {
+                endLine++;
+            }
+
+            // we reached the end of the bitmap
+            if (!doneLoop) {
+                endLine = bitmap->Height();
+            }
+        }
+
+        dsyslog("endLine %d", endLine);
+        reg->endLine = endLine;
+
+        // in the last step we need to map old index values
+        // to new one. this is needed as the index value in the
+        // bitmap can only be 2 bits big (see rle method).
+
+        //dsyslog("opensections %d", reg->openSections());
+        for (uint8_t i = 0; i < reg->openSections(); i++) {
+            sSection *sec = reg->section(i);
+
+            for (uint16_t y = reg->startLine; y < reg->endLine; y++) {
+                for (uint16_t x = sec->startColumn; x < sec->endColumn; x++) {
+                    tIndex idx = *(bitmap->Data(x, y));
+                    data->SetIndex(x, y, sec->cmap[idx]);
+                }
+            }
+
+            // we reached the end of the bitmap
+            if (!doneLoop) {
+                endLine = bitmap->Height();
+            }
+        }
+
+        // update y
+        y = endLine;
+    }
+
+    bitmap = data;
 }
 
 void cSpuEncoder::rle4colors()
