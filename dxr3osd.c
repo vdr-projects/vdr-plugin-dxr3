@@ -149,6 +149,8 @@ void cDxr3Osd::Flush()
 {
     if (!Active())
         return;
+
+#if 0
     if (last->Elapsed() < cDxr3ConfigData::instance()->GetOsdFlushRate())
 	return;
     last->Set();
@@ -303,6 +305,7 @@ void cDxr3Osd::Flush()
     shown = true;
 #ifdef timingdebug
     t.Stop("cDxr3SubpictureOsd::Flush");
+#endif
 #endif
 }
 
