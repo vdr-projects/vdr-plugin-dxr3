@@ -313,12 +313,12 @@ void cSpuEncoder::generateSpuData(bool topAndBottom) throw (char const* )
     spu[written++] = bottomStart >> 8;
     spu[written++] = bottomStart & 0xff;
 
-    // write color-> palette index and alpha data for the first region
-    writeColorAndAlpha(regions.front()->section(0), true);
-
     // write informations for other regions
     if (regions.size() > 1) {
         writeRegionInformation();
+    } else {
+        // write color-> palette index and alpha data for the first region
+        writeColorAndAlpha(regions.front()->section(0), true);
     }
 
     // 0xff: end sequence
