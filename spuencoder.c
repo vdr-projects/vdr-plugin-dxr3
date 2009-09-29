@@ -173,7 +173,7 @@ void cSpuEncoder::writeColorAndAlpha(sSection *sec, bool withCMD)
 
 void cSpuEncoder::writeRegionInformation()
 {
-    dsyslog("writting region definitions");
+    dsyslog("[dxr3-spuencoder] writting region definitions");
 
     spu[written++] = CMD_CHG_COLCON;
 
@@ -221,7 +221,6 @@ void cSpuEncoder::writeRegionInformation()
 
     // update size of 0x07 command
     int32_t s = written - size_fill - 1;
-    dsyslog("size of 07 command %d", s);
 
     spu[size_fill++] = s >> 8;
     spu[size_fill++] = s & 0xff;
@@ -296,7 +295,7 @@ void cSpuEncoder::generateSpuData(bool topAndBottom) throw (char const* )
     uint32_t right = left + bitmap->Width() - 1;
     uint32_t bottom = top + bitmap->Height() - 1;
 
-    dsyslog("top %d left %d", top, left);
+    dsyslog("[dxr3-spuencoder] top %d left %d", top, left);
 
     spu[written++] = CMD_SET_DISPLAYAREA;
     spu[written++] = left >> 4;
@@ -374,7 +373,6 @@ void cSpuEncoder::calculateRegions()
                     // section into a well defined state
                     reg->section(reg->openSections() - 1)->endColumn = x;
 
-                    dsyslog("new sectoin %d %d", y, x);
                     // add a new section
                     if (!reg->newSection()) {
                         // TODO: what now?
@@ -419,7 +417,6 @@ void cSpuEncoder::calculateRegions()
                         }
 
                         doneLoop = true;
-                        dsyslog("loop done - color %d not found", idx);
                     }
                 }
             }
@@ -434,7 +431,6 @@ void cSpuEncoder::calculateRegions()
             }
         }
 
-        dsyslog("endLine %d", endLine);
         reg->endLine = endLine;
 
         // in the last step we need to map old index values
