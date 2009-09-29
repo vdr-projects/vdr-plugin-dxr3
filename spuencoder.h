@@ -73,6 +73,7 @@ private:
     void generateSpuData(bool topAndBottom) throw (char const* );
 
     void clearRegions();
+    void calculateRegions();
 
     void rle4colors();
 };

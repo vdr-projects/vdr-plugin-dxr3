@@ -93,14 +93,20 @@ void cSpuEncoder::encode(cBitmap *bmap, int top, int left)
     // generate and upload color palette
     generateColorPalette();
 
-    // add one region
-    cSpuRegion *reg = new cSpuRegion(0);
+    // if the bitmap uses only 4 colors, we can
+    // simply define a region, else we need to
+    // calculate the reginos and do some remapping.
+    if (numColors <= 4) {
+        // add one region
+        cSpuRegion *reg = new cSpuRegion(0);
 
-    for (int i = 0; i < numColors; i++) {
-        reg->addIndex(bitmap->Index(colors[i]));
+        for (int i = 0; i < numColors; i++) {
+            reg->addIndex(bitmap->Index(colors[i]));
+        }
+        regions.push_back(reg);
+    } else {
+        calculateRegions();
     }
-
-    regions.push_back(reg);
 
     dsyslog("[dxr3-spuencoder] rle data");
 
@@ -322,6 +328,10 @@ void cSpuEncoder::clearRegions()
         delete regions[i];
     }
     regions.clear();
+}
+
+void cSpuEncoder::calculateRegions()
+{
 }
 
 void cSpuEncoder::rle4colors()
