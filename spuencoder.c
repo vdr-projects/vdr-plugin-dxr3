@@ -74,6 +74,9 @@ void cSpuEncoder::encode(cBitmap *bmap, int top, int left)
     this->top = top;
     this->left = left;
 
+    // set initial value
+    data = NULL;
+
     // prepare datastructures
     memset(rleData.top, 0, sizeof(rleData.top));
     memset(rleData.bottom, 0, sizeof(rleData.bottom));
@@ -125,6 +128,11 @@ void cSpuEncoder::encode(cBitmap *bmap, int top, int left)
     // we are ready to send generated spu data
     dsyslog("[dxr3-spuencoder] spu packet size %d (bytes). %d left", written, (MAX_SPU_DATA - written));
     cDxr3Interface::instance()->WriteSpu((uchar *)&spu, written);
+
+    if (data) {
+        delete data;
+        data = NULL;
+    }
 }
 
 void cSpuEncoder::writeNibble(uint8_t val)
