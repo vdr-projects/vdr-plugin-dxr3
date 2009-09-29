@@ -151,21 +151,16 @@ void cDxr3Osd::Flush()
 
     int i = 0;
     while (GetBitmap(i) != NULL) {
+
+        int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
+
+        if (GetBitmap(0)->Dirty(x1, y1, x2, y2)) {
+
+            cSpuEncoder::instance()->encode(GetBitmap(i), Top(), Left());
+            shown = true;
+            GetBitmap(i)->Clean();
+        }
         i++;
-    }
-
-    int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
-    if (!GetBitmap(0)->Dirty(x1, y1, x2, y2)) {
-        return;
-    }
-
-    if (i == 1) {
-        cSpuEncoder::instance()->encode(GetBitmap(0), Top(), Left());
-        shown = true;
-        GetBitmap(0)->Clean();
-        return;
-    } else {
-        dsyslog("TODO: add support for multi bitmaps");
     }
 
 #if 0
