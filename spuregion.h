@@ -34,6 +34,7 @@ const static int MAX_SECTIONS = 15; // we can support up to 15 sections per regi
 
 struct sSection {
     uint16_t startColumn;
+    uint16_t endColumn;
 
     uint8_t cmap[16];
     tIndex colIndex[MAX_COLORS];
