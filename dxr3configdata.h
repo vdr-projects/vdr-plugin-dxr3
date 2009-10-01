@@ -23,7 +23,7 @@
 #ifndef _DXR3_CONFIGDATA_H_
 #define _DXR3_CONFIGDATA_H_
 
-#include "dxr3singleton.h"
+#include "singleton.h"
 #include <linux/em8300.h>
 
 // ==================================

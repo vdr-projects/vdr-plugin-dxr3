@@ -30,7 +30,7 @@
 #include <stdint.h>
 #include <vdr/osd.h>
 #include <vector>
-#include "dxr3singleton.h"
+#include "singleton.h"
 #include "spuregion.h"
 
 static const int MAX_SPU_DATA = 65220;  // TODO validate this value
