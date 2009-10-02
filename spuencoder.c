@@ -238,8 +238,16 @@ void cSpuEncoder::generateColorPalette()
 
     for (int i = 0; i < numColors; i++) {
         // separate AA and RRGGBB values
-        opacity[i] = (colors[i] & 0xff000000) >> 24;
-        palcolors[i] = Tools::Rgb2YCrCb(colors[i] & 0x00ffffff);
+        tColor opac = (colors[i] & 0xff000000) >> 24;
+        tColor color = (colors[i] & 0x00ffffff);
+
+        opacity[i] = opac * 0xf / 0xff;
+
+        // convert RRGGBB to BBGGRR
+        color = ((color & 0x0000ff) << 16) | (color & 0x00ff00) | ((color & 0xff0000) >> 16);
+
+        // convert to YCrCb
+        palcolors[i] = Tools::Rgb2YCrCb(color);
     }
 
     // upload color palette
