@@ -5,8 +5,7 @@
 
 // ==================================
 // osd plugin provider
-class cDxr3OsdProvider : public cOsdProvider
-{
+class cDxr3OsdProvider : public cOsdProvider {
 public:
     cDxr3OsdProvider() {}
     virtual cOsd *CreateOsd(int Left, int Top, uint Level);
@@ -14,15 +13,7 @@ public:
 
 // ==================================
 // osd interface
-class cDxr3Osd : public cOsd
-{
-private:
-    cSPUEncoder* Spu;		///< interface to cSPUEncoder
-    bool shown;			///< is the osd shown?
-    cPalette* Palette;		///< global palette (needed by all bitmaps)
-    cTimeMs *last;
-protected:
-    virtual void SetActive(bool On);
+class cDxr3Osd : public cOsd {
 public:
     cDxr3Osd(int Left, int Top, uint Level);
     ~cDxr3Osd();
@@ -31,6 +22,15 @@ public:
     eOsdError SetAreas(const tArea *Areas, int NumAreas);
 
     void Flush();
+
+protected:
+    virtual void SetActive(bool On);
+
+private:
+    cSPUEncoder* Spu;		///< interface to cSPUEncoder
+    bool shown;			///< is the osd shown?
+    cPalette* Palette;		///< global palette (needed by all bitmaps)
+    cTimeMs *last;
 };
 
 #endif /*_DXR3_OSD_H_*/
