@@ -18,12 +18,12 @@ static const int MAXNUMWINDOWS = 7;
 class cDxr3Osd : public cOsd {
 public:
     cDxr3Osd(int Left, int Top, uint Level);
-    ~cDxr3Osd();
+    virtual ~cDxr3Osd();
 
-    eOsdError CanHandleAreas(const tArea *Areas, int NumAreas);
-    eOsdError SetAreas(const tArea *Areas, int NumAreas);
+    virtual eOsdError CanHandleAreas(const tArea *Areas, int NumAreas);
+    virtual eOsdError SetAreas(const tArea *Areas, int NumAreas);
 
-    void Flush();
+    virtual void Flush();
 
 protected:
     virtual void SetActive(bool On);
