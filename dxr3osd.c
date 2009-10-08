@@ -151,19 +151,31 @@ void cDxr3Osd::Flush()
     if (!Active())
         return;
 
-    int i = 0;
-    while (GetBitmap(i) != NULL) {
+    cBitmap *bmap = NULL;
+    int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
 
-        int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
+    // check if we need to encode an OSD, which is build by only
+    // one area, or if we need to create a big bitmap containing
+    // all areas
+    if (numAreas == 1) {
 
-        if (GetBitmap(0)->Dirty(x1, y1, x2, y2)) {
+        // we only need to set bmap pointer to a valid bitmap
+        bmap = GetBitmap(0);
 
-            cSpuEncoder::instance()->encode(GetBitmap(i), Top(), Left());
-            shown = true;
-            GetBitmap(i)->Clean();
-        }
-        i++;
+    } else {
+
+        /* TODO */
     }
+
+    if (!bmap)
+        return;
+
+    // encode bitmap
+    if (bmap->Dirty(x1, y1, x2, y2)) {
+        cSpuEncoder::instance()->encode(bmap, Top(), Left());
+        shown = true;
+        bmap->Clean();
+     }
 
 #if 0
     if (last->Elapsed() < cDxr3ConfigData::instance()->GetOsdFlushRate())
