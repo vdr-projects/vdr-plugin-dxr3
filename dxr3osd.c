@@ -62,8 +62,6 @@ public:
 };
 #endif
 
-#define MAXNUMWINDOWS 7 // OSD windows are counted 1...7
-
 // ==================================
 //! constructor
 cDxr3Osd::cDxr3Osd(int Left, int Top, uint Level)
@@ -135,11 +133,15 @@ eOsdError cDxr3Osd::CanHandleAreas(const tArea *Areas, int NumAreas)
 
 eOsdError cDxr3Osd::SetAreas(const tArea *Areas, int NumAreas)
 {
-    if (shown)
-    {
+    if (shown) {
 	Spu->Clear();
 	shown = false;
     }
+
+    // store area informations
+    memcpy(areas, Areas, sizeof(tArea) * NumAreas);
+    numAreas = NumAreas;
+
     return cOsd::SetAreas(Areas, NumAreas);
 }
 

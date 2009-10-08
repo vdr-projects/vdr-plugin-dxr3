@@ -11,6 +11,8 @@ public:
     virtual cOsd *CreateOsd(int Left, int Top, uint Level);
 };
 
+static const int MAXNUMWINDOWS = 7;
+
 // ==================================
 // osd interface
 class cDxr3Osd : public cOsd {
@@ -31,6 +33,8 @@ private:
     bool shown;			///< is the osd shown?
     cPalette* Palette;		///< global palette (needed by all bitmaps)
     cTimeMs *last;
+    tArea areas[MAXNUMWINDOWS];
+    int numAreas;
 };
 
 #endif /*_DXR3_OSD_H_*/
