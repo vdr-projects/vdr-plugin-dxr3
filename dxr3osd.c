@@ -223,6 +223,9 @@ void cDxr3Osd::Flush()
             copy(tmp, i, pair, numPair);
             tmp->Clean();
         }
+
+        // replace color palette
+        mergedBitmap->Replace(*Palette);
     }
 
     if (!bmap)
