@@ -226,10 +226,10 @@ void cDxr3Osd::Flush()
 
         // replace color palette
         mergedBitmap->Replace(*Palette);
-    }
 
-    if (!bmap)
-        return;
+        // set pointer to our valid mergedBitmap
+        bmap = mergedBitmap;
+    }
 
     // encode bitmap
     if (bmap->Dirty(x1, y1, x2, y2)) {
