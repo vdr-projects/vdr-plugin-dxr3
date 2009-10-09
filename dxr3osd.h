@@ -12,6 +12,7 @@ public:
 };
 
 static const int MAXNUMWINDOWS = 7;
+typedef std::pair<tIndex, tIndex> transPair;
 
 // ==================================
 // osd interface
@@ -36,6 +37,8 @@ private:
     tArea areas[MAXNUMWINDOWS];
     int numAreas;
     cBitmap *mergedBitmap;
+
+    void copy(cBitmap *part, int area, transPair pair[16], int numPair);
 };
 
 #endif /*_DXR3_OSD_H_*/

@@ -183,8 +183,6 @@ void cDxr3Osd::Flush()
 
     } else {
 
-        typedef std::pair<tIndex, tIndex> transPair;
-
         // determine the palette used by all bitmaps
         bool success = true;
 
@@ -215,6 +213,15 @@ void cDxr3Osd::Flush()
             if (!success) {
                 esyslog("[dxr3-osd] too many colors used by OSD");
             }
+
+            // if part is not dirty, we can continue to the next area
+            if (!tmp->Dirty(x1, y1, x2, y2)) {
+                continue;
+            }
+
+            // copy data into mergedBitmap and mark part as clean
+            copy(tmp, i, pair, numPair);
+            tmp->Clean();
         }
     }
 
@@ -387,6 +394,44 @@ void cDxr3Osd::Flush()
 #endif
 }
 
+void cDxr3Osd::copy(cBitmap *part, int area, transPair pair[16], int numPair)
+{
+    tArea usedArea = areas[area];
+
+    // a small optimization
+    if (numPair == 0) {
+
+        // we do not need to transform anything, just do a copy
+
+        for (int x = 0; x < part->Width(); x++) {
+            for (int y = 0; y < part->Height(); y++) {
+
+                tIndex val = *part->Data(x, y);
+                mergedBitmap->SetIndex(x + usedArea.x1, y + usedArea.y1, val);
+            }
+        }
+
+    } else {
+
+        // we need to transform and to do a copy
+
+         for (int x = 0; x < part->Width(); x++) {
+            for (int y = 0; y < part->Height(); y++) {
+
+                tIndex val = *part->Data(x, y);
+
+                for (int t = 0; t < numPair; t++) {
+                    if (val == pair[t].first) {
+                        val = pair[t].second;
+                        break;
+                    }
+                }
+
+                mergedBitmap->SetIndex(x + usedArea.x1, y + usedArea.y1, val);
+            }
+        }
+    }
+}
 
 // Local variables:
 // mode: c++
