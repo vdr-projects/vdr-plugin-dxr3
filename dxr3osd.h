@@ -35,6 +35,7 @@ private:
     cTimeMs *last;
     tArea areas[MAXNUMWINDOWS];
     int numAreas;
+    cBitmap *mergedBitmap;
 };
 
 #endif /*_DXR3_OSD_H_*/

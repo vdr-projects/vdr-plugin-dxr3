@@ -67,6 +67,7 @@ public:
 cDxr3Osd::cDxr3Osd(int Left, int Top, uint Level)
     : cOsd(Left, Top, Level)
 {
+    mergedBitmap = NULL;
     shown = false;
     Palette = new cPalette(4);
     last = new cTimeMs();
@@ -80,6 +81,9 @@ cDxr3Osd::~cDxr3Osd()
     SetActive(false);
     delete Palette;
     delete last;
+
+    if (mergedBitmap)
+        delete mergedBitmap;
 }
 
 // ==================================
@@ -141,6 +145,18 @@ eOsdError cDxr3Osd::SetAreas(const tArea *Areas, int NumAreas)
     // store area informations
     memcpy(areas, Areas, sizeof(tArea) * NumAreas);
     numAreas = NumAreas;
+
+    // allocate a new bitmap, which will contain all areas
+    if (numAreas > 1) {
+
+        int w = areas[numAreas - 1].x2;
+        int h = areas[numAreas - 1].y2;
+
+        if (mergedBitmap)
+            delete mergedBitmap;
+
+        mergedBitmap = new cBitmap(w, h, 4, 0, 0);
+    }
 
     return cOsd::SetAreas(Areas, NumAreas);
 }
