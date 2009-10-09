@@ -202,8 +202,6 @@ void cDxr3Osd::Flush()
                     break;
                 }
 
-                dsyslog("%d) old %d new %d", i, c, idx);
-
                 if (c != idx) {
                     pair[numPair] = transPair(c, idx);
                     numPair++;
