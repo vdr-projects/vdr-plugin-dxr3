@@ -173,7 +173,7 @@ void cSpuEncoder::writeColorAndAlpha(sSection *sec, bool withCMD)
 
 void cSpuEncoder::writeRegionInformation()
 {
-    dsyslog("[dxr3-spuencoder] writting region definitions");
+    dsyslog("[dxr3-spuencoder] writing region definitions");
 
     spu[written++] = CMD_CHG_COLCON;
 
