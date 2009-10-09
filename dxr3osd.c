@@ -156,6 +156,9 @@ eOsdError cDxr3Osd::SetAreas(const tArea *Areas, int NumAreas)
             delete mergedBitmap;
 
         mergedBitmap = new cBitmap(w, h, 4, 0, 0);
+
+        // reset current used merged palette
+        Palette->Reset();
     }
 
     return cOsd::SetAreas(Areas, NumAreas);
@@ -180,7 +183,39 @@ void cDxr3Osd::Flush()
 
     } else {
 
-        /* TODO */
+        typedef std::pair<tIndex, tIndex> transPair;
+
+        // determine the palette used by all bitmaps
+        bool success = true;
+
+        for (int i = 0; i < numAreas; i++) {
+
+            cBitmap *tmp = GetBitmap(i);
+            int numColors;
+            const tColor *color = tmp->Colors(numColors);
+            transPair pair[16];
+            int numPair = 0;
+
+            for (int c = 0; c < numColors; c++) {
+                int idx = Palette->Index(color[c]);
+
+                if (idx == -1) {
+                    success = false;
+                    break;
+                }
+
+                dsyslog("%d) old %d new %d", i, c, idx);
+
+                if (c != idx) {
+                    pair[numPair] = transPair(c, idx);
+                    numPair++;
+                }
+            }
+
+            if (!success) {
+                esyslog("[dxr3-osd] too many colors used by OSD");
+            }
+        }
     }
 
     if (!bmap)
