@@ -25,6 +25,7 @@
 
 #include "dxr3osd.h"
 #include "dxr3interface_spu_encoder.h"
+#include "scaler.h"
 
 // ==================================
 // ! create osd at (Left, Top, Level)
@@ -228,6 +229,19 @@ void cDxr3Osd::Flush()
         // set pointer to our valid mergedBitmap
         bmap = mergedBitmap;
     }
+
+    uint32_t horizontal, vertical;
+    cDxr3Interface::instance()->dimension(horizontal, vertical);
+
+    // check if we need to scale the osd
+    if (horizontal < 720 || vertical < 576) {
+
+        // TODO
+        dsyslog("SCALE ME");
+    }
+
+    if (!bmap)
+        return;
 
     // encode bitmap
     if (bmap->Dirty(x1, y1, x2, y2)) {
