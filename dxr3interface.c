@@ -271,6 +271,12 @@ void cDxr3Interface::setDimension(uint32_t horizontal, uint32_t vertical)
     }
 }
 
+void cDxr3Interface::dimension(uint32_t &horizontal, uint32_t &vertical)
+{
+    horizontal = m_horizontal;
+    vertical = m_vertical;
+}
+
 // play functions
 // ==================================
 //! set playing mode and start sync engine

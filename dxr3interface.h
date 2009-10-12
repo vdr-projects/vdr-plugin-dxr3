@@ -104,6 +104,7 @@ public:
     uint32_t GetVerticalSize() const      { return m_vertical; }
 
     void setDimension(uint32_t horizontal, uint32_t vertical);
+    void dimension(uint32_t &horizontal, uint32_t &vertical);
 
     // play functions
     void flushBuffers();
