@@ -298,9 +298,11 @@ cString cPluginDxr3::SVDRPCommand(const char *Command, const char *Option,
     }
     if (!strcasecmp(Command, "DON")) {
         device->turnPlugin(true);
+        return "vdr-plugin-dxr3 turned on";
     }
     if (!strcasecmp(Command, "DOF")) {
         device->turnPlugin(false);
+        return "vdr-plugin-dxr3 turned off";
     }
 
     return NULL;
