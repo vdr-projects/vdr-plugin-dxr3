@@ -233,19 +233,37 @@ void cDxr3Osd::Flush()
     uint32_t horizontal, vertical;
     cDxr3Interface::instance()->dimension(horizontal, vertical);
 
+    int top = Top();
+    int left = Left();
+
     // check if we need to scale the osd
     if (horizontal < 720 || vertical < 576) {
 
-        // TODO
-        dsyslog("SCALE ME");
-    }
+        // calculate ratio
+        float alpha = 720.f / bmap->Width();
+        float beta = 576.f / bmap->Height();
 
-    if (!bmap)
-        return;
+        // apply ration to get size of scaled bitmap
+        int width = horizontal / alpha;
+        int height = vertical / beta;
+
+        // calculate ratio for top/left
+        alpha = 720.f / left;
+        beta = 576.f / top;
+
+        // apply ration to top/left
+        left = horizontal / alpha;
+        top = vertical / beta;
+
+        cBitmap *scaled = cScaler::scaleBitmap(bmap, width, height);
+        scaled->Replace(*Palette);
+
+        bmap = scaled;
+    }
 
     // encode bitmap
     if (bmap->Dirty(x1, y1, x2, y2)) {
-        cSpuEncoder::instance()->encode(bmap, Top(), Left());
+        cSpuEncoder::instance()->encode(bmap, top, left);
         shown = true;
         bmap->Clean();
      }
