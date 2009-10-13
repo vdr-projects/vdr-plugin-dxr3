@@ -235,6 +235,7 @@ void cDxr3Osd::Flush()
 
     int top = Top();
     int left = Left();
+    bool scaling = false;
 
     // check if we need to scale the osd
     if (horizontal < 720 || vertical < 576) {
@@ -258,6 +259,7 @@ void cDxr3Osd::Flush()
         cBitmap *scaled = cScaler::scaleBitmap(bmap, width, height);
         scaled->Replace(*Palette);
 
+        scaling = true;
         bmap = scaled;
     }
 
@@ -267,6 +269,12 @@ void cDxr3Osd::Flush()
         shown = true;
         bmap->Clean();
      }
+
+    // check if we need to free the bitmap allocated by the method
+    // cScaler::scaleBitmap
+    if (scaling) {
+        delete bmap;
+    }
 
 #if 0
     if (last->Elapsed() < cDxr3ConfigData::instance()->GetOsdFlushRate())
