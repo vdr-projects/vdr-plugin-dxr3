@@ -32,7 +32,7 @@
 
 class cScaler {
 public:
-    static cBitmap *scaleBitmap(cBitmap *src, uint32_t width, uint32_t height);
+    static cBitmap *scaleBitmap(cBitmap *source, int width, int height);
 };
 
 
