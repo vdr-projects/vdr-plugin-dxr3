@@ -1,7 +1,8 @@
 #ifndef _DXR3_OSD_H_
 #define _DXR3_OSD_H_
 
-#include "dxr3interface_spu_encoder.h"
+#include <utility>
+#include <vdr/osd.h>
 
 // ==================================
 // osd plugin provider
@@ -30,10 +31,8 @@ protected:
     virtual void SetActive(bool On);
 
 private:
-    cSPUEncoder* Spu;		///< interface to cSPUEncoder
     bool shown;			///< is the osd shown?
     cPalette* Palette;		///< global palette (needed by all bitmaps)
-    cTimeMs *last;
     tArea areas[MAXNUMWINDOWS];
     int numAreas;
     cBitmap *mergedBitmap;

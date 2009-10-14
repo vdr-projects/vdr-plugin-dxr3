@@ -71,8 +71,6 @@ cDxr3Osd::cDxr3Osd(int Left, int Top, uint Level)
     mergedBitmap = NULL;
     shown = false;
     Palette = new cPalette(4);
-    last = new cTimeMs();
-    Spu = cSPUEncoder::instance();
 }
 
 // ==================================
@@ -80,7 +78,6 @@ cDxr3Osd::~cDxr3Osd()
 {
     SetActive(false);
     delete Palette;
-    delete last;
 
     if (mergedBitmap)
         delete mergedBitmap;
@@ -89,20 +86,12 @@ cDxr3Osd::~cDxr3Osd()
 // ==================================
 void cDxr3Osd::SetActive(bool On)
 {
-  if (On != Active())
-  {
-      // Clears the OSD screen image when it becomes active
-      // removes it from screen when it becomes inactive
-      cOsd::SetActive(On);
-      if (On)
-      {
-	  Spu->Clear();
-      }
-      else
-      {
-          cSpuEncoder::instance()->clearOsd();
-      }
-  }
+    if (On != Active()) {
+        cOsd::SetActive(On);
+        if (!On) {
+            cSpuEncoder::instance()->clearOsd();
+        }
+    }
 }
 
 // ==================================
@@ -138,7 +127,6 @@ eOsdError cDxr3Osd::CanHandleAreas(const tArea *Areas, int NumAreas)
 eOsdError cDxr3Osd::SetAreas(const tArea *Areas, int NumAreas)
 {
     if (shown) {
-	Spu->Clear();
 	shown = false;
     }
 
