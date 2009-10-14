@@ -32,35 +32,6 @@ cOsd *cDxr3OsdProvider::CreateOsd(int Left, int Top, uint Level)
     return new cDxr3Osd(Left, Top, Level);
 }
 
-// Enables some time measure debugging code
-// (taken from the osdteletext plugin, thanks folks)
-#ifdef timingdebug
-#include <sys/timeb.h>
-class cTime
-{
-    // Debugging: Simple class to measure time
-    timeb start;
-public:
-    void Start()
-    {
-	ftime(&start);
-    }
-    void Stop(char *txt)
-    {
-	timeb t;
-	ftime(&t);
-	int s = t.time-start.time;
-	int ms = t.millitm - start.millitm;
-	if (ms<0)
-	{
-	    s--;
-	    ms += 1000;
-	}
-	printf("%s: %i.%03i\n", txt, s, ms);
-    }
-};
-#endif
-
 // ==================================
 //! constructor
 cDxr3Osd::cDxr3Osd(int Left, int Top, uint Level)
