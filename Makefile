@@ -64,10 +64,6 @@ DEFINES  += -D_GNU_SOURCE
 # versions to /usr/share/misc/em8300.uc.
 DEFINES += -DMICROCODE=\"/lib/firmware/em8300.bin\"
 
-# use OSD scaler borrowed from the Xine plugin?
-# comment this out to use the traditional vdr-dxr3 scaler
-DEFINES += -DUSE_XINE_SCALER
-
 ### The object files (add further files here):
 
 OBJS = $(PLUGIN).o dxr3multichannelaudio.o \
