@@ -79,9 +79,6 @@ cMenuSetupDxr3::cMenuSetupDxr3(void)
 #endif
     newUseDigitalOut = cDxr3ConfigData::instance()->GetUseDigitalOut();
     Add(new cMenuEditBoolItem(tr("Digital audio output"), &newUseDigitalOut));
-    newOsdFlushRate = cDxr3ConfigData::instance()->GetOsdFlushRate();
-    Add(new cMenuEditIntItem(tr("OSD flush rate (ms)"),
-			     &newOsdFlushRate, 0, 255));
     newHideMenu = cDxr3ConfigData::instance()->GetHideMenu();
     Add(new cMenuEditBoolItem(tr("Hide main menu entry"), &newHideMenu));
     newDxr3Card = cDxr3ConfigData::instance()->GetDxr3Card();
@@ -106,8 +103,6 @@ void cMenuSetupDxr3::Store(void)
 	       cDxr3ConfigData::instance()->SetUseWSS(newUseWSS));
     SetupStore("UseDigitalOut",
 	       cDxr3ConfigData::instance()->SetUseDigitalOut(newUseDigitalOut));
-    SetupStore("OsdFlushRate",
-	       cDxr3ConfigData::instance()->SetOsdFlushRate(newOsdFlushRate));
     SetupStore("HideMenu",
 	       cDxr3ConfigData::instance()->SetHideMenu(newHideMenu));
     SetupStore("Dxr3Card",
@@ -196,11 +191,6 @@ bool cPluginDxr3::SetupParse(const char *Name, const char *Value)
     if (!strcasecmp(Name, "HideMenu"))
     {
 	cDxr3ConfigData::instance()->SetHideMenu(atoi(Value));
-	return true;
-    }
-    if (!strcasecmp(Name, "OsdFlushRate"))
-    {
-	cDxr3ConfigData::instance()->SetOsdFlushRate(atoi(Value));
 	return true;
     }
     if (!strcasecmp(Name, "Brightness"))

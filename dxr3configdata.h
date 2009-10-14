@@ -66,9 +66,6 @@ public:
     int GetHideMenu() const             { return m_hidemenu; }
     int SetHideMenu(int value)          { return m_hidemenu = value; }
 
-    unsigned int GetOsdFlushRate() const    { return m_osdflushrate; }
-    int SetOsdFlushRate(unsigned int value) { return m_osdflushrate = value; }
-
     int GetUseWSS() const               { return m_usewss; }
     int SetUseWSS(int value)            { return m_usewss = value; }
 
@@ -82,7 +79,6 @@ private:
     int m_contrast;
     int m_saturation;
     int m_hidemenu;
-    unsigned int m_osdflushrate;
 };
 
 #endif /*_DXR3_CONFIGDATA_H_*/
