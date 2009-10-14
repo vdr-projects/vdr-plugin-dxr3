@@ -68,15 +68,13 @@ eOsdError cDxr3Osd::CanHandleAreas(const tArea *Areas, int NumAreas)
 {
 
     eOsdError Result = cOsd::CanHandleAreas(Areas, NumAreas);
-    if (Result == oeOk)
-    {
-	if (NumAreas > MAXNUMWINDOWS)
-	{
+    if (Result == oeOk) {
+
+        if (NumAreas > MAXNUMWINDOWS) {
 	    return oeTooManyAreas;
 	}
 
-	for (int i = 0; i < NumAreas; i++)
-	{
+        for (int i = 0; i < NumAreas; i++) {
 	    if (Areas[i].bpp != 1 &&
 		Areas[i].bpp != 2 &&
                 Areas[i].bpp != 4)
@@ -84,8 +82,7 @@ eOsdError cDxr3Osd::CanHandleAreas(const tArea *Areas, int NumAreas)
 		return oeBppNotSupported;
 	    }
 
-	    if ((Areas[i].Width() & (8 / Areas[i].bpp - 1)) != 0)
-	    {
+            if ((Areas[i].Width() & (8 / Areas[i].bpp - 1)) != 0) {
 		return oeWrongAlignment;
 	    }
 	}
