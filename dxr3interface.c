@@ -72,7 +72,7 @@ void cDxr3Interface::SetSysClock(uint32_t scr)
     uint32_t sc;
 
     Lock();
-    ioctl(m_fdControl, EM8300_IOCTL_SCR_GET, &sc);
+    CHECK(ioctl(m_fdControl, EM8300_IOCTL_SCR_GET, &sc));
     m_offset = scr - sc;
     Unlock();
 }
@@ -84,7 +84,7 @@ uint32_t cDxr3Interface::GetSysClock()
     uint32_t retval;
 
     Lock();
-    ioctl(m_fdControl, EM8300_IOCTL_SCR_GET, &sc);
+    CHECK(ioctl(m_fdControl, EM8300_IOCTL_SCR_GET, &sc));
     retval = sc + m_offset;
     Unlock();
 
@@ -98,7 +98,7 @@ void cDxr3Interface::SetPts(uint32_t pts)
 
     Lock();
     newPts =  pts - m_offset;
-    ioctl(m_fdVideo, EM8300_IOCTL_VIDEO_SETPTS, &newPts);
+    CHECK(ioctl(m_fdVideo, EM8300_IOCTL_VIDEO_SETPTS, &newPts));
     Unlock();
 }
 
@@ -109,7 +109,7 @@ void cDxr3Interface::SetSpuPts(uint32_t pts)
 
     Lock();
     newPts = (pts - m_offset) << 1;  // fix for DVD subtitles
-    ioctl(m_fdSpu, EM8300_IOCTL_SPU_SETPTS, &newPts);
+    CHECK(ioctl(m_fdSpu, EM8300_IOCTL_SPU_SETPTS, &newPts));
     Unlock();
 }
 
@@ -679,7 +679,7 @@ void cDxr3Interface::SetButton(uint16_t sx, uint16_t sy, uint16_t ex,
     button.left = sx;
     button.right = ex;
 
-    ioctl(m_fdSpu, EM8300_IOCTL_SPU_BUTTON, &button);
+    CHECK(ioctl(m_fdSpu, EM8300_IOCTL_SPU_BUTTON, &button));
 }
 
 // ==================================
@@ -694,13 +694,13 @@ void cDxr3Interface::ClearButton()
     button.left = 1;
     button.right = 2;
 
-    ioctl(m_fdSpu, EM8300_IOCTL_SPU_BUTTON, &button);
+    CHECK(ioctl(m_fdSpu, EM8300_IOCTL_SPU_BUTTON, &button));
 }
 
 // ==================================
 void cDxr3Interface::SetPalette(unsigned int *pal)
 {
-    ioctl(m_fdSpu, EM8300_IOCTL_SPU_SETPALETTE, (uint8_t*)pal);
+    CHECK(ioctl(m_fdSpu, EM8300_IOCTL_SPU_SETPALETTE, (uint8_t*)pal));
 }
 
 // helper functions for dxr3 main osd screen
