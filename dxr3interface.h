@@ -151,7 +151,6 @@ private:
     uint32_t m_aspectRatio;	///< current used aspect ratio
     uint32_t m_horizontal;	///< horizontal size of current videostream
     uint32_t m_vertical;	///< vertical size of current videostream
-    uint32_t m_spuMode;
     bool m_AudioActive;		///< is audio active?
     bool m_VideoActive;		///< is video active?
 

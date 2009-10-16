@@ -128,17 +128,7 @@ void cDxr3Interface::EnableSPU()
 
     Lock();
 
-    if (m_spuMode != ioval)
-    {
-	if (ioctl(m_fdControl, EM8300_IOCTL_SET_SPUMODE, &ioval) == -1)
-	{
-	    esyslog("dxr3: unable to enable subpicture mode: %m");
-	}
-	else
-	{
-	    m_spuMode = ioval;
-	}
-    }
+    CHECK(ioctl(m_fdControl, EM8300_IOCTL_SET_SPUMODE, &ioval));
 
     Unlock();
 }
@@ -151,17 +141,7 @@ void cDxr3Interface::DisableSPU()
 
     Lock();
 
-    if (m_spuMode != ioval)
-    {
-	if (ioctl(m_fdControl, EM8300_IOCTL_SET_SPUMODE, &ioval) == -1)
-	{
-	    esyslog("dxr3: unable to disable subpicture mode: %m");
-	}
-	else
-	{
-	    m_spuMode = ioval;
-	}
-    }
+    CHECK(ioctl(m_fdControl, EM8300_IOCTL_SET_SPUMODE, &ioval));
 
     Unlock();
 }
@@ -423,7 +403,6 @@ void cDxr3Interface::ClaimDevices()
     m_horizontal = 720;
     m_vertical = 576;
     m_aspectRatio = UNKNOWN_ASPECT_RATIO;
-    m_spuMode = EM8300_SPUMODE_OFF;
 
     // configure device based on settings
     ConfigureDevice();
