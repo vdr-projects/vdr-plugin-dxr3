@@ -20,10 +20,7 @@
  *
  */
 
-#include <linux/em8300.h>
-
 #include "dxr3device.h"
-#include "dxr3configdata.h"
 #include "dxr3interface.h"
 #include "dxr3tools.h"
 #include "dxr3osd.h"
