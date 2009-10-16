@@ -156,7 +156,7 @@ void cDxr3Device::Mute()
 //! displays the given I-frame as a still picture.
 void cDxr3Device::StillPicture(const uchar *Data, int Length)
 {
-    m_DemuxDevice.StillPicture(Data, Length);
+    m_DemuxDevice.StillPicture();
 }
 
 // ==================================

@@ -50,7 +50,7 @@ public:
 
     int DemuxPes(const uint8_t* buf, int length, bool bAc3Dts = false);
     int DemuxAudioPes(const uint8_t* buf, int length);
-    void StillPicture(const uint8_t* buf, int length);
+    void StillPicture();
 
     eDxr3DemuxMode GetDemuxMode()   { return m_demuxMode; }
     eDxr3TrickState GetTrickState() { return m_trickState; };

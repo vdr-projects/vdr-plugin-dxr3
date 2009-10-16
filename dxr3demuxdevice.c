@@ -164,18 +164,12 @@ void cDxr3DemuxDevice::SetTrickMode(eDxr3TrickState trickState, int Speed)
 }
 
 // ==================================
-void cDxr3DemuxDevice::StillPicture(const uint8_t* buf, int length)
+void cDxr3DemuxDevice::StillPicture()
 {
     m_vBuf.Clear();
     m_aBuf.Clear();
     m_demuxMode = DXR3_DEMUX_TRICK_MODE;
     m_trickState = DXR3_FREEZE;
-
-    dsyslog("dxr3: demux: stillpicture length: %d", length);
-
-    DemuxPes(buf, length);
-    DemuxPes(buf, length);
-    DemuxPes(buf, length);
 }
 
 // ==================================
