@@ -26,6 +26,7 @@
 #include "dxr3osd.h"
 #include "dxr3audio-oss.h"
 #include "dxr3audio-alsa.h"
+#include "dxr3pesframe.h"
 
 // ==================================
 //! constructor
@@ -165,9 +166,8 @@ void cDxr3Device::StillPicture(const uchar *Data, int Length)
     // elementary stream.
     cDxr3PesFrame frame;
 
-    if (frame.encode(Data, Length)) {
-        cDxr3Interface::instance()->PlayVideoFrame(&frame);
-
+    if (frame.parse(Data, Length)) {
+        // TODO
     } else {
         // TODO
     }
