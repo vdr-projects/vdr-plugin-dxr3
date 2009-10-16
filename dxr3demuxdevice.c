@@ -170,7 +170,6 @@ void cDxr3DemuxDevice::StillPicture(const uint8_t* buf, int length)
     m_aBuf.Clear();
     m_demuxMode = DXR3_DEMUX_TRICK_MODE;
     m_trickState = DXR3_FREEZE;
-    m_dxr3Device->SingleStep();
 
     dsyslog("dxr3: demux: stillpicture length: %d", length);
 
@@ -255,7 +254,6 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
             switch (pesFrame->GetFrameType()) {
             case I_FRAME:
                 dsyslog("dxr3: demux: I-frame");
-                m_dxr3Device->SingleStep();
                 bPlaySuc = true;
                 //if (bPlayedFrame) return length;
                 bPlayedFrame = true;

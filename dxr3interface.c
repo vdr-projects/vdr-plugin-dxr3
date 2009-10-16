@@ -301,20 +301,6 @@ void cDxr3Interface::Pause()
 
     Unlock();
 }
-// ==================================
-void cDxr3Interface::SingleStep()
-{
-    int ioval = EM8300_PLAYMODE_SINGLESTEP;
-
-    Lock();
-
-	if (ioctl(m_fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval) == -1)
-	{
-	    esyslog("dxr3: unable to set single-step mode: %m");
-	}
-
-    Unlock();
-}
 
 // ==================================
 void cDxr3Interface::PlayVideoFrame(cFixedLengthFrame* pFrame, int times)
