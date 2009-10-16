@@ -156,7 +156,21 @@ void cDxr3Device::Mute()
 //! displays the given I-frame as a still picture.
 void cDxr3Device::StillPicture(const uchar *Data, int Length)
 {
+    // clear used buffers of output threads
     m_DemuxDevice.StillPicture();
+
+    // we need to check if Data points to a pes
+    // frame or to non-pes data. This could be the
+    // case for the radio-Plugin, which points to an
+    // elementary stream.
+    cDxr3PesFrame frame;
+
+    if (frame.encode(Data, Length)) {
+        cDxr3Interface::instance()->PlayVideoFrame(&frame);
+
+    } else {
+        // TODO
+    }
 }
 
 // ==================================
