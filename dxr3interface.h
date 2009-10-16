@@ -81,8 +81,6 @@ public:
     int64_t GetPts();
 
     // state changes
-    void EnableSPU();
-    void DisableSPU();
     void EnableVideo()
     {
 	m_VideoActive = true;

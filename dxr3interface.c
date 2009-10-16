@@ -121,32 +121,6 @@ int64_t cDxr3Interface::GetPts()
 
 // state changes
 // ==================================
-//! enable subpicture processing of the dxr3
-void cDxr3Interface::EnableSPU()
-{
-    uint32_t ioval = EM8300_SPUMODE_ON;
-
-    Lock();
-
-    CHECK(ioctl(m_fdControl, EM8300_IOCTL_SET_SPUMODE, &ioval));
-
-    Unlock();
-}
-
-// ==================================
-//! disable subpicture proeccesing of the dxr3
-void cDxr3Interface::DisableSPU()
-{
-    uint32_t ioval = EM8300_SPUMODE_OFF;
-
-    Lock();
-
-    CHECK(ioctl(m_fdControl, EM8300_IOCTL_SET_SPUMODE, &ioval));
-
-    Unlock();
-}
-
-// ==================================
 //! disable audio output of dxr3
 void cDxr3Interface::DisableAudio()
 {
