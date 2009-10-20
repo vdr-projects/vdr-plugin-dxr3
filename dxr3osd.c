@@ -140,6 +140,9 @@ void cDxr3Osd::Flush()
         // we only need to set bmap pointer to a valid bitmap
         bmap = GetBitmap(0);
 
+        // set global used palette - is needed if we need to scale the osd
+        Palette->Replace(*bmap);
+
     } else {
 
         // determine the palette used by all bitmaps
