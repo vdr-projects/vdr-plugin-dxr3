@@ -191,6 +191,12 @@ void cDxr3Osd::Flush()
         bmap = mergedBitmap;
     }
 
+    // if our final bitmap is not dirty, we need
+    // not to scale and draw it
+    if (!bmap->Dirty(x1, y1, x2, y2)) {
+        return;
+    }
+
     uint32_t horizontal, vertical;
     cDxr3Interface::instance()->dimension(horizontal, vertical);
 
@@ -217,19 +223,21 @@ void cDxr3Osd::Flush()
         left = horizontal / alpha;
         top = vertical / beta;
 
+        // scale and set used colors
         cBitmap *scaled = cScaler::scaleBitmap(bmap, width, height);
         scaled->Replace(*Palette);
+
+        // mark source bitmap as clean
+        bmap->Clean();
 
         scaling = true;
         bmap = scaled;
     }
 
     // encode bitmap
-    if (bmap->Dirty(x1, y1, x2, y2)) {
-        cSpuEncoder::instance()->encode(bmap, top, left);
-        shown = true;
-        bmap->Clean();
-     }
+    cSpuEncoder::instance()->encode(bmap, top, left);
+    shown = true;
+    bmap->Clean();
 
     // check if we need to free the bitmap allocated by the method
     // cScaler::scaleBitmap
