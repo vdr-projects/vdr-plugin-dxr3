@@ -197,6 +197,9 @@ void cDxr3Osd::Flush()
         return;
     }
 
+    // mark bitmap as clean
+    bmap->Clean();
+
     uint32_t horizontal, vertical;
     cDxr3Interface::instance()->dimension(horizontal, vertical);
 
@@ -226,10 +229,6 @@ void cDxr3Osd::Flush()
         // scale and set used colors
         cBitmap *scaled = cScaler::scaleBitmap(bmap, width, height);
         scaled->Replace(*Palette);
-
-        // mark source bitmap as clean
-        bmap->Clean();
-
         scaling = true;
         bmap = scaled;
     }
@@ -237,7 +236,6 @@ void cDxr3Osd::Flush()
     // encode bitmap
     cSpuEncoder::instance()->encode(bmap, top, left);
     shown = true;
-    bmap->Clean();
 
     // check if we need to free the bitmap allocated by the method
     // cScaler::scaleBitmap
