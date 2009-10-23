@@ -197,47 +197,37 @@ cFixedLengthFrame* cDxr3SyncBuffer::Push(const uint8_t* pStart, int length, uint
     struct timeval tv_start, tv;
     gettimeofday(&tv_start, NULL);
 
-    switch (m_demuxMode) {
-    case DXR3_DEMUX_TRICK_MODE:
-        break;
-
-    case DXR3_DEMUX_TV_MODE:
-    case DXR3_DEMUX_REPLAY_MODE:
-    default:
-
-        while ((Available() >= Size() - (Size()*10)/100)) {
-            int d_s, d_us, ms;
-            m_bPutBlock = true;
-            EnableGet();
-            WaitForPut();
-            gettimeofday(&tv, NULL);
-            d_s  = tv.tv_sec  - tv_start.tv_sec;
-            d_us = tv.tv_usec - tv_start.tv_usec;
-            ms = d_s * 1000 + d_us / 1000;
-            if (ms > 2000) {
-                esyslog("dxr3: sync: push timeout");
-                return NULL;
-            }
+    while ((Available() >= Size() - (Size()*10)/100)) {
+        int d_s, d_us, ms;
+        m_bPutBlock = true;
+        EnableGet();
+        WaitForPut();
+        gettimeofday(&tv, NULL);
+        d_s  = tv.tv_sec  - tv_start.tv_sec;
+        d_us = tv.tv_usec - tv_start.tv_usec;
+        ms = d_s * 1000 + d_us / 1000;
+        if (ms > 2000) {
+            esyslog("dxr3: sync: push timeout");
+            return NULL;
         }
+    }
 
-        lastIndex = m_nextFree;
-        m_pBuffer[m_nextFree].CopyFrame(pStart, length, pts, type);
-        m_pBuffer[m_nextFree].SetChannelCount(UNKNOWN_CHANNEL_COUNT);
-        m_pBuffer[m_nextFree].SetSampleRate(UNKNOWN_DATA_RATE);
-        m_pBuffer[m_nextFree].SetAspectRatio(UNKNOWN_ASPECT_RATIO);
-        m_nextFree++;
-        m_count++;
-        m_nextFree %= Size();
+    lastIndex = m_nextFree;
+    m_pBuffer[m_nextFree].CopyFrame(pStart, length, pts, type);
+    m_pBuffer[m_nextFree].SetChannelCount(UNKNOWN_CHANNEL_COUNT);
+    m_pBuffer[m_nextFree].SetSampleRate(UNKNOWN_DATA_RATE);
+    m_pBuffer[m_nextFree].SetAspectRatio(UNKNOWN_ASPECT_RATIO);
+    m_nextFree++;
+    m_count++;
+    m_nextFree %= Size();
 
-        if (m_nextFree == m_next) {
-            esyslog("dxr3: sync: push buffer overrun");
-            Clear(); // XXX This is only a workaround until a sufficient control algorithm is implemented
-            throw(SYNC_BUFFER_OVERRUN);
-        }
-        if (m_bStartReceiver) {
-            EnableGet();
-        }
-        break;
+    if (m_nextFree == m_next) {
+        esyslog("dxr3: sync: push buffer overrun");
+        Clear(); // XXX This is only a workaround until a sufficient control algorithm is implemented
+        throw(SYNC_BUFFER_OVERRUN);
+    }
+    if (m_bStartReceiver) {
+        EnableGet();
     }
 
     return &m_pBuffer[lastIndex];
