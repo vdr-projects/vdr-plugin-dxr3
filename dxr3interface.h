@@ -108,7 +108,7 @@ public:
     void flushBuffers();
 
     void Pause();
-    void PlayVideoFrame(cFixedLengthFrame* pFrame, int times = 1);
+    void PlayVideoFrame(cFixedLengthFrame* pFrame);
     void PlayVideoFrame(cDxr3PesFrame *frame);
 
     // device access

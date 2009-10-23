@@ -257,7 +257,7 @@ void cDxr3Interface::Pause()
 }
 
 // ==================================
-void cDxr3Interface::PlayVideoFrame(cFixedLengthFrame* pFrame, int times)
+void cDxr3Interface::PlayVideoFrame(cFixedLengthFrame* pFrame)
 {
     if (!m_VideoActive) {
         return;
@@ -266,35 +266,22 @@ void cDxr3Interface::PlayVideoFrame(cFixedLengthFrame* pFrame, int times)
     int written = 0;
     int count = 0;
 
-	Lock();
+    Lock();
 
-	for (int i = 0; i < times; i++)
-	{
-	if (times > 1)
-	{
-		dsyslog("dxr3: playvideoframe: times=%d", times);
-	}
+    while (written < pFrame->GetCount() && count >= 0) {
+        if ((count = write(m_fdVideo, pFrame->GetData() + written, pFrame->GetCount() - written)) == -1) {
+            // an error occured
+            Resuscitation();
+        }
+        written += count;
+    }
 
-	while (written < pFrame->GetCount() && count >= 0)
-	{
-		if ((count = write(m_fdVideo, pFrame->GetData() + written, pFrame->GetCount() - written)) == -1)
-		{
-		// an error occured
-		Resuscitation();
-		}
-		written += count;
-	}
+    Unlock();
 
-	// reset
-	written = 0;
-	}
-
-	Unlock();
-
-	SetAspectRatio(pFrame->GetAspectRatio());
-	uint32_t pts = pFrame->GetPts();
-	if (pts > 0)
-	    m_lastSeenPts = pts;
+    SetAspectRatio(pFrame->GetAspectRatio());
+    uint32_t pts = pFrame->GetPts();
+    if (pts > 0)
+        m_lastSeenPts = pts;
 }
 
 // ==================================
