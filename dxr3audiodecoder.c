@@ -105,8 +105,7 @@ void cDxr3AudioDecoder::Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuff
     const uint8_t *buf = frame->GetPayload();
     int length = frame->GetPayloadLength();
 
-    int i = 0;
-    for (i = 0; i < length-4 && !foundHeader; i++) {
+    for (int i = 0; i < length-4 && !foundHeader; i++) {
         unsigned int tempHead = *((unsigned int*)(buf+i));
         if (HeadCheck(tempHead)) {
             if ((buf[i+2] & 0xFC) != (lastHeader[2] & 0xFC)) {
