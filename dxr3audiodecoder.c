@@ -135,7 +135,7 @@ void cDxr3AudioDecoder::Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuff
         }
     }
 
-#if LIBAVCODEC_VERSION_INT < ((51<<16)+(29<<8)+0)
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(51, 29, 0)
     len = avcodec_decode_audio(
 #else
     len = avcodec_decode_audio2(
