@@ -298,20 +298,6 @@ void cDxr3Interface::PlayVideoFrame(cFixedLengthFrame* pFrame, int times)
 }
 
 // ==================================
-void cDxr3Interface::PlayVideoFrame(const uint8_t* pBuf, int length, int times)
-{
-    Lock();
-
-	for (int i = 0; i < times; i++)
-	{
-	    if (write(m_fdVideo, pBuf, length) == -1)
-		Resuscitation();
-	}
-
-    Unlock();
-}
-
-// ==================================
 void cDxr3Interface::PlayVideoFrame(cDxr3PesFrame *frame)
 {
     if (!m_VideoActive) {

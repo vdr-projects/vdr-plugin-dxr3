@@ -109,7 +109,6 @@ public:
 
     void Pause();
     void PlayVideoFrame(cFixedLengthFrame* pFrame, int times = 1);
-    void PlayVideoFrame(const uint8_t* pBuf, int length, int times = 1);
     void PlayVideoFrame(cDxr3PesFrame *frame);
 
     // device access

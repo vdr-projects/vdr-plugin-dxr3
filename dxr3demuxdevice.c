@@ -273,7 +273,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
             }
 
         } else if (m_demuxMode == DXR3_DEMUX_VIDEO_ONLY_MODE) {
-            m_dxr3Device->PlayVideoFrame(pesFrame->GetPayload(), (int)(pesFrame->GetPayloadLength()));
+            m_dxr3Device->PlayVideoFrame(pesFrame);
 
         } else if (m_synchState == DXR3_DEMUX_VIDEO_SYNCHED ||
                  m_synchState == DXR3_DEMUX_SYNCHED) {
