@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
 "Report-Msgid-Bugs-To: dxr3plugin-users@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-01-10 22:20+0200\n"
+"POT-Creation-Date: 2009-10-16 15:22+0200\n"
 "PO-Revision-Date: 2009-01-10 19:20+0100\n"
 "Last-Translator: Nival Michaël\n"
 "Language-Team:  <vdr@linuxtv.org>\n"
@@ -59,9 +59,6 @@ msgstr "Utiliser signal Widescreen (WSS)"
 msgid "Digital audio output"
 msgstr "Sortie audio numérique"
 
-msgid "OSD flush rate (ms)"
-msgstr "Temps minimum de MAJ (ms)"
-
 msgid "Hide main menu entry"
 msgstr "Masquer dans le menu principal"
 
@@ -70,3 +67,6 @@ msgstr "Carte"
 
 msgid "DXR3: releasing devices"
 msgstr "DXR3 : Version matériel"
+
+#~ msgid "OSD flush rate (ms)"
+#~ msgstr "Temps minimum de MAJ (ms)"
