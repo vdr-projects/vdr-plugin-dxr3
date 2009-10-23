@@ -252,20 +252,20 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
                 //if (bPlayedFrame) return length;
                 bPlayedFrame = true;
                 m_dxr3Device->setDimension(pesFrame->GetHorizontalSize(), pesFrame->GetVerticalSize());
-                m_dxr3Device->PlayVideoFrame(pesFrame->GetPayload(), pesFrame->GetPayloadLength(), m_ReUseFrame);
+                m_dxr3Device->PlayVideoFrame(pesFrame);
                 break;
 
             case UNKNOWN_FRAME:
                 dsyslog("dxr3: demux: unknown frame");
                 if (bPlaySuc) {
-                    m_dxr3Device->PlayVideoFrame(pesFrame->GetPayload(), pesFrame->GetPayloadLength(), m_ReUseFrame);
+                    m_dxr3Device->PlayVideoFrame(pesFrame);
                 }
                 break;
 
             default:
                 dsyslog("dxr3: demux: default frame");
                 if (bPlaySuc) {
-                    m_dxr3Device->PlayVideoFrame(pesFrame->GetPayload(), pesFrame->GetPayloadLength(), m_ReUseFrame);
+                    m_dxr3Device->PlayVideoFrame(pesFrame);
                 }
 
                 bPlaySuc = false;
