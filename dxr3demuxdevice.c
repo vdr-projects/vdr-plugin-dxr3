@@ -29,7 +29,6 @@ cDxr3DemuxDevice::cDxr3DemuxDevice() :
     m_aBuf(AUDIO_MAX_BUFFER_SIZE, AUIDO_MAX_FRAME_SIZE),
     m_vBuf(VIDEO_MAX_BUFFER_SIZE, VIDEO_MAX_FRAME_SIZE)
 {
-    m_ReUseFrame = 1;
     m_synchState = DXR3_DEMUX_UNSYNCHED;
     m_demuxMode = DXR3_DEMUX_OFF_MODE;
     m_pAudioThread = new cDxr3AudioOutThread(m_aBuf);
@@ -159,8 +158,6 @@ void cDxr3DemuxDevice::SetTrickMode(eDxr3TrickState trickState, int Speed)
 	m_vBuf.Clear();
 	m_aBuf.Clear();
     }
-
-    m_ReUseFrame = 1;//Speed;
 }
 
 // ==================================

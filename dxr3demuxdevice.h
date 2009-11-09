@@ -70,7 +70,6 @@ private:
     cDxr3AudioOutThread* m_pAudioThread;
     cDxr3VideoOutThread* m_pVideoThread;
     uint32_t m_stopScr;
-    int m_ReUseFrame;			// how often a frame should be used
 };
 
 #endif // __DXR3_DEMUX_DEVICE_H

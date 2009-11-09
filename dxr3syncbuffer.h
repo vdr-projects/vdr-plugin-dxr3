@@ -105,10 +105,6 @@ public:
     {
 	m_demuxMode = demuxMode;
     };
-    eDxr3DemuxMode GetDemuxMode(void)
-    {
-	return m_demuxMode;
-    };
     bool Poll(int TimeoutMs);
     bool IsPolled(void)
     {
