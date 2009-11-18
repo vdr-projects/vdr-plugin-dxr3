@@ -234,11 +234,38 @@ void cDxr3Interface::dimension(uint32_t &horizontal, uint32_t &vertical)
 // play functions
 // ==================================
 //! set playing mode and start sync engine
-
-void cDxr3Interface::flushBuffers()
+void cDxr3Interface::SetPlayMode()
 {
-    dsyslog("[dxr3] flushing buffers");
-    fsync(m_fdVideo);
+    // this is the case, when SVDRP command DOF was used and
+    // should be ignored.
+    if (m_fdControl == -1) {
+        return;
+    }
+
+    em8300_register_t reg;
+    int ioval;
+
+    Lock();
+
+	ioval = EM8300_SUBDEVICE_AUDIO;
+	ioctl(m_fdControl, EM8300_IOCTL_FLUSH, &ioval);
+	fsync(m_fdVideo);
+
+	ioval = EM8300_PLAYMODE_PLAY;
+	if (ioctl(m_fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval) == -1)
+	{
+	    esyslog("dxr3: unable to set play mode: %m");
+	}
+	reg.microcode_register = 1;
+	reg.reg = 0;
+	reg.val = MVCOMMAND_SYNC;
+
+	if (ioctl(m_fdControl, EM8300_IOCTL_WRITEREG, &reg) == -1)
+	{
+	    esyslog("dxr3: unable to start em8300 sync engine: %m");
+	}
+
+    Unlock();
 }
 
 // ==================================
@@ -354,16 +381,6 @@ void cDxr3Interface::ClaimDevices()
     // configure device based on settings
     ConfigureDevice();
 
-    uint32_t ioval = EM8300_PLAYMODE_PLAY;
-    CHECK(ioctl(m_fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval));
-
-    em8300_register_t reg;
-    reg.microcode_register = 1;
-    reg.reg = 0;
-    reg.val = MVCOMMAND_SYNC;
-
-    CHECK(ioctl(m_fdControl, EM8300_IOCTL_WRITEREG, &reg));
-
     // get bcs values from driver
     if (ioctl(m_fdControl, EM8300_IOCTL_GETBCS, &m_bcs) == -1)
     {
@@ -382,9 +399,6 @@ void cDxr3Interface::ClaimDevices()
 void cDxr3Interface::ReleaseDevices()
 {
     if (m_fdControl > -1) {
-        uint32_t ioval = EM8300_PLAYMODE_STOPPED;
-        CHECK(ioctl(m_fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval));
-
     	close(m_fdControl);
     	m_fdControl = -1;
     }
@@ -560,11 +574,11 @@ void cDxr3Interface::Resuscitation()
     endt = time(&endt);
     if (endt - startt > 4)
     {
-       esyslog("dxr3: fatal: reopening devices took too long");
-       exit(1);
+	esyslog("dxr3: fatal: reopening devices took too long");
+	exit(1);
     }
     dsyslog("dxr3: resuscitation: reopening devices took %ld seconds",
-           endt - startt);
+	    endt - startt);
 }
 
 // ==================================
@@ -572,8 +586,8 @@ void cDxr3Interface::WriteSpu(const uint8_t* pBuf, int length)
 {
     Lock();
 
-        if (write(m_fdSpu, pBuf, length) == -1)
-            Resuscitation();
+	if (write(m_fdSpu, pBuf, length) == -1)
+	    Resuscitation();
 
     Unlock();
 }

@@ -105,8 +105,7 @@ public:
     void dimension(uint32_t &horizontal, uint32_t &vertical);
 
     // play functions
-    void flushBuffers();
-
+    void SetPlayMode();
     void Pause();
     void PlayVideoFrame(cFixedLengthFrame* pFrame);
     void PlayVideoFrame(cDxr3PesFrame *frame);
