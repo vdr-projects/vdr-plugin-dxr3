@@ -116,7 +116,6 @@ public:
 
     // tools
     void PlayBlackFrame();
-    void ReOpenAudio();
 
     // osd/spu
     void WriteSpu(const uint8_t* pBuf, int length);

@@ -77,7 +77,6 @@ void cDxr3DemuxDevice::Stop()
     m_demuxMode = DXR3_DEMUX_OFF_MODE;
 
     m_dxr3Device->PlayBlackFrame();
-    m_dxr3Device->ReOpenAudio();
 }
 
 // ==================================

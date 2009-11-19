@@ -439,31 +439,6 @@ void cDxr3Interface::PlayBlackFrame()
 }
 
 // ==================================
-void cDxr3Interface::ReOpenAudio()
-{
-    Lock();
-/*
-    if (!m_ExternalReleased)
-    {
-	if (m_fdAudio != -1)
-	{
-	    int bufsize = 0;
-	    ioctl(m_fdAudio, SNDCTL_DSP_GETODELAY, &bufsize);
-	    cCondWait::SleepMs(bufsize / 192);
-
-	    delete m_pClock;
-	    close(m_fdAudio);
-
-	    m_fdAudio = Dxr3Open(DEV_DXR3_OSS, O_WRONLY | O_SYNC);
-
-	    m_pClock = new cDxr3SysClock(m_fdControl, m_fdVideo, m_fdSpu);
-	}
-    }
-*/
-    Unlock();
-}
-
-// ==================================
 //! uploadroutine for microcode
 void cDxr3Interface::UploadMicroCode()
 {
