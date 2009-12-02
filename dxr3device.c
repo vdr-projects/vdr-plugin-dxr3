@@ -223,9 +223,9 @@ void cDxr3Device::GetVideoSize(int &Width, int &Height, double &VideoAspect)
     uint32_t aspect = cDxr3Interface::instance()->GetAspectRatio();
 
     if (aspect == EM8300_ASPECTRATIO_4_3) {
-        VideoAspect = 1.33333f;
+        VideoAspect = 4.0 / 3.0;
     } else {
-        VideoAspect = 1.77778f;
+        VideoAspect = 16.0 / 9.0;
     }
 }
 #endif
