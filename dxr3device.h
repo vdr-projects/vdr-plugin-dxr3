@@ -59,6 +59,10 @@ public:
     virtual int PlayVideo(const uchar *Data, int Length);
     virtual int PlayAudio(const uchar *Data, int Length, uchar Id);
 
+#if VDRVERSNUM >= 10710
+    virtual void GetVideoSize(int &Width, int &Height, double &VideoAspect);
+#endif
+
     // additional functions
     virtual void SetVideoFormat(bool VideoFormat16_9);
     virtual void SetVolumeDevice(int Volume);

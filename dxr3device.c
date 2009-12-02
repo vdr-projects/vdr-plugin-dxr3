@@ -216,6 +216,20 @@ int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
     }
 }
 
+#if VDRVERSNUM >= 10710
+void cDxr3Device::GetVideoSize(int &Width, int &Height, double &VideoAspect)
+{
+    cDxr3Interface::instance()->dimension((uint32_t&)Width, (uint32_t&)Height);
+    uint32_t aspect = cDxr3Interface::instance()->GetAspectRatio();
+
+    if (aspect == EM8300_ASPECTRATIO_4_3) {
+        VideoAspect = 1.33333f;
+    } else {
+        VideoAspect = 1.77778f;
+    }
+}
+#endif
+
 // additional functions
 
 // ==================================
