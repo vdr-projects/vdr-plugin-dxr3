@@ -60,9 +60,6 @@ cDxr3AudioDecoder::cDxr3AudioDecoder() : rbuf(50000), ac3dtsDecoder(&rbuf)
         esyslog("[dxr3-decoder] failed to open codec %s.", audio->name);
         exit(-1);
     }
-
-    lastHeader[0] = 0xFF;
-    lastHeader[1] = lastHeader[2] = lastHeader[3] = 0;
 }
 
 // ==================================
@@ -90,9 +87,7 @@ void cDxr3AudioDecoder::Init()
 
     foundHeader = false;
     decodeAudio = true;
-
-	//lastHeader[0] = 0xFF;
-	//lastHeader[1] = lastHeader[2] = lastHeader[3] = 0;
+    lastBitrate = 0xff; // init with an invalid value - see checkMpegAudioHdr;
 }
 
 // ==================================
@@ -105,22 +100,19 @@ void cDxr3AudioDecoder::Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuff
     const uint8_t *buf = frame->GetPayload();
     int length = frame->GetPayloadLength();
 
-    for (int i = 0; i < length-4 && !foundHeader; i++) {
-        unsigned int tempHead = *((unsigned int*)(buf+i));
-        if (HeadCheck(tempHead)) {
-            if ((buf[i+2] & 0xFC) != (lastHeader[2] & 0xFC)) {
-            dsyslog("dxr3: audiodecoder: found different audio header"
-                " (new: %#x, old: %#x), (re)initializing",
-                *((uint32_t*) lastHeader), *((uint32_t*) (buf+i)));
+    if (checkMpegAudioHdr(buf)) {
 
+        // look if Bitrate has changed
+        if ((buf[2] & 0xf0) != (lastBitrate & 0xf0)) {
+            dsyslog("[dxr3-audiodecoder] found new audio header");
+
+            // we need now to reinit the deocder and to store the new
+            // part from the audio header
             Init();
-            lastHeader[0] = buf[i];
-            lastHeader[1] = buf[i+1];
-            lastHeader[2] = buf[i+2];
-            lastHeader[3] = buf[i+3];
-            }
-        foundHeader = true;
+            lastBitrate = buf[2];
         }
+
+        foundHeader = true;
     }
 
     if (audioSynched) {
@@ -281,24 +273,40 @@ void cDxr3AudioDecoder::decode(cDxr3PesFrame *frame)
 
 // ==================================
 //! checking routine
-bool cDxr3AudioDecoder::HeadCheck(unsigned long head)
+bool cDxr3AudioDecoder::checkMpegAudioHdr(const uint8_t *head)
 {
-    bool retval = false;
+    // all informations about the mpeg audio header
+    // can be found at http://www.datavoyage.com/mpgscript/mpeghdr.htm
 
-    uint8_t* phead = (uint8_t*) (&head);
-    if (phead[0] != 0xFF) {
-        retval = false;
-    } else if (phead[1] != 0xFC && phead[1] != 0xFE) {
-        retval = false;
-    } else if ((phead[2] & 0xF0) == 0xF0) {
-        retval = false;
-    } else if ((phead[2] & 0xC) == 0xC) {
-        retval = false;
-    } else {
-        retval = true;
+    // the header conists of four 8bit elements, described as
+    // AAAAAAAA AAABBCCD EEEEFFGH IIJJKLMM
+
+    // all As must be set to 1
+    if (head[0] != 0xff || (head[1] & 0xe0) != 0xe0) {
+        return false;
     }
 
-    return retval;
+    // B is not allowed to be 01 (bits), as it is a reserved value
+    if ((head[1] & 0x18) == 0x8) {
+        return false;
+    }
+
+    // C is not allowed to be 00 (bits), as it is a reserved value
+    if ((head[1] & 0x6) == 0x0) {
+        return false;
+    }
+
+    // all Es are not allowed to be 1
+    if ((head[2] & 0xf0) == 0xf0) {
+        return false;
+    }
+
+    // all Fs are not allowed to be 1
+    if ((head[2] & 0xc) == 0xc) {
+        return false;
+    }
+
+    return true;
 }
 
 // Local variables:

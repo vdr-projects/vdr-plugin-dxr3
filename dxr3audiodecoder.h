@@ -57,7 +57,7 @@ public:
     }
 
 private:
-    bool HeadCheck(unsigned long head);
+    bool checkMpegAudioHdr(const uint8_t *head);
 
     AVCodec *audio;
     AVCodecContext *contextAudio;
@@ -69,7 +69,7 @@ private:
     bool foundHeader;
     bool decodeAudio;
 
-    uint8_t lastHeader[4];
+    uint8_t lastBitrate;
     uint8_t pcmbuf[AVCODEC_MAX_AUDIO_FRAME_SIZE];
 };
 
