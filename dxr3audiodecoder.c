@@ -60,6 +60,8 @@ cDxr3AudioDecoder::cDxr3AudioDecoder() : rbuf(50000), ac3dtsDecoder(&rbuf)
         esyslog("[dxr3-decoder] failed to open codec %s.", audio->name);
         exit(-1);
     }
+
+    lastBitrate = 0xff; // init with an invalid value - see checkMpegAudioHdr;
 }
 
 // ==================================
@@ -87,7 +89,6 @@ void cDxr3AudioDecoder::Init()
 
     foundHeader = false;
     decodeAudio = true;
-    lastBitrate = 0xff; // init with an invalid value - see checkMpegAudioHdr;
 }
 
 // ==================================
