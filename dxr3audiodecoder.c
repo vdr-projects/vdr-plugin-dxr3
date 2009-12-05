@@ -90,8 +90,7 @@ void cDxr3AudioDecoder::Init()
 //! decode given buffer
 void cDxr3AudioDecoder::Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf)
 {
-    int len;
-    int out_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;
+    int len, out_size;
 
     const uint8_t *buf = frame->GetPayload();
     int length = frame->GetPayloadLength();
@@ -109,31 +108,33 @@ void cDxr3AudioDecoder::Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuff
         }
     }
 
+    uint8_t *ptr = const_cast<uint8_t *>(buf);
+
+    while (length > 0) {
+         out_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;
+
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(51, 29, 0)
-    len = avcodec_decode_audio(
+        len = avcodec_decode_audio(contextAudio, (short *)(&pcmbuf), &out_size, ptr, length);
 #else
-    len = avcodec_decode_audio2(
+        len = avcodec_decode_audio2(contextAudio, (short *)(&pcmbuf), &out_size, ptr, length);
 #endif
-    contextAudio, (short *)(&pcmbuf), &out_size, const_cast<uint8_t *>(buf), length);
 
-    if (len < 0) {
-        esyslog("[dxr3-decoder] failed to decode audio");
-        return;
-    }
-
-    // can this happen?
-    if ((length - len) > 0) {
-        esyslog("[dxr3-decoder] TODO: more to decode");
-    }
-
-    if (out_size) {
-        cFixedLengthFrame* pTempFrame = aBuf.Push(pcmbuf,
-                              out_size, pts);
-        if (pTempFrame) {
-            // TODO: should we break out of the loop on push timeout?
-            pTempFrame->SetChannelCount(contextAudio->channels);
-            pTempFrame->SetSampleRate(contextAudio->sample_rate);
+        if (len < 0) {
+            esyslog("[dxr3-decoder] failed to decode audio");
+            return;
         }
+
+        if (out_size) {
+            cFixedLengthFrame* pTempFrame = aBuf.Push(pcmbuf,
+                                  out_size, pts);
+            if (pTempFrame) {
+                pTempFrame->SetChannelCount(contextAudio->channels);
+                pTempFrame->SetSampleRate(contextAudio->sample_rate);
+            }
+        }
+
+        length -= len;
+        ptr += len;
     }
 }
 
