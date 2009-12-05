@@ -61,6 +61,7 @@ private:
 
     AVCodec *audio;
     AVCodecContext *contextAudio;
+    AVPacket avpkt;
 
     cRingBufferFrame rbuf;
     cMultichannelAudio ac3dtsDecoder;
