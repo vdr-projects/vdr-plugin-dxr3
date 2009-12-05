@@ -65,10 +65,6 @@ private:
     cRingBufferFrame rbuf;
     cMultichannelAudio ac3dtsDecoder;
 
-    bool audioSynched;
-    bool foundHeader;
-    bool decodeAudio;
-
     uint8_t lastBitrate;
     uint8_t pcmbuf[AVCODEC_MAX_AUDIO_FRAME_SIZE];
 };

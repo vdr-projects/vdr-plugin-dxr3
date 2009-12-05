@@ -41,8 +41,6 @@ cDxr3AudioDecoder::cDxr3AudioDecoder() : rbuf(50000), ac3dtsDecoder(&rbuf)
     avcodec_init();
     avcodec_register_all();
 
-    audioSynched = false;
-
     // look for decoder
     audio = avcodec_find_decoder(CODEC_ID_MP3);
 
@@ -86,9 +84,6 @@ void cDxr3AudioDecoder::Init()
         esyslog("[dxr3-decoder] failed to open codec %s.", audio->name);
         exit(-1);
     }
-
-    foundHeader = false;
-    decodeAudio = true;
 }
 
 // ==================================
@@ -111,19 +106,6 @@ void cDxr3AudioDecoder::Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuff
             // part from the audio header
             Init();
             lastBitrate = buf[2];
-        }
-
-        foundHeader = true;
-    }
-
-    if (audioSynched) {
-        // no header found
-        decodeAudio = true;
-    } else {
-        if (foundHeader && pts)
-        {
-            decodeAudio = true;
-            audioSynched = true;
         }
     }
 
