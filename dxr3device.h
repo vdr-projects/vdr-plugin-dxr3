@@ -68,6 +68,7 @@ public:
     virtual void SetVolumeDevice(int Volume);
     virtual void SetAudioChannelDevice(int AudioChannel);
     virtual int GetAudioChannelDevice();
+    virtual void SetDigitalAudioDevice(bool on);
 
     // osd
     virtual cSpuDecoder *GetSpuDecoder();

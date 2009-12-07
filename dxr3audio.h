@@ -37,7 +37,7 @@ public:
         Ac3,
     };
 
-    iAudio() : open(false), vol(0), audioChannel(0)  { memset(&curContext, 0, sizeof(SampleContext)); }
+    iAudio();
     virtual ~iAudio() {}
 
     virtual void openDevice() = 0;
@@ -52,6 +52,9 @@ public:
     void setAudioChannel(int channel)   { audioChannel = channel; }
     int getAudioChannel()               { return audioChannel; }
 
+    virtual void setDigitalAudio(bool on)   { digitalAudio = on; }
+    bool isDigitalAudio()                   { return digitalAudio; }
+
     virtual void setAudioMode(AudioMode m) = 0;
     AudioMode getAudioMode()            { return mode; }
 
@@ -62,6 +65,7 @@ protected:
     bool open;
     int vol;
     int audioChannel;
+    bool digitalAudio;
     SampleContext curContext;
     AudioMode mode;
 };

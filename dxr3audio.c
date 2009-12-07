@@ -29,6 +29,11 @@ const static int AUDIO_STEREO = 0;
 const static int AUDIO_MONO_LEFT = 1;
 const static int AUDIO_MONO_RIGHT = 2;
 
+iAudio::iAudio() : open(false), vol(0), audioChannel(0), digitalAudio(false)
+{
+    memset(&curContext, 0, sizeof(SampleContext));
+}
+
 void iAudio::changeVolume(int16_t* pcmbuf, size_t size)
 {
     if (vol == 0) {

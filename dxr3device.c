@@ -258,6 +258,11 @@ int cDxr3Device::GetAudioChannelDevice()
     return audioOut->getAudioChannel();
 }
 
+void cDxr3Device::SetDigitalAudioDevice(bool on)
+{
+    audioOut->setDigitalAudio(on);
+}
+
 // ==================================
 // get spudecoder
 cSpuDecoder *cDxr3Device::GetSpuDecoder()
