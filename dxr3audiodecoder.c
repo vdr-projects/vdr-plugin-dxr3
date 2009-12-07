@@ -111,43 +111,21 @@ void cDxr3AudioDecoder::Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuff
             lastBitrate = buf[2];
         }
     }
-#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(52, 26, 0)
-    uint8_t *ptr = const_cast<uint8_t *>(buf);
+
+    // setup AVPacket
+    avpkt.data = const_cast<uint8_t *>(buf);
+    avpkt.size = frameSize;
 
     while (length > 0) {
          out_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;
 
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(51, 29, 0)
-        len = avcodec_decode_audio(contextAudio, (short *)(&pcmbuf), &out_size, ptr, frameSize);
+        len = avcodec_decode_audio(contextAudio, (short *)(&pcmbuf), &out_size, avpkt.data, frameSize);
+#elif LIBAVCODEC_VERSION_INT < AV_VERSION_INT(52, 26, 0)
+        len = avcodec_decode_audio2(contextAudio, (short *)(&pcmbuf), &out_size, avpkt.data, frameSize);
 #else
-        len = avcodec_decode_audio2(contextAudio, (short *)(&pcmbuf), &out_size, ptr, frameSize);
-#endif
-
-        if (len < 0) {
-            esyslog("[dxr3-decoder] failed to decode audio");
-            return;
-        }
-
-        if (out_size) {
-            cFixedLengthFrame* pTempFrame = aBuf.Push(pcmbuf,
-                                  out_size, pts);
-            if (pTempFrame) {
-                pTempFrame->SetChannelCount(contextAudio->channels);
-                pTempFrame->SetSampleRate(contextAudio->sample_rate);
-            }
-        }
-
-        length -= len;
-        ptr += len;
-    }
-#else
-    avpkt.data = const_cast<uint8_t *>(buf);
-    avpkt.size = frameSize;
-
-    while (length > 0) {
-        out_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;
-
         len = avcodec_decode_audio3(contextAudio, (short *)(&pcmbuf), &out_size, &avpkt);
+#endif
 
         if (len < 0) {
             esyslog("[dxr3-decoder] failed to decode audio");
@@ -166,7 +144,6 @@ void cDxr3AudioDecoder::Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuff
         length -= len;
         avpkt.data += len;
     }
-#endif
 }
 
 // ==================================
