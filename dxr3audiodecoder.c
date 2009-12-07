@@ -101,13 +101,16 @@ void cDxr3AudioDecoder::Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuff
         if ((buf[2] & 0xf0) != (lastBitrate & 0xf0)) {
             dsyslog("[dxr3-audiodecoder] found new audio header");
 
+            // recalculate used framesize
+            frameSize = calcFrameSize(buf);
+            dsyslog("[dxr3-audiodecoder] calculated frame size %d", frameSize);
+
             // we need now to reinit the deocder and to store the new
             // part from the audio header
             Init();
             lastBitrate = buf[2];
         }
     }
-
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(52, 26, 0)
     uint8_t *ptr = const_cast<uint8_t *>(buf);
 
@@ -115,9 +118,9 @@ void cDxr3AudioDecoder::Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuff
          out_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;
 
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(51, 29, 0)
-        len = avcodec_decode_audio(contextAudio, (short *)(&pcmbuf), &out_size, ptr, length);
+        len = avcodec_decode_audio(contextAudio, (short *)(&pcmbuf), &out_size, ptr, frameSize);
 #else
-        len = avcodec_decode_audio2(contextAudio, (short *)(&pcmbuf), &out_size, ptr, length);
+        len = avcodec_decode_audio2(contextAudio, (short *)(&pcmbuf), &out_size, ptr, frameSize);
 #endif
 
         if (len < 0) {
@@ -139,9 +142,9 @@ void cDxr3AudioDecoder::Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuff
     }
 #else
     avpkt.data = const_cast<uint8_t *>(buf);
-    avpkt.size = length;
+    avpkt.size = frameSize;
 
-    while (avpkt.size > 0) {
+    while (length > 0) {
         out_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;
 
         len = avcodec_decode_audio3(contextAudio, (short *)(&pcmbuf), &out_size, &avpkt);
@@ -160,7 +163,7 @@ void cDxr3AudioDecoder::Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuff
             }
         }
 
-        avpkt.size -= len;
+        length -= len;
         avpkt.data += len;
     }
 #endif
@@ -286,6 +289,69 @@ bool cDxr3AudioDecoder::checkMpegAudioHdr(const uint8_t *head)
     }
 
     return true;
+}
+
+int cDxr3AudioDecoder::calcFrameSize(const uint8_t *header)
+{
+    static const int bitrates[2][3][15] =
+    {
+        {   // MPEG 1
+            {0,32,64,96,128,160,192,224,256,288,320,352,384,416,448,},	// Layer1
+            {0,32,48,56, 64, 80, 96,112,128,160,192,224,256,320,384,},	// Layer2
+            {0,32,40,48, 56, 64, 80, 96,112,128,160,192,224,256,320,}	// Layer3
+        },
+        {   // MPEG 2, 2.5
+            {0,32,48,56,64,80,96,112,128,144,160,176,192,224,256,},     // Layer1
+            {0,8,16,24,32,40,48,56,64,80,96,112,128,144,160,},          // Layer2
+            {0,8,16,24,32,40,48,56,64,80,96,112,128,144,160,}           // Layer3
+        }
+    };
+
+    static const int samplingRates[4][3] =
+    {
+        {11025, 12000, 8000,  },    // MPEG 2.5
+        {0,     0,     0,     },    // reserved
+        {22050, 24000, 16000, },    // MPEG 2
+        {44100, 48000, 32000  }     // MPEG 1
+    };
+
+    static const int MPEG1 = 0x3;
+
+    // in B the version is stored
+    int ver = (header[1] >> 3) & 0x03;
+    int version = 1;    // default to MPEG2
+
+    // determine index into arrays based on ver
+    if (ver == MPEG1) {
+        version = 0;
+    }
+
+    // in C the layer version is stored
+    int layer = 3 - ((header[1] >> 1) & 0x03);
+
+    // in E the bitrate index is stored
+    int bitrateIndex = (header[2] >> 4) & 0x0f;
+
+    // in F the sampling rate frequency index is stored
+    int samplingIndex = (header[2] >> 2) & 0x03;
+
+    // in G the padding bit is stored
+    int padding = (header[2] >> 1) & 0x01;
+
+    int bitrate = bitrates[version][layer][bitrateIndex]; // kbit
+    bitrate *= 1000; // kbit -> bit
+    int samplesrate = samplingRates[ver][samplingIndex];
+
+    // formulars used to calculate frame size
+    //  layer I
+    //      FrameLengthInBytes = (12 * BitRate / SampleRate + Padding) * 4
+    //  layer II & III
+    //      FrameLengthInBytes = 144 * BitRate / SampleRate + Padding
+    if (layer == 0) {
+        return (12 * bitrate / samplesrate + padding) * 4;
+    } else {
+        return 144 * bitrate / samplesrate + padding;
+    }
 }
 
 // Local variables:

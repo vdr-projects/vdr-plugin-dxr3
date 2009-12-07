@@ -55,6 +55,7 @@ public:
 
 private:
     bool checkMpegAudioHdr(const uint8_t *head);
+    int calcFrameSize(const uint8_t *header);
 
     AVCodec *audio;
     AVCodecContext *contextAudio;
@@ -63,6 +64,7 @@ private:
     cRingBufferFrame rbuf;
     cMultichannelAudio ac3dtsDecoder;
 
+    int frameSize;
     uint8_t lastBitrate;
     uint8_t pcmbuf[AVCODEC_MAX_AUDIO_FRAME_SIZE];
 };
