@@ -334,7 +334,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
 
     } else if (pesFrame->GetPesDataType() == cDxr3PesFrame::PES_AUDIO_DATA
              && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
-             && !cDxr3Interface::instance()->IsAudioModeAC3()) {
+             && !m_pAudioThread->audio()->isAudioModeAC3()) {
         if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
             m_synchState == DXR3_DEMUX_SYNCHED) {
             if (pts && m_synchState != DXR3_DEMUX_SYNCHED) {
@@ -381,7 +381,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
         }
     } else if (pesFrame->GetPesDataType() == cDxr3PesFrame::PES_PRIVATE_DATA
              && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
-             && !cDxr3Interface::instance()->IsAudioModeAC3()
+             && !m_pAudioThread->audio()->isAudioModeAC3()
              && !bAc3Dts) {
         if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
             m_synchState == DXR3_DEMUX_SYNCHED) {
@@ -416,7 +416,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
         }
     } else if (pesFrame->GetPesDataType() == cDxr3PesFrame::PES_PRIVATE_DATA
              && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
-             && cDxr3Interface::instance()->IsAudioModeAC3()
+             && m_pAudioThread->audio()->isAudioModeAC3()
              && bAc3Dts) {
         if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
             m_synchState == DXR3_DEMUX_SYNCHED) {

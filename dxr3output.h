@@ -54,6 +54,7 @@ public:
     cDxr3AudioOutThread(cDxr3SyncBuffer& buffer);
 
     void setAudio(iAudio *a)    { audioOutput = a; }
+    iAudio *audio()             { return audioOutput; }
 
 protected:
     void Action();

@@ -71,8 +71,6 @@ public:
     bool IsOssAudio();
     int OssSetPlayMode(uint32_t mode);
 
-    int IsAudioModeAC3()    { return 0; }
-
     // clock
     void SetSysClock(uint32_t scr);
     uint32_t GetSysClock();
