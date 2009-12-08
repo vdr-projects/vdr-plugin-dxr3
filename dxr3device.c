@@ -204,11 +204,6 @@ int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
         return Length;
     }
 
-    bool isAc3 = ((Id & 0xF0) == 0x80) || Id == 0xbd;
-
-    if (isAc3 && !audioOut->isAudioModeAC3())
-        audioOut->setAudioMode(iAudio::Ac3);
-
     if (m_PlayMode == pmAudioOnly) {
         return m_DemuxDevice.DemuxAudioPes(Data, Length);
     } else {
