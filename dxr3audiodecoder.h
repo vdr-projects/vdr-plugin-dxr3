@@ -25,6 +25,7 @@
 
 extern "C" {
 #    include <libavcodec/avcodec.h>
+#    include <libavformat/avformat.h>
 }
 
 #include "dxr3syncbuffer.h"
