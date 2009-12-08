@@ -38,6 +38,7 @@ bool cDxr3PesFrame::parse(const uint8_t *pes, uint32_t length)
     switch (pes[3]) {
     case 0xBD: // private stream 1
         m_pesDataType = PES_PRIVATE_DATA;
+        break;
 
     case 0xC0 ... 0xDF: // audio stream
         m_pesDataType = PES_AUDIO_DATA;
@@ -96,7 +97,7 @@ bool cDxr3PesFrame::parse(const uint8_t *pes, uint32_t length)
             m_horizontalSize = (video[5] & 0xf0) >> 4 | video[4] << 4;
             m_verticalSize = (video[5] & 0x0f) << 8 | video[6];
 
-            switch ((video[7]) & 0xf0) {
+            switch (video[7] & 0xf0) {
             case 0x20:
                 m_aspectRatio = EM8300_ASPECTRATIO_4_3;
                 break;
