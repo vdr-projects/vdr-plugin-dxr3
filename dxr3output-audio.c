@@ -105,20 +105,22 @@ void cDxr3AudioOutThread::Action()
 
 void cDxr3AudioOutThread::PlayFrame(cFixedLengthFrame *frame)
 {
-    // update audio context
-    SampleContext ctx;
-    ctx.samplerate = frame->GetSampleRate();
-    ctx.channels = frame->GetChannelCount();
+    // only call setup and manipulate the volume for analog audio
+    if (!audioOutput->isDigitalAudio()) {
 
-    // TODO find cause why we need this workaround
-    if (ctx.samplerate != -1 && ctx.channels != -1) {
-        audioOutput->setup(ctx);
-    } else {
-        dsyslog("[fixme] samplerate: %d channels: %d", ctx.samplerate, ctx.channels);
-    }
+        // update audio context
+        SampleContext ctx;
+        ctx.samplerate = frame->GetSampleRate();
+        ctx.channels = frame->GetChannelCount();
 
-    // volume changes
-    if (!audio()->isAc3Dts()) {
+        // TODO find cause why we need this workaround
+        if (ctx.samplerate != -1 && ctx.channels != -1) {
+            audioOutput->setup(ctx);
+        } else {
+            dsyslog("[fixme] samplerate: %d channels: %d", ctx.samplerate, ctx.channels);
+        }
+
+        // volume changes
         audioOutput->changeVolume((short *)frame->GetData(), (size_t)frame->GetCount());
     }
 
