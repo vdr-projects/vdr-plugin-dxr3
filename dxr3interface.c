@@ -119,16 +119,6 @@ int64_t cDxr3Interface::GetPts()
     return m_lastSeenPts << 1;
 }
 
-// state changes
-// ==================================
-//! disable audio output of dxr3
-void cDxr3Interface::DisableAudio()
-{
-    Lock();
-    m_AudioActive = false;
-    Unlock();
-}
-
 // set/get functions
 // ==================================
 //! get aspect ratio
@@ -372,7 +362,6 @@ void cDxr3Interface::ClaimDevices()
     }
 
     // set default values
-    m_AudioActive = false;
     m_VideoActive = false;
     m_horizontal = 720;
     m_vertical = 576;

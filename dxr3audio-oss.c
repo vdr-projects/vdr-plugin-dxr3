@@ -73,7 +73,7 @@ void cAudioOss::setup(const SampleContext& ctx)
 
 void cAudioOss::write(uchar* data, size_t size)
 {
-    if (!open)
+    if (!open || !enabled)
         return;
 
     size_t ret = WriteAllOrNothing(fd, data, size, 1000, 10);

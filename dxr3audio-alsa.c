@@ -189,7 +189,7 @@ void cAudioAlsa::setup(const SampleContext& ctx)
 
 void cAudioAlsa::write(uchar* data, size_t size)
 {
-    if (!open)
+    if (!open || !enabled)
         return;
 
     snd_pcm_uframes_t frames = size / bytesFrame;

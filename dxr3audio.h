@@ -39,8 +39,9 @@ public:
     virtual void setup(const SampleContext& ctx) = 0;
     virtual void write(uchar* data, size_t size) = 0;
 
-    void setVolume(int v)   { vol = v; }
-    void mute()             { setVolume(0); }
+    void setEnabled(bool on)    { dsyslog("audio enable %d", (int)on); enabled = on; }
+    void setVolume(int v)       { vol = v; }
+    void mute()                 { setVolume(0); }
 
     void changeVolume(short* pcmbuf, size_t size);
     void setAudioChannel(int channel)   { audioChannel = channel; }
@@ -49,16 +50,13 @@ public:
     virtual void setDigitalAudio(bool on) = 0;
     bool isDigitalAudio()                   { return digitalAudio; }
 
-    bool isAc3Dts()   { return ac3dts; }
-
-
 protected:
     bool open;
+    bool enabled;
     int vol;
     int audioChannel;
     bool digitalAudio;
     SampleContext curContext;
-    bool ac3dts;
 };
 
 #endif /*_AUDIO_H_*/

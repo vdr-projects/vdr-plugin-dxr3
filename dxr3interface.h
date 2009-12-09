@@ -87,11 +87,6 @@ public:
     {
 	m_VideoActive = false;
     }
-    void EnableAudio()
-    {
-	m_AudioActive = true;
-    }
-    void DisableAudio();
 
     // set/get functions
     uint32_t GetAspectRatio() const;
@@ -144,7 +139,6 @@ private:
     uint32_t m_aspectRatio;	///< current used aspect ratio
     uint32_t m_horizontal;	///< horizontal size of current videostream
     uint32_t m_vertical;	///< vertical size of current videostream
-    bool m_AudioActive;		///< is audio active?
     bool m_VideoActive;		///< is video active?
 
     // bcs
