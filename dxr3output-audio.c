@@ -125,19 +125,6 @@ void cDxr3AudioOutThread::PlayFrame(cFixedLengthFrame *frame)
     audioOutput->write(frame->GetData(), frame->GetCount());
 }
 
-void cDxr3AudioOutThread::PlayFrame(cDxr3PesFrame *frame)
-{
-    // update audio context
-    audioOutput->setup(frame->ctx);
-
-    // volume changes
-    if (!audio()->isAc3Dts()) {
-        audioOutput->changeVolume((short *)frame->decoded, (size_t)frame->decodedSize);
-    }
-
-    audioOutput->write((uchar *)frame->decoded, frame->decodedSize);
-}
-
 #undef SCR
 
 // Local variables:
