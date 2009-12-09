@@ -201,15 +201,13 @@ void cDxr3AudioDecoder::DecodeLpcm(cDxr3PesFrame *frame, uint32_t pts, cDxr3Sync
 
 // ==================================
 //! decode ac3
-void cDxr3AudioDecoder::DecodeAc3Dts(const uint8_t* pPes, const uint8_t* buf,
-				     int length, uint32_t pts,
-				     cDxr3SyncBuffer &aBuf)
+void cDxr3AudioDecoder::DecodeAc3Dts(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf)
 {
-    int headerLength = (int) (buf - pPes);
+    uint8_t *buf = (uint8_t *)frame->GetPayload();
+    int length = frame->GetPayloadLength();
 
-    uint8_t* pBuf = (uint8_t*) pPes;
-    ac3dtsDecoder.Check(pBuf + headerLength, length, pBuf);
-    ac3dtsDecoder.Encapsulate(pBuf + headerLength, length);
+    ac3dtsDecoder.Check(buf, length, (uint8_t *)frame->GetPesStart());
+    ac3dtsDecoder.Encapsulate(buf, length);
 
     cFrame* pFrame = 0;
     while ((pFrame = rbuf.Get())) {

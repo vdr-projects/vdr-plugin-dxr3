@@ -45,8 +45,7 @@ public:
 
     void Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf);
     void DecodeLpcm(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf);
-    void DecodeAc3Dts(const uint8_t* pPes, const uint8_t* buf, int length,
-		      uint32_t pts, cDxr3SyncBuffer &aBuf);
+    void DecodeAc3Dts(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf);
 
     void Reset()
     {
