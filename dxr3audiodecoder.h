@@ -41,8 +41,6 @@ public:
     cDxr3AudioDecoder();
     ~cDxr3AudioDecoder();
 
-    void Init();
-
     void Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf);
     void DecodeLpcm(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf);
     void DecodeAc3Dts(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf);
@@ -67,6 +65,8 @@ private:
     int frameSize;
     uint8_t lastBitrate;
     uint8_t pcmbuf[AVCODEC_MAX_AUDIO_FRAME_SIZE];
+
+    void Init();
 };
 
 #endif /*_DXR3_AUDIODECODER_H_*/

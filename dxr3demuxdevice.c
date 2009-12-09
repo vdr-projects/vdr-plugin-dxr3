@@ -43,7 +43,6 @@ cDxr3DemuxDevice::cDxr3DemuxDevice() :
         exit(1);
     }
     m_pVideoThread->Start();
-    m_aDecoder.Init();
 }
 
 void cDxr3DemuxDevice::setAudio(iAudio *audio)
@@ -70,7 +69,6 @@ void cDxr3DemuxDevice::Stop()
     m_aBuf.Clear();
     m_vBuf.WakeUp();
     m_aBuf.WakeUp();
-    m_aDecoder.Init();
     m_vBuf.WaitForReceiverStopped();
     m_aBuf.WaitForReceiverStopped();
     m_synchState = DXR3_DEMUX_UNSYNCHED;
@@ -88,7 +86,6 @@ void cDxr3DemuxDevice::Resync()
     m_aBuf.Clear();
     m_vBuf.WakeUp();
     m_aBuf.WakeUp();
-    m_aDecoder.Init();
     m_vBuf.WaitForReceiverStopped();
     m_aBuf.WaitForReceiverStopped();
     m_synchState = DXR3_DEMUX_UNSYNCHED;
@@ -104,7 +101,6 @@ void cDxr3DemuxDevice::Clear()
     m_aBuf.Clear();
     m_vBuf.WakeUp();
     m_aBuf.WakeUp();
-    m_aDecoder.Init();
     m_vBuf.WaitForReceiverStopped();
     m_aBuf.WaitForReceiverStopped();
     m_synchState = DXR3_DEMUX_UNSYNCHED;
