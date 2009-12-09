@@ -48,7 +48,7 @@ public:
     void SetReplayMode();
     void SetTrickMode(eDxr3TrickState trickState, int Speed = 1);
 
-    int DemuxPes(const uint8_t* buf, int length, bool bAc3Dts = false);
+    int DemuxPes(const uint8_t* buf, int length, bool bAc3Dts);
     int DemuxAudioPes(const uint8_t* buf, int length);
     void StillPicture();
 

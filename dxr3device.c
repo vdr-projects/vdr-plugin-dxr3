@@ -204,10 +204,12 @@ int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
         return Length;
     }
 
+    bool isAc3 = ((Id & 0xF0) == 0x80) || Id == 0xbd;
+
     if (m_PlayMode == pmAudioOnly) {
         return m_DemuxDevice.DemuxAudioPes(Data, Length);
     } else {
-        return m_DemuxDevice.DemuxPes(Data, Length);
+        return m_DemuxDevice.DemuxPes(Data, Length, isAc3);
     }
 }
 
