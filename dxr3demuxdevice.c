@@ -380,7 +380,6 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
         }
     } else if (pesFrame->GetPesDataType() == cDxr3PesFrame::PES_PRIVATE_DATA
              && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
-             && !m_pAudioThread->audio()->isAc3Dts()
              && !bAc3Dts) {
         if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
             m_synchState == DXR3_DEMUX_SYNCHED) {
@@ -415,7 +414,6 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
         }
     } else if (pesFrame->GetPesDataType() == cDxr3PesFrame::PES_PRIVATE_DATA
              && m_demuxMode != DXR3_DEMUX_VIDEO_ONLY_MODE
-             && m_pAudioThread->audio()->isAc3Dts()
              && bAc3Dts) {
         if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
             m_synchState == DXR3_DEMUX_SYNCHED) {
