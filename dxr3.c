@@ -274,6 +274,7 @@ cString cPluginDxr3::SVDRPCommand(const char *Command, const char *Option,
         cDxr3Interface::instance()->updateBcsValues();
         return cString::sprintf("Saturation set to %d", value);
     }
+#if 0
     if (!strcasecmp(Command, "SDO")) {
         device->getAudioOutput()->setAudioMode(iAudio::DigitalPcm);
         return "Switched to digital PCM audio output";
@@ -286,6 +287,7 @@ cString cPluginDxr3::SVDRPCommand(const char *Command, const char *Option,
         device->getAudioOutput()->setAudioMode(iAudio::Ac3);
         return "Switched to digital AC3 audio output";
     }
+#endif
     if (!strcasecmp(Command, "DON")) {
         device->turnPlugin(true);
         return "vdr-plugin-dxr3 turned on";

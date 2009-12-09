@@ -38,14 +38,6 @@ void cAudioOss::openDevice()
         exit(1);
     }
 
-    if (cDxr3ConfigData::instance()->GetUseDigitalOut()) {
-        dsyslog("[dxr3-audio-oss] audio mode: digital");
-        setAudioMode(DigitalPcm);
-    } else {
-        dsyslog("[dxr3-audio-oss] audio mode: analog");
-        setAudioMode(Analog);
-    }
-
     open = true;
 }
 
@@ -91,27 +83,23 @@ void cAudioOss::write(uchar* data, size_t size)
     }
 }
 
-void cAudioOss::setAudioMode(AudioMode mode)
+void cAudioOss::setDigitalAudio(bool on)
 {
+    if (digitalAudio == on) {
+        return;
+    }
+
     uint32_t ioval = 0;
 
-    switch (mode) {
-    case Analog:
-        ioval = EM8300_AUDIOMODE_ANALOG;
-        break;
-
-    case DigitalPcm:
+    if (on) {
         ioval = EM8300_AUDIOMODE_DIGITALPCM;
-        break;
-
-    case Ac3:
-        ioval = EM8300_AUDIOMODE_DIGITALAC3;
-        break;
+    } else {
+        ioval = EM8300_AUDIOMODE_ANALOG;
     }
 
     // we need to do it this way, as we dont have access
     // to the file handle for the conrtol sub device.
-    if (cDxr3Interface::instance()->OssSetPlayMode(ioval)) {
-        this->mode = mode;
-    }
+    cDxr3Interface::instance()->OssSetPlayMode(ioval);
+
+    digitalAudio = on;
 }

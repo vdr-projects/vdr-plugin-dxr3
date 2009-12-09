@@ -193,7 +193,7 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
         return Length;
     }
 
-    return m_DemuxDevice.DemuxPes(Data, Length);
+    return m_DemuxDevice.DemuxPes(Data, Length, false);
 }
 
 // ==================================

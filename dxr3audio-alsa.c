@@ -227,10 +227,6 @@ void cAudioAlsa::write(uchar* data, size_t size)
     }
 }
 
-void cAudioAlsa::setAudioMode(AudioMode mode)
-{
-}
-
 void cAudioAlsa::Xrun()
 {
     int res;

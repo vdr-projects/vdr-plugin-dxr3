@@ -31,12 +31,6 @@ struct SampleContext {
 
 class iAudio {
 public:
-    enum AudioMode {
-        Analog,
-        DigitalPcm,
-        Ac3,
-    };
-
     iAudio();
     virtual ~iAudio() {}
 
@@ -52,13 +46,10 @@ public:
     void setAudioChannel(int channel)   { audioChannel = channel; }
     int getAudioChannel()               { return audioChannel; }
 
-    virtual void setDigitalAudio(bool on)   { digitalAudio = on; }
+    virtual void setDigitalAudio(bool on) = 0;
     bool isDigitalAudio()                   { return digitalAudio; }
 
-    virtual void setAudioMode(AudioMode m) = 0;
-    AudioMode getAudioMode()            { return mode; }
-
-    bool isAudioModeAC3()   { return mode == Ac3; }
+    bool isAc3Dts()   { return ac3dts; }
 
 
 protected:
@@ -67,7 +58,7 @@ protected:
     int audioChannel;
     bool digitalAudio;
     SampleContext curContext;
-    AudioMode mode;
+    bool ac3dts;
 };
 
 #endif /*_AUDIO_H_*/

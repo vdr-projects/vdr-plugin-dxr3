@@ -118,7 +118,7 @@ void cDxr3AudioOutThread::PlayFrame(cFixedLengthFrame *frame)
     }
 
     // volume changes
-    if (!audio()->isAudioModeAC3()) {
+    if (!audio()->isAc3Dts()) {
         audioOutput->changeVolume((short *)frame->GetData(), (size_t)frame->GetCount());
     }
 
@@ -131,7 +131,7 @@ void cDxr3AudioOutThread::PlayFrame(cDxr3PesFrame *frame)
     audioOutput->setup(frame->ctx);
 
     // volume changes
-    if (!audio()->isAudioModeAC3()) {
+    if (!audio()->isAc3Dts()) {
         audioOutput->changeVolume((short *)frame->decoded, (size_t)frame->decodedSize);
     }
 
