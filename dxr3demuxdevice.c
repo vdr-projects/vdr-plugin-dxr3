@@ -417,6 +417,19 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
              && bAc3Dts) {
         if (m_synchState == DXR3_DEMUX_AUDIO_SYNCHED ||
             m_synchState == DXR3_DEMUX_SYNCHED) {
+
+            if (pts && m_synchState != DXR3_DEMUX_SYNCHED) {
+                m_synchState = DXR3_DEMUX_SYNCHED;
+                pcr = aPts - PRE_BUFFER_LENGTH;
+                m_dxr3Device->SetSysClock(pcr);
+                m_dxr3Device->SetPlayMode();
+                m_dxr3Device->EnableVideo();
+                m_dxr3Device->EnableAudio();
+                m_vBuf.Start();
+                m_aBuf.Start();
+            }
+            while(!Poll(100)) {}
+
             m_aDecoder.DecodeAc3Dts(pesFrame, pts, m_aBuf);
         } else {
             if (pts) {
