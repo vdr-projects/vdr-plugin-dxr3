@@ -11,7 +11,7 @@
 #include "dxr3device.h"
 #include "dxr3.h"
 
-static const char VERSION[]       = "0.2.9+git";
+static const char VERSION[]       = "0.3.0-git";
 static const char DESCRIPTION[]   = trNOOP("Hardware MPEG decoder");
 
 #if APIVERSNUM && APIVERSNUM < 10600
