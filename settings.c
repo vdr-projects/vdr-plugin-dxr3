@@ -24,7 +24,7 @@
 
 // ==================================
 //! constructor
-cDxr3ConfigData::cDxr3ConfigData()
+cSettings::cSettings()
 {
     m_digitaloutput = 0;
     m_card = 0;

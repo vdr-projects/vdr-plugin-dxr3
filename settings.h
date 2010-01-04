@@ -41,10 +41,10 @@ enum eVideoMode
   With this singleton you can access very easy all possible
   config settings of the plugin.
 */
-class cDxr3ConfigData : public Singleton<cDxr3ConfigData>
+class cSettings : public Singleton<cSettings>
 {
 public:
-    cDxr3ConfigData();
+    cSettings();
 
     int GetUseDigitalOut() const        { return m_digitaloutput; }
     int SetUseDigitalOut(int value)     { return m_digitaloutput = value; }

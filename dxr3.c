@@ -34,17 +34,17 @@ eOSState cDxr3OsdItem::ProcessKey(eKeys Key)
 	    break;
 
 	case DXR3_FORCE_LETTER_BOX:
-	    cDxr3ConfigData::instance()->SetForceLetterBox(
-		!cDxr3ConfigData::instance()->GetForceLetterBox());
+            cSettings::instance()->SetForceLetterBox(
+                !cSettings::instance()->GetForceLetterBox());
 	    break;
 
 	case DXR3_ANALOG_OUT:
-	    cDxr3ConfigData::instance()->SetUseDigitalOut(0);
+            cSettings::instance()->SetUseDigitalOut(0);
 	    //cDxr3Device::Instance().Reset();
 	    break;
 
 	case DXR3_DIGITAL_OUT:
-	    cDxr3ConfigData::instance()->SetUseDigitalOut(1);
+            cSettings::instance()->SetUseDigitalOut(1);
 	    //cDxr3Device::Instance().Reset();
 	    break;
 	}
@@ -57,31 +57,31 @@ eOSState cDxr3OsdItem::ProcessKey(eKeys Key)
 // setup menu
 cMenuSetupDxr3::cMenuSetupDxr3(void)
 {
-    newBrightness = cDxr3ConfigData::instance()->GetBrightness();
+    newBrightness = cSettings::instance()->GetBrightness();
     Add(new cMenuEditIntItem(tr("Brightness"),
 			     &newBrightness, 0, 999));
-    newContrast = cDxr3ConfigData::instance()->GetContrast();
+    newContrast = cSettings::instance()->GetContrast();
     Add(new cMenuEditIntItem(tr("Contrast"),
 			     &newContrast, 0, 999));
-    newSaturation = cDxr3ConfigData::instance()->GetSaturation();
+    newSaturation = cSettings::instance()->GetSaturation();
     Add(new cMenuEditIntItem(tr("Saturation"),
 			     &newSaturation, 0, 999));
-    newVideoMode = (int) cDxr3ConfigData::instance()->GetVideoMode();
+    newVideoMode = (int) cSettings::instance()->GetVideoMode();
     menuVideoModes[0] = tr("PAL");
     menuVideoModes[1] = tr("PAL60");
     menuVideoModes[2] = tr("NTSC");
     Add(new cMenuEditStraItem(tr("Video mode"),
 			      &newVideoMode, 3, menuVideoModes));
-    newUseWSS = cDxr3ConfigData::instance()->GetUseWSS();
+    newUseWSS = cSettings::instance()->GetUseWSS();
 #ifdef EM8300_IOCTL_SET_WSS
     Add(new cMenuEditBoolItem(tr("Use widescreen signaling (WSS)"),
 			      &newUseWSS));
 #endif
-    newUseDigitalOut = cDxr3ConfigData::instance()->GetUseDigitalOut();
+    newUseDigitalOut = cSettings::instance()->GetUseDigitalOut();
     Add(new cMenuEditBoolItem(tr("Digital audio output"), &newUseDigitalOut));
-    newHideMenu = cDxr3ConfigData::instance()->GetHideMenu();
+    newHideMenu = cSettings::instance()->GetHideMenu();
     Add(new cMenuEditBoolItem(tr("Hide main menu entry"), &newHideMenu));
-    newDxr3Card = cDxr3ConfigData::instance()->GetDxr3Card();
+    newDxr3Card = cSettings::instance()->GetDxr3Card();
     Add(new cMenuEditIntItem(tr("Card number"),
 			     &newDxr3Card, 0, DXR3_MAX_CARDS - 1));
 }
@@ -91,22 +91,22 @@ cMenuSetupDxr3::cMenuSetupDxr3(void)
 void cMenuSetupDxr3::Store(void)
 {
     SetupStore("Brightness",
-	       cDxr3ConfigData::instance()->SetBrightness(newBrightness));
+               cSettings::instance()->SetBrightness(newBrightness));
     SetupStore("Contrast",
-	       cDxr3ConfigData::instance()->SetContrast(newContrast));
+               cSettings::instance()->SetContrast(newContrast));
     SetupStore("Saturation",
-	       cDxr3ConfigData::instance()->SetSaturation(newSaturation));
+               cSettings::instance()->SetSaturation(newSaturation));
     SetupStore("Dxr3VideoMode",
-	       cDxr3ConfigData::instance()->SetVideoMode(
+               cSettings::instance()->SetVideoMode(
 		   (eVideoMode) newVideoMode));
     SetupStore("UseWSS",
-	       cDxr3ConfigData::instance()->SetUseWSS(newUseWSS));
+               cSettings::instance()->SetUseWSS(newUseWSS));
     SetupStore("UseDigitalOut",
-	       cDxr3ConfigData::instance()->SetUseDigitalOut(newUseDigitalOut));
+               cSettings::instance()->SetUseDigitalOut(newUseDigitalOut));
     SetupStore("HideMenu",
-	       cDxr3ConfigData::instance()->SetHideMenu(newHideMenu));
+               cSettings::instance()->SetHideMenu(newHideMenu));
     SetupStore("Dxr3Card",
-	       cDxr3ConfigData::instance()->SetDxr3Card(newDxr3Card));
+               cSettings::instance()->SetDxr3Card(newDxr3Card));
 
     // Apply (some of the) settings
     cDxr3Interface::instance()->updateBcsValues();
@@ -144,7 +144,7 @@ cPluginDxr3::cPluginDxr3()
     // Initialize any member variables here.
     // DON'T DO ANYTHING ELSE THAT MAY HAVE SIDE EFFECTS, REQUIRE GLOBAL
     // VDR OBJECTS TO EXIST OR PRODUCE ANY OUTPUT!
-    cDxr3ConfigData::instance();
+    cSettings::instance();
 }
 
 // ==================================
@@ -170,42 +170,42 @@ bool cPluginDxr3::SetupParse(const char *Name, const char *Value)
 {
     if (!strcasecmp(Name, "UseDigitalOut"))
     {
-	cDxr3ConfigData::instance()->SetUseDigitalOut(atoi(Value));
+        cSettings::instance()->SetUseDigitalOut(atoi(Value));
 	return true;
     }
     if (!strcasecmp(Name, "Dxr3Card"))
     {
-	cDxr3ConfigData::instance()->SetDxr3Card(atoi(Value));
+        cSettings::instance()->SetDxr3Card(atoi(Value));
 	return true;
     }
     if (!strcasecmp(Name, "Dxr3VideoMode"))
     {
-	cDxr3ConfigData::instance()->SetVideoMode((eVideoMode) atoi(Value));
+        cSettings::instance()->SetVideoMode((eVideoMode) atoi(Value));
 	return true;
     }
     if (!strcasecmp(Name, "UseWSS"))
     {
-	cDxr3ConfigData::instance()->SetUseWSS(atoi(Value));
+        cSettings::instance()->SetUseWSS(atoi(Value));
 	return true;
     }
     if (!strcasecmp(Name, "HideMenu"))
     {
-	cDxr3ConfigData::instance()->SetHideMenu(atoi(Value));
+        cSettings::instance()->SetHideMenu(atoi(Value));
 	return true;
     }
     if (!strcasecmp(Name, "Brightness"))
     {
-	cDxr3ConfigData::instance()->SetBrightness(atoi(Value));
+        cSettings::instance()->SetBrightness(atoi(Value));
 	return true;
     }
     if (!strcasecmp(Name, "Contrast"))
     {
-	cDxr3ConfigData::instance()->SetContrast(atoi(Value));
+        cSettings::instance()->SetContrast(atoi(Value));
 	return true;
     }
     if (!strcasecmp(Name, "Saturation"))
     {
-	cDxr3ConfigData::instance()->SetSaturation(atoi(Value));
+        cSettings::instance()->SetSaturation(atoi(Value));
 	return true;
     }
 
@@ -215,7 +215,7 @@ bool cPluginDxr3::SetupParse(const char *Name, const char *Value)
 // ==================================
 const char* cPluginDxr3::MainMenuEntry()
 {
-    return cDxr3ConfigData::instance()->GetHideMenu() ?
+    return cSettings::instance()->GetHideMenu() ?
 	NULL : tr(MAINMENUENTRY);
 }
 
@@ -260,17 +260,17 @@ cString cPluginDxr3::SVDRPCommand(const char *Command, const char *Option,
     int value = atoi(Option);
 
     if (!strcasecmp(Command, "BRI")) {
-        cDxr3ConfigData::instance()->SetBrightness(value);
+        cSettings::instance()->SetBrightness(value);
         cDxr3Interface::instance()->updateBcsValues();
         return cString::sprintf("Brightness set to %d", value);
     }
     if (!strcasecmp(Command, "CON")) {
-        cDxr3ConfigData::instance()->SetContrast(value);
+        cSettings::instance()->SetContrast(value);
         cDxr3Interface::instance()->updateBcsValues();
         return cString::sprintf("Contrast set to %d", value);
     }
     if (!strcasecmp(Command, "SAT")) {
-        cDxr3ConfigData::instance()->SetSaturation(value);
+        cSettings::instance()->SetSaturation(value);
         cDxr3Interface::instance()->updateBcsValues();
         return cString::sprintf("Saturation set to %d", value);
     }
