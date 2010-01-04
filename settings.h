@@ -24,6 +24,7 @@
 #define _DXR3_CONFIGDATA_H_
 
 #include "singleton.h"
+#include "accessors.h"
 #include <linux/em8300.h>
 
 // ==================================
@@ -44,41 +45,21 @@ enum eVideoMode
 class cSettings : public Singleton<cSettings>
 {
 public:
-    cSettings();
+    cSettings() : useDigitalOut(0), card(0), forceLetterBox(0), videoMode(PAL),
+                  brightness(500), contrast(500), saturation(500),
+                  hideMenu(0), useWss(0) {}
 
-    int GetUseDigitalOut() const        { return m_digitaloutput; }
-    int SetUseDigitalOut(int value)     { return m_digitaloutput = value; }
-    int GetDxr3Card() const             { return m_card; }
-    int SetDxr3Card(int value)          { return m_card = value; }
-    int GetForceLetterBox() const       { return m_forceletterbox; }
-    int SetForceLetterBox(int value)    { return m_forceletterbox = value; }
+    Accessors<int> useDigitalOut;
+    Accessors<int> card;
+    Accessors<int> forceLetterBox;
+    Accessors<eVideoMode> videoMode;
 
-    eVideoMode GetVideoMode() const         { return m_videomode; }
-    eVideoMode SetVideoMode(eVideoMode m)   { return m_videomode = m; }
+    Accessors<int> brightness;
+    Accessors<int> contrast;
+    Accessors<int> saturation;
 
-    int GetBrightness() const           { return m_brightness; }
-    int SetBrightness(int value)        { return m_brightness = value; }
-    int GetContrast() const             { return m_contrast; }
-    int SetContrast(int value)          { return m_contrast = value; }
-    int GetSaturation() const           { return m_saturation; }
-    int SetSaturation(int value)        { return m_saturation = value; }
-
-    int GetHideMenu() const             { return m_hidemenu; }
-    int SetHideMenu(int value)          { return m_hidemenu = value; }
-
-    int GetUseWSS() const               { return m_usewss; }
-    int SetUseWSS(int value)            { return m_usewss = value; }
-
-private:
-    eVideoMode m_videomode;
-    int m_usewss;
-    int m_digitaloutput;
-    int m_card;
-    int m_forceletterbox;
-    int m_brightness;
-    int m_contrast;
-    int m_saturation;
-    int m_hidemenu;
+    Accessors<int> hideMenu;
+    Accessors<int> useWss;
 };
 
 #endif /*_DXR3_CONFIGDATA_H_*/
