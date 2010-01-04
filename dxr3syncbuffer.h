@@ -26,7 +26,7 @@
 #include <vdr/ringbuffer.h>
 #include "dxr3interface.h"
 #include "dxr3generaldefines.h"
-#include "Uncopyable.h"
+#include "uncopyable.h"
 
 // ==================================
 const uint32_t UNKNOWN_CHANNEL_COUNT = 0xFFFFFFFF;

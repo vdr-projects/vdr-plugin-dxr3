@@ -24,7 +24,7 @@
 
 #include "dxr3syncbuffer.h"
 #include "dxr3audiodecoder.h"
-#include "Uncopyable.h"
+#include "uncopyable.h"
 
 class iAudio;
 

@@ -24,7 +24,7 @@
 
 #include <assert.h>
 #include "dxr3audio.h"
-#include "Uncopyable.h"
+#include "uncopyable.h"
 
 // ==================================
 enum eVideoFrameType

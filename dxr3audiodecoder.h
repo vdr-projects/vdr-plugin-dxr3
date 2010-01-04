@@ -30,7 +30,7 @@ extern "C" {
 
 #include "dxr3syncbuffer.h"
 #include "dxr3multichannelaudio.h"
-#include "Uncopyable.h"
+#include "uncopyable.h"
 
 class cDxr3PesFrame;
 
