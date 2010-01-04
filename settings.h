@@ -1,27 +1,30 @@
 /*
- * dxr3configdata.h
+ *           _                 _             _                 _          _____
+ * __   ____| |_ __      _ __ | |_   _  __ _(_)_ __         __| |_  ___ _|___ /
+ * \ \ / / _` | '__|____| '_ \| | | | |/ _` | | '_ \ _____ / _` \ \/ / '__||_ \
+ *  \ V / (_| | | |_____| |_) | | |_| | (_| | | | | |_____| (_| |>  <| |  ___) |
+ *   \_/ \__,_|_|       | .__/|_|\__,_|\__, |_|_| |_|      \__,_/_/\_\_| |____/
+ *                      |_|            |___/
  *
- * Copyright (C) 2002-2004 Kai Möller
- * Copyright (C) 2004 Christian Gmeiner
+ * Copyright (C) 2004-2010 Christian Gmeiner
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This file is part of vdr-plugin-dxr3.
  *
- * This library is distributed in the hope that it will be useful,
+ * vdr-plugin-dxr3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation version 2.
+ *
+ * vdr-plugin-dxr3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ * You should have received a copy of the GNU General Public License
+ * along with dxr3-plugin.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
-#ifndef _DXR3_CONFIGDATA_H_
-#define _DXR3_CONFIGDATA_H_
+#ifndef SETTINGS_H
+#define SETTINGS_H
 
 #include "singleton.h"
 #include "accessors.h"
@@ -62,7 +65,7 @@ public:
     Accessors<int> useWss;
 };
 
-#endif /*_DXR3_CONFIGDATA_H_*/
+#endif /*SETTINGS_H*/
 
 // Local variables:
 // mode: c++
