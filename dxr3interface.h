@@ -28,7 +28,7 @@
 #include <linux/limits.h>
 
 #include <vdr/tools.h>
-#include "dxr3configdata.h"
+#include "settings.h"
 
 // ==================================
 class cFixedLengthFrame;

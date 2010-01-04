@@ -68,7 +68,7 @@ DEFINES += -DMICROCODE=\"/lib/firmware/em8300.bin\"
 
 OBJS = $(PLUGIN).o dxr3multichannelaudio.o \
 	dxr3syncbuffer.o dxr3audiodecoder.o dxr3blackframe.o dxr3audio.o \
-	dxr3pesframe.o dxr3demuxdevice.o dxr3configdata.o \
+	dxr3pesframe.o dxr3demuxdevice.o settings.o \
 	dxr3interface.o dxr3device.o \
 	dxr3output.o dxr3output-video.o dxr3output-audio.o dxr3osd.o dxr3spudecoder.o \
         dxr3audio-oss.o dxr3audio-alsa.o spuencoder.o spuregion.o scaler.o

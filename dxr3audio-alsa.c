@@ -22,7 +22,7 @@
 using namespace std;
 
 #include "dxr3audio-alsa.h"
-#include "dxr3configdata.h"
+#include "settings.h"
 
 void cAudioAlsa::openDevice()
 {

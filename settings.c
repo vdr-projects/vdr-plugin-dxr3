@@ -20,7 +20,7 @@
  *
  */
 
-#include "dxr3configdata.h"
+#include "settings.h"
 
 // ==================================
 //! constructor
