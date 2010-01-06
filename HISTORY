@@ -361,3 +361,6 @@ NOTE: I havent found time to include all of the languages, will be done in pre2
 - Code cleanups (Christian Gmeiner)
 - Add Ukrainian translation (#131, Yarema aka Knedlyk).
 - New SpuEncoder (Christian Gmeiner)
+- Fix bug #223 by adding a command line argument to enable automatic
+  firmware loading:
+  '-f  --firmware-loading   Enable automatic firmware loading' (Christian Gmeiner)

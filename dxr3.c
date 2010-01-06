@@ -127,6 +127,9 @@ public:
     const char* MainMenuEntry();
     cOsdObject* MainMenuAction();
 
+    virtual const char *CommandLineHelp();
+    virtual bool ProcessArgs(int argc, char *argv[]);
+
     virtual const char **SVDRPHelpPages(void);
     virtual cString SVDRPCommand(const char *Command, const char *Option,
 				 int &ReplyCode);
@@ -223,6 +226,16 @@ const char* cPluginDxr3::MainMenuEntry()
 cOsdObject* cPluginDxr3::MainMenuAction()
 {
     return new cDxr3OsdMenu;
+}
+
+const char *cPluginDxr3::CommandLineHelp()
+{
+    return "  -f  --firmware-loading   Enable automatic firmware loading\n"
+}
+
+bool cPluginDxr3::ProcessArgs(int argc, char *argv[])
+{
+    return cSettings::instance()->processArgs(argc, argv);
 }
 
 // ==================================

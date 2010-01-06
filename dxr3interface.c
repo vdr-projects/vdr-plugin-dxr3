@@ -431,6 +431,11 @@ void cDxr3Interface::PlayBlackFrame()
 //! uploadroutine for microcode
 void cDxr3Interface::UploadMicroCode()
 {
+    if (!cSettings::instance()->loadFirmware()) {
+        return;
+    }
+
+    dsyslog("[dxr3-interface] loading firmware");
     em8300_microcode_t em8300_microcode;
     struct stat s;
 

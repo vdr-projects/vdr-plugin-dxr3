@@ -50,7 +50,9 @@ class cSettings : public Singleton<cSettings>
 public:
     cSettings() : useDigitalOut(0), card(0), forceLetterBox(0), videoMode(PAL),
                   brightness(500), contrast(500), saturation(500),
-                  hideMenu(0), useWss(0) {}
+                  hideMenu(0), useWss(0), loadFirmware(false) {}
+
+    bool processArgs(int argc, char *argv[]);
 
     Accessors<int> useDigitalOut;
     Accessors<int> card;
@@ -63,6 +65,7 @@ public:
 
     Accessors<int> hideMenu;
     Accessors<int> useWss;
+    Accessors<bool> loadFirmware;
 };
 
 #endif /*SETTINGS_H*/
