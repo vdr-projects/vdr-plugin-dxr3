@@ -214,10 +214,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
     if (!pesFrame || !pesFrame->parse(buf, length)) {
         return -1;
     }
-/*TODO: add to pes parser
-    if (pesFrame.GetPayloadLength() > (uint32_t) VIDEO_MAX_FRAME_SIZE) {
-        throw (cDxr3PesFrame::PES_GENERAL_ERROR);
-    };*/
+
     if (pesFrame->GetPts() != lastPts) {
         pts = lastPts = pesFrame->GetPts();
     } else {
