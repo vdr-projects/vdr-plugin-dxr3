@@ -52,23 +52,23 @@ public:
     int DemuxAudioPes(const uint8_t* buf, int length);
     void StillPicture();
 
-    eDxr3DemuxMode GetDemuxMode()   { return m_demuxMode; }
-    eDxr3TrickState GetTrickState() { return m_trickState; };
+    eDxr3DemuxMode GetDemuxMode()   { return demuxMode; }
+    eDxr3TrickState GetTrickState() { return trickState; };
 
     bool Poll(int TimeoutMs)  {
-        return  m_aBuf.Poll(TimeoutMs) && m_vBuf.Poll(TimeoutMs);
+        return  aBuf.Poll(TimeoutMs) && vBuf.Poll(TimeoutMs);
     };
 
 private:
-    cDxr3SyncBuffer m_aBuf;
-    cDxr3SyncBuffer m_vBuf;
-    eDxr3DemuxSynchState m_synchState;
-    eDxr3DemuxMode m_demuxMode;
-    eDxr3TrickState m_trickState;
-    cDxr3AudioDecoder m_aDecoder;
-    cDxr3AudioOutThread* m_pAudioThread;
-    cDxr3VideoOutThread* m_pVideoThread;
-    uint32_t m_stopScr;
+    cDxr3SyncBuffer aBuf;
+    cDxr3SyncBuffer vBuf;
+    eDxr3DemuxSynchState synchState;
+    eDxr3DemuxMode demuxMode;
+    eDxr3TrickState trickState;
+    cDxr3AudioDecoder aDecoder;
+    cDxr3AudioOutThread* audioThread;
+    cDxr3VideoOutThread* videoThread;
+    uint32_t stopScr;
 };
 
 #endif // __DXR3_DEMUX_DEVICE_H
