@@ -57,6 +57,10 @@ cDxr3Device::~cDxr3Device()
 // ==================================
 void cDxr3Device::MakePrimaryDevice(bool On)
 {
+#if VDRVERSNUM >= 10711
+    cDevice::MakePrimaryDevice(On);
+#endif
+
     if (On) {
         new cDxr3OsdProvider();
     }
