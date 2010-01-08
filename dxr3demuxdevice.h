@@ -60,7 +60,6 @@ public:
     };
 
 private:
-    cDxr3Interface *m_dxr3Device;
     cDxr3SyncBuffer m_aBuf;
     cDxr3SyncBuffer m_vBuf;
     eDxr3DemuxSynchState m_synchState;
