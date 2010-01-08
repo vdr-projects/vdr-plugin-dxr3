@@ -82,18 +82,16 @@ bool cDxr3Device::CanReplay() const
 // ==================================
 bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
 {
-    if (PlayMode != pmExtern_THIS_SHOULD_BE_AVOIDED) {
-        cDxr3Interface::instance()->ClaimDevices();
-        audioOut->openDevice();
-    }
+    dsyslog("[dxr3-device] setting playmode %d", PlayMode);
 
-    dsyslog("setting playmode %d", PlayMode);
+    if (PlayMode != pmExtern_THIS_SHOULD_BE_AVOIDED) {
+        turnPlugin(true);
+        return true;
+    }
 
     switch (PlayMode) {
     case pmExtern_THIS_SHOULD_BE_AVOIDED:
-        Tools::WriteInfoToOsd(tr("DXR3: releasing devices"));
-        cDxr3Interface::instance()->ReleaseDevices();
-        audioOut->releaseDevice();
+        turnPlugin(false);
         break;
 
     case pmNone:
@@ -305,6 +303,7 @@ void cDxr3Device::turnPlugin(bool on)
         m_DemuxDevice.Clear();
 
         // release device and give control to somebody else
+        Tools::WriteInfoToOsd(tr("DXR3: releasing devices"));
         cDxr3Interface::instance()->ReleaseDevices();
         audioOut->releaseDevice();
 
