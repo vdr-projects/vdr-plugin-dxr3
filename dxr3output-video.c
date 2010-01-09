@@ -45,7 +45,7 @@ void cDxr3VideoOutThread::Action()
 	cFixedLengthFrame* pNext = m_buffer.Get();
 	if (pNext)
 	{
-	    pts = pNext->GetPts();
+            pts = pNext->pts();
 	    if (pts == lastPts)
 		pts = 0;
 

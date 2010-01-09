@@ -296,7 +296,7 @@ void cDxr3Interface::PlayVideoFrame(cFixedLengthFrame* pFrame)
     Unlock();
 
     SetAspectRatio(pFrame->aspectratio());
-    uint32_t pts = pFrame->GetPts();
+    uint32_t pts = pFrame->pts();
     if (pts > 0)
         m_lastSeenPts = pts;
 }

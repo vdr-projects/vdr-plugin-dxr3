@@ -50,7 +50,7 @@ void cDxr3AudioOutThread::Action()
 	pts = 0;
 	cFixedLengthFrame* pNext = m_buffer.Get();
 
-	if (pNext) pts = pNext->GetPts();
+        if (pNext) pts = pNext->pts();
 
 	if ((pts && abs((int)pts-(int)SCR) > 30000))
 	{

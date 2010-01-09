@@ -54,7 +54,7 @@ void cFixedLengthFrame::Init(uint32_t lenght)
 }
 
 // ==================================
-void cFixedLengthFrame::CopyFrame(const uint8_t* pStart, int length, uint32_t pts)
+void cFixedLengthFrame::CopyFrame(const uint8_t* pStart, int length)
 {
     if (length > m_length) {
         delete[] m_pData;
@@ -62,7 +62,6 @@ void cFixedLengthFrame::CopyFrame(const uint8_t* pStart, int length, uint32_t pt
         m_length = length;
     }
     m_count = length;
-    m_pts = pts;
     memcpy((void*) m_pData, (void*) pStart, length);
 }
 
@@ -76,18 +75,6 @@ uint8_t* cFixedLengthFrame::GetData(void)
 int cFixedLengthFrame::GetCount(void)
 {
     return m_count;
-}
-
-// ==================================
-uint32_t cFixedLengthFrame::GetPts(void)
-{
-    return m_pts;
-}
-
-// ==================================
-void cFixedLengthFrame::SetPts(uint32_t pts)
-{
-    m_pts = pts;
 }
 
 // ==================================
@@ -200,7 +187,8 @@ cFixedLengthFrame* cDxr3SyncBuffer::Push(const uint8_t* pStart, int length, uint
     }
 
     lastIndex = m_nextFree;
-    m_pBuffer[m_nextFree].CopyFrame(pStart, length, pts);
+    m_pBuffer[m_nextFree].CopyFrame(pStart, length);
+    m_pBuffer[m_nextFree].pts(pts);
     m_pBuffer[m_nextFree].channels(UNKNOWN_CHANNEL_COUNT);
     m_pBuffer[m_nextFree].samplerate(UNKNOWN_DATA_RATE);
     m_pBuffer[m_nextFree].aspectratio(UNKNOWN_ASPECT_RATIO);
