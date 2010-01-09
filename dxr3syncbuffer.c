@@ -41,10 +41,10 @@ cFixedLengthFrame::~cFixedLengthFrame()
 
 // ==================================
 // ! setup our frame
-void cFixedLengthFrame::Init(uint32_t lenght)
+void cFixedLengthFrame::Init(uint32_t length)
 {
-    m_length = lenght;
-    m_pData = new uint8_t[lenght];
+    this->length = length;
+    m_pData = new uint8_t[length];
 
     // allocation ok?
     if (!m_pData) {
@@ -56,11 +56,11 @@ void cFixedLengthFrame::Init(uint32_t lenght)
 // ==================================
 void cFixedLengthFrame::CopyFrame(const uint8_t* pStart, int length)
 {
-    if (length > m_length) {
+    if (length > this->length()) {
         delete[] m_pData;
         m_pData = new uint8_t[length];
     }
-    m_length = length;
+    this->length = length;
     memcpy((void*) m_pData, (void*) pStart, length);
 }
 
@@ -68,12 +68,6 @@ void cFixedLengthFrame::CopyFrame(const uint8_t* pStart, int length)
 uint8_t* cFixedLengthFrame::GetData(void)
 {
     return m_pData;
-}
-
-// ==================================
-int cFixedLengthFrame::GetCount(void)
-{
-    return m_length;
 }
 
 // ==================================

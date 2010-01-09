@@ -285,8 +285,8 @@ void cDxr3Interface::PlayVideoFrame(cFixedLengthFrame* pFrame)
 
     Lock();
 
-    while (written < pFrame->GetCount() && count >= 0) {
-        if ((count = write(m_fdVideo, pFrame->GetData() + written, pFrame->GetCount() - written)) == -1) {
+    while (written < pFrame->length() && count >= 0) {
+        if ((count = write(m_fdVideo, pFrame->GetData() + written, pFrame->length() - written)) == -1) {
             // an error occured
             Resuscitation();
         }

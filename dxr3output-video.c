@@ -69,7 +69,7 @@ void cDxr3VideoOutThread::Action()
 		    m_dxr3Device->SetPts(pts);
 
 		    if (m_buffer.Available() && pNext->GetData() &&
-			pNext->GetCount())
+                        pNext->length())
 		    {
 			m_dxr3Device->PlayVideoFrame(pNext);
 			m_buffer.Pop();

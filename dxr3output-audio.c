@@ -121,10 +121,10 @@ void cDxr3AudioOutThread::PlayFrame(cFixedLengthFrame *frame)
         }
 
         // volume changes
-        audioOutput->changeVolume((short *)frame->GetData(), (size_t)frame->GetCount());
+        audioOutput->changeVolume((short *)frame->GetData(), (size_t)frame->length());
     }
 
-    audioOutput->write(frame->GetData(), frame->GetCount());
+    audioOutput->write(frame->GetData(), frame->length());
 }
 
 #undef SCR

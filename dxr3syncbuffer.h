@@ -38,7 +38,7 @@ const uint32_t UNKNOWN_ASPECT_RATIO = 0xFFFFFFFF;
 class cFixedLengthFrame : private Uncopyable {
 public:
     cFixedLengthFrame() : samplerate(UNKNOWN_DATA_RATE), channels(UNKNOWN_CHANNEL_COUNT), aspectratio(UNKNOWN_ASPECT_RATIO),
-                          pts(0), m_length(0)
+                          pts(0), length(0)
     {}
 
     ~cFixedLengthFrame();
@@ -54,9 +54,10 @@ public:
     Accessors<uint32_t> aspectratio;
     Accessors<uint32_t> pts;
 
+    Accessors<uint32_t, ro> length;
+
 private:
     uint8_t* m_pData;
-    int m_length;
 };
 
 // ==================================
