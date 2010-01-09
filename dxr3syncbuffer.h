@@ -38,21 +38,18 @@ const uint32_t UNKNOWN_ASPECT_RATIO = 0xFFFFFFFF;
 class cFixedLengthFrame : private Uncopyable {
 public:
     cFixedLengthFrame() : samplerate(UNKNOWN_DATA_RATE), channels(UNKNOWN_CHANNEL_COUNT), aspectratio(UNKNOWN_ASPECT_RATIO),
-                          m_count(0), m_length(0), m_pts(0), m_type(ftUnknown)
+                          m_count(0), m_length(0), m_pts(0)
     {}
 
     ~cFixedLengthFrame();
 
     void Init(uint32_t lenght);
 
-    void CopyFrame(const uint8_t* pStart, int length, uint32_t pts,
-		   eFrameType type);
+    void CopyFrame(const uint8_t* pStart, int length, uint32_t pts);
     uint8_t* GetData(void);
     int GetCount(void);
     uint32_t GetPts(void);
     void SetPts(uint32_t pts);
-
-    eFrameType GetFrameType()   { return m_type; }
 
     Accessors<uint32_t> samplerate;
     Accessors<uint32_t> channels;
@@ -64,7 +61,6 @@ private:
     int m_count;
     int m_length;
     uint32_t m_pts;
-    eFrameType m_type;
 };
 
 // ==================================
@@ -79,8 +75,7 @@ public:
     ~cDxr3SyncBuffer();
 
     virtual int Available(void);
-    cFixedLengthFrame* Push(const uint8_t* pStart, int length, uint32_t pts,
-			    eFrameType type = ftUnknown)
+    cFixedLengthFrame* Push(const uint8_t* pStart, int length, uint32_t pts)
 	throw (eSyncBufferException);
     void Pop(void);
     cFixedLengthFrame* Get(void);

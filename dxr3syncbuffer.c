@@ -54,15 +54,13 @@ void cFixedLengthFrame::Init(uint32_t lenght)
 }
 
 // ==================================
-void cFixedLengthFrame::CopyFrame(const uint8_t* pStart, int length,
-				  uint32_t pts, eFrameType type)
+void cFixedLengthFrame::CopyFrame(const uint8_t* pStart, int length, uint32_t pts)
 {
     if (length > m_length) {
         delete[] m_pData;
         m_pData = new uint8_t[length];
         m_length = length;
     }
-    m_type = type;
     m_count = length;
     m_pts = pts;
     memcpy((void*) m_pData, (void*) pStart, length);
@@ -180,7 +178,7 @@ bool cDxr3SyncBuffer::Poll(int TimeoutMs)
 }
 
 // ==================================
-cFixedLengthFrame* cDxr3SyncBuffer::Push(const uint8_t* pStart, int length, uint32_t pts, eFrameType type)  throw (eSyncBufferException)
+cFixedLengthFrame* cDxr3SyncBuffer::Push(const uint8_t* pStart, int length, uint32_t pts)  throw (eSyncBufferException)
 {
     int lastIndex = 0;
     struct timeval tv_start, tv;
@@ -202,7 +200,7 @@ cFixedLengthFrame* cDxr3SyncBuffer::Push(const uint8_t* pStart, int length, uint
     }
 
     lastIndex = m_nextFree;
-    m_pBuffer[m_nextFree].CopyFrame(pStart, length, pts, type);
+    m_pBuffer[m_nextFree].CopyFrame(pStart, length, pts);
     m_pBuffer[m_nextFree].channels(UNKNOWN_CHANNEL_COUNT);
     m_pBuffer[m_nextFree].samplerate(UNKNOWN_DATA_RATE);
     m_pBuffer[m_nextFree].aspectratio(UNKNOWN_ASPECT_RATIO);

@@ -304,7 +304,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
             } else if (synchState == DXR3_DEMUX_VIDEO_SYNCHED ||  synchState == DXR3_DEMUX_SYNCHED) {
                 cDxr3Interface::instance()->setDimension(pesFrame->GetHorizontalSize(), pesFrame->GetVerticalSize());
                 while (!Poll(100)) {}
-                cFixedLengthFrame* pTempFrame = vBuf.Push(pesFrame->GetPayload(), (int) (pesFrame->GetPayloadLength()), pts, ftVideo);
+                cFixedLengthFrame* pTempFrame = vBuf.Push(pesFrame->GetPayload(), (int) (pesFrame->GetPayloadLength()), pts);
 
                 // TODO: rework me
                 //if (!pTempFrame) /* Push Timeout */
@@ -329,7 +329,7 @@ int cDxr3DemuxDevice::DemuxPes(const uint8_t* buf, int length, bool bAc3Dts)
                     vPts = pts;
 
                     cDxr3Interface::instance()->setDimension(pesFrame->GetHorizontalSize(), pesFrame->GetVerticalSize());
-                    cFixedLengthFrame* pTempFrame = vBuf.Push(pesFrame->GetPayload(), (int) (pesFrame->GetPayloadLength()), pts, ftVideo);
+                    cFixedLengthFrame* pTempFrame = vBuf.Push(pesFrame->GetPayload(), (int) (pesFrame->GetPayloadLength()), pts);
                     // TODO: rework me
                     //if (!pTempFrame) /* Push Timeout */
                     //    throw (cDxr3PesFrame::PES_GENERAL_ERROR);
