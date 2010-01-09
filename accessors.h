@@ -31,14 +31,31 @@
 //  * http://www.kirit.com/C%2B%2B%20killed%20the%20get%20%26%20set%20accessors
 //  * http://www.kirit.com/C%2B%2B%20killed%20the%20get%20%26%20set%20accessors/A%20simple%20meta-accessor
 
+enum Accessor_type { rw, ro };
+
+template<typename T, Accessor_type = rw >
+class Accessors;
+
 template<typename T>
-class Accessors {
+class Accessors<T, rw> {
 public:
-    Accessors() {}
+    Accessors<T, rw>() {}
     explicit Accessors(const T &t) : m_t(t) {}
 
     const T &operator() () const    { return m_t; }
     T operator() (const T &t)       { return m_t = t; }
+
+private:
+    T m_t;
+};
+
+template<typename T>
+class Accessors<T, ro> {
+public:
+    Accessors<T, ro>() {}
+    explicit Accessors(const T &t) : m_t(t) {}
+
+    const T &operator() () const    { return m_t; }
 
 private:
     T m_t;
