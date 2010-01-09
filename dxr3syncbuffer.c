@@ -59,9 +59,8 @@ void cFixedLengthFrame::CopyFrame(const uint8_t* pStart, int length)
     if (length > m_length) {
         delete[] m_pData;
         m_pData = new uint8_t[length];
-        m_length = length;
     }
-    m_count = length;
+    m_length = length;
     memcpy((void*) m_pData, (void*) pStart, length);
 }
 
@@ -74,7 +73,7 @@ uint8_t* cFixedLengthFrame::GetData(void)
 // ==================================
 int cFixedLengthFrame::GetCount(void)
 {
-    return m_count;
+    return m_length;
 }
 
 // ==================================
