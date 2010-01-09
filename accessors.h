@@ -56,6 +56,7 @@ public:
     explicit Accessors(const T &t) : m_t(t) {}
 
     const T &operator() () const    { return m_t; }
+    T operator= (const T &t)        {return m_t = t; }
 
 private:
     T m_t;
