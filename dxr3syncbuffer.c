@@ -32,17 +32,6 @@ const int DXR3_MAX_VIDEO_FRAME_LENGTH = 4096;
 const int DXR3_MAX_AUDIO_FRAME_LENGTH = 4096;
 
 // ==================================
-//! constructor
-cFixedLengthFrame::cFixedLengthFrame() :
-    m_count(0), m_length(0), m_pts(0), m_type(ftUnknown)
-{
-
-    m_audioChannelCount = UNKNOWN_CHANNEL_COUNT;
-    m_audioSampleRate = UNKNOWN_DATA_RATE;
-    m_videoAspectRatio = UNKNOWN_ASPECT_RATIO;
-}
-
-// ==================================
 cFixedLengthFrame::~cFixedLengthFrame()
 {
     if (m_pData) {
@@ -214,9 +203,9 @@ cFixedLengthFrame* cDxr3SyncBuffer::Push(const uint8_t* pStart, int length, uint
 
     lastIndex = m_nextFree;
     m_pBuffer[m_nextFree].CopyFrame(pStart, length, pts, type);
-    m_pBuffer[m_nextFree].SetChannelCount(UNKNOWN_CHANNEL_COUNT);
-    m_pBuffer[m_nextFree].SetSampleRate(UNKNOWN_DATA_RATE);
-    m_pBuffer[m_nextFree].SetAspectRatio(UNKNOWN_ASPECT_RATIO);
+    m_pBuffer[m_nextFree].channels(UNKNOWN_CHANNEL_COUNT);
+    m_pBuffer[m_nextFree].samplerate(UNKNOWN_DATA_RATE);
+    m_pBuffer[m_nextFree].aspectratio(UNKNOWN_ASPECT_RATIO);
     m_nextFree++;
     m_count++;
     m_nextFree %= Size();

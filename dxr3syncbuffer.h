@@ -27,6 +27,7 @@
 #include "dxr3interface.h"
 #include "dxr3generaldefines.h"
 #include "uncopyable.h"
+#include "accessors.h"
 
 // ==================================
 const uint32_t UNKNOWN_CHANNEL_COUNT = 0xFFFFFFFF;
@@ -36,7 +37,10 @@ const uint32_t UNKNOWN_ASPECT_RATIO = 0xFFFFFFFF;
 // ==================================
 class cFixedLengthFrame : private Uncopyable {
 public:
-    cFixedLengthFrame();
+    cFixedLengthFrame() : samplerate(UNKNOWN_DATA_RATE), channels(UNKNOWN_CHANNEL_COUNT), aspectratio(UNKNOWN_ASPECT_RATIO),
+                          m_count(0), m_length(0), m_pts(0), m_type(ftUnknown)
+    {}
+
     ~cFixedLengthFrame();
 
     void Init(uint32_t lenght);
@@ -47,22 +51,13 @@ public:
     int GetCount(void);
     uint32_t GetPts(void);
     void SetPts(uint32_t pts);
-    void SetChannelCount(uint32_t channelCount)
-    {
-	    m_audioChannelCount = channelCount;
-    }
-    void SetSampleRate(uint32_t sampleRate)
-    {
-	    m_audioSampleRate = sampleRate;
-    }
-    void SetAspectRatio(uint32_t aspectRatio)
-    {
-	m_videoAspectRatio = aspectRatio;
-    };
-    uint32_t GetChannelCount()  { return m_audioChannelCount; }
-    uint32_t GetSampleRate()    { return m_audioSampleRate; }
-    uint32_t GetAspectRatio()   { return m_videoAspectRatio; }
+
     eFrameType GetFrameType()   { return m_type; }
+
+    Accessors<uint32_t> samplerate;
+    Accessors<uint32_t> channels;
+    Accessors<uint32_t> aspectratio;
+
 
 private:
     uint8_t* m_pData;
@@ -70,10 +65,6 @@ private:
     int m_length;
     uint32_t m_pts;
     eFrameType m_type;
-
-    uint32_t m_audioChannelCount;
-    uint32_t m_audioSampleRate;
-    uint32_t m_videoAspectRatio;
 };
 
 // ==================================

@@ -136,8 +136,8 @@ void cDxr3AudioDecoder::Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuff
             cFixedLengthFrame* pTempFrame = aBuf.Push(pcmbuf,
                                   out_size, pts);
             if (pTempFrame) {
-                pTempFrame->SetChannelCount(contextAudio->channels);
-                pTempFrame->SetSampleRate(contextAudio->sample_rate);
+                pTempFrame->channels(contextAudio->channels);
+                pTempFrame->samplerate(contextAudio->sample_rate);
             }
         }
 
@@ -193,8 +193,8 @@ void cDxr3AudioDecoder::DecodeLpcm(cDxr3PesFrame *frame, uint32_t pts, cDxr3Sync
 
         cFixedLengthFrame* pTempFrame = aBuf.Push(data, length, pts);
         if (pTempFrame) {
-            pTempFrame->SetChannelCount(channels);
-            pTempFrame->SetSampleRate(speed);
+            pTempFrame->channels(channels);
+            pTempFrame->samplerate(speed);
         }
     }
 }
