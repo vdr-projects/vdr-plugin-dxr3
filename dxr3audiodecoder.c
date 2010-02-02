@@ -86,6 +86,59 @@ void cDxr3AudioDecoder::Init()
     }
 }
 
+void cDxr3AudioDecoder::decode(cDxr3PesFrame *frame, iAudio *audio)
+{
+    int len, out_size;
+
+    const uint8_t *buf = frame->GetPayload();
+    int length = frame->GetPayloadLength();
+
+    if (checkMpegAudioHdr(buf)) {
+
+        // look if Bitrate has changed
+        if ((buf[2] & 0xf0) != (lastBitrate & 0xf0)) {
+            dsyslog("[dxr3-audiodecoder] found new audio header");
+
+            // recalculate used framesize
+            frameSize = calcFrameSize(buf);
+            dsyslog("[dxr3-audiodecoder] calculated frame size %d", frameSize);
+
+            // we need now to reinit the deocder and to store the new
+            // part from the audio header
+            Init();
+            lastBitrate = buf[2];
+        }
+    }
+
+    // setup AVPacket
+    avpkt.data = const_cast<uint8_t *>(buf);
+    avpkt.size = frameSize;
+
+    while (length > 0) {
+         out_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;
+
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(51, 29, 0)
+        len = avcodec_decode_audio(contextAudio, (short *)(&pcmbuf), &out_size, avpkt.data, frameSize);
+#elif LIBAVCODEC_VERSION_INT < AV_VERSION_INT(52, 26, 0)
+        len = avcodec_decode_audio2(contextAudio, (short *)(&pcmbuf), &out_size, avpkt.data, frameSize);
+#else
+        len = avcodec_decode_audio3(contextAudio, (short *)(&pcmbuf), &out_size, &avpkt);
+#endif
+
+        if (len <= 0) {
+            esyslog("[dxr3-decoder] failed to decode audio");
+            return;
+        }
+
+        if (out_size) {
+            audio->write(pcmbuf, out_size);
+        }
+
+        length -= len;
+        avpkt.data += len;
+    }
+}
+
 #if 0
 // ==================================
 //! decode given buffer

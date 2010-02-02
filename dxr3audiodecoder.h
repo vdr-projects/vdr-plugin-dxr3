@@ -33,6 +33,7 @@ extern "C" {
 #include "uncopyable.h"
 
 class cDxr3PesFrame;
+class iAudio;
 
 // ==================================
 // decode audio to mp2 or use DD :)
@@ -40,6 +41,8 @@ class cDxr3AudioDecoder : private Uncopyable {
 public:
     cDxr3AudioDecoder();
     ~cDxr3AudioDecoder();
+
+    void decode(cDxr3PesFrame *frame, iAudio *audio);
 /*
     void Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf);
     void DecodeLpcm(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf);
