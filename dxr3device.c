@@ -86,25 +86,18 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
 {
     dsyslog("[dxr3-device] setting playmode %d", PlayMode);
 
-    if (PlayMode != pmExtern_THIS_SHOULD_BE_AVOIDED) {
-        turnPlugin(true);
-        return true;
-    }
-
     switch (PlayMode) {
-    case pmExtern_THIS_SHOULD_BE_AVOIDED:
-        turnPlugin(false);
-        break;
-
     case pmNone:
+        audioOut->setEnabled(false);
         break;
 
     case pmAudioVideo:
-    case pmAudioOnly:
-    case pmAudioOnlyBlack:
-    case pmVideoOnly:
+        audioOut->setEnabled(true);
+        break;
 
-        m_PlayMode = PlayMode;
+    default:
+        dsyslog("[dxr3-device] playmode not supported");
+        return false;
     }
 
     return true;

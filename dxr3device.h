@@ -71,19 +71,11 @@ public:
 
     // osd
     virtual cSpuDecoder *GetSpuDecoder();
-
-    // helper function
-    void Reset()
-    {
-        SetPlayMode(m_PlayMode);
-    }
-
     iAudio *getAudioOutput() const      { return audioOut; }
 
     void turnPlugin(bool on);
 
 private:
-    ePlayMode m_PlayMode;
     cDxr3SpuDecoder* m_spuDecoder;
     iAudio *audioOut;
     bool pluginOn;
