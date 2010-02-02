@@ -30,7 +30,7 @@
 
 // ==================================
 //! constructor
-cDxr3Device::cDxr3Device() : pluginOn(true)
+cDxr3Device::cDxr3Device() : pluginOn(true), vPts(0), scrSet(false)
 {
     m_spuDecoder = NULL;
 
@@ -40,6 +40,8 @@ cDxr3Device::cDxr3Device() : pluginOn(true)
     audioOut = new cAudioOss();
     //audioOut = new cAudioAlsa();
     audioOut->openDevice();
+
+    aDecoder = new cDxr3AudioDecoder();
 }
 
 // ==================================
@@ -47,6 +49,7 @@ cDxr3Device::~cDxr3Device()
 {
     audioOut->releaseDevice();
     delete audioOut;
+    delete aDecoder;
 
     if (m_spuDecoder)
         delete m_spuDecoder;
@@ -178,6 +181,21 @@ bool cDxr3Device::Poll(cPoller &Poller, int TimeoutMs)
 //! actually plays the given data block as video
 int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 {
+    cDxr3PesFrame frame;
+    frame.parse(Data, Length);
+    uint32_t pts = frame.GetPts();
+
+    if (pts == 0) {
+        pts = vPts;
+    } else {
+        vPts = pts;
+    }
+
+    if (!scrSet && vPts != 0) {
+        cDxr3Interface::instance()->SetSysClock(vPts);
+        scrSet = true;
+    }
+
     return Length;
 }
 
@@ -185,6 +203,11 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 // plays additional audio streams, like Dolby Digital
 int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
 {
+    cDxr3PesFrame frame;
+    frame.parse(Data, Length);
+
+    aDecoder->decode(&frame, audioOut);
+
     return Length;
 }
 

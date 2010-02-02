@@ -26,6 +26,7 @@
 //#include <string>
 #include <vdr/device.h>
 
+#include "dxr3audiodecoder.h"
 #include "dxr3interface.h"
 #include "dxr3spudecoder.h"
 #include "dxr3audio.h"
@@ -76,9 +77,13 @@ public:
     void turnPlugin(bool on);
 
 private:
+    cDxr3AudioDecoder *aDecoder;
     cDxr3SpuDecoder* m_spuDecoder;
     iAudio *audioOut;
     bool pluginOn;
+
+    uint32_t vPts;
+    bool scrSet;
 };
 
 #endif /*_DXR3_DEVICE_H_*/
