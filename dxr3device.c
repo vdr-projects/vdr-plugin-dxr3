@@ -122,6 +122,7 @@ void cDxr3Device::TrickSpeed(int Speed)
 //! clear our demux buffer
 void cDxr3Device::Clear()
 {
+    dsyslog("[dxr3-device] clear");
     cDevice::Clear();
 }
 
@@ -129,12 +130,14 @@ void cDxr3Device::Clear()
 //! play a recording
 void cDxr3Device::Play()
 {
+    dsyslog("[dxr3-device] play");
 }
 
 // ==================================
 //! puts the device into "freeze frame" mode
 void cDxr3Device::Freeze()
 {
+    dsyslog("[dxr3-device] freeze");
 }
 
 // ==================================
@@ -148,6 +151,8 @@ void cDxr3Device::Mute()
 //! displays the given I-frame as a still picture.
 void cDxr3Device::StillPicture(const uchar *Data, int Length)
 {
+    dsyslog("[dxr3-device] stillpciture");
+
     // clear used buffers of output threads
 
     // we need to check if Data points to a pes
