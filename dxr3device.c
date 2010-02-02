@@ -181,6 +181,8 @@ bool cDxr3Device::Poll(cPoller &Poller, int TimeoutMs)
 //! actually plays the given data block as video
 int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 {
+    static int i = 0;
+
     cDxr3PesFrame frame;
     frame.parse(Data, Length);
     uint32_t pts = frame.GetPts();
@@ -194,6 +196,15 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
     if (!scrSet && vPts != 0) {
         cDxr3Interface::instance()->SetSysClock(vPts);
         scrSet = true;
+    }
+    cDxr3Interface::instance()->PlayVideoFrame(&frame, vPts);
+
+    if (i < 7) {
+        i++;
+    }
+    if (i == 7) {
+        cDxr3Interface::instance()->SetPlayMode();
+        i = 8;
     }
 
     return Length;

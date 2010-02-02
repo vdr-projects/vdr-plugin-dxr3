@@ -275,10 +275,17 @@ void cDxr3Interface::Pause()
 }
 
 // ==================================
-void cDxr3Interface::PlayVideoFrame(cDxr3PesFrame *frame)
+void cDxr3Interface::PlayVideoFrame(cDxr3PesFrame *frame, uint32_t pts)
 {
-    if (!m_VideoActive) {
-        return;
+    //if (!m_VideoActive) {
+    //    return;
+    //}
+
+    if (pts > 0) {
+        pts += 45000;
+        dsyslog("setting pts %d", pts);
+        this->SetPts(pts);
+        m_lastSeenPts = pts;
     }
 
     Lock();
@@ -298,10 +305,7 @@ void cDxr3Interface::PlayVideoFrame(cDxr3PesFrame *frame)
 
     Unlock();
 
-    SetAspectRatio(frame->GetAspectRatio());
-    uint32_t pts = frame->GetPts();
-    if (pts > 0)
-        m_lastSeenPts = pts;
+    //SetAspectRatio(frame->GetAspectRatio());
 }
 
 // ==================================

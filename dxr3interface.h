@@ -99,7 +99,7 @@ public:
     // play functions
     void SetPlayMode();
     void Pause();
-    void PlayVideoFrame(cDxr3PesFrame *frame);
+    void PlayVideoFrame(cDxr3PesFrame *frame, uint32_t pts);
 
     // device access
     void ClaimDevices();
