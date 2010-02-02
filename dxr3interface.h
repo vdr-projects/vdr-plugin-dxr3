@@ -67,7 +67,6 @@ public:
     }
 
     // audio
-    bool IsOssAudio();
     int OssSetPlayMode(uint32_t mode);
 
     // clock
