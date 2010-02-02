@@ -22,7 +22,6 @@
  */
 
 #include "dxr3interface.h"
-#include "dxr3syncbuffer.h"
 #include "dxr3osd.h"
 #include "dxr3pesframe.h"
 
@@ -30,6 +29,8 @@ static const char *DEV_DXR3_OSD   = "_sp";
 static const char *DEV_DXR3_VIDEO = "_mv";
 static const char *DEV_DXR3_OSS   = "_ma";
 static const char *DEV_DXR3_CONT  = "";
+
+static const int UNKNOWN_ASPECT_RATIO = 0xdeadbeef;
 
 // ==================================
 //! constructor
@@ -271,34 +272,6 @@ void cDxr3Interface::Pause()
 	}
 
     Unlock();
-}
-
-// ==================================
-void cDxr3Interface::PlayVideoFrame(cFixedLengthFrame* pFrame)
-{
-    if (!m_VideoActive) {
-        return;
-    }
-
-    int written = 0;
-    int count = 0;
-
-    Lock();
-
-    while (written < pFrame->length() && count >= 0) {
-        if ((count = write(m_fdVideo, pFrame->GetData() + written, pFrame->length() - written)) == -1) {
-            // an error occured
-            Resuscitation();
-        }
-        written += count;
-    }
-
-    Unlock();
-
-    SetAspectRatio(pFrame->aspectratio());
-    uint32_t pts = pFrame->pts();
-    if (pts > 0)
-        m_lastSeenPts = pts;
 }
 
 // ==================================

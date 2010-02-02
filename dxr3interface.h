@@ -31,7 +31,6 @@
 #include "settings.h"
 
 // ==================================
-class cFixedLengthFrame;
 class cDxr3PesFrame;
 
 class cDxr3Name {
@@ -100,7 +99,6 @@ public:
     // play functions
     void SetPlayMode();
     void Pause();
-    void PlayVideoFrame(cFixedLengthFrame* pFrame);
     void PlayVideoFrame(cDxr3PesFrame *frame);
 
     // device access

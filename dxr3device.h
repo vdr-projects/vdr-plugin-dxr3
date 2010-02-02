@@ -27,7 +27,6 @@
 #include <vdr/device.h>
 
 #include "dxr3interface.h"
-#include "dxr3demuxdevice.h"
 #include "dxr3spudecoder.h"
 #include "dxr3audio.h"
 
@@ -85,7 +84,6 @@ public:
 
 private:
     ePlayMode m_PlayMode;
-    cDxr3DemuxDevice m_DemuxDevice;
     cDxr3SpuDecoder* m_spuDecoder;
     iAudio *audioOut;
     bool pluginOn;

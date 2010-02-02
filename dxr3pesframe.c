@@ -24,7 +24,6 @@
 
 #include <linux/em8300.h>
 #include <vdr/tools.h>
-#include "dxr3demuxdevice.h"
 
 // ==================================
 bool cDxr3PesFrame::parse(const uint8_t *pes, uint32_t length)
@@ -75,14 +74,6 @@ bool cDxr3PesFrame::parse(const uint8_t *pes, uint32_t length)
     int payloadStart = 9 + pesHeaderDataLength;
     m_payload = &pes[payloadStart];
     m_payloadLength = length - payloadStart;
-
-    // check for max sizes supported by syncbuffer
-    if (m_pesDataType == PES_VIDEO_DATA && m_payloadLength > (uint32_t)VIDEO_MAX_FRAME_SIZE) {
-        return false;
-    }
-    if (m_pesDataType == PES_AUDIO_DATA && m_payloadLength > (uint32_t)AUIDO_MAX_FRAME_SIZE) {
-        return false;
-    }
 
     if (m_pesDataType == PES_VIDEO_DATA) {
 

@@ -28,7 +28,7 @@ extern "C" {
 #    include <libavformat/avformat.h>
 }
 
-#include "dxr3syncbuffer.h"
+#include <vdr/ringbuffer.h>
 #include "dxr3multichannelaudio.h"
 #include "uncopyable.h"
 
@@ -40,11 +40,11 @@ class cDxr3AudioDecoder : private Uncopyable {
 public:
     cDxr3AudioDecoder();
     ~cDxr3AudioDecoder();
-
+/*
     void Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf);
     void DecodeLpcm(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf);
     void DecodeAc3Dts(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf);
-
+*/
     void Reset()
     {
     	ac3dtsDecoder.Clear();

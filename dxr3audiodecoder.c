@@ -86,6 +86,7 @@ void cDxr3AudioDecoder::Init()
     }
 }
 
+#if 0
 // ==================================
 //! decode given buffer
 void cDxr3AudioDecoder::Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf)
@@ -227,7 +228,7 @@ void cDxr3AudioDecoder::DecodeAc3Dts(cDxr3PesFrame *frame, uint32_t pts, cDxr3Sy
         }
     }
 }
-
+#endif
 // ==================================
 //! checking routine
 bool cDxr3AudioDecoder::checkMpegAudioHdr(const uint8_t *head)

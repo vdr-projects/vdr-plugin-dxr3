@@ -40,8 +40,6 @@ cDxr3Device::cDxr3Device() : pluginOn(true)
     audioOut = new cAudioOss();
     //audioOut = new cAudioAlsa();
     audioOut->openDevice();
-
-    m_DemuxDevice.setAudio(audioOut);
 }
 
 // ==================================
@@ -99,7 +97,6 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
         break;
 
     case pmNone:
-        //m_DemuxDevice.Stop();
         break;
 
     case pmAudioVideo:
@@ -123,15 +120,12 @@ int64_t cDxr3Device::GetSTC()
 void cDxr3Device::TrickSpeed(int Speed)
 {
     dsyslog("dxr3: device: tricspeed: %d", Speed);
-
-    m_DemuxDevice.SetTrickMode(DXR3_FAST, Speed);
 }
 
 // ==================================
 //! clear our demux buffer
 void cDxr3Device::Clear()
 {
-    m_DemuxDevice.Clear();
     cDevice::Clear();
 }
 
@@ -139,14 +133,12 @@ void cDxr3Device::Clear()
 //! play a recording
 void cDxr3Device::Play()
 {
-    m_DemuxDevice.SetReplayMode();
 }
 
 // ==================================
 //! puts the device into "freeze frame" mode
 void cDxr3Device::Freeze()
 {
-    m_DemuxDevice.SetTrickMode(DXR3_FREEZE);
 }
 
 // ==================================
@@ -161,7 +153,6 @@ void cDxr3Device::Mute()
 void cDxr3Device::StillPicture(const uchar *Data, int Length)
 {
     // clear used buffers of output threads
-    m_DemuxDevice.StillPicture();
 
     // we need to check if Data points to a pes
     // frame or to non-pes data. This could be the
@@ -179,40 +170,29 @@ void cDxr3Device::StillPicture(const uchar *Data, int Length)
 // ==================================
 bool cDxr3Device::Poll(cPoller &Poller, int TimeoutMs)
 {
+    /*
     if ((m_DemuxDevice.GetDemuxMode() == DXR3_DEMUX_TRICK_MODE &&
 	 m_DemuxDevice.GetTrickState() == DXR3_FREEZE)) {
         cCondWait::SleepMs(TimeoutMs);
         return false;
     }
     return m_DemuxDevice.Poll(TimeoutMs); // Poller.Poll(TimeoutMs);
+    */
+    return true;
 }
 
 // ==================================
 //! actually plays the given data block as video
 int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 {
-    if (!pluginOn) {
-        return Length;
-    }
-
-    return m_DemuxDevice.DemuxPes(Data, Length, false);
+    return Length;
 }
 
 // ==================================
 // plays additional audio streams, like Dolby Digital
 int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
 {
-    if (!pluginOn) {
-        return Length;
-    }
-
-    bool isAc3 = ((Id & 0xF0) == 0x80) || Id == 0xbd;
-
-    if (m_PlayMode == pmAudioOnly) {
-        return m_DemuxDevice.DemuxAudioPes(Data, Length);
-    } else {
-        return m_DemuxDevice.DemuxPes(Data, Length, isAc3);
-    }
+    return Length;
 }
 
 #if VDRVERSNUM >= 10710
@@ -304,7 +284,6 @@ void cDxr3Device::turnPlugin(bool on)
         }
 
         // clear buffer
-        m_DemuxDevice.Clear();
 
         // release device and give control to somebody else
         Tools::WriteInfoToOsd(tr("DXR3: releasing devices"));
