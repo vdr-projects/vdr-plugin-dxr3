@@ -128,9 +128,6 @@ private:
     int m_fdVideo;		///< filehandle for video fifo of dxr3 card
     int m_fdSpu;		///< filehandle for spu fifo of dxr3 card
 
-    // clock
-    uint32_t m_offset;
-
     uint32_t m_aspectRatio;	///< current used aspect ratio
     uint32_t m_horizontal;	///< horizontal size of current videostream
     uint32_t m_vertical;	///< vertical size of current videostream

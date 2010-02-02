@@ -57,23 +57,18 @@ int cDxr3Interface::OssSetPlayMode(uint32_t mode)
 // ==================================
 void cDxr3Interface::SetSysClock(uint32_t scr)
 {
-    uint32_t sc;
-
     Lock();
-    CHECK(ioctl(m_fdControl, EM8300_IOCTL_SCR_GET, &sc));
-    m_offset = scr - sc;
+    CHECK(ioctl(m_fdControl, EM8300_IOCTL_SCR_SET, &scr));
     Unlock();
 }
 
 // ==================================
 uint32_t cDxr3Interface::GetSysClock()
 {
-    uint32_t sc;
     uint32_t retval;
 
     Lock();
-    CHECK(ioctl(m_fdControl, EM8300_IOCTL_SCR_GET, &sc));
-    retval = sc + m_offset;
+    CHECK(ioctl(m_fdControl, EM8300_IOCTL_SCR_GET, &retval));
     Unlock();
 
     return retval;
@@ -82,11 +77,9 @@ uint32_t cDxr3Interface::GetSysClock()
 // ==================================
 void cDxr3Interface::SetPts(uint32_t pts)
 {
-    uint32_t newPts = 0;
 
     Lock();
-    newPts =  pts - m_offset;
-    CHECK(ioctl(m_fdVideo, EM8300_IOCTL_VIDEO_SETPTS, &newPts));
+    CHECK(ioctl(m_fdVideo, EM8300_IOCTL_VIDEO_SETPTS, &pts));
     Unlock();
 }
 
@@ -96,7 +89,7 @@ void cDxr3Interface::SetSpuPts(uint32_t pts)
     uint32_t newPts = 0;
 
     Lock();
-    newPts = (pts - m_offset) << 1;  // fix for DVD subtitles
+    newPts = pts << 1;  // fix for DVD subtitles
     CHECK(ioctl(m_fdSpu, EM8300_IOCTL_SPU_SETPTS, &newPts));
     Unlock();
 }
