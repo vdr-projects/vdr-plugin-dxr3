@@ -75,7 +75,6 @@ public:
     uint32_t GetSysClock();
     void SetPts(uint32_t pts);
     void SetSpuPts(uint32_t pts);
-    int64_t GetPts();
 
     // state changes
     void EnableVideo()
@@ -129,7 +128,6 @@ private:
     int m_fdControl;		///< filehandle for contol fifo of dxr3 card
     int m_fdVideo;		///< filehandle for video fifo of dxr3 card
     int m_fdSpu;		///< filehandle for spu fifo of dxr3 card
-    uint32_t m_lastSeenPts;
 
     // clock
     uint32_t m_offset;

@@ -114,12 +114,6 @@ void cDxr3Interface::SetSpuPts(uint32_t pts)
     Unlock();
 }
 
-// ==================================
-int64_t cDxr3Interface::GetPts()
-{
-    return m_lastSeenPts << 1;
-}
-
 // set/get functions
 // ==================================
 //! get aspect ratio
@@ -285,7 +279,6 @@ void cDxr3Interface::PlayVideoFrame(cDxr3PesFrame *frame, uint32_t pts)
         pts += 45000;
         dsyslog("setting pts %d", pts);
         this->SetPts(pts);
-        m_lastSeenPts = pts;
     }
 
     Lock();

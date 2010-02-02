@@ -109,7 +109,7 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
 // ==================================
 int64_t cDxr3Device::GetSTC()
 {
-    return cDxr3Interface::instance()->GetPts();
+    return (vPts << 1);
 }
 
 // ==================================
