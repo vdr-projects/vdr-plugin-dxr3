@@ -88,8 +88,6 @@ public:
     // set/get functions
     uint32_t GetAspectRatio() const;
     void SetAspectRatio(uint32_t ratio);
-    uint32_t GetHorizontalSize() const    { return m_horizontal; }
-    uint32_t GetVerticalSize() const      { return m_vertical; }
 
     void setDimension(uint32_t horizontal, uint32_t vertical);
     void dimension(uint32_t &horizontal, uint32_t &vertical);

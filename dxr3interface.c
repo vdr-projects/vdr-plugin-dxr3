@@ -27,7 +27,6 @@
 
 static const char *DEV_DXR3_OSD   = "_sp";
 static const char *DEV_DXR3_VIDEO = "_mv";
-static const char *DEV_DXR3_OSS   = "_ma";
 static const char *DEV_DXR3_CONT  = "";
 
 static const int UNKNOWN_ASPECT_RATIO = 0xdeadbeef;
