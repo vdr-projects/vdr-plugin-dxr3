@@ -256,7 +256,6 @@ void cDxr3Interface::PlayVideoFrame(cDxr3PesFrame *frame, uint32_t pts)
 
     if (pts > 0) {
         pts += 45000;
-        dsyslog("setting pts %d", pts);
         this->SetPts(pts);
     }
 
@@ -265,15 +264,7 @@ void cDxr3Interface::PlayVideoFrame(cDxr3PesFrame *frame, uint32_t pts)
     const uint8_t *data = frame->GetPayload();
     uint32_t len = frame->GetPayloadLength();
 
-    while (len > 0) {
-
-        int ret = write(m_fdVideo, data, len);
-
-        if (ret > 0) {
-            len -= ret;
-            data += ret;
-        }
-    }
+    WriteAllOrNothing(m_fdVideo, data, len, 1000, 10);
 
     Unlock();
 
