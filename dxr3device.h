@@ -26,22 +26,33 @@
 //#include <string>
 #include <vdr/device.h>
 
+#include <linux/em8300.h>
 #include "dxr3audiodecoder.h"
-#include "dxr3interface.h"
 #include "dxr3spudecoder.h"
 #include "dxr3audio.h"
+#include "singleton.h"
 
-// ==================================
-// our device :)
+class cDxr3Name {
+public:
+    cDxr3Name(const char *name, int n) {
+        snprintf(buffer, sizeof(buffer), "%s%s-%d", "/dev/em8300", name, n);
+    }
+    const char *operator*() { return buffer; }
+
+private:
+    char buffer[PATH_MAX];
+};
+
 /*!
   cDxr3Device is the interface for VDR devices.
   Is is the part, which VDR "talks" with our plugin.
 */
-class cDxr3Device : public cDevice {
+class cDxr3Device : public cDevice, public Singleton<cDxr3Device> {
 public:
     cDxr3Device();
     ~cDxr3Device();
 
+    static int Dxr3Open(const char *name, int mode, bool report_error = true);
     virtual void MakePrimaryDevice(bool On);
 
     // replaying
@@ -76,14 +87,41 @@ public:
 
     void turnPlugin(bool on);
 
+    void dimension(uint32_t &horizontal, uint32_t &vertical);
+
+    void setPalette(uint8_t *pal);
+    void writeSpu(const uint8_t* data, int length);
+    void setButton(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint32_t palette);
+    void clearButton();
+
+    int ossSetPlayMode(uint32_t mode);
+
 private:
+
+    void claimDevices();
+    void releaseDevices();
+    void uploadFirmware();
+    void setPlayMode();
+    void playVideoFrame(cDxr3PesFrame *frame, uint32_t pts);
+    void playBlackFrame();
+
     cDxr3AudioDecoder *aDecoder;
     cDxr3SpuDecoder* m_spuDecoder;
     iAudio *audioOut;
     bool pluginOn;
 
+    em8300_bcs_t bcs;
+
+    int fdControl;
+    int fdVideo;
+    int fdSpu;
+
     uint32_t vPts;
     bool scrSet;
+    int playCount;
+
+    uint32_t horizontal;
+    uint32_t vertical;
 };
 
 #endif /*_DXR3_DEVICE_H_*/

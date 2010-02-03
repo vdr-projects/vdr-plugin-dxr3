@@ -26,9 +26,9 @@
  */
 
 #include "dxr3osd.h"
-#include "dxr3interface.h"
 #include "spuencoder.h"
 #include "scaler.h"
+#include "dxr3device.h"
 
 // ==================================
 // ! create osd at (Left, Top, Level)
@@ -201,7 +201,7 @@ void cDxr3Osd::Flush()
     bmap->Clean();
 
     uint32_t horizontal, vertical;
-    cDxr3Interface::instance()->dimension(horizontal, vertical);
+    cDxr3Device::instance()->dimension(horizontal, vertical);
 
     int top = Top();
     int left = Left();

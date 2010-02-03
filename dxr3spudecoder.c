@@ -26,7 +26,6 @@
 #include <math.h>
 
 #include "dxr3spudecoder.h"
-#include "dxr3interface.h"
 #include "dxr3tools.h"
 
 // ==================================

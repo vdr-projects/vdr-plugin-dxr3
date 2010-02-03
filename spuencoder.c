@@ -25,8 +25,8 @@
  */
 
 #include "spuencoder.h"
-#include "dxr3interface.h"
 #include "dxr3tools.h"
+#include "dxr3device.h"
 
 static const uint8_t CMD_FORCE_DISPLAYING   = 0x00;
 static const uint8_t CMD_STOP_DISPLAYING    = 0x02;
@@ -64,7 +64,7 @@ void cSpuEncoder::clearOsd()
 
     // TODO: osd button handling
 
-    cDxr3Interface::instance()->WriteSpu((uchar *)&d, 10);
+    cDxr3Device::instance()->writeSpu((uchar *)&d, 10);
 }
 
 void cSpuEncoder::encode(cBitmap *bmap, int top, int left)
@@ -133,7 +133,7 @@ void cSpuEncoder::encode(cBitmap *bmap, int top, int left)
 
     // we are ready to send generated spu data
     dsyslog("[dxr3-spuencoder] spu packet size %d (bytes). %d left", written, (MAX_SPU_DATA - written));
-    cDxr3Interface::instance()->WriteSpu((uchar *)&spu, written);
+    cDxr3Device::instance()->writeSpu((uchar *)&spu, written);
 
     if (data) {
         delete data;
@@ -251,7 +251,7 @@ void cSpuEncoder::generateColorPalette()
     }
 
     // upload color palette
-    cDxr3Interface::instance()->SetPalette(palcolors);
+    cDxr3Device::instance()->setPalette((uint8_t *)palcolors);
 }
 
 void cSpuEncoder::generateSpuData(bool topAndBottom) throw (char const* )

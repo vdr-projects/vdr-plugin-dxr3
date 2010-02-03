@@ -29,7 +29,7 @@ eOSState cDxr3OsdItem::ProcessKey(eKeys Key)
 	switch (m_item)
 	{
 	case DXR3_RESET_HARDWARE:
-	    cDxr3Interface::instance()->ResetHardware();
+            //cDxr3Interface::instance()->ResetHardware();
 	    //cDxr3Device::Instance().Reset();
 	    break;
 
@@ -109,7 +109,7 @@ void cMenuSetupDxr3::Store(void)
 
 
     // Apply (some of the) settings
-    cDxr3Interface::instance()->updateBcsValues();
+    //cDxr3Interface::instance()->updateBcsValues();
     //cDxr3Device::instance()->Reset();
 }
 
@@ -136,9 +136,6 @@ public:
 
     cMenuSetupPage *SetupMenu();
     bool SetupParse(const char *Name, const char *Value);
-
-private:
-    cDxr3Device *device;
 };
 
 // ==================================
@@ -158,7 +155,7 @@ cPluginDxr3::~cPluginDxr3()
 // ==================================
 bool cPluginDxr3::Initialize()
 {
-    device = new cDxr3Device();
+    cDxr3Device::instance();
     return true;
 }
 
@@ -274,17 +271,17 @@ cString cPluginDxr3::SVDRPCommand(const char *Command, const char *Option,
 
     if (!strcasecmp(Command, "BRI")) {
         cSettings::instance()->brightness(value);
-        cDxr3Interface::instance()->updateBcsValues();
+        //cDxr3Interface::instance()->updateBcsValues();
         return cString::sprintf("Brightness set to %d", value);
     }
     if (!strcasecmp(Command, "CON")) {
         cSettings::instance()->contrast(value);
-        cDxr3Interface::instance()->updateBcsValues();
+        //cDxr3Interface::instance()->updateBcsValues();
         return cString::sprintf("Contrast set to %d", value);
     }
     if (!strcasecmp(Command, "SAT")) {
         cSettings::instance()->saturation(value);
-        cDxr3Interface::instance()->updateBcsValues();
+        //cDxr3Interface::instance()->updateBcsValues();
         return cString::sprintf("Saturation set to %d", value);
     }
 #if 0
@@ -302,11 +299,11 @@ cString cPluginDxr3::SVDRPCommand(const char *Command, const char *Option,
     }
 #endif
     if (!strcasecmp(Command, "DON")) {
-        device->turnPlugin(true);
+        cDxr3Device::instance()->turnPlugin(true);
         return "vdr-plugin-dxr3 turned on";
     }
     if (!strcasecmp(Command, "DOF")) {
-        device->turnPlugin(false);
+        cDxr3Device::instance()->turnPlugin(false);
         return "vdr-plugin-dxr3 turned off";
     }
 

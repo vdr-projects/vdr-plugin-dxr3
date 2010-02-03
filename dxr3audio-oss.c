@@ -20,9 +20,10 @@
 
 #include <sys/soundcard.h>
 #include <unistd.h> // for close
+#include <sys/ioctl.h>
 
 #include "dxr3audio-oss.h"
-#include "dxr3interface.h"
+#include "dxr3device.h"
 
 static const char *DEV_DXR3_OSS   = "_ma";
 
@@ -31,7 +32,7 @@ void cAudioOss::openDevice()
     if (open)
         return;
 
-    fd = cDxr3Interface::Dxr3Open(DEV_DXR3_OSS, O_RDWR | O_NONBLOCK);
+    fd = cDxr3Device::Dxr3Open(DEV_DXR3_OSS, O_RDWR | O_NONBLOCK);
 
     if (!fd) {
         esyslog("[dxr3-audio-oss] failed to open dxr3 audio subdevice");
@@ -99,7 +100,7 @@ void cAudioOss::setDigitalAudio(bool on)
 
     // we need to do it this way, as we dont have access
     // to the file handle for the conrtol sub device.
-    cDxr3Interface::instance()->OssSetPlayMode(ioval);
+    cDxr3Device::instance()->ossSetPlayMode(ioval);
 
     digitalAudio = on;
 }

@@ -2,6 +2,7 @@
 #define _DXR3_H_
 
 #include <vdr/i18n.h>
+#include "settings.h"
 
 static const char MAINMENUENTRY[] = trNOOP("DXR3 Functions");
 
