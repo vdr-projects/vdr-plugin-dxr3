@@ -110,14 +110,9 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
 {
     dsyslog("[dxr3-device] setting playmode %d", PlayMode);
 
-    uint32_t ioval = EM8300_PLAYMODE_PAUSED;
-
     switch (PlayMode) {
     case pmNone:
         audioOut->setEnabled(false);
-        CHECK(ioctl(fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval));
-        ioval = 0;
-        CHECK(ioctl(fdControl, EM8300_IOCTL_SCR_SET, &ioval));
         scrSet = false;
         playCount = 0;
         break;
@@ -507,13 +502,8 @@ void cDxr3Device::uploadFirmware()
 void cDxr3Device::setPlayMode()
 {
     em8300_register_t reg;
-    int ioval;
 
-    ioval = EM8300_SUBDEVICE_AUDIO;
-    ioctl(fdControl, EM8300_IOCTL_FLUSH, &ioval);
-    fsync(fdVideo);
-
-    ioval = EM8300_PLAYMODE_PLAY;
+    int ioval = EM8300_PLAYMODE_PLAY;
     CHECK(ioctl(fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval));
     reg.microcode_register = 1;
     reg.reg = 0;
