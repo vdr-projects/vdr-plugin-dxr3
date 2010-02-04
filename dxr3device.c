@@ -62,6 +62,18 @@ cDxr3Device::~cDxr3Device()
         delete m_spuDecoder;
 }
 
+cDxr3Device *cDxr3Device::instance()
+{
+    if (!inst) {
+        inst = new cDxr3Device();
+    }
+
+    return inst;
+}
+
+// init static inst with NULL
+cDxr3Device *cDxr3Device::inst = NULL;
+
 int cDxr3Device::Dxr3Open(const char *name, int mode, bool report_error)
 {
     const char *filename = *cDxr3Name(name, cSettings::instance()->card());
