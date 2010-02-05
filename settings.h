@@ -39,6 +39,11 @@ enum eVideoMode
     NTSC     = EM8300_VIDEOMODE_NTSC
 };
 
+enum AudioDriver {
+    OSS = 0,
+    ALSA
+};
+
 // ==================================
 //! global interface to access all config datas of this plugin
 /*
@@ -50,7 +55,7 @@ class cSettings : public Singleton<cSettings>
 public:
     cSettings() : useDigitalOut(0), card(0), forceLetterBox(0), videoMode(PAL),
                   brightness(500), contrast(500), saturation(500),
-                  hideMenu(0), useWss(0), loadFirmware(false) {}
+                  hideMenu(0), useWss(0), loadFirmware(false), audioDriver(OSS) {}
 
     bool processArgs(int argc, char *argv[]);
 
@@ -66,6 +71,7 @@ public:
     Accessors<int> hideMenu;
     Accessors<int> useWss;
     Accessors<bool> loadFirmware;
+    Accessors<AudioDriver> audioDriver;
 };
 
 #endif /*SETTINGS_H*/

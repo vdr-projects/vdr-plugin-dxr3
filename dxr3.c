@@ -227,7 +227,10 @@ cOsdObject* cPluginDxr3::MainMenuAction()
 
 const char *cPluginDxr3::CommandLineHelp()
 {
-    return "  -f  --firmware-loading   Enable automatic firmware loading\n";
+    return "  -f          --firmware-loading        Enable automatic firmware loading\n" \
+           "  -a DRIVER   --audio-driver=DRIVER     Select wanted audio driver" \
+           "                                         - alsa " \
+           "                                         - oss (default)";
 }
 
 bool cPluginDxr3::ProcessArgs(int argc, char *argv[])

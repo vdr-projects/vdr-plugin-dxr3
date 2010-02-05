@@ -32,19 +32,30 @@ bool cSettings::processArgs(int argc, char *argv[])
 {
     static struct option long_options[] = {
         { "firmware-loading", no_argument, NULL, 'f' },
+        { "audio-driver", required_argument, NULL, 'a' },
         { NULL }
     };
 
     int c;
-    while ((c = getopt_long(argc, argv, "f", long_options, NULL)) != -1) {
+    while ((c = getopt_long(argc, argv, "f:a", long_options, NULL)) != -1) {
         switch (c) {
-            case 'f':
-                dsyslog("[dxr3-settings] enableing automatic firmware loading");
-                loadFirmware(true);
-                break;
+        case 'f':
+            dsyslog("[dxr3-settings] enableing automatic firmware loading");
+            loadFirmware(true);
+            break;
 
-            default:
-                return false;
+        case 'a':
+            if (optarg && strcmp(optarg, "alsa") == 0) {
+                audioDriver(ALSA);
+            } else if (optarg && strcmp(optarg, "oss") == 0) {
+                audioDriver(OSS);
+            } else {
+                esyslog("[dxr3-settings] unkown audio driver - default audio driver will be used");
+            }
+            break;
+
+        default:
+            return false;
         }
     }
     return true;

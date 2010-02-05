@@ -40,12 +40,13 @@ cDxr3Device::cDxr3Device() : pluginOn(true), vPts(0), scrSet(false), playCount(0
 
     claimDevices();
 
-    // TODO: this will be later the place,
-    //       where we will decide what kind of
-    //       audio output system we will use.
-    audioOut = new cAudioOss();
-    //audioOut = new cAudioAlsa();
-    audioOut->openDevice();
+    if (cSettings::instance()->audioDriver() == OSS) {
+        isyslog("[dxr3-device] using oss audio driver");
+        audioOut = new cAudioOss();
+    } else {
+        isyslog("[dxr3-device] using alsa audio driver");
+        audioOut = new cAudioAlsa();
+    }
 
     aDecoder = new cDxr3AudioDecoder();
 }
