@@ -34,9 +34,18 @@ static const char *DEV_DXR3_OSD   = "_sp";
 static const char *DEV_DXR3_VIDEO = "_mv";
 static const char *DEV_DXR3_CONT  = "";
 
+static const int SILENT_AUDIO_SIZE = 16384;
+
 cDxr3Device::cDxr3Device() : pluginOn(true), vPts(0), scrSet(false), playCount(0)
 {
     m_spuDecoder = NULL;
+
+    silentAudio = new uchar[SILENT_AUDIO_SIZE];
+
+    if (!silentAudio) {
+        esyslog("[dxr3-device] failed to allocate silent audio data");
+        exit(-2);
+    }
 
     claimDevices();
 
@@ -57,6 +66,7 @@ cDxr3Device::~cDxr3Device()
     audioOut->releaseDevice();
     delete audioOut;
     delete aDecoder;
+    delete[] silentAudio;
 
     releaseDevices();
 
@@ -114,6 +124,8 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
 
     switch (PlayMode) {
     case pmNone:
+        playSilentAudio();
+        playBlackFrame();
         audioOut->setEnabled(false);
         scrSet = false;
         playCount = 0;
@@ -538,6 +550,11 @@ void cDxr3Device::playBlackFrame()
 
     horizontal = 720;
     vertical = 576;
+}
+
+void cDxr3Device::playSilentAudio()
+{
+    audioOut->write(silentAudio, SILENT_AUDIO_SIZE);
 }
 
 // Local variables:

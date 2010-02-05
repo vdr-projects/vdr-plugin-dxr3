@@ -105,7 +105,9 @@ private:
     void setPlayMode();
     void playVideoFrame(cDxr3PesFrame *frame, uint32_t pts);
     void playBlackFrame();
+    void playSilentAudio();
 
+    uchar *silentAudio;
     cDxr3AudioDecoder *aDecoder;
     cDxr3SpuDecoder* m_spuDecoder;
     iAudio *audioOut;
