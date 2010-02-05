@@ -34,7 +34,7 @@ public:
 
     virtual void openDevice();
     virtual void releaseDevice();
-    virtual void setup(const SampleContext& ctx);
+    virtual void setup(int channels, int samplerate);
     virtual void write(uchar* data, size_t size);
     virtual void setDigitalAudio(bool on) {}
 

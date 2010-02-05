@@ -63,18 +63,18 @@ void cAudioAlsa::releaseDevice()
     open = false;
 }
 
-void cAudioAlsa::setup(const SampleContext& ctx)
+void cAudioAlsa::setup(int channels, int samplerate)
 {
     if (!open)
         return;
 
     // look if ctx is different
-    if (curContext.channels == ctx.channels && curContext.samplerate == ctx.samplerate) {
+    if (curContext.channels == channels && curContext.samplerate == samplerate) {
         return;
     }
 
-    dsyslog("[dxr3-audio-alsa] changing samplerate to %d (old %d) ", ctx.samplerate, curContext.samplerate);
-    dsyslog("[dxr3-audio-alsa] changing num of channels to %d (old %d)", ctx.channels, curContext.channels);
+    dsyslog("[dxr3-audio-alsa] changing samplerate to %d (old %d) ", samplerate, curContext.samplerate);
+    dsyslog("[dxr3-audio-alsa] changing num of channels to %d (old %d)", channels, curContext.channels);
 
     snd_pcm_hw_params_t* alsa_hwparams;
     snd_pcm_sw_params_t* alsa_swparams;
@@ -104,17 +104,17 @@ void cAudioAlsa::setup(const SampleContext& ctx)
     }
 
     // set channels
-    err = snd_pcm_hw_params_set_channels(handle, alsa_hwparams, ctx.channels);
+    err = snd_pcm_hw_params_set_channels(handle, alsa_hwparams, channels);
     if (err < 0) {
-        esyslog("[dxr3-audio-alsa] Unable to set channels %d: %s", ctx.channels, snd_strerror(err));
+        esyslog("[dxr3-audio-alsa] Unable to set channels %d: %s", channels, snd_strerror(err));
     }
 
-    unsigned int sr = ctx.samplerate;
+    unsigned int sr = samplerate;
 
     // set samplerate
     err = snd_pcm_hw_params_set_rate_near(handle, alsa_hwparams, &sr, NULL);
     if (err < 0) {
-        esyslog("[dxr3-audio-alsa] Unable to set samplerate %d: %s", ctx.samplerate, snd_strerror(err));
+        esyslog("[dxr3-audio-alsa] Unable to set samplerate %d: %s", samplerate, snd_strerror(err));
     }
 
     if (snd_pcm_state(handle) == SND_PCM_STATE_RUNNING) {
@@ -180,8 +180,8 @@ void cAudioAlsa::setup(const SampleContext& ctx)
         esyslog("[dxr3-audio-alsa] Failed to set sw params: %s", snd_strerror(err));
     }
 
-    curContext.channels = ctx.channels;
-    curContext.samplerate = ctx.samplerate;
+    curContext.channels = channels;
+    curContext.samplerate = samplerate;
 
     bytesFrame = snd_pcm_format_physical_width(SND_PCM_FORMAT_S16_LE) / 8;
     bytesFrame *= curContext.channels;

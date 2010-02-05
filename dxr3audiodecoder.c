@@ -29,6 +29,7 @@
 #include <algorithm>
 #include "dxr3audiodecoder.h"
 #include "dxr3pesframe.h"
+#include "dxr3audio.h"
 
 // ==================================
 const int LPCM_HEADER_LENGTH = 7;
@@ -131,10 +132,7 @@ void cDxr3AudioDecoder::decode(cDxr3PesFrame *frame, iAudio *audio)
         }
 
         if (out_size) {
-            frame->ctx.channels = contextAudio->channels;
-            frame->ctx.samplerate = contextAudio->sample_rate;
-
-            audio->setup(frame->ctx);
+            audio->setup(contextAudio->channels, contextAudio->sample_rate);
             audio->changeVolume((short *)pcmbuf, out_size);
             audio->write(pcmbuf, out_size);
         }

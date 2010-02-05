@@ -52,23 +52,23 @@ void cAudioOss::releaseDevice()
     open = false;
 }
 
-void cAudioOss::setup(const SampleContext& ctx)
+void cAudioOss::setup(int channels, int samplerate)
 {
     if (!open)
         return;
 
     // set sample rate
-    if (curContext.samplerate != ctx.samplerate) {
-        dsyslog("[dxr3-audio-oss] changing samplerate to %d (old %d) ", ctx.samplerate, curContext.samplerate);
-        curContext.samplerate = ctx.samplerate;
-        CHECK( ioctl(fd, SNDCTL_DSP_SAMPLESIZE, &ctx.samplerate));
+    if (curContext.samplerate != samplerate) {
+        dsyslog("[dxr3-audio-oss] changing samplerate to %d (old %d) ", samplerate, curContext.samplerate);
+        curContext.samplerate = samplerate;
+        CHECK( ioctl(fd, SNDCTL_DSP_SAMPLESIZE, &samplerate));
     }
 
     // set channels
-    if (curContext.channels != ctx.channels) {
-        dsyslog("[dxr3-audio-oss] changing num of channels to %d (old %d)", ctx.channels, curContext.channels);
-        curContext.channels = ctx.channels;
-        CHECK( ioctl(fd, SNDCTL_DSP_CHANNELS, &ctx.channels));
+    if (curContext.channels != channels) {
+        dsyslog("[dxr3-audio-oss] changing num of channels to %d (old %d)", channels, curContext.channels);
+        curContext.channels = channels;
+        CHECK( ioctl(fd, SNDCTL_DSP_CHANNELS, &channels));
     }
 }
 

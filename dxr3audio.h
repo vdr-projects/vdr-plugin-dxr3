@@ -25,8 +25,8 @@
 #include <vdr/tools.h>  // for uchar
 
 struct SampleContext {
-   unsigned int channels;
-   unsigned int samplerate;
+   int channels;
+   int samplerate;
 };
 
 class iAudio {
@@ -36,7 +36,7 @@ public:
 
     virtual void openDevice() = 0;
     virtual void releaseDevice() = 0;
-    virtual void setup(const SampleContext& ctx) = 0;
+    virtual void setup(int channels, int samplerate) = 0;
     virtual void write(uchar* data, size_t size) = 0;
 
     virtual void poll(cPoller &poller) { (void)poller; }

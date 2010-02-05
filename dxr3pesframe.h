@@ -23,7 +23,7 @@
 #define _DXR3PESFRAME_H_
 
 #include <assert.h>
-#include "dxr3audio.h"
+#include <stdint.h>
 #include "uncopyable.h"
 
 // ==================================
@@ -117,7 +117,6 @@ public:
     // needed for audio
     uint32_t decodedSize;
     int16_t *decoded;
-    SampleContext ctx;
 
 private:
     ePesDataType m_pesDataType;
