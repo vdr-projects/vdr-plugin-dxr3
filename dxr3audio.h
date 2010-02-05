@@ -39,6 +39,8 @@ public:
     virtual void setup(const SampleContext& ctx) = 0;
     virtual void write(uchar* data, size_t size) = 0;
 
+    virtual void poll(cPoller &poller) { (void)poller; }
+
     void setEnabled(bool on)    { dsyslog("audio enable %d", (int)on); enabled = on; }
     void setVolume(int v)       { vol = v; }
     void mute()                 { setVolume(0); }

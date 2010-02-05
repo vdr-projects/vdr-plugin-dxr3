@@ -202,6 +202,7 @@ void cDxr3Device::StillPicture(const uchar *Data, int Length)
 bool cDxr3Device::Poll(cPoller &Poller, int TimeoutMs)
 {
     Poller.Add(fdVideo, true);
+    audioOut->poll(Poller);
     return Poller.Poll(TimeoutMs);
 }
 

@@ -84,6 +84,11 @@ void cAudioOss::write(uchar* data, size_t size)
     }
 }
 
+void cAudioOss::poll(cPoller &poller)
+{
+    poller.Add(fd, true);
+}
+
 void cAudioOss::setDigitalAudio(bool on)
 {
     if (digitalAudio == on) {
