@@ -131,6 +131,10 @@ void cDxr3AudioDecoder::decode(cDxr3PesFrame *frame, iAudio *audio)
         }
 
         if (out_size) {
+            frame->ctx.channels = contextAudio->channels;
+            frame->ctx.samplerate = contextAudio->sample_rate;
+
+            audio->setup(frame->ctx);
             audio->changeVolume((short *)pcmbuf, out_size);
             audio->write(pcmbuf, out_size);
         }

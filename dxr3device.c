@@ -48,6 +48,7 @@ cDxr3Device::cDxr3Device() : pluginOn(true), vPts(0), scrSet(false), playCount(0
         audioOut = new cAudioAlsa();
     }
 
+    audioOut->openDevice();
     aDecoder = new cDxr3AudioDecoder();
 }
 
