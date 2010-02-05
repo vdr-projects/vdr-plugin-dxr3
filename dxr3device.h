@@ -109,7 +109,7 @@ private:
 
     uchar *silentAudio;
     cDxr3AudioDecoder *aDecoder;
-    cDxr3SpuDecoder* m_spuDecoder;
+    cDxr3SpuDecoder* spuDecoder;
     iAudio *audioOut;
     bool pluginOn;
 

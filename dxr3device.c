@@ -36,10 +36,8 @@ static const char *DEV_DXR3_CONT  = "";
 
 static const int SILENT_AUDIO_SIZE = 16384;
 
-cDxr3Device::cDxr3Device() : pluginOn(true), vPts(0), scrSet(false), playCount(0)
+cDxr3Device::cDxr3Device() : spuDecoder(NULL), pluginOn(true), vPts(0), scrSet(false), playCount(0)
 {
-    m_spuDecoder = NULL;
-
     silentAudio = new uchar[SILENT_AUDIO_SIZE];
 
     if (!silentAudio) {
@@ -70,8 +68,8 @@ cDxr3Device::~cDxr3Device()
 
     releaseDevices();
 
-    if (m_spuDecoder)
-        delete m_spuDecoder;
+    if (spuDecoder)
+        delete spuDecoder;
 }
 
 cDxr3Device *cDxr3Device::instance()
@@ -322,10 +320,10 @@ void cDxr3Device::SetDigitalAudioDevice(bool on)
 
 cSpuDecoder *cDxr3Device::GetSpuDecoder()
 {
-    if (!m_spuDecoder && IsPrimaryDevice()) {
-        m_spuDecoder = new cDxr3SpuDecoder();
+    if (!spuDecoder && IsPrimaryDevice()) {
+        spuDecoder = new cDxr3SpuDecoder();
     }
-    return m_spuDecoder;
+    return spuDecoder;
 }
 
 void cDxr3Device::turnPlugin(bool on)
