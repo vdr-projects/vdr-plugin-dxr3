@@ -131,6 +131,7 @@ void cDxr3AudioDecoder::decode(cDxr3PesFrame *frame, iAudio *audio)
         }
 
         if (out_size) {
+            audio->changeVolume((short *)pcmbuf, out_size);
             audio->write(pcmbuf, out_size);
         }
 
