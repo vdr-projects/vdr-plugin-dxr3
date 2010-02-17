@@ -119,6 +119,7 @@ bool cDxr3Device::CanReplay() const
 bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
 {
     dsyslog("[dxr3-device] setting playmode %d", PlayMode);
+    uint32_t val;
 
     switch (PlayMode) {
     case pmNone:
@@ -127,6 +128,13 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
         audioOut->setEnabled(false);
         scrSet = false;
         playCount = 0;
+
+        // here we use some magic
+        // set the scr into future so that the firmware/hardware
+        // clears the buffers.
+        CHECK(ioctl(fdControl, EM8300_IOCTL_SCR_GET, &val));
+        val += 10000;
+        CHECK(ioctl(fdControl, EM8300_IOCTL_SCR_SET, &val));
         break;
 
     case pmAudioVideo:
