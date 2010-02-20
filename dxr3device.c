@@ -249,7 +249,13 @@ int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
     cDxr3PesFrame frame;
     frame.parse(Data, Length);
 
-    aDecoder->decode(&frame, audioOut);
+    bool isAc3 = ((Id & 0xF0) == 0x80) || Id == 0xbd;
+
+    if (!isAc3) {
+        aDecoder->decode(&frame, audioOut);
+    } else {
+        isyslog("[dxr3-device] ac3 is not supported");
+    }
 
     return Length;
 }
