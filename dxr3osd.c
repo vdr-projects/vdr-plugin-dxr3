@@ -287,6 +287,6 @@ void cDxr3Osd::copy(cBitmap *part, int area, transPair pair[16], int numPair)
 // mode: c++
 // c-file-style: "stroustrup"
 // c-file-offsets: ((inline-open . 0))
-// tab-width: 4;
+// c-basic-offset: 4
 // indent-tabs-mode: nil
 // End:

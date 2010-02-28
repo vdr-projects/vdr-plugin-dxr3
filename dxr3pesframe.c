@@ -131,6 +131,6 @@ uint32_t cDxr3PesFrame::m_staticAspectRatio = EM8300_ASPECTRATIO_4_3;
 // mode: c++
 // c-file-style: "stroustrup"
 // c-file-offsets: ((inline-open . 0))
-// tab-width: 4;
+// c-basic-offset: 4
 // indent-tabs-mode: nil
 // End:

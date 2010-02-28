@@ -289,6 +289,6 @@ void cDxr3SyncBuffer::ReceiverStopped(void)
 // mode: c++
 // c-file-style: "stroustrup"
 // c-file-offsets: ((inline-open . 0))
-// tab-width: 4;
+// c-basic-offset: 4
 // indent-tabs-mode: nil
 // End:
