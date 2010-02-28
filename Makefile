@@ -39,6 +39,10 @@ ALSA_LIBS = $(shell pkg-config --libs alsa)
 # if em8300 headers were installed properly.
 EM8300_INC = 
 
+### Make sure that necessary options are included (VDR >= 1.7.13):
+
+-include $(VDRDIR)/Make.global
+
 ### Allow user defined options to overwrite defaults:
 
 -include $(VDRDIR)/Make.config
