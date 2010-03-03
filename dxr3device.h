@@ -107,6 +107,7 @@ private:
     void playBlackFrame();
     void playSilentAudio();
 
+    cMutex mutex;
     uchar *silentAudio;
     cDxr3AudioDecoder *aDecoder;
     cDxr3SpuDecoder* spuDecoder;

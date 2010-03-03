@@ -118,6 +118,8 @@ bool cDxr3Device::CanReplay() const
 
 bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
 {
+    cMutexLock l(&mutex);
+
     dsyslog("[dxr3-device] setting playmode %d", PlayMode);
     uint32_t val;
 
@@ -216,6 +218,8 @@ bool cDxr3Device::Poll(cPoller &Poller, int TimeoutMs)
 
 int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 {
+    cMutexLock l(&mutex);
+
     cDxr3PesFrame frame;
     frame.parse(Data, Length);
     uint32_t pts = frame.GetPts();
@@ -246,6 +250,8 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 
 int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
 {
+    cMutexLock l(&mutex);
+
     cDxr3PesFrame frame;
     frame.parse(Data, Length);
 
