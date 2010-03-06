@@ -27,6 +27,7 @@
 #include "dxr3osd.h"
 #include "dxr3audio-oss.h"
 #include "dxr3audio-alsa.h"
+#include "dxr3audio-pa.h"
 #include "dxr3pesframe.h"
 #include "settings.h"
 
@@ -47,12 +48,22 @@ cDxr3Device::cDxr3Device() : spuDecoder(NULL), pluginOn(true), vPts(0), scrSet(f
 
     claimDevices();
 
-    if (cSettings::instance()->audioDriver() == OSS) {
+    switch (cSettings::instance()->audioDriver()) {
+    case OSS:
         isyslog("[dxr3-device] using oss audio driver");
         audioOut = new cAudioOss();
-    } else {
+        break;
+
+    case ALSA:
         isyslog("[dxr3-device] using alsa audio driver");
         audioOut = new cAudioAlsa();
+        break;
+#ifdef PULSEAUDIO
+    case PA:
+        isyslog("[dxr3-device] using PulseAudio audio driver");
+        audioOut = new cAudioPA();
+        break;
+#endif
     }
 
     audioOut->openDevice();

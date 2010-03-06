@@ -23,6 +23,7 @@
  * along with dxr3-plugin.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
@@ -41,7 +42,10 @@ enum eVideoMode
 
 enum AudioDriver {
     OSS = 0,
-    ALSA
+    ALSA,
+#ifdef PULSEAUDIO
+    PA
+#endif
 };
 
 // ==================================

@@ -49,6 +49,10 @@ bool cSettings::processArgs(int argc, char *argv[])
                 audioDriver(ALSA);
             } else if (optarg && strcmp(optarg, "oss") == 0) {
                 audioDriver(OSS);
+#ifdef PULSEAUDIO
+            } else if (optarg && strcmp(optarg, "pa") == 0) {
+                audioDriver(PA);
+#endif
             } else {
                 esyslog("[dxr3-settings] unkown audio driver - default audio driver will be used");
             }
