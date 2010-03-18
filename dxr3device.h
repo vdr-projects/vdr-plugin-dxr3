@@ -106,6 +106,7 @@ private:
     void playVideoFrame(cDxr3PesFrame *frame, uint32_t pts);
     void playBlackFrame();
     void playSilentAudio();
+    void writeRegister(int reg, int value);
 
     cMutex mutex;
     uchar *silentAudio;

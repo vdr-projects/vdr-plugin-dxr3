@@ -545,15 +545,9 @@ void cDxr3Device::uploadFirmware()
 
 void cDxr3Device::setPlayMode()
 {
-    em8300_register_t reg;
-
     int ioval = EM8300_PLAYMODE_PLAY;
     CHECK(ioctl(fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval));
-    reg.microcode_register = 1;
-    reg.reg = 0;
-    reg.val = MVCOMMAND_SYNC;
-
-    CHECK(ioctl(fdControl, EM8300_IOCTL_WRITEREG, &reg));
+    writeRegister(0, MVCOMMAND_SYNC);
 }
 
 void cDxr3Device::playVideoFrame(cDxr3PesFrame *frame, uint32_t pts)
@@ -585,6 +579,17 @@ void cDxr3Device::playBlackFrame()
 void cDxr3Device::playSilentAudio()
 {
     audioOut->write(silentAudio, SILENT_AUDIO_SIZE);
+}
+
+void cDxr3Device::writeRegister(int reg, int value)
+{
+    em8300_register_t regs;
+
+    regs.microcode_register = 1;
+    regs.reg = reg;
+    regs.val = value;
+
+    CHECK(ioctl(fdControl, EM8300_IOCTL_WRITEREG, &regs));
 }
 
 // Local variables:
