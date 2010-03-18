@@ -44,7 +44,6 @@ public:
 
     void decode(cDxr3PesFrame *frame, iAudio *audio);
 /*
-    void Decode(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf);
     void DecodeLpcm(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf);
     void DecodeAc3Dts(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf);
 */
