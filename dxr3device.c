@@ -233,7 +233,7 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 
     cDxr3PesFrame frame;
     if (!frame.parse(Data, Length)) {
-    	// if parsing failed, ignore packet
+    	// if parsing failed, ignore frame
     	return Length;
     }
 
@@ -268,7 +268,7 @@ int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
 
     cDxr3PesFrame frame;
     if (!frame.parse(Data, Length)) {
-    	// if parsing failed, ignore packet
+    	// if parsing failed, ignore frame
     	return Length;
     }
 
