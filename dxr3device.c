@@ -232,7 +232,11 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
     cMutexLock l(&mutex);
 
     cDxr3PesFrame frame;
-    frame.parse(Data, Length);
+    if (!frame.parse(Data, Length)) {
+    	// if parsing failed, ignore packet
+    	return Length;
+    }
+
     uint32_t pts = frame.pts();
 
     if (pts == 0) {
@@ -242,7 +246,7 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
     }
 
     if (!scrSet && vPts != 0) {
-        CHECK(ioctl(fdControl, EM8300_IOCTL_SCR_SET, &vPts));
+        setScr(vPts);
         scrSet = true;
     }
     playVideoFrame(&frame, vPts);
@@ -251,7 +255,6 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
         playCount++;
     }
     if (playCount == 7) {
-        //cDxr3Interface::instance()->SetPlayMode();
         setPlayMode();
         playCount = 8;
     }
@@ -264,7 +267,10 @@ int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
     cMutexLock l(&mutex);
 
     cDxr3PesFrame frame;
-    frame.parse(Data, Length);
+    if (!frame.parse(Data, Length)) {
+    	// if parsing failed, ignore packet
+    	return Length;
+    }
 
     bool isAc3 = ((Id & 0xF0) == 0x80) || Id == 0xbd;
 
@@ -553,8 +559,9 @@ void cDxr3Device::setPlayMode()
 void cDxr3Device::playVideoFrame(cDxr3PesFrame *frame, uint32_t pts)
 {
     if (pts > 0) {
-        pts += 45000;
-        CHECK(ioctl(fdVideo, EM8300_IOCTL_VIDEO_SETPTS, &pts));
+        uint32_t val = pts + 45000;
+        val = pts - offset;
+        CHECK(ioctl(fdVideo, EM8300_IOCTL_VIDEO_SETPTS, &val));
     }
 
     const uint8_t *data = frame->payload();
@@ -590,6 +597,13 @@ void cDxr3Device::writeRegister(int reg, int value)
     regs.val = value;
 
     CHECK(ioctl(fdControl, EM8300_IOCTL_WRITEREG, &regs));
+}
+
+void cDxr3Device::setScr(uint32_t val)
+{
+    uint32_t scr;
+    CHECK(ioctl(fdControl, EM8300_IOCTL_SCR_GET, &scr));
+    offset = val - scr;
 }
 
 // Local variables:

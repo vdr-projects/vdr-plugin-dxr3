@@ -107,7 +107,9 @@ private:
     void playBlackFrame();
     void playSilentAudio();
     void writeRegister(int reg, int value);
+    void setScr(uint32_t val);
 
+    int offset;
     cMutex mutex;
     uchar *silentAudio;
     cDxr3AudioDecoder *aDecoder;
