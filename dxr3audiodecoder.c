@@ -91,8 +91,8 @@ void cDxr3AudioDecoder::decode(cDxr3PesFrame *frame, iAudio *audio)
 {
     int len, out_size;
 
-    const uint8_t *buf = frame->GetPayload();
-    int length = frame->GetPayloadLength();
+    const uint8_t *buf = frame->payload();
+    int length = frame->payloadSize();
 
     if (checkMpegAudioHdr(buf)) {
 

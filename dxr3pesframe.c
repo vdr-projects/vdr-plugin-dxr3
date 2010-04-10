@@ -37,15 +37,15 @@ bool cDxr3PesFrame::parse(const uint8_t *pes, uint32_t length)
     // handle stream id
     switch (pes[3]) {
     case 0xBD: // private stream 1
-        m_pesDataType = PES_PRIVATE_DATA;
+        pesDataType = PES_PRIVATE_DATA;
         break;
 
     case 0xC0 ... 0xDF: // audio stream
-        m_pesDataType = PES_AUDIO_DATA;
+        pesDataType = PES_AUDIO_DATA;
         break;
 
     case 0xE0 ... 0xEF: // video stream
-        m_pesDataType = PES_VIDEO_DATA;
+        pesDataType = PES_VIDEO_DATA;
         break;
 
     default:
@@ -53,7 +53,7 @@ bool cDxr3PesFrame::parse(const uint8_t *pes, uint32_t length)
     }
 
     // store start of pes frame
-    m_pesStart = pes;
+    pesStart = pes;
 
     // read pes header len
     uint8_t pesHeaderDataLength = pes[8];
@@ -67,15 +67,15 @@ bool cDxr3PesFrame::parse(const uint8_t *pes, uint32_t length)
         pts |= ( (int64_t)pes[12])         <<  7;
         pts |= (((int64_t)pes[13]) & 0xfe) >>  1;
 
-        m_pts = pts >> 1;
+        this->pts = pts >> 1;
     }
 
     // set pointer to start of payload
     int payloadStart = 9 + pesHeaderDataLength;
-    m_payload = &pes[payloadStart];
-    m_payloadLength = length - payloadStart;
+    payload = &pes[payloadStart];
+    payloadSize = length - payloadStart;
 
-    if (m_pesDataType == PES_VIDEO_DATA) {
+    if (pesDataType() == PES_VIDEO_DATA) {
 
         // we can get some informations about the video payload
         // of this pes frame. For more informations have a look
@@ -94,20 +94,20 @@ bool cDxr3PesFrame::parse(const uint8_t *pes, uint32_t length)
             // in the sequence header we get informations about horizontal
             // and vertical size of the video and the current aspect ratio.
 
-            m_horizontalSize = (video[5] & 0xf0) >> 4 | video[4] << 4;
-            m_verticalSize = (video[5] & 0x0f) << 8 | video[6];
+            horizontalSize = (video[5] & 0xf0) >> 4 | video[4] << 4;
+            verticalSize = (video[5] & 0x0f) << 8 | video[6];
 
             switch (video[7] & 0xf0) {
             case 0x20:
-                m_aspectRatio = EM8300_ASPECTRATIO_4_3;
+                aspectRatio = EM8300_ASPECTRATIO_4_3;
                 break;
 
             case 0x30:
-                m_aspectRatio = EM8300_ASPECTRATIO_16_9;
+                aspectRatio = EM8300_ASPECTRATIO_16_9;
                 break;
             }
 
-            m_staticAspectRatio = m_aspectRatio;
+            m_staticAspectRatio = aspectRatio();
         }
     }
 

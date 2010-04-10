@@ -233,7 +233,7 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
 
     cDxr3PesFrame frame;
     frame.parse(Data, Length);
-    uint32_t pts = frame.GetPts();
+    uint32_t pts = frame.pts();
 
     if (pts == 0) {
         pts = vPts;
@@ -557,8 +557,8 @@ void cDxr3Device::playVideoFrame(cDxr3PesFrame *frame, uint32_t pts)
         CHECK(ioctl(fdVideo, EM8300_IOCTL_VIDEO_SETPTS, &pts));
     }
 
-    const uint8_t *data = frame->GetPayload();
-    uint32_t len = frame->GetPayloadLength();
+    const uint8_t *data = frame->payload();
+    uint32_t len = frame->payloadSize();
 
     WriteAllOrNothing(fdVideo, data, len, 1000, 10);
 }

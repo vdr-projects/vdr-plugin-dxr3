@@ -22,18 +22,9 @@
 #ifndef _DXR3PESFRAME_H_
 #define _DXR3PESFRAME_H_
 
-#include <assert.h>
 #include <stdint.h>
 #include "uncopyable.h"
-
-// ==================================
-enum eVideoFrameType
-{
-    I_FRAME,
-    P_FRAME,
-    B_FRAME,
-    UNKNOWN_FRAME
-};
+#include "accessors.h"
 
 // ==================================
 // pes - packetized elementary stream
@@ -41,98 +32,33 @@ class cDxr3PesFrame : private Uncopyable {
 public:
 
     // ==================================
-    enum ePesDataType
-    {
-	PES_AUDIO_DATA,
-	PES_VIDEO_DATA,
-	PES_PRIVATE_DATA,
-	PES_UNKNOWN_DATA
+    enum ePesDataType {
+    	PES_AUDIO_DATA,
+    	PES_VIDEO_DATA,
+    	PES_PRIVATE_DATA,
+    	PES_UNKNOWN_DATA
     };
 
 public:
-    cDxr3PesFrame() :
-	m_pesDataType(PES_UNKNOWN_DATA),
-	m_pesStart(0),
-	m_payload(0),
-	m_payloadLength(0),
-	m_pts(0),
-	m_videoFrameType(UNKNOWN_FRAME),
-	m_aspectRatio(m_staticAspectRatio),
-	m_horizontalSize(0),
-	m_verticalSize(0) {}
-
-    virtual ~cDxr3PesFrame() {}
+    cDxr3PesFrame() : pesDataType(PES_UNKNOWN_DATA), pesStart(0), payload(0), payloadSize(0),
+					  pts(0), aspectRatio(m_staticAspectRatio), horizontalSize(0), verticalSize(0) {}
 
     bool parse(const uint8_t *pes, uint32_t length);
 
-    ePesDataType GetPesDataType() const
-    {
-        return m_pesDataType;
-    }
+    Accessors<ePesDataType, ro> pesDataType;
 
-    const uint8_t* GetPesStart() const
-    {
-        return m_pesStart;
-    }
+    Accessors<const uint8_t *, ro> pesStart;
+    Accessors<const uint8_t *, ro> payload;
 
-    const uint8_t* GetPayload() const
-    {
-        return m_payload;
-    }
+    Accessors<uint32_t, ro> payloadSize;
+    Accessors<uint32_t, ro> pts;
 
-    uint32_t GetPayloadLength() const
-    {
-        return m_payloadLength;
-    }
-
-    uint32_t GetPts() const
-    {
-        return m_pts;
-    }
-
-    eVideoFrameType GetFrameType() const
-    {
-        assert(m_pesDataType == PES_VIDEO_DATA);
-        return m_videoFrameType;
-    }
-
-    uint32_t GetAspectRatio() const
-    {
-        assert(m_pesDataType == PES_VIDEO_DATA);
-        return m_aspectRatio;
-    }
-
-    uint32_t GetHorizontalSize() const
-    {
-        assert(m_pesDataType == PES_VIDEO_DATA);
-        return m_horizontalSize;
-    }
-
-    uint32_t GetVerticalSize() const
-    {
-        assert(m_pesDataType == PES_VIDEO_DATA);
-        return m_verticalSize;
-    }
-
-    // needed for audio
-    uint32_t decodedSize;
-    int16_t *decoded;
+    Accessors<uint32_t, ro> aspectRatio;
+    Accessors<uint32_t, ro> horizontalSize;
+    Accessors<uint32_t, ro> verticalSize;
 
 private:
-    ePesDataType m_pesDataType;
-    const uint8_t* m_pesStart;
-    const uint8_t* m_payload;
-    uint32_t m_payloadLength;
-    uint32_t m_pts;
-
-    eVideoFrameType m_videoFrameType;
-    uint32_t m_aspectRatio;
-    uint32_t m_horizontalSize;
-    uint32_t m_verticalSize;
-
     static uint32_t m_staticAspectRatio;
-
-    static const uint32_t MAX_PES_HEADER_SIZE;
 };
 
 #endif /*_DXR3PESFRAME_H_*/
