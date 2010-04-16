@@ -32,6 +32,16 @@ const static int AUDIO_MONO_RIGHT = 2;
 iAudio::iAudio() : open(false), enabled(false), vol(0), audioChannel(0), digitalAudio(false)
 {
     memset(&curContext, 0, sizeof(SampleContext));
+
+    cSettings::instance()->registerObserver(this);
+}
+
+void iAudio::settingsChange(SettingsChange change)
+{
+    if (change == AUDIO) {
+        // apply changed audio settings
+        reconfigure();
+    }
 }
 
 void iAudio::changeVolume(int16_t* pcmbuf, size_t size)

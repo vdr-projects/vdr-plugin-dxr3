@@ -21,6 +21,7 @@
 #ifndef _AUDIO_H_
 #define _AUDIO_H_
 
+#include "settings.h"
 #include <vdr/tools.h>  // for uchar
 
 struct SampleContext {
@@ -28,7 +29,7 @@ struct SampleContext {
    int samplerate;
 };
 
-class iAudio {
+class iAudio : public iSettingsObserver {
 public:
     iAudio();
     virtual ~iAudio() {}
@@ -50,6 +51,9 @@ public:
 
     virtual void setDigitalAudio(bool on) = 0;
     bool isDigitalAudio()                   { return digitalAudio; }
+
+    virtual void settingsChange(SettingsChange change);
+    virtual void reconfigure() {}
 
 protected:
     bool open;

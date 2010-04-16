@@ -24,6 +24,7 @@
 
 #include "dxr3audio-oss.h"
 #include "dxr3device.h"
+#include "settings.h"
 
 static const char *DEV_DXR3_OSS   = "_ma";
 
@@ -91,21 +92,34 @@ void cAudioOss::poll(cPoller &poller)
 
 void cAudioOss::setDigitalAudio(bool on)
 {
-    if (digitalAudio == on) {
+    if (digitalAudio == on)
         return;
-    }
 
-    uint32_t ioval = 0;
+    reconfigure();
 
-    if (on) {
-        ioval = EM8300_AUDIOMODE_DIGITALPCM;
+    digitalAudio = on;
+}
+
+void cAudioOss::reconfigure()
+{
+	uint32_t ioval = 0;
+	dsyslog("[dxr3-oss] reconfigure");
+
+    // this is quite an imporant part, as we need to
+    // decide how we set the audiomode of oss device.
+    if (digitalAudio) {
+        ioval = EM8300_AUDIOMODE_DIGITALAC3;
     } else {
-        ioval = EM8300_AUDIOMODE_ANALOG;
+
+    	// digital or analog pcm?
+    	if (cSettings::instance()->useDigitalOut()) {
+    		ioval = EM8300_AUDIOMODE_DIGITALPCM;
+    	} else {
+    	    ioval = EM8300_AUDIOMODE_ANALOG;
+    	}
     }
 
     // we need to do it this way, as we dont have access
     // to the file handle for the conrtol sub device.
     cDxr3Device::instance()->ossSetPlayMode(ioval);
-
-    digitalAudio = on;
 }

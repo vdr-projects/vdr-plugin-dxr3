@@ -34,6 +34,7 @@ public:
     virtual void write(uchar* data, size_t size);
     virtual void poll(cPoller &poller);
     virtual void setDigitalAudio(bool on);
+    virtual void reconfigure();
 
 private:
     int fd;
