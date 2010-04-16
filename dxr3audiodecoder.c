@@ -166,8 +166,7 @@ void cDxr3AudioDecoder::ac3dts(cDxr3PesFrame *frame, iAudio *audio)
                 }
 
                 audio->write(pFrame->Data() + pesHeaderLength + LPCM_HEADER_LENGTH, pFrame->Count() - pesHeaderLength - 7);
-                if (pFrame)
-                    rbuf.Drop(pFrame);
+                rbuf.Drop(pFrame);
             }
         }
     }
