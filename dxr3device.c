@@ -277,7 +277,7 @@ int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
     if (!isAc3) {
         aDecoder->decode(&frame, audioOut);
     } else {
-        isyslog("[dxr3-device] ac3 is not supported");
+        aDecoder->ac3dts(&frame, audioOut);
     }
 
     return Length;

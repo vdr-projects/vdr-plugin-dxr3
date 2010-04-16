@@ -30,6 +30,7 @@
 #include "dxr3audiodecoder.h"
 #include "dxr3pesframe.h"
 #include "dxr3audio.h"
+#include "settings.h"
 
 // ==================================
 const int LPCM_HEADER_LENGTH = 7;
@@ -139,6 +140,36 @@ void cDxr3AudioDecoder::decode(cDxr3PesFrame *frame, iAudio *audio)
 
         length -= len;
         avpkt.data += len;
+    }
+}
+
+void cDxr3AudioDecoder::ac3dts(cDxr3PesFrame *frame, iAudio *audio)
+{
+    if (cSettings::instance()->ac3AudioMode() == PCM_ENCAPSULATION) {
+
+        uint8_t *buf = (uint8_t *)frame->payload();
+        int length = frame->payloadSize();
+
+        ac3dtsDecoder.Check(buf, length, (uint8_t *)frame->pesStart());
+        ac3dtsDecoder.Encapsulate(buf, length);
+
+        cFrame* pFrame = 0;
+        while ((pFrame = rbuf.Get())) {
+            if (pFrame && pFrame->Count()) {
+                cDxr3PesFrame tempPes;
+                tempPes.parse(pFrame->Data(), pFrame->Count());
+                int pesHeaderLength = (int) (tempPes.payload() - tempPes.pesStart());
+                uint8_t* pData = pFrame->Data() + pesHeaderLength + LPCM_HEADER_LENGTH;
+
+                for (int i = 0; i < pFrame->Count() - pesHeaderLength - LPCM_HEADER_LENGTH; i += 2) {
+                    std::swap(pData[i], pData[i + 1]);
+                }
+
+                audio->write(pFrame->Data() + pesHeaderLength + LPCM_HEADER_LENGTH, pFrame->Count() - pesHeaderLength - 7);
+                if (pFrame)
+                    rbuf.Drop(pFrame);
+            }
+        }
     }
 }
 
