@@ -55,62 +55,45 @@ eOSState cDxr3OsdItem::ProcessKey(eKeys Key)
 
 // ==================================
 // setup menu
-cMenuSetupDxr3::cMenuSetupDxr3(void)
+cMenuSetupDxr3::cMenuSetupDxr3()
 {
     newBrightness = cSettings::instance()->brightness();
-    Add(new cMenuEditIntItem(tr("Brightness"),
-			     &newBrightness, 0, 999));
+    Add(new cMenuEditIntItem(tr("Brightness"), &newBrightness, 0, 999));
     newContrast = cSettings::instance()->contrast();
-    Add(new cMenuEditIntItem(tr("Contrast"),
-			     &newContrast, 0, 999));
+    Add(new cMenuEditIntItem(tr("Contrast"), &newContrast, 0, 999));
     newSaturation = cSettings::instance()->saturation();
-    Add(new cMenuEditIntItem(tr("Saturation"),
-			     &newSaturation, 0, 999));
+    Add(new cMenuEditIntItem(tr("Saturation"), &newSaturation, 0, 999));
+
     newVideoMode = (int) cSettings::instance()->videoMode();
     menuVideoModes[0] = tr("PAL");
     menuVideoModes[1] = tr("PAL60");
     menuVideoModes[2] = tr("NTSC");
-    Add(new cMenuEditStraItem(tr("Video mode"),
-			      &newVideoMode, 3, menuVideoModes));
+    Add(new cMenuEditStraItem(tr("Video mode"), &newVideoMode, 3, menuVideoModes));
+
     newUseWSS = cSettings::instance()->useWss();
 #ifdef EM8300_IOCTL_SET_WSS
-    Add(new cMenuEditBoolItem(tr("Use widescreen signaling (WSS)"),
-			      &newUseWSS));
+    Add(new cMenuEditBoolItem(tr("Use widescreen signaling (WSS)"), &newUseWSS));
 #endif
     newUseDigitalOut = cSettings::instance()->useDigitalOut();
     Add(new cMenuEditBoolItem(tr("Digital audio output"), &newUseDigitalOut));
     newHideMenu = cSettings::instance()->hideMenu();
     Add(new cMenuEditBoolItem(tr("Hide main menu entry"), &newHideMenu));
     newDxr3Card = cSettings::instance()->card();
-    Add(new cMenuEditIntItem(tr("Card number"),
-			     &newDxr3Card, 0, DXR3_MAX_CARDS - 1));
+    Add(new cMenuEditIntItem(tr("Card number"), &newDxr3Card, 0, DXR3_MAX_CARDS - 1));
 }
 
 // ==================================
 // save menu values
-void cMenuSetupDxr3::Store(void)
+void cMenuSetupDxr3::Store()
 {
-    SetupStore("Brightness",
-               cSettings::instance()->brightness(newBrightness));
-    SetupStore("Contrast",
-               cSettings::instance()->contrast(newContrast));
-    SetupStore("Saturation",
-               cSettings::instance()->saturation(newSaturation));
-    SetupStore("Dxr3VideoMode",
-               cSettings::instance()->videoMode((eVideoMode) newVideoMode));
-    SetupStore("UseWSS",
-               cSettings::instance()->useWss(newUseWSS));
-    SetupStore("UseDigitalOut",
-               cSettings::instance()->useDigitalOut(newUseDigitalOut));
-    SetupStore("HideMenu",
-               cSettings::instance()->hideMenu(newHideMenu));
-    SetupStore("Dxr3Card",
-               cSettings::instance()->card(newDxr3Card));
-
-
-    // Apply (some of the) settings
-    //cDxr3Interface::instance()->updateBcsValues();
-    //cDxr3Device::instance()->Reset();
+    SetupStore("Brightness", cSettings::instance()->brightness(newBrightness));
+    SetupStore("Contrast", cSettings::instance()->contrast(newContrast));
+    SetupStore("Saturation", cSettings::instance()->saturation(newSaturation));
+    SetupStore("Dxr3VideoMode", cSettings::instance()->videoMode((eVideoMode) newVideoMode));
+    SetupStore("UseWSS", cSettings::instance()->useWss(newUseWSS));
+    SetupStore("UseDigitalOut", cSettings::instance()->useDigitalOut(newUseDigitalOut));
+    SetupStore("HideMenu", cSettings::instance()->hideMenu(newHideMenu));
+    SetupStore("Dxr3Card", cSettings::instance()->card(newDxr3Card));
 }
 
 // ==================================
