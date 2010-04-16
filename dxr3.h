@@ -22,7 +22,9 @@ private:
     int newUseDigitalOut;
     int newDxr3Card;
     int newVideoMode;
+    int newAc3AudioMode;
     const char *menuVideoModes[3];
+    const char *menuAc3AudioModes[2];
     int newUseWSS;
     int newHideMenu;
     int newOsdFlushRate;

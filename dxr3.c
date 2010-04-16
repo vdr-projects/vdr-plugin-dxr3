@@ -70,6 +70,10 @@ cMenuSetupDxr3::cMenuSetupDxr3()
     menuVideoModes[2] = tr("NTSC");
     Add(new cMenuEditStraItem(tr("Video mode"), &newVideoMode, 3, menuVideoModes));
 
+    menuAc3AudioModes[0] = tr("PCM encapsulation");
+    menuAc3AudioModes[1] = tr("AC3 passthrough");
+    Add(new cMenuEditStraItem(tr("AC3 mode"), &newAc3AudioMode, 2, menuAc3AudioModes));
+
     newUseWSS = cSettings::instance()->useWss();
 #ifdef EM8300_IOCTL_SET_WSS
     Add(new cMenuEditBoolItem(tr("Use widescreen signaling (WSS)"), &newUseWSS));
