@@ -60,6 +60,7 @@ enum SettingsChange {
 };
 class iSettingsObserver {
 public:
+    virtual ~iSettingsObserver() {}
     virtual void settingsChange(SettingsChange change) = 0;
 };
 
