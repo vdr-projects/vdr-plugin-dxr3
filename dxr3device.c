@@ -68,6 +68,9 @@ cDxr3Device::cDxr3Device() : spuDecoder(NULL), pluginOn(true), vPts(0), scrSet(f
 
     audioOut->openDevice();
     aDecoder = new cDxr3AudioDecoder();
+
+    // register observer
+    cSettings::instance()->registerObserver(this);
 }
 
 cDxr3Device::~cDxr3Device()
@@ -455,6 +458,18 @@ void cDxr3Device::clearButton()
 int cDxr3Device::ossSetPlayMode(uint32_t mode)
 {
     return ioctl(fdControl, EM8300_IOCTL_SET_AUDIOMODE, &mode);
+}
+
+void cDxr3Device::settingsChange(SettingsChange change)
+{
+    if (change == BCS) {
+        // update bcs value
+        bcs.brightness = cSettings::instance()->brightness();
+        bcs.contrast = cSettings::instance()->contrast();
+        bcs.saturation = cSettings::instance()->saturation();
+
+        CHECK(ioctl(fdControl, EM8300_IOCTL_SETBCS, &bcs));
+    }
 }
 
 void cDxr3Device::claimDevices()

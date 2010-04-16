@@ -90,6 +90,21 @@ cMenuSetupDxr3::cMenuSetupDxr3()
 // save menu values
 void cMenuSetupDxr3::Store()
 {
+    bool emitAudio = false;
+    bool emitBCS = false;
+
+    // check which events we should emit
+    if (cSettings::instance()->useDigitalOut() != newUseDigitalOut) {
+        emitAudio = true;
+    }
+
+    if (cSettings::instance()->brightness() != newBrightness ||
+        cSettings::instance()->contrast() != newContrast ||
+        cSettings::instance()->saturation() != newSaturation) {
+        emitBCS = true;
+    }
+
+    // store new settings
     SetupStore("Brightness", cSettings::instance()->brightness(newBrightness));
     SetupStore("Contrast", cSettings::instance()->contrast(newContrast));
     SetupStore("Saturation", cSettings::instance()->saturation(newSaturation));
@@ -98,6 +113,13 @@ void cMenuSetupDxr3::Store()
     SetupStore("UseDigitalOut", cSettings::instance()->useDigitalOut(newUseDigitalOut));
     SetupStore("HideMenu", cSettings::instance()->hideMenu(newHideMenu));
     SetupStore("Dxr3Card", cSettings::instance()->card(newDxr3Card));
+
+    // emit
+    if (emitAudio)
+    	cSettings::instance()->emitChange(AUDIO);
+
+    if (emitBCS)
+        cSettings::instance()->emitChange(BCS);
 }
 
 // ==================================

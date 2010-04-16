@@ -30,6 +30,7 @@
 #include "dxr3audiodecoder.h"
 #include "dxr3spudecoder.h"
 #include "dxr3audio.h"
+#include "settings.h"
 #include "uncopyable.h"
 
 class cDxr3Name {
@@ -47,7 +48,7 @@ private:
   cDxr3Device is the interface for VDR devices.
   Is is the part, which VDR "talks" with our plugin.
 */
-class cDxr3Device : public cDevice, public Uncopyable {
+class cDxr3Device : public cDevice, public Uncopyable, public iSettingsObserver {
 public:
     static cDxr3Device *instance();
 
@@ -94,6 +95,9 @@ public:
     void clearButton();
 
     int ossSetPlayMode(uint32_t mode);
+
+    // observer
+    virtual void settingsChange(SettingsChange change);
 
 private:
     cDxr3Device();

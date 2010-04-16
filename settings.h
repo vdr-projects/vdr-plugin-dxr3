@@ -30,6 +30,7 @@
 #include "singleton.h"
 #include "accessors.h"
 #include <linux/em8300.h>
+#include <vector>
 
 // ==================================
 //! possible video modes
@@ -51,6 +52,15 @@ enum AudioDriver {
 enum Ac3AudioMode {
 	PCM_ENCAPSULATION = 0,
 	AC3_PASSTHROUGH
+};
+
+enum SettingsChange {
+    AUDIO,
+    BCS
+};
+class iSettingsObserver {
+public:
+    virtual void settingsChange(SettingsChange change) = 0;
 };
 
 // ==================================
@@ -83,6 +93,13 @@ public:
     Accessors<bool> loadFirmware;
     Accessors<AudioDriver> audioDriver;
     Accessors<Ac3AudioMode> ac3AudioMode;
+
+    // observer
+    void registerObserver(iSettingsObserver *observer);
+    void emitChange(SettingsChange change);
+
+private:
+    std::vector<iSettingsObserver *> observers;
 };
 
 #endif /*SETTINGS_H*/

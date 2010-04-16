@@ -64,3 +64,21 @@ bool cSettings::processArgs(int argc, char *argv[])
     }
     return true;
 }
+
+void cSettings::registerObserver(iSettingsObserver *observer)
+{
+    if (!observer)
+        return;
+
+    observers.push_back(observer);
+}
+
+void cSettings::emitChange(SettingsChange change)
+{
+    std::vector<iSettingsObserver *>::iterator iter = observers.begin();
+
+    while(iter != observers.end()) {
+        (*iter)->settingsChange(change);
+        iter++;
+    }
+}
