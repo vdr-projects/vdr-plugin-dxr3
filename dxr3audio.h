@@ -21,7 +21,6 @@
 #ifndef _AUDIO_H_
 #define _AUDIO_H_
 
-#include <string.h>
 #include <vdr/tools.h>  // for uchar
 
 struct SampleContext {
