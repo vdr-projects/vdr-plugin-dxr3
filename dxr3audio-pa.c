@@ -76,4 +76,12 @@ void cAudioPA::write(uchar* data, size_t size)
     }
 }
 
+void cAudioPA::flush()
+{
+    int ret = pa_simple_flush(s, &error);
+
+    if  (ret < 0) {
+        esyslog("[dxr3-audio-pa] failed to write audio data: %s", pa_strerror(error));
+    }
+}
 #endif

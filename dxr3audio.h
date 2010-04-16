@@ -38,6 +38,7 @@ public:
     virtual void releaseDevice() = 0;
     virtual void setup(int channels, int samplerate) = 0;
     virtual void write(uchar* data, size_t size) = 0;
+    virtual void flush() = 0;
 
     virtual void poll(cPoller &poller) { (void)poller; }
 

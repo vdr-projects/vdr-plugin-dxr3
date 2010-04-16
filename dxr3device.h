@@ -95,6 +95,7 @@ public:
     void clearButton();
 
     int ossSetPlayMode(uint32_t mode);
+    int ossFlush();
 
     // observer
     virtual void settingsChange(SettingsChange change);

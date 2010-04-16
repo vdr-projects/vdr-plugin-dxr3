@@ -85,6 +85,11 @@ void cAudioOss::write(uchar* data, size_t size)
     }
 }
 
+void cAudioOss::flush()
+{
+    CHECK(cDxr3Device::instance()->ossFlush());
+}
+
 void cAudioOss::poll(cPoller &poller)
 {
     poller.Add(fd, true);

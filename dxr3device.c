@@ -182,8 +182,7 @@ void cDxr3Device::Clear()
     uint32_t ioval = EM8300_SUBDEVICE_VIDEO;
     CHECK(ioctl(fdControl, EM8300_IOCTL_FLUSH, &ioval));
 
-    ioval = EM8300_SUBDEVICE_AUDIO;
-    CHECK(ioctl(fdControl, EM8300_IOCTL_FLUSH, &ioval));
+    audioOut->flush();
 
     cDevice::Clear();
 }
@@ -458,6 +457,12 @@ void cDxr3Device::clearButton()
 int cDxr3Device::ossSetPlayMode(uint32_t mode)
 {
     return ioctl(fdControl, EM8300_IOCTL_SET_AUDIOMODE, &mode);
+}
+
+int cDxr3Device::ossFlush()
+{
+	uint32_t ioval = EM8300_SUBDEVICE_AUDIO;
+	return ioctl(fdControl, EM8300_IOCTL_FLUSH, &ioval);
 }
 
 void cDxr3Device::settingsChange(SettingsChange change)

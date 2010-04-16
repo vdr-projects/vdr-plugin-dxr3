@@ -227,6 +227,11 @@ void cAudioAlsa::write(uchar* data, size_t size)
     }
 }
 
+void cAudioAlsa::flush()
+{
+	snd_pcm_drop(handle);
+}
+
 void cAudioAlsa::Xrun()
 {
     int res;
