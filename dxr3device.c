@@ -331,7 +331,7 @@ void cDxr3Device::SetVideoFormat(bool VideoFormat16_9)
                 wssmode = EM8300_WSS_OFF;
             }
 
-            CHECK(ioctl(fdControl, EM8300_IOCTL_SET_WSS, &wssmode);
+            CHECK(ioctl(fdControl, EM8300_IOCTL_SET_WSS, &wssmode));
         }
 #endif
     } else {
