@@ -36,6 +36,7 @@ cMenuSetupDxr3::cMenuSetupDxr3()
     menuVideoModes[1] = tr("PAL60");
     menuVideoModes[2] = tr("NTSC");
     Add(new cMenuEditStraItem(tr("Video mode"), &newVideoMode, 3, menuVideoModes));
+    newForceLetterBox = cSettings::instance()->forceLetterBox();
     Add(new cMenuEditBoolItem(tr("Toggle force letterbox"), &newForceLetterBox));
 
     menuAc3AudioModes[0] = tr("PCM encapsulation");
