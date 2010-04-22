@@ -587,6 +587,8 @@ void cDxr3Device::playVideoFrame(cDxr3PesFrame *frame, uint32_t pts)
     }
 
     // apply aspect ratio
+    uint32_t ratio = frame->aspectRatio();
+
     if (aspectRatio != ratio) {
     	if (ratio == EM8300_ASPECTRATIO_16_9)
     		SetVideoFormat(true);
