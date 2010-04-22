@@ -42,7 +42,7 @@ static const char *DEV_DXR3_CONT  = "";
 
 static const int SILENT_AUDIO_SIZE = 16384;
 
-cDxr3Device::cDxr3Device() : spuDecoder(NULL), pluginOn(true), vPts(0), scrSet(false), playCount(0)
+cDxr3Device::cDxr3Device() : spuDecoder(NULL), pluginOn(true), vPts(0), scrSet(false), playCount(0), aspectRatio(EM8300_ASPECTRATIO_4_3)
 {
     silentAudio = new uchar[SILENT_AUDIO_SIZE];
 
@@ -586,6 +586,17 @@ void cDxr3Device::playVideoFrame(cDxr3PesFrame *frame, uint32_t pts)
         CHECK(ioctl(fdVideo, EM8300_IOCTL_VIDEO_SETPTS, &val));
     }
 
+    // apply aspect ratio
+    if (aspectRatio != ratio) {
+    	if (ratio == EM8300_ASPECTRATIO_16_9)
+    		SetVideoFormat(true);
+    	else
+    		SetVideoFormat(false);
+
+    	aspectRatio = ratio;
+    }
+
+    // write video data
     const uint8_t *data = frame->payload();
     uint32_t len = frame->payloadSize();
 

@@ -139,6 +139,7 @@ private:
 
     uint32_t horizontal;
     uint32_t vertical;
+    uint32_t aspectRatio;
 
     static cDxr3Device *inst;
 };
