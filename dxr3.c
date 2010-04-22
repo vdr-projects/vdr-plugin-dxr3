@@ -48,7 +48,6 @@ cMenuSetupDxr3::cMenuSetupDxr3()
 #endif
     newUseDigitalOut = cSettings::instance()->useDigitalOut();
     Add(new cMenuEditBoolItem(tr("Digital audio output"), &newUseDigitalOut));
-    newHideMenu = cSettings::instance()->hideMenu();
     Add(new cMenuEditBoolItem(tr("Hide main menu entry"), &newHideMenu));
     newDxr3Card = cSettings::instance()->card();
     Add(new cMenuEditIntItem(tr("Card number"), &newDxr3Card, 0, DXR3_MAX_CARDS - 1));
@@ -80,7 +79,6 @@ void cMenuSetupDxr3::Store()
     SetupStore("ForceLetterBox", cSettings::instance()->forceLetterBox(newForceLetterBox));
     SetupStore("UseWSS", cSettings::instance()->useWss(newUseWSS));
     SetupStore("UseDigitalOut", cSettings::instance()->useDigitalOut(newUseDigitalOut));
-    SetupStore("HideMenu", cSettings::instance()->hideMenu(newHideMenu));
     SetupStore("Dxr3Card", cSettings::instance()->card(newDxr3Card));
 
     // emit
@@ -166,10 +164,6 @@ bool cPluginDxr3::SetupParse(const char *Name, const char *Value)
         cSettings::instance()->useWss(atoi(Value));
 	    return true;
     }
-    if (!strcasecmp(Name, "HideMenu")) {
-        cSettings::instance()->hideMenu(atoi(Value));
-	    return true;
-    }
     if (!strcasecmp(Name, "Brightness")) {
         cSettings::instance()->brightness(atoi(Value));
 	    return true;
@@ -189,8 +183,7 @@ bool cPluginDxr3::SetupParse(const char *Name, const char *Value)
 // ==================================
 const char* cPluginDxr3::MainMenuEntry()
 {
-    return cSettings::instance()->hideMenu() ?
-	NULL : tr(MAINMENUENTRY);
+    return NULL;
 }
 
 // ==================================
