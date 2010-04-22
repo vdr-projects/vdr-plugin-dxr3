@@ -21,34 +21,6 @@ static const char DESCRIPTION[]   = trNOOP("Hardware MPEG decoder");
 #define DXR3_MAX_CARDS 4
 
 // ==================================
-// 'message-handler' for the main screen
-eOSState cDxr3OsdItem::ProcessKey(eKeys Key)
-{
-    if (Key == kOk)
-    {
-	switch (m_item)
-	{
-	case DXR3_FORCE_LETTER_BOX:
-            cSettings::instance()->forceLetterBox(
-                !cSettings::instance()->forceLetterBox());
-	    break;
-
-	case DXR3_ANALOG_OUT:
-            cSettings::instance()->useDigitalOut(0);
-	    //cDxr3Device::Instance().Reset();
-	    break;
-
-	case DXR3_DIGITAL_OUT:
-            cSettings::instance()->useDigitalOut(1);
-	    //cDxr3Device::Instance().Reset();
-	    break;
-	}
-    }
-
-    return Key == kOk ? osBack : cOsdItem::ProcessKey(Key);
-}
-
-// ==================================
 // setup menu
 cMenuSetupDxr3::cMenuSetupDxr3()
 {
@@ -64,6 +36,7 @@ cMenuSetupDxr3::cMenuSetupDxr3()
     menuVideoModes[1] = tr("PAL60");
     menuVideoModes[2] = tr("NTSC");
     Add(new cMenuEditStraItem(tr("Video mode"), &newVideoMode, 3, menuVideoModes));
+    Add(new cMenuEditBoolItem(tr("Toggle force letterbox"), &newForceLetterBox));
 
     menuAc3AudioModes[0] = tr("PCM encapsulation");
     menuAc3AudioModes[1] = tr("AC3 passthrough");
@@ -104,6 +77,7 @@ void cMenuSetupDxr3::Store()
     SetupStore("Contrast", cSettings::instance()->contrast(newContrast));
     SetupStore("Saturation", cSettings::instance()->saturation(newSaturation));
     SetupStore("Dxr3VideoMode", cSettings::instance()->videoMode((eVideoMode) newVideoMode));
+    SetupStore("ForceLetterBox", cSettings::instance()->forceLetterBox(newForceLetterBox));
     SetupStore("UseWSS", cSettings::instance()->useWss(newUseWSS));
     SetupStore("UseDigitalOut", cSettings::instance()->useDigitalOut(newUseDigitalOut));
     SetupStore("HideMenu", cSettings::instance()->hideMenu(newHideMenu));
@@ -184,6 +158,10 @@ bool cPluginDxr3::SetupParse(const char *Name, const char *Value)
         cSettings::instance()->videoMode((eVideoMode) atoi(Value));
 	    return true;
     }
+    if (!strcasecmp(Name, "ForceLetterBox")) {
+        cSettings::instance()->forceLetterBox(atoi(Value));
+	    return true;
+    }
     if (!strcasecmp(Name, "UseWSS")) {
         cSettings::instance()->useWss(atoi(Value));
 	    return true;
@@ -218,7 +196,7 @@ const char* cPluginDxr3::MainMenuEntry()
 // ==================================
 cOsdObject* cPluginDxr3::MainMenuAction()
 {
-    return new cDxr3OsdMenu;
+    return NULL;
 }
 
 const char *cPluginDxr3::CommandLineHelp()

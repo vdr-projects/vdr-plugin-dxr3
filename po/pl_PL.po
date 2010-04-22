@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
 "Report-Msgid-Bugs-To: dxr3plugin-users@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-10-16 15:22+0200\n"
+"POT-Creation-Date: 2010-04-22 19:05+0200\n"
 "PO-Revision-Date: 2008-12-28 23:17+0200\n"
 "Last-Translator: Mikolaj Tutak <mtutak@nixz.net>\n"
 "Language-Team: <vdr@linuxtv.org>\n"
@@ -16,9 +16,6 @@ msgstr ""
 
 msgid "DXR3 Functions"
 msgstr "Ustawienia DXR3"
-
-msgid "Reset DXR3 hardware"
-msgstr "Zerowanie dekodera DXR3"
 
 msgid "Toggle force letterbox"
 msgstr "Przełącz wymuszanie trybu letterbox"
@@ -53,6 +50,15 @@ msgstr "NTSC"
 msgid "Video mode"
 msgstr "Tryb obrazu"
 
+msgid "PCM encapsulation"
+msgstr ""
+
+msgid "AC3 passthrough"
+msgstr ""
+
+msgid "AC3 mode"
+msgstr ""
+
 msgid "Use widescreen signaling (WSS)"
 msgstr ""
 
@@ -67,6 +73,9 @@ msgstr "Numer karty"
 
 msgid "DXR3: releasing devices"
 msgstr "DXR3: zwalnianie sprzętu"
+
+#~ msgid "Reset DXR3 hardware"
+#~ msgstr "Zerowanie dekodera DXR3"
 
 #~ msgid "OSD flush rate (ms)"
 #~ msgstr "Czas odświeżania OSD (ms)"

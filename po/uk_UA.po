@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
 "Report-Msgid-Bugs-To: dxr3plugin-users@lists.sourceforge.net\n"
-"POT-Creation-Date: 2009-10-16 15:22+0200\n"
+"POT-Creation-Date: 2010-04-22 19:05+0200\n"
 "PO-Revision-Date: 2009-05-28 23:17+0200\n"
 "Last-Translator: Yarema aka Knedlyk <yupadmin@gmail.com>\n"
 "Language-Team: <vdr@linuxtv.org>\n"
@@ -16,9 +16,6 @@ msgstr ""
 
 msgid "DXR3 Functions"
 msgstr "Налаштування DXR3"
-
-msgid "Reset DXR3 hardware"
-msgstr "Ресет DXR3"
 
 msgid "Toggle force letterbox"
 msgstr "Включити примусово режим letterbox"
@@ -53,6 +50,15 @@ msgstr "NTSC"
 msgid "Video mode"
 msgstr "Режим відео"
 
+msgid "PCM encapsulation"
+msgstr ""
+
+msgid "AC3 passthrough"
+msgstr ""
+
+msgid "AC3 mode"
+msgstr ""
+
 msgid "Use widescreen signaling (WSS)"
 msgstr "Використовувати широкий екран (WSS)"
 
@@ -67,6 +73,9 @@ msgstr "Номер карти"
 
 msgid "DXR3: releasing devices"
 msgstr "DXR3: звільнення пристрою"
+
+#~ msgid "Reset DXR3 hardware"
+#~ msgstr "Ресет DXR3"
 
 #~ msgid "OSD flush rate (ms)"
 #~ msgstr "Час оновленя OSD (мс)"
