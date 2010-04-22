@@ -172,45 +172,37 @@ cMenuSetupPage* cPluginDxr3::SetupMenu()
 // ==================================
 bool cPluginDxr3::SetupParse(const char *Name, const char *Value)
 {
-    if (!strcasecmp(Name, "UseDigitalOut"))
-    {
+    if (!strcasecmp(Name, "UseDigitalOut")) {
         cSettings::instance()->useDigitalOut(atoi(Value));
-	return true;
+	    return true;
     }
-    if (!strcasecmp(Name, "Dxr3Card"))
-    {
+    if (!strcasecmp(Name, "Dxr3Card")) {
         cSettings::instance()->card(atoi(Value));
-	return true;
+	    return true;
     }
-    if (!strcasecmp(Name, "Dxr3VideoMode"))
-    {
+    if (!strcasecmp(Name, "Dxr3VideoMode")) {
         cSettings::instance()->videoMode((eVideoMode) atoi(Value));
-	return true;
+	    return true;
     }
-    if (!strcasecmp(Name, "UseWSS"))
-    {
+    if (!strcasecmp(Name, "UseWSS")) {
         cSettings::instance()->useWss(atoi(Value));
-	return true;
+	    return true;
     }
-    if (!strcasecmp(Name, "HideMenu"))
-    {
+    if (!strcasecmp(Name, "HideMenu")) {
         cSettings::instance()->hideMenu(atoi(Value));
-	return true;
+	    return true;
     }
-    if (!strcasecmp(Name, "Brightness"))
-    {
+    if (!strcasecmp(Name, "Brightness")) {
         cSettings::instance()->brightness(atoi(Value));
-	return true;
+	    return true;
     }
-    if (!strcasecmp(Name, "Contrast"))
-    {
+    if (!strcasecmp(Name, "Contrast")) {
         cSettings::instance()->contrast(atoi(Value));
-	return true;
+        return true;
     }
-    if (!strcasecmp(Name, "Saturation"))
-    {
+    if (!strcasecmp(Name, "Saturation")) {
         cSettings::instance()->saturation(atoi(Value));
-	return true;
+        return true;
     }
 
     return false;
