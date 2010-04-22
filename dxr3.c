@@ -49,7 +49,6 @@ cMenuSetupDxr3::cMenuSetupDxr3()
 #endif
     newUseDigitalOut = cSettings::instance()->useDigitalOut();
     Add(new cMenuEditBoolItem(tr("Digital audio output"), &newUseDigitalOut));
-    Add(new cMenuEditBoolItem(tr("Hide main menu entry"), &newHideMenu));
     newDxr3Card = cSettings::instance()->card();
     Add(new cMenuEditIntItem(tr("Card number"), &newDxr3Card, 0, DXR3_MAX_CARDS - 1));
 }

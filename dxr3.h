@@ -27,7 +27,6 @@ private:
     const char *menuAc3AudioModes[2];
     int newForceLetterBox;
     int newUseWSS;
-    int newHideMenu;
     int newOsdFlushRate;
     int newBrightness;
     int newContrast;
