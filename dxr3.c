@@ -18,7 +18,7 @@ static const char DESCRIPTION[]   = trNOOP("Hardware MPEG decoder");
 #error "This version of the DXR3 plugin needs VDR API version >= 1.6.0"
 #endif
 
-#define DXR3_MAX_CARDS 4
+static const int DXR3_MAX_CARDS = 4;
 
 // ==================================
 // setup menu
