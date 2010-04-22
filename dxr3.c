@@ -101,9 +101,6 @@ public:
 
     bool Initialize();
 
-    const char* MainMenuEntry();
-    cOsdObject* MainMenuAction();
-
     virtual const char *CommandLineHelp();
     virtual bool ProcessArgs(int argc, char *argv[]);
 
@@ -179,18 +176,6 @@ bool cPluginDxr3::SetupParse(const char *Name, const char *Value)
     }
 
     return false;
-}
-
-// ==================================
-const char* cPluginDxr3::MainMenuEntry()
-{
-    return NULL;
-}
-
-// ==================================
-cOsdObject* cPluginDxr3::MainMenuAction()
-{
-    return NULL;
 }
 
 const char *cPluginDxr3::CommandLineHelp()
