@@ -28,11 +28,6 @@ eOSState cDxr3OsdItem::ProcessKey(eKeys Key)
     {
 	switch (m_item)
 	{
-	case DXR3_RESET_HARDWARE:
-            //cDxr3Interface::instance()->ResetHardware();
-	    //cDxr3Device::Instance().Reset();
-	    break;
-
 	case DXR3_FORCE_LETTER_BOX:
             cSettings::instance()->forceLetterBox(
                 !cSettings::instance()->forceLetterBox());

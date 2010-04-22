@@ -37,7 +37,6 @@ private:
 // ==================================
 enum eDxr3OsdItem
 {
-    DXR3_RESET_HARDWARE,
     DXR3_FORCE_LETTER_BOX,
     DXR3_DIGITAL_OUT,
     DXR3_ANALOG_OUT
@@ -67,8 +66,6 @@ public:
     {
 	Clear();
 	SetHasHotkeys();
-	Add(new cDxr3OsdItem(hk(tr("Reset DXR3 hardware")),
-			     DXR3_RESET_HARDWARE));
 	Add(new cDxr3OsdItem(hk(tr("Toggle force letterbox")),
 			     DXR3_FORCE_LETTER_BOX));
 
