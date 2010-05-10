@@ -279,6 +279,14 @@ int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
     	return Length;
     }
 
+    uint32_t pts = frame.pts();
+
+    if (pts == 0) {
+        pts = aPts;
+    } else {
+        aPts = pts;
+    }
+
     bool isAc3 = ((Id & 0xF0) == 0x80) || Id == 0xbd;
 
     if (!isAc3) {

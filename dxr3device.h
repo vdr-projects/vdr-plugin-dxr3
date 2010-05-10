@@ -134,6 +134,7 @@ private:
     int fdSpu;
 
     uint32_t vPts;
+    uint32_t aPts;
     bool scrSet;
     int playCount;
 
