@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
 "Report-Msgid-Bugs-To: dxr3plugin-users@lists.sourceforge.net\n"
-"POT-Creation-Date: 2010-04-22 19:05+0200\n"
+"POT-Creation-Date: 2010-04-30 20:05+0200\n"
 "PO-Revision-Date: 2008-12-28 23:17+0200\n"
 "Last-Translator: Christian Gmeiner <christian.gmeiner@gmail.com>\n"
 "Language-Team: <vdr@linuxtv.org>\n"
@@ -16,15 +16,6 @@ msgstr ""
 
 msgid "DXR3 Functions"
 msgstr "DXR3 Einstellungen"
-
-msgid "Toggle force letterbox"
-msgstr "Letterbox erzwingen"
-
-msgid "Switch to analog audio output"
-msgstr "Analoge Ausgabe"
-
-msgid "Switch to digital audio output"
-msgstr "Digitaler Ausgang"
 
 msgid "Hardware MPEG decoder"
 msgstr ""
@@ -50,6 +41,9 @@ msgstr "NTSC"
 msgid "Video mode"
 msgstr "Videomodus"
 
+msgid "Toggle force letterbox"
+msgstr "Letterbox erzwingen"
+
 msgid "PCM encapsulation"
 msgstr ""
 
@@ -65,14 +59,20 @@ msgstr ""
 msgid "Digital audio output"
 msgstr "Digitaler Audioausgang"
 
-msgid "Hide main menu entry"
-msgstr "Hauptmenüeintrag verstecken"
-
 msgid "Card number"
 msgstr "Karte"
 
 msgid "DXR3: releasing devices"
 msgstr "DXR3: Releasing Devices"
+
+#~ msgid "Switch to analog audio output"
+#~ msgstr "Analoge Ausgabe"
+
+#~ msgid "Switch to digital audio output"
+#~ msgstr "Digitaler Ausgang"
+
+#~ msgid "Hide main menu entry"
+#~ msgstr "Hauptmenüeintrag verstecken"
 
 #~ msgid "Reset DXR3 hardware"
 #~ msgstr "Reset DXR3 Hardware"

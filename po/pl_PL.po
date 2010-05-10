@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
 "Report-Msgid-Bugs-To: dxr3plugin-users@lists.sourceforge.net\n"
-"POT-Creation-Date: 2010-04-22 19:05+0200\n"
+"POT-Creation-Date: 2010-04-30 20:05+0200\n"
 "PO-Revision-Date: 2008-12-28 23:17+0200\n"
 "Last-Translator: Mikolaj Tutak <mtutak@nixz.net>\n"
 "Language-Team: <vdr@linuxtv.org>\n"
@@ -16,15 +16,6 @@ msgstr ""
 
 msgid "DXR3 Functions"
 msgstr "Ustawienia DXR3"
-
-msgid "Toggle force letterbox"
-msgstr "Przełącz wymuszanie trybu letterbox"
-
-msgid "Switch to analog audio output"
-msgstr "Przełącz w tryb dźwięku analogowego"
-
-msgid "Switch to digital audio output"
-msgstr "Przełącz w tryb dźwięku cyfrowego"
 
 msgid "Hardware MPEG decoder"
 msgstr "Sprzętowy dekoder MPEG"
@@ -50,6 +41,9 @@ msgstr "NTSC"
 msgid "Video mode"
 msgstr "Tryb obrazu"
 
+msgid "Toggle force letterbox"
+msgstr "Przełącz wymuszanie trybu letterbox"
+
 msgid "PCM encapsulation"
 msgstr ""
 
@@ -65,14 +59,20 @@ msgstr ""
 msgid "Digital audio output"
 msgstr "Cyfrowe wyjście dźwięku"
 
-msgid "Hide main menu entry"
-msgstr "Ukryj główny wpis w menu"
-
 msgid "Card number"
 msgstr "Numer karty"
 
 msgid "DXR3: releasing devices"
 msgstr "DXR3: zwalnianie sprzętu"
+
+#~ msgid "Switch to analog audio output"
+#~ msgstr "Przełącz w tryb dźwięku analogowego"
+
+#~ msgid "Switch to digital audio output"
+#~ msgstr "Przełącz w tryb dźwięku cyfrowego"
+
+#~ msgid "Hide main menu entry"
+#~ msgstr "Ukryj główny wpis w menu"
 
 #~ msgid "Reset DXR3 hardware"
 #~ msgstr "Zerowanie dekodera DXR3"

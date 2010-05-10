@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
 "Report-Msgid-Bugs-To: dxr3plugin-users@lists.sourceforge.net\n"
-"POT-Creation-Date: 2010-04-22 19:05+0200\n"
+"POT-Creation-Date: 2010-04-30 20:05+0200\n"
 "PO-Revision-Date: 2008-12-28 23:17+0200\n"
 "Last-Translator: Luca Olivetti <luca@ventoso.org>\n"
 "Language-Team: <vdr@linuxtv.org>\n"
@@ -16,15 +16,6 @@ msgstr ""
 
 msgid "DXR3 Functions"
 msgstr "Opcions DXR3"
-
-msgid "Toggle force letterbox"
-msgstr "Commuta modalitat letterbox forçada"
-
-msgid "Switch to analog audio output"
-msgstr "Selecciona sortida àudio analògica"
-
-msgid "Switch to digital audio output"
-msgstr "Selecciona sortida àudio digital"
 
 msgid "Hardware MPEG decoder"
 msgstr "Descodificador MPEG Hardware"
@@ -50,6 +41,9 @@ msgstr "NTSC"
 msgid "Video mode"
 msgstr "Modalitat vídeo"
 
+msgid "Toggle force letterbox"
+msgstr "Commuta modalitat letterbox forçada"
+
 msgid "PCM encapsulation"
 msgstr ""
 
@@ -65,14 +59,20 @@ msgstr ""
 msgid "Digital audio output"
 msgstr "Sortida àudio digital"
 
-msgid "Hide main menu entry"
-msgstr "Amaga entrada menú"
-
 msgid "Card number"
 msgstr "Targeta"
 
 msgid "DXR3: releasing devices"
 msgstr "DXR3: alliberant dispositiu"
+
+#~ msgid "Switch to analog audio output"
+#~ msgstr "Selecciona sortida àudio analògica"
+
+#~ msgid "Switch to digital audio output"
+#~ msgstr "Selecciona sortida àudio digital"
+
+#~ msgid "Hide main menu entry"
+#~ msgstr "Amaga entrada menú"
 
 #~ msgid "Reset DXR3 hardware"
 #~ msgstr "Reset hardware DXR3"
