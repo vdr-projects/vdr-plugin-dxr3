@@ -47,8 +47,6 @@ bool cSettings::processArgs(int argc, char *argv[])
         case 'a':
             if (optarg && strcmp(optarg, "alsa") == 0) {
                 audioDriver(ALSA);
-            } else if (optarg && strcmp(optarg, "oss") == 0) {
-                audioDriver(OSS);
 #ifdef PULSEAUDIO
             } else if (optarg && strcmp(optarg, "pa") == 0) {
                 audioDriver(PA);

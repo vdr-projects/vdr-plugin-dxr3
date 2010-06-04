@@ -181,11 +181,11 @@ const char *cPluginDxr3::CommandLineHelp()
 {
     return "  -f          --firmware-loading        Enable automatic firmware loading\n" \
            "  -a DRIVER   --audio-driver=DRIVER     Select wanted audio driver" \
-           "                                         - alsa "
+           "                                         - alsa (default)"
 #ifdef PULSEAUDIO
            "                                         - pa (PulseAudio)"
 #endif
-           "                                         - oss (default)";
+           ;
 }
 
 bool cPluginDxr3::ProcessArgs(int argc, char *argv[])

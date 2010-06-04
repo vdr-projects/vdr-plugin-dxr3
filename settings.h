@@ -42,8 +42,7 @@ enum eVideoMode
 };
 
 enum AudioDriver {
-    OSS = 0,
-    ALSA,
+    ALSA = 0,
 #ifdef PULSEAUDIO
     PA
 #endif
@@ -75,7 +74,7 @@ class cSettings : public Singleton<cSettings>
 public:
     cSettings() : useDigitalOut(0), card(0), forceLetterBox(0), videoMode(PAL),
                   brightness(500), contrast(500), saturation(500),
-                  useWss(0), loadFirmware(false), audioDriver(OSS),
+                  useWss(0), loadFirmware(false), audioDriver(ALSA),
                   ac3AudioMode(PCM_ENCAPSULATION) {}
 
     bool processArgs(int argc, char *argv[]);

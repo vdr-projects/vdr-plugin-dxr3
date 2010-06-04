@@ -86,7 +86,7 @@ OBJS = $(PLUGIN).o dxr3multichannelaudio.o \
 	dxr3audiodecoder.o dxr3blackframe.o dxr3audio.o \
         dxr3pesframe.o settings.o \
 	dxr3device.o dxr3osd.o dxr3spudecoder.o \
-        dxr3audio-oss.o dxr3audio-alsa.o dxr3audio-pa.o \
+        dxr3audio-alsa.o dxr3audio-pa.o \
         spuencoder.o spuregion.o scaler.o
 
 ### Default target:
