@@ -40,6 +40,7 @@ static const char *DEV_DXR3_VIDEO = "_mv";
 static const char *DEV_DXR3_CONT  = "";
 
 static const int SILENT_AUDIO_SIZE = 16384;
+static const int TIMESTAMPS_500MS = 45000;
 
 cDxr3Device::cDxr3Device() : spuDecoder(NULL), pluginOn(true), vPts(0), scrSet(false), playCount(0), aspectRatio(EM8300_ASPECTRATIO_4_3)
 {
@@ -148,7 +149,7 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
         // set the scr into future so that the firmware/hardware
         // clears the buffers.
         CHECK(ioctl(fdControl, EM8300_IOCTL_SCR_GET, &val));
-        val += 10000;
+        val += TIMESTAMPS_500MS * 4;
         CHECK(ioctl(fdControl, EM8300_IOCTL_SCR_SET, &val));
         break;
 
@@ -583,8 +584,7 @@ void cDxr3Device::setPlayMode()
 void cDxr3Device::playVideoFrame(cDxr3PesFrame *frame, uint32_t pts)
 {
     if (pts > 0) {
-        uint32_t val = pts + 45000;
-        val = pts - offset;
+        uint32_t val = pts - offset;
         CHECK(ioctl(fdVideo, EM8300_IOCTL_VIDEO_SETPTS, &val));
     }
 
@@ -640,7 +640,7 @@ void cDxr3Device::setScr(uint32_t val)
 {
     uint32_t scr;
     CHECK(ioctl(fdControl, EM8300_IOCTL_SCR_GET, &scr));
-    offset = val - scr;
+    offset = val - scr - TIMESTAMPS_500MS;
 }
 
 // Local variables:
