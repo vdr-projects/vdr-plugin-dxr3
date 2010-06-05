@@ -42,7 +42,7 @@ static const char *DEV_DXR3_CONT  = "";
 static const int SILENT_AUDIO_SIZE = 16384;
 static const int TIMESTAMPS_500MS = 45000;
 
-cDxr3Device::cDxr3Device() : spuDecoder(NULL), pluginOn(true), vPts(0), scrSet(false), playCount(0), aspectRatio(EM8300_ASPECTRATIO_4_3)
+cDxr3Device::cDxr3Device() : spuDecoder(NULL), pluginOn(true), vPts(0), scrSet(false), aspectRatio(EM8300_ASPECTRATIO_4_3)
 {
     silentAudio = new uchar[SILENT_AUDIO_SIZE];
 
@@ -143,7 +143,6 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
         playBlackFrame();
         audioOut->setEnabled(false);
         scrSet = false;
-        playCount = 0;
 
         // here we use some magic
         // set the scr into future so that the firmware/hardware
@@ -252,14 +251,6 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
         scrSet = true;
     }
     playVideoFrame(&frame, vPts);
-
-    if (playCount < 7) {
-        playCount++;
-    }
-    if (playCount == 7) {
-        setPlayMode();
-        playCount = 8;
-    }
 
     return Length;
 }
@@ -509,6 +500,7 @@ void cDxr3Device::claimDevices()
     // get bcs values from driver
     CHECK(ioctl(fdControl, EM8300_IOCTL_GETBCS, &bcs));
 
+    setPlayMode();
     playBlackFrame();
 }
 

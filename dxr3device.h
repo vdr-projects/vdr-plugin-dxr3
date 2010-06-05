@@ -136,7 +136,6 @@ private:
     uint32_t vPts;
     uint32_t aPts;
     bool scrSet;
-    int playCount;
 
     uint32_t horizontal;
     uint32_t vertical;
