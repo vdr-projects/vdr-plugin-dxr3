@@ -114,7 +114,7 @@ private:
     void uploadFirmware();
     void setPlayMode();
     void playVideoFrame(cDxr3PesFrame *frame, uint32_t pts);
-    void playBlackFrame();
+    void playBlackFrame(uint32_t pts);
     void playSilentAudio();
     void writeRegister(int reg, int value);
     void setScr(uint32_t val);

@@ -140,7 +140,6 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
     switch (PlayMode) {
     case pmNone:
         playSilentAudio();
-        playBlackFrame();
         audioOut->setEnabled(false);
         scrSet = false;
 
@@ -150,6 +149,8 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
         CHECK(ioctl(fdControl, EM8300_IOCTL_SCR_GET, &val));
         val += TIMESTAMPS_500MS * 4;
         CHECK(ioctl(fdControl, EM8300_IOCTL_SCR_SET, &val));
+
+        playBlackFrame(val + TIMESTAMPS_500MS);
         break;
 
     case pmAudioVideo:
@@ -501,7 +502,7 @@ void cDxr3Device::claimDevices()
     CHECK(ioctl(fdControl, EM8300_IOCTL_GETBCS, &bcs));
 
     setPlayMode();
-    playBlackFrame();
+    playBlackFrame(TIMESTAMPS_500MS);
 }
 
 void cDxr3Device::releaseDevices()
@@ -568,6 +569,9 @@ void cDxr3Device::uploadFirmware()
 
 void cDxr3Device::setPlayMode()
 {
+    uint32_t val = 0;
+    CHECK(ioctl(fdControl, EM8300_IOCTL_SCR_SET, &val));
+
     int ioval = EM8300_PLAYMODE_PLAY;
     CHECK(ioctl(fdControl, EM8300_IOCTL_SET_PLAYMODE, &ioval));
     writeRegister(0, MVCOMMAND_SYNC);
@@ -599,10 +603,12 @@ void cDxr3Device::playVideoFrame(cDxr3PesFrame *frame, uint32_t pts)
     WriteAllOrNothing(fdVideo, data, len, 1000, 10);
 }
 
-void cDxr3Device::playBlackFrame()
+void cDxr3Device::playBlackFrame(uint32_t pts)
 {
     extern char blackframe[];
     extern int blackframeLength;
+
+    CHECK(ioctl(fdVideo, EM8300_IOCTL_VIDEO_SETPTS, &pts));
 
     for (int i = 0; i < 3; i++) {
         WriteAllOrNothing(fdVideo, (const uchar*)blackframe, blackframeLength, 1000, 10);
