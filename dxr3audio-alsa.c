@@ -125,7 +125,7 @@ void cAudioAlsa::setup(int channels, int samplerate)
         esyslog("[dxr3-audio-alsa] Unable to set samplerate %d: %s", samplerate, snd_strerror(err));
     }
 
-    static unsigned int buffer_time = 500000;               // ring buffer length in us
+    static unsigned int buffer_time = 400000;               // ring buffer length in us
     static unsigned int period_time = 100000;               // period time in us
     snd_pcm_uframes_t size;
 
