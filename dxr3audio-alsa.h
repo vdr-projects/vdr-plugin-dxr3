@@ -44,6 +44,8 @@ private:
     snd_pcm_status_t *status;
     size_t bytesFrame;
 
+    snd_pcm_sframes_t (*pcm_write_func)(snd_pcm_t*, const void*,  snd_pcm_uframes_t);
+
     void Xrun();
 };
 

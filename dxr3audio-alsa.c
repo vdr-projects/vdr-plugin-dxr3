@@ -92,9 +92,17 @@ void cAudioAlsa::setup(int channels, int samplerate)
     }
 
     // set access type
-    err = snd_pcm_hw_params_set_access(handle, alsa_hwparams, SND_PCM_ACCESS_RW_INTERLEAVED);
+    pcm_write_func = &snd_pcm_mmap_writei;
+    err = snd_pcm_hw_params_set_access(handle, alsa_hwparams, SND_PCM_ACCESS_MMAP_INTERLEAVED);
     if (err < 0) {
-        esyslog("[dxr3-audio-alsa] Unable to set access type: %s", snd_strerror(err));
+        esyslog("[dxr3-audio-alsa] mmap not available, attempting to fall back to slow writes");
+
+        pcm_write_func = &snd_pcm_writei;
+        err = snd_pcm_hw_params_set_access(handle, alsa_hwparams, SND_PCM_ACCESS_RW_INTERLEAVED);
+        if (err < 0) {
+            esyslog("[dxr3-audio-alsa] Unable to set access type: %s", snd_strerror(err));
+            exit(-2);
+        }
     }
 
     // set format
@@ -228,10 +236,10 @@ void cAudioAlsa::write(uchar* data, size_t size)
     snd_pcm_sframes_t res = 0;
 
     while (frames > 0) {
-        res = snd_pcm_writei(handle, output_samples, frames);
+        res = pcm_write_func(handle, output_samples, frames);
 
         if (res == -EAGAIN) {
-            snd_pcm_wait(handle, 500);
+            snd_pcm_wait(handle, 10);
         } else  if (res == -EINTR) {
             // nothing to do
             res = 0;
