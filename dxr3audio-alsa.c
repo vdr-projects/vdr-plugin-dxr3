@@ -117,11 +117,31 @@ void cAudioAlsa::setup(int channels, int samplerate)
         esyslog("[dxr3-audio-alsa] Unable to set samplerate %d: %s", samplerate, snd_strerror(err));
     }
 
-    if (snd_pcm_state(handle) == SND_PCM_STATE_RUNNING) {
-        if ((err = snd_pcm_drain(handle)) < 0) {
-            esyslog("[dxr3-audio-alsa] Cannot drain (%s); will try to set parameters anyway\n", snd_strerror(err));
-        }
+    static unsigned int buffer_time = 500000;               // ring buffer length in us
+    static unsigned int period_time = 100000;               // period time in us
+    snd_pcm_uframes_t size;
+
+    // set the buffer time
+    err = snd_pcm_hw_params_set_buffer_time_near(handle, alsa_hwparams, &buffer_time, NULL);
+    if (err < 0) {
+        esyslog("[dxr3-audio-alsa] Unable to set buffer time %i for playback: %s\n", buffer_time, snd_strerror(err));
     }
+    err = snd_pcm_hw_params_get_buffer_size(alsa_hwparams, &size);
+    if (err < 0) {
+        esyslog("[dxr3-audio-alsa] Unable to get buffer size for playback: %s\n", snd_strerror(err));
+    }
+    snd_pcm_sframes_t buffer_size = size;
+
+    // set the period time
+    err = snd_pcm_hw_params_set_period_time_near(handle, alsa_hwparams, &period_time, NULL);
+    if (err < 0) {
+        esyslog("[dxr3-audio-alsa] Unable to set period time %i for playback: %s\n", period_time, snd_strerror(err));
+    }
+    err = snd_pcm_hw_params_get_period_size(alsa_hwparams, &size, NULL);
+    if (err < 0) {
+        esyslog("[dxr3-audio-alsa] Unable to get period size for playback: %s\n", snd_strerror(err));
+    }
+    snd_pcm_sframes_t period_size = size;
 
     // set hardware pararmeters
     err = snd_pcm_hw_params(handle, alsa_hwparams);
@@ -137,18 +157,23 @@ void cAudioAlsa::setup(int channels, int samplerate)
 
     //
     // set software settings
-
     err = snd_pcm_sw_params_current(handle, alsa_swparams);
     if (err < 0) {
         esyslog("[dxr3-audio-alsa] Cannot get current sw params: %s", snd_strerror(err));
     }
 
-    static snd_pcm_uframes_t chunk_size = 1024;
-
-    // start playing when one period has been written
-    err = snd_pcm_sw_params_set_start_threshold(handle, alsa_swparams, chunk_size);
+    // start the transfer when the buffer is almost full: */
+    // (buffer_size / avail_min) * avail_min */
+    err = snd_pcm_sw_params_set_start_threshold(handle, alsa_swparams, (buffer_size / period_size) * period_size);
     if (err < 0) {
-        esyslog("[dxr3-audio-alsa] Failed to set chunk_size: %s", snd_strerror(err));
+        esyslog("[dxr3-audio-alsa] Unable to set start threshold mode for playback: %s\n", snd_strerror(err));
+    }
+
+    // allow the transfer when at least period_size samples can be processed */
+    // or disable this mechanism when period event is enabled (aka interrupt like style processing) */
+    err = snd_pcm_sw_params_set_avail_min(handle, alsa_swparams, buffer_size);
+    if (err < 0) {
+        esyslog("[dxr3-audio-alsa] Unable to set avail min for playback: %s\n", snd_strerror(err));
     }
 
     snd_pcm_uframes_t boundary;
@@ -229,7 +254,15 @@ void cAudioAlsa::write(uchar* data, size_t size)
 
 void cAudioAlsa::flush()
 {
-	snd_pcm_drop(handle);
+    int err = snd_pcm_drop(handle);
+    if (err < 0) {
+        esyslog("[dxr3-audio-alsa] failed to pcm_drop: %s", snd_strerror(err));
+    }
+
+    err = snd_pcm_prepare(handle);
+    if (err < 0) {
+        esyslog("[dxr3-audio-alsa] failed to pcm_prepare: %s", snd_strerror(err));
+    }
 }
 
 void cAudioAlsa::Xrun()
