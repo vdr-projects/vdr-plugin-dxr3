@@ -65,6 +65,7 @@ INCLUDES += -I$(VDRDIR)/include $(FFMPEG_INC) $(EM8300_INC) $(ALSA_INC)
 LIBS      = $(FFMPEG_LIBS) $(ALSA_LIBS)
 DEFINES  += -DPLUGIN_NAME_I18N='"$(PLUGIN)"'
 DEFINES  += -D_GNU_SOURCE
+DEFINES  += -D__STDC_CONSTANT_MACROS
 
 # where is the microcode for the dxr3 located?  em8300 driver version 0.15.2
 # and later installs it by default to /lib/firmware/em8300.bin, and earlier
