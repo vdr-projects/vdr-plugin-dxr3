@@ -262,15 +262,26 @@ void cAudioAlsa::write(uchar* data, size_t size)
 
 void cAudioAlsa::flush()
 {
-    int err = snd_pcm_drop(handle);
+    snd_pcm_nonblock(handle, 0);
+    int err = snd_pcm_drain(handle);
     if (err < 0) {
         esyslog("[dxr3-audio-alsa] failed to pcm_drop: %s", snd_strerror(err));
     }
+    snd_pcm_nonblock(handle, 1);
 
     err = snd_pcm_prepare(handle);
     if (err < 0) {
         esyslog("[dxr3-audio-alsa] failed to pcm_prepare: %s", snd_strerror(err));
     }
+}
+
+void cAudioAlsa::setDigitalAudio(bool on)
+{
+    if (digitalAudio == on) {
+        return;
+    }
+
+    // TODO stub
 }
 
 void cAudioAlsa::Xrun()
