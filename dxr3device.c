@@ -44,13 +44,6 @@ static const int TIMESTAMPS_500MS = 45000;
 
 cDxr3Device::cDxr3Device() : spuDecoder(NULL), pluginOn(true), vPts(0), scrSet(false), aspectRatio(EM8300_ASPECTRATIO_4_3)
 {
-    silentAudio = new uchar[SILENT_AUDIO_SIZE];
-
-    if (!silentAudio) {
-        esyslog("[dxr3-device] failed to allocate silent audio data");
-        exit(-2);
-    }
-
     claimDevices();
 
     switch (cSettings::instance()->audioDriver()) {
@@ -78,7 +71,6 @@ cDxr3Device::~cDxr3Device()
     audioOut->releaseDevice();
     delete audioOut;
     delete aDecoder;
-    delete[] silentAudio;
 
     releaseDevices();
 
@@ -139,8 +131,8 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
 
     switch (PlayMode) {
     case pmNone:
-        playSilentAudio();
         audioOut->setEnabled(false);
+        audioOut->flush();
         scrSet = false;
 
         // here we use some magic
@@ -616,11 +608,6 @@ void cDxr3Device::playBlackFrame(uint32_t pts)
 
     horizontal = 720;
     vertical = 576;
-}
-
-void cDxr3Device::playSilentAudio()
-{
-    audioOut->write(silentAudio, SILENT_AUDIO_SIZE);
 }
 
 void cDxr3Device::writeRegister(int reg, int value)

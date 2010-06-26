@@ -115,13 +115,11 @@ private:
     void setPlayMode();
     void playVideoFrame(cDxr3PesFrame *frame, uint32_t pts);
     void playBlackFrame(uint32_t pts);
-    void playSilentAudio();
     void writeRegister(int reg, int value);
     void setScr(uint32_t val);
 
     int offset;
     cMutex mutex;
-    uchar *silentAudio;
     cDxr3AudioDecoder *aDecoder;
     cDxr3SpuDecoder* spuDecoder;
     iAudio *audioOut;
