@@ -20,12 +20,6 @@
  *
  */
 
-
-/*
-  ToDo:
-  - cDxr3AudioDecoder::Init: Why are we always reinit the codec?
-*/
-
 #include <algorithm>
 #include "dxr3audiodecoder.h"
 #include "dxr3pesframe.h"
