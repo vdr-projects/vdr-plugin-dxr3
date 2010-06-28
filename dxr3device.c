@@ -134,6 +134,10 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
         audioOut->flush();
         scrSet = false;
 
+        // reset pts values
+        vPts = 0;
+        aPts = 0;
+
         // here we use some magic
         // set the scr into future so that the firmware/hardware
         // clears the buffers.
