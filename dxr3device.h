@@ -99,9 +99,6 @@ public:
     void setButton(uint16_t sx, uint16_t sy, uint16_t ex, uint16_t ey, uint32_t palette);
     void clearButton();
 
-    int ossSetPlayMode(uint32_t mode);
-    int ossFlush();
-
     // observer
     virtual void settingsChange(SettingsChange change);
 

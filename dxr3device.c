@@ -39,7 +39,6 @@ static const char *DEV_DXR3_OSD   = "_sp";
 static const char *DEV_DXR3_VIDEO = "_mv";
 static const char *DEV_DXR3_CONT  = "";
 
-static const int SILENT_AUDIO_SIZE = 16384;
 static const int TIMESTAMPS_500MS = 45000;
 
 cDxr3Device::cDxr3Device() : spuDecoder(NULL), pluginOn(true), vPts(0), scrSet(false), aspectRatio(EM8300_ASPECTRATIO_4_3)
@@ -216,6 +215,7 @@ void cDxr3Device::StillPicture(const uchar *Data, int Length)
 
 bool cDxr3Device::Poll(cPoller &Poller, int TimeoutMs)
 {
+    dsyslog("[dxr3-device] Poll");
     Poller.Add(fdVideo, true);
     audioOut->poll(Poller);
     return Poller.Poll(TimeoutMs);
@@ -444,17 +444,6 @@ void cDxr3Device::clearButton()
     button.right = 2;
 
     CHECK(ioctl(fdSpu, EM8300_IOCTL_SPU_BUTTON, &button))
-}
-
-int cDxr3Device::ossSetPlayMode(uint32_t mode)
-{
-    return ioctl(fdControl, EM8300_IOCTL_SET_AUDIOMODE, &mode);
-}
-
-int cDxr3Device::ossFlush()
-{
-	uint32_t ioval = EM8300_SUBDEVICE_AUDIO;
-	return ioctl(fdControl, EM8300_IOCTL_FLUSH, &ioval);
 }
 
 void cDxr3Device::settingsChange(SettingsChange change)
