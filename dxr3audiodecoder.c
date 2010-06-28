@@ -225,35 +225,6 @@ void cDxr3AudioDecoder::DecodeLpcm(cDxr3PesFrame *frame, uint32_t pts, cDxr3Sync
         }
     }
 }
-
-// ==================================
-//! decode ac3
-void cDxr3AudioDecoder::DecodeAc3Dts(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf)
-{
-    uint8_t *buf = (uint8_t *)frame->GetPayload();
-    int length = frame->GetPayloadLength();
-
-    ac3dtsDecoder.Check(buf, length, (uint8_t *)frame->GetPesStart());
-    ac3dtsDecoder.Encapsulate(buf, length);
-
-    cFrame* pFrame = 0;
-    while ((pFrame = rbuf.Get())) {
-        if (pFrame && pFrame->Count()) {
-            cDxr3PesFrame tempPes;
-            tempPes.parse(pFrame->Data(), pFrame->Count());
-            int pesHeaderLength = (int) (tempPes.GetPayload() - tempPes.GetPesStart());
-            uint8_t* pData = pFrame->Data() + pesHeaderLength + LPCM_HEADER_LENGTH;
-
-            for (int i = 0; i < pFrame->Count() - pesHeaderLength - LPCM_HEADER_LENGTH; i += 2) {
-                std::swap(pData[i], pData[i + 1]);
-            }
-
-            aBuf.Push(pFrame->Data() + pesHeaderLength + LPCM_HEADER_LENGTH, pFrame->Count() - pesHeaderLength - 7, tempPes.GetPts());
-            if (pFrame)
-                rbuf.Drop(pFrame);
-        }
-    }
-}
 #endif
 // ==================================
 //! checking routine
