@@ -42,11 +42,18 @@ cDecoder::cDecoder() : rbuf(50000), ac3dtsDecoder(&rbuf)
     avcodec_init();
     avcodec_register_all();
 
-    // look for decoder
+    // look for audio decoder
     audio = avcodec_find_decoder(CODEC_ID_MP3);
-
     if (!audio) {
         esyslog("[dxr3-decoder] no suitable audio codec found.");
+        esyslog("[dxr3-decoder] check your ffmpeg installation.");
+        exit(-1);
+    }
+
+    // look for video codec
+    video = avcodec_find_decoder(CODEC_ID_MPEG2VIDEO);
+    if (!video) {
+        esyslog("[dxr3-decoder] no suitable video codec found.");
         esyslog("[dxr3-decoder] check your ffmpeg installation.");
         exit(-1);
     }
@@ -60,6 +67,13 @@ cDecoder::cDecoder() : rbuf(50000), ac3dtsDecoder(&rbuf)
         exit(-1);
     }
 
+    contextVideo = avcodec_alloc_context();
+    ret = avcodec_open(contextVideo, video);
+    if (ret < 0) {
+        esyslog("[dxr3-decoder] failed to open codec %s.", video->name);
+        exit(-1);
+    }
+
     lastBitrate = 0xff; // init with an invalid value - see checkMpegAudioHdr;
 }
 
@@ -69,6 +83,7 @@ cDecoder::~cDecoder()
 {
     // close codec, if it is open
     avcodec_close(contextAudio);
+    avcodec_close(contextVideo);
 }
 
 // ==================================

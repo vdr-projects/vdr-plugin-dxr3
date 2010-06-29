@@ -63,7 +63,9 @@ private:
     int calcFrameSize(const uint8_t *header);
 
     AVCodec *audio;
+    AVCodec *video;
     AVCodecContext *contextAudio;
+    AVCodecContext *contextVideo;
     AVPacket avpkt;
 
     cRingBufferFrame rbuf;
