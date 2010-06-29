@@ -211,7 +211,7 @@ void cDxr3Device::StillPicture(const uchar *Data, int Length)
     // frame or to non-pes data. This could be the
     // case for the radio-Plugin, which points to an
     // elementary stream.
-    if (!Data)
+    if (!Data || Length < TS_SIZE)
        return;
 
     if (Data[0] == 0x47) {
