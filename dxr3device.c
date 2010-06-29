@@ -205,19 +205,23 @@ void cDxr3Device::Mute()
 void cDxr3Device::StillPicture(const uchar *Data, int Length)
 {
     dsyslog("[dxr3-device] stillpciture");
-
-    // clear used buffers of output threads
+    cDxr3PesFrame frame;
 
     // we need to check if Data points to a pes
     // frame or to non-pes data. This could be the
     // case for the radio-Plugin, which points to an
     // elementary stream.
-    cDxr3PesFrame frame;
+    if (!Data)
+       return;
 
-    if (frame.parse(Data, Length)) {
-        // TODO
+    if (Data[0] == 0x47) {
+       // TS data
+       cDevice::StillPicture(Data, Length);
+    } else if (frame.parse(Data, Length)) {
+        // PES data
     } else {
-        // TODO
+        // unknown data
+        dsyslog("[dxr3-device] StillPicture: TODO %08x %08x %08x", Data[0], Data[1], Data[2]);
     }
 }
 
