@@ -173,12 +173,16 @@ void cDxr3Device::TrickSpeed(int Speed)
 void cDxr3Device::Clear()
 {
     dsyslog("[dxr3-device] clear");
+    uint32_t val = 0;
 
-    uint32_t ioval = EM8300_SUBDEVICE_VIDEO;
-    CHECK(ioctl(fdControl, EM8300_IOCTL_FLUSH, &ioval));
+    // here we use some magic
+    // set the scr into future so that the firmware/hardware
+    // clears the buffers.
+    CHECK(ioctl(fdControl, EM8300_IOCTL_SCR_GET, &val));
+    val += TIMESTAMPS_500MS * 4;
+    CHECK(ioctl(fdControl, EM8300_IOCTL_SCR_SET, &val));
 
     audioOut->flush();
-
     cDevice::Clear();
 }
 
