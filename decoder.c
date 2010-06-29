@@ -1,27 +1,32 @@
 /*
- * dxr3audiodecoder.c
+ *           _                 _             _                 _          _____
+ * __   ____| |_ __      _ __ | |_   _  __ _(_)_ __         __| |_  ___ _|___ /
+ * \ \ / / _` | '__|____| '_ \| | | | |/ _` | | '_ \ _____ / _` \ \/ / '__||_ \
+ *  \ V / (_| | | |_____| |_) | | |_| | (_| | | | | |_____| (_| |>  <| |  ___) |
+ *   \_/ \__,_|_|       | .__/|_|\__,_|\__, |_|_| |_|      \__,_/_/\_\_| |____/
+ *                      |_|            |___/
  *
  * Copyright (C) 2002-2004 Kai Möller
- * Copyright (C) 2004-2009 Christian Gmeiner
+ * Copyright (C) 2004-2010 Christian Gmeiner
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This file is part of vdr-plugin-dxr3.
  *
- * This library is distributed in the hope that it will be useful,
+ * vdr-plugin-dxr3 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation version 2.
+ *
+ * vdr-plugin-dxr3 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ * You should have received a copy of the GNU General Public License
+ * along with dxr3-plugin.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
 #include <algorithm>
-#include "dxr3audiodecoder.h"
+#include "decoder.h"
 #include "dxr3pesframe.h"
 #include "dxr3audio.h"
 #include "settings.h"
@@ -31,7 +36,7 @@ const int LPCM_HEADER_LENGTH = 7;
 
 // ==================================
 //! constructor
-cDxr3AudioDecoder::cDxr3AudioDecoder() : rbuf(50000), ac3dtsDecoder(&rbuf)
+cDecoder::cDecoder() : rbuf(50000), ac3dtsDecoder(&rbuf)
 {
     // setup ffmpeg
     avcodec_init();
@@ -60,7 +65,7 @@ cDxr3AudioDecoder::cDxr3AudioDecoder() : rbuf(50000), ac3dtsDecoder(&rbuf)
 
 // ==================================
 //! deconst.
-cDxr3AudioDecoder::~cDxr3AudioDecoder()
+cDecoder::~cDecoder()
 {
     // close codec, if it is open
     avcodec_close(contextAudio);
@@ -68,7 +73,7 @@ cDxr3AudioDecoder::~cDxr3AudioDecoder()
 
 // ==================================
 //! (re)init ffmpeg codec
-void cDxr3AudioDecoder::Init()
+void cDecoder::Init()
 {
     avcodec_close(contextAudio);
 
@@ -82,7 +87,7 @@ void cDxr3AudioDecoder::Init()
     }
 }
 
-void cDxr3AudioDecoder::decode(cDxr3PesFrame *frame, iAudio *audio)
+void cDecoder::decode(cDxr3PesFrame *frame, iAudio *audio)
 {
     int len, out_size;
 
@@ -137,7 +142,7 @@ void cDxr3AudioDecoder::decode(cDxr3PesFrame *frame, iAudio *audio)
     }
 }
 
-void cDxr3AudioDecoder::ac3dts(cDxr3PesFrame *frame, iAudio *audio)
+void cDecoder::ac3dts(cDxr3PesFrame *frame, iAudio *audio)
 {
     if (cSettings::instance()->ac3AudioMode() == PCM_ENCAPSULATION) {
 
@@ -169,7 +174,7 @@ void cDxr3AudioDecoder::ac3dts(cDxr3PesFrame *frame, iAudio *audio)
 #if 0
 // ==================================
 //! decode lpcm
-void cDxr3AudioDecoder::DecodeLpcm(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf)
+void cDecoder::DecodeLpcm(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf)
 {
     const uint8_t *buf = frame->GetPayload();
     int length = frame->GetPayloadLength();
@@ -222,7 +227,7 @@ void cDxr3AudioDecoder::DecodeLpcm(cDxr3PesFrame *frame, uint32_t pts, cDxr3Sync
 #endif
 // ==================================
 //! checking routine
-bool cDxr3AudioDecoder::checkMpegAudioHdr(const uint8_t *head)
+bool cDecoder::checkMpegAudioHdr(const uint8_t *head)
 {
     // all informations about the mpeg audio header
     // can be found at http://www.datavoyage.com/mpgscript/mpeghdr.htm
@@ -258,7 +263,7 @@ bool cDxr3AudioDecoder::checkMpegAudioHdr(const uint8_t *head)
     return true;
 }
 
-int cDxr3AudioDecoder::calcFrameSize(const uint8_t *header)
+int cDecoder::calcFrameSize(const uint8_t *header)
 {
     static const int bitrates[2][3][15] =
     {

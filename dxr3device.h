@@ -32,7 +32,7 @@
 #include <vdr/device.h>
 
 #include <linux/em8300.h>
-#include "dxr3audiodecoder.h"
+#include "decoder.h"
 #include "dxr3spudecoder.h"
 #include "dxr3audio.h"
 #include "settings.h"
@@ -117,7 +117,7 @@ private:
 
     int offset;
     cMutex mutex;
-    cDxr3AudioDecoder *aDecoder;
+    cDecoder *decoder;
     cDxr3SpuDecoder* spuDecoder;
     iAudio *audioOut;
     bool pluginOn;

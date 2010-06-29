@@ -60,7 +60,7 @@ cDxr3Device::cDxr3Device() : spuDecoder(NULL), pluginOn(true), vPts(0), scrSet(f
     }
 
     audioOut->openDevice();
-    aDecoder = new cDxr3AudioDecoder();
+    decoder = new cDecoder();
 
     // register observer
     cSettings::instance()->registerObserver(this);
@@ -70,7 +70,7 @@ cDxr3Device::~cDxr3Device()
 {
     audioOut->releaseDevice();
     delete audioOut;
-    delete aDecoder;
+    delete decoder;
 
     releaseDevices();
 
@@ -284,9 +284,9 @@ int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
     bool isAc3 = ((Id & 0xF0) == 0x80) || Id == 0xbd;
 
     if (!isAc3) {
-        aDecoder->decode(&frame, audioOut);
+        decoder->decode(&frame, audioOut);
     } else {
-        aDecoder->ac3dts(&frame, audioOut);
+        decoder->ac3dts(&frame, audioOut);
     }
 
     return Length;
