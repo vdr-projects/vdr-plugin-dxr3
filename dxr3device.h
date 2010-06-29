@@ -136,6 +136,9 @@ private:
     uint32_t vertical;
     uint32_t aspectRatio;
 
+    cMutex lastVideoFrameMutex;
+    AVPacket lastVideoFrame;
+
     static cDxr3Device *inst;
 };
 
