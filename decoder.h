@@ -51,9 +51,7 @@ public:
     AVFrame *decode(AVPacket *source, uint32_t width, uint32_t height);
     void decode(cDxr3PesFrame *frame, iAudio *audio);
     void ac3dts(cDxr3PesFrame *frame, iAudio *audio);
-/*
-    void DecodeLpcm(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf);
-*/
+
     void Reset()
     {
     	ac3dtsDecoder.Clear();

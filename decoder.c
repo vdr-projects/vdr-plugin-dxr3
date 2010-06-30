@@ -232,60 +232,6 @@ void cDecoder::ac3dts(cDxr3PesFrame *frame, iAudio *audio)
     }
 }
 
-#if 0
-// ==================================
-//! decode lpcm
-void cDecoder::DecodeLpcm(cDxr3PesFrame *frame, uint32_t pts, cDxr3SyncBuffer &aBuf)
-{
-    const uint8_t *buf = frame->GetPayload();
-    int length = frame->GetPayloadLength();
-
-    // all informations about the LPCM header can be found
-    // here http://dvd.sourceforge.net/dvdinfo/lpcm.html
-
-    if (length > (LPCM_HEADER_LENGTH + 2)) {
-        // only even number of bytes are allowed
-        if ((length - LPCM_HEADER_LENGTH) % 2 != 0) {
-            esyslog("[dxr3-audiodecoder] skipping %d lpcm bytes", length);
-            return;
-        }
-
-        // remove header and set pointer to first data byte
-        const uint8_t *data = buf + LPCM_HEADER_LENGTH;
-        length -= LPCM_HEADER_LENGTH;
-
-        int codedSpeed = (buf[5] >> 4) & 0x03;
-        int speed = 0;
-
-        switch (codedSpeed) {
-        case 1:
-            speed = 96000;
-            break;
-
-        case 2:
-            speed = 44100;
-            break;
-
-        case 3:
-            speed = 32000;
-            break;
-
-        default:
-            speed = 48000;
-            break;
-        }
-
-        int channels = (buf[5] & 0x03);
-        channels++;
-
-        cFixedLengthFrame* pTempFrame = aBuf.Push(data, length, pts);
-        if (pTempFrame) {
-            pTempFrame->channels(channels);
-            pTempFrame->samplerate(speed);
-        }
-    }
-}
-#endif
 // ==================================
 //! checking routine
 bool cDecoder::checkMpegAudioHdr(const uint8_t *head)
