@@ -48,7 +48,6 @@ public:
     cDecoder();
     ~cDecoder();
 
-    AVFrame *decode(AVPacket *source, uint32_t width, uint32_t height);
     void decode(cDxr3PesFrame *frame, iAudio *audio);
     void ac3dts(cDxr3PesFrame *frame, iAudio *audio);
 
@@ -63,12 +62,9 @@ private:
     int calcFrameSize(const uint8_t *header);
 
     AVCodec *audio;
-    AVCodec *video;
     AVCodecContext *contextAudio;
-    AVCodecContext *contextVideo;
     AVPacket avpkt;
 
-    AVFrame *rgbFrame;
     cRingBufferFrame rbuf;
     cMultichannelAudio ac3dtsDecoder;
 

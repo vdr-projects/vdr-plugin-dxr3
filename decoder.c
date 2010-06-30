@@ -50,33 +50,12 @@ cDecoder::cDecoder() : rbuf(50000), ac3dtsDecoder(&rbuf)
         exit(-1);
     }
 
-    // look for video codec
-    video = avcodec_find_decoder(CODEC_ID_MPEG2VIDEO);
-    if (!video) {
-        esyslog("[dxr3-decoder] no suitable video codec found.");
-        esyslog("[dxr3-decoder] check your ffmpeg installation.");
-        exit(-1);
-    }
-
     // create a new codec context
     contextAudio = avcodec_alloc_context();
     int ret = avcodec_open(contextAudio, audio);
 
     if (ret < 0) {
         esyslog("[dxr3-decoder] failed to open codec %s.", audio->name);
-        exit(-1);
-    }
-
-    contextVideo = avcodec_alloc_context();
-    ret = avcodec_open(contextVideo, video);
-    if (ret < 0) {
-        esyslog("[dxr3-decoder] failed to open codec %s.", video->name);
-        exit(-1);
-    }
-
-    rgbFrame = avcodec_alloc_frame();
-    if (!rgbFrame) {
-        esyslog("[dxr3-decoder] failed to alloc rgbFrame");
         exit(-1);
     }
 
@@ -89,11 +68,6 @@ cDecoder::~cDecoder()
 {
     // close codec, if it is open
     avcodec_close(contextAudio);
-    avcodec_close(contextVideo);
-
-    if (rgbFrame) {
-        av_free(rgbFrame);
-    }
 }
 
 // ==================================
@@ -110,46 +84,6 @@ void cDecoder::Init()
         esyslog("[dxr3-decoder] failed to open codec %s.", audio->name);
         exit(-1);
     }
-}
-
-AVFrame *cDecoder::decode(AVPacket *source, uint32_t width, uint32_t height)
-{
-    AVFrame frame;
-    int gotPicture;
-
-    avcodec_decode_video2(contextVideo, &frame, &gotPicture, source);
-
-    if (gotPicture) {
-
-        // reserve place for raw data for our rgbFrame
-        uint8_t *buffer;
-        int numBytes;
-        // determine required buffer size and allocate buffer
-        numBytes = avpicture_get_size(PIX_FMT_RGB24, contextVideo->width, contextVideo->height);
-        dsyslog("numBytes %d w%d h%d", numBytes, contextVideo->width, contextVideo->height);
-        buffer = (uint8_t *)av_malloc(numBytes * sizeof(uint8_t));
-        if (!buffer) {
-            esyslog("[dxr3-decoder] failed to alloc rgbFrame data");
-            exit(-1);
-        }
-
-        // TODO: caller must free buffer!!
-
-        // associate the frame with our newly allocated buffer
-        avpicture_fill((AVPicture *)rgbFrame, buffer, PIX_FMT_RGB24, contextVideo->width, contextVideo->height);
-
-        SwsContext *swsContext = sws_getContext(contextVideo->width, contextVideo->height,
-        contextVideo->pix_fmt, width, height, PIX_FMT_RGB24, SWS_BILINEAR, 0, 0, 0);
-
-        if (swsContext) {
-            sws_scale(swsContext, frame.data, frame.linesize, 0, contextVideo->height, rgbFrame->data, rgbFrame->linesize);
-            sws_freeContext(swsContext);
-
-            return rgbFrame;
-        }
-    }
-
-    return NULL;
 }
 
 void cDecoder::decode(cDxr3PesFrame *frame, iAudio *audio)
