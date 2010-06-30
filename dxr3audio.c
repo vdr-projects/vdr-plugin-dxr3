@@ -79,3 +79,13 @@ void iAudio::changeVolume(int16_t* pcmbuf, size_t size)
         }
     }
 }
+
+void iAudio::setDigitalAudio(bool on)
+{
+    if (digitalAudio == on) {
+        return;
+    }
+
+    digitalAudio = on;
+    reconfigure();
+}

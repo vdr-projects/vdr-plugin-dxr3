@@ -50,7 +50,7 @@ public:
     void setAudioChannel(int channel)   { audioChannel = channel; }
     int getAudioChannel()               { return audioChannel; }
 
-    virtual void setDigitalAudio(bool on) = 0;
+    void setDigitalAudio(bool on);
     bool isDigitalAudio()                   { return digitalAudio; }
 
     virtual void settingsChange(SettingsChange change);

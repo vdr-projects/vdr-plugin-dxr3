@@ -38,7 +38,6 @@ public:
     virtual void flush();
 
     virtual void poll(cPoller &poller) {}
-    virtual void setDigitalAudio(bool on) {}
 
 private:
     pa_sample_spec ss;

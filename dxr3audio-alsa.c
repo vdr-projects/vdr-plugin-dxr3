@@ -275,13 +275,9 @@ void cAudioAlsa::flush()
     }
 }
 
-void cAudioAlsa::setDigitalAudio(bool on)
+void cAudioAlsa::reconfigure()
 {
-    if (digitalAudio == on) {
-        return;
-    }
 
-    // TODO stub
 }
 
 void cAudioAlsa::Xrun()
