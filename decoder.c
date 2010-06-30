@@ -157,8 +157,8 @@ void cDecoder::decode(cDxr3PesFrame *frame, iAudio *audio)
 
     if (checkMpegAudioHdr(buf)) {
 
-        // look if Bitrate has changed
-        if ((buf[2] & 0xf0) != (lastBitrate & 0xf0)) {
+        // look if Bitrate or samplerate has changed
+        if ((buf[2] & 0xFC) != (lastBitrate & 0xFC)) {
             dsyslog("[dxr3-audiodecoder] found new audio header");
 
             // recalculate used framesize
