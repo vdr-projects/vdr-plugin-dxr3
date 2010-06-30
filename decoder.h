@@ -31,6 +31,7 @@
 extern "C" {
 #    include <libavcodec/avcodec.h>
 #    include <libavformat/avformat.h>
+#    include <libswscale/swscale.h>
 }
 
 #include <vdr/ringbuffer.h>
@@ -47,6 +48,7 @@ public:
     cDecoder();
     ~cDecoder();
 
+    AVFrame *decode(AVPacket *source, uint32_t width, uint32_t height);
     void decode(cDxr3PesFrame *frame, iAudio *audio);
     void ac3dts(cDxr3PesFrame *frame, iAudio *audio);
 /*
@@ -68,6 +70,7 @@ private:
     AVCodecContext *contextVideo;
     AVPacket avpkt;
 
+    AVFrame *rgbFrame;
     cRingBufferFrame rbuf;
     cMultichannelAudio ac3dtsDecoder;
 

@@ -34,6 +34,7 @@ FFMPEG_INC = $(shell pkg-config --cflags-only-I libavcodec)
 # Usually something like -L/path/to/ffmpeg/libavcodec -lavcodec, should work
 # as is if FFmpeg was installed properly and pkg-config is available.
 FFMPEG_LIBS = $(shell pkg-config --libs libavcodec)
+FFMPEG_LIBS += $(shell pkg-config --libs libswscale)
 
 ALSA_INC = $(shell pkg-config --cflags-only-I alsa)
 ALSA_LIBS = $(shell pkg-config --libs alsa)
