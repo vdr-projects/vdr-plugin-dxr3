@@ -143,6 +143,8 @@ AVFrame *cDecoder::decode(AVPacket *source, uint32_t width, uint32_t height)
 
         if (swsContext) {
             sws_scale(swsContext, frame.data, frame.linesize, 0, contextVideo->height, rgbFrame->data, rgbFrame->linesize);
+            sws_freeContext(swsContext);
+
             return rgbFrame;
         }
     }
