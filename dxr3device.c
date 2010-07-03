@@ -254,11 +254,9 @@ int cDxr3Device::PlayVideo(const uchar *Data, int Length)
         vPts = pts;
     }
 
-    if (!scrSet && vPts != 0) {
-        setScr(vPts);
-        scrSet = true;
+    if (scrSet) {
+        playVideoFrame(&frame, vPts);
     }
-    playVideoFrame(&frame, vPts);
 
     return Length;
 }
@@ -279,6 +277,11 @@ int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
         pts = aPts;
     } else {
         aPts = pts;
+    }
+
+    if (!scrSet && aPts != 0) {
+        setScr(aPts);
+        scrSet = true;
     }
 
     bool isAc3 = ((Id & 0xF0) == 0x80) || Id == 0xbd;
