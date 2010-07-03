@@ -114,6 +114,7 @@ private:
     void playBlackFrame(uint32_t pts);
     void writeRegister(int reg, int value);
     void setScr(uint32_t val);
+    uint32_t getScr();
 
     int offset;
     cMutex mutex;

@@ -652,6 +652,15 @@ void cDxr3Device::setScr(uint32_t val)
     offset = val - scr - TIMESTAMPS_500MS;
 }
 
+uint32_t cDxr3Device::getScr()
+{
+    uint32_t scr;
+    CHECK(ioctl(fdControl, EM8300_IOCTL_SCR_GET, &scr));
+    scr += offset;
+
+    return scr;
+}
+
 // Local variables:
 // mode: c++
 // c-file-style: "stroustrup"
