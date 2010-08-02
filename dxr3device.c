@@ -39,7 +39,7 @@ static const char *DEV_DXR3_OSD   = "_sp";
 static const char *DEV_DXR3_VIDEO = "_mv";
 static const char *DEV_DXR3_CONT  = "";
 
-static const int TIMESTAMPS_PREBUFFER = 45000;	// 500ms
+static const int TIMESTAMPS_PREBUFFER = 4500;    // 50ms
 
 cDxr3Device::cDxr3Device() : spuDecoder(NULL), pluginOn(true), vPts(0), scrSet(false), aspectRatio(EM8300_ASPECTRATIO_4_3)
 {
