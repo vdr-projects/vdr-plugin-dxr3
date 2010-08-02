@@ -39,7 +39,7 @@ static const char *DEV_DXR3_OSD   = "_sp";
 static const char *DEV_DXR3_VIDEO = "_mv";
 static const char *DEV_DXR3_CONT  = "";
 
-static const int TIMESTAMPS_500MS = 45000;
+static const int TIMESTAMPS_PREBUFFER = 45000;	// 500ms
 
 cDxr3Device::cDxr3Device() : spuDecoder(NULL), pluginOn(true), vPts(0), scrSet(false), aspectRatio(EM8300_ASPECTRATIO_4_3)
 {
@@ -146,10 +146,10 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
         // set the scr into future so that the firmware/hardware
         // clears the buffers.
         CHECK(ioctl(fdControl, EM8300_IOCTL_SCR_GET, &val));
-        val += TIMESTAMPS_500MS * 4;
+        val += TIMESTAMPS_PREBUFFER * 4;
         CHECK(ioctl(fdControl, EM8300_IOCTL_SCR_SET, &val));
 
-        playBlackFrame(val + TIMESTAMPS_500MS);
+        playBlackFrame(val + TIMESTAMPS_PREBUFFER);
         break;
 
     case pmAudioVideo:
@@ -183,7 +183,7 @@ void cDxr3Device::Clear()
     // set the scr into future so that the firmware/hardware
     // clears the buffers.
     CHECK(ioctl(fdControl, EM8300_IOCTL_SCR_GET, &val));
-    val += TIMESTAMPS_500MS * 4;
+    val += TIMESTAMPS_PREBUFFER * 4;
     CHECK(ioctl(fdControl, EM8300_IOCTL_SCR_SET, &val));
 
     audioOut->flush();
@@ -501,7 +501,7 @@ void cDxr3Device::claimDevices()
     CHECK(ioctl(fdControl, EM8300_IOCTL_GETBCS, &bcs));
 
     setPlayMode();
-    playBlackFrame(TIMESTAMPS_500MS);
+    playBlackFrame(TIMESTAMPS_PREBUFFER);
 }
 
 void cDxr3Device::releaseDevices()
@@ -649,7 +649,7 @@ void cDxr3Device::setScr(uint32_t val)
 {
     uint32_t scr;
     CHECK(ioctl(fdControl, EM8300_IOCTL_SCR_GET, &scr));
-    offset = val - scr - TIMESTAMPS_500MS;
+    offset = val - scr - TIMESTAMPS_PREBUFFER;
 }
 
 uint32_t cDxr3Device::getScr()
