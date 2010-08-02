@@ -48,17 +48,17 @@ cDxr3Device::cDxr3Device() : spuDecoder(NULL), pluginOn(true), vPts(0), scrSet(f
     switch (cSettings::instance()->audioDriver()) {
     case ALSA:
         isyslog("[dxr3-device] using alsa audio driver");
-        audioOut = new cAudioAlsa();
+        audio = new cAudioAlsa();
         break;
 #ifdef PULSEAUDIO
     case PA:
         isyslog("[dxr3-device] using PulseAudio audio driver");
-        audioOut = new cAudioPA();
+        audio = new cAudioPA();
         break;
 #endif
     }
 
-    audioOut->openDevice();
+    audio->openDevice();
     decoder = new cDecoder();
 
     // register observer
@@ -67,8 +67,8 @@ cDxr3Device::cDxr3Device() : spuDecoder(NULL), pluginOn(true), vPts(0), scrSet(f
 
 cDxr3Device::~cDxr3Device()
 {
-    audioOut->releaseDevice();
-    delete audioOut;
+    audio->releaseDevice();
+    delete audio;
     delete decoder;
 
     releaseDevices();
@@ -130,8 +130,8 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
 
     switch (PlayMode) {
     case pmNone:
-        audioOut->setEnabled(false);
-        audioOut->flush();
+        audio->setEnabled(false);
+        audio->flush();
         scrSet = false;
 
         // reset pts values
@@ -149,7 +149,7 @@ bool cDxr3Device::SetPlayMode(ePlayMode PlayMode)
         break;
 
     case pmAudioVideo:
-        audioOut->setEnabled(true);
+        audio->setEnabled(true);
         break;
 
     default:
@@ -182,7 +182,7 @@ void cDxr3Device::Clear()
     val += TIMESTAMPS_PREBUFFER * 4;
     CHECK(ioctl(fdControl, EM8300_IOCTL_SCR_SET, &val));
 
-    audioOut->flush();
+    audio->flush();
     cDevice::Clear();
 }
 
@@ -198,7 +198,7 @@ void cDxr3Device::Freeze()
 
 void cDxr3Device::Mute()
 {
-    audioOut->mute();
+    audio->mute();
     cDevice::Mute();
 }
 
@@ -228,7 +228,7 @@ void cDxr3Device::StillPicture(const uchar *Data, int Length)
 bool cDxr3Device::Poll(cPoller &Poller, int TimeoutMs)
 {
     Poller.Add(fdVideo, true);
-    audioOut->poll(Poller);
+    audio->poll(Poller);
     return Poller.Poll(TimeoutMs);
 }
 
@@ -283,9 +283,9 @@ int cDxr3Device::PlayAudio(const uchar *Data, int Length, uchar Id)
     bool isAc3 = ((Id & 0xF0) == 0x80) || Id == 0xbd;
 
     if (!isAc3) {
-        decoder->decode(&frame, audioOut);
+        decoder->decode(&frame, audio);
     } else {
-        decoder->ac3dts(&frame, audioOut);
+        decoder->ac3dts(&frame, audio);
     }
 
     return Length;
@@ -346,22 +346,22 @@ void cDxr3Device::SetVideoFormat(bool VideoFormat16_9)
 
 void cDxr3Device::SetVolumeDevice(int Volume)
 {
-    audioOut->setVolume(Volume);
+    audio->setVolume(Volume);
 }
 
 void cDxr3Device::SetAudioChannelDevice(int AudioChannel)
 {
-    audioOut->setAudioChannel(AudioChannel);
+    audio->setAudioChannel(AudioChannel);
 }
 
 int cDxr3Device::GetAudioChannelDevice()
 {
-    return audioOut->getAudioChannel();
+    return audio->getAudioChannel();
 }
 
 void cDxr3Device::SetDigitalAudioDevice(bool on)
 {
-    audioOut->setDigitalAudio(on);
+    audio->setDigitalAudio(on);
 }
 
 cSpuDecoder *cDxr3Device::GetSpuDecoder()
@@ -391,7 +391,7 @@ void cDxr3Device::turnPlugin(bool on)
 
         // get full control over device
         claimDevices();
-        audioOut->openDevice();
+        audio->openDevice();
 
         // enable pes packet processing
         pluginOn = true;
@@ -408,7 +408,7 @@ void cDxr3Device::turnPlugin(bool on)
         // release device and give control to somebody else
         Tools::WriteInfoToOsd(tr("DXR3: releasing devices"));
         releaseDevices();
-        audioOut->releaseDevice();
+        audio->releaseDevice();
 
         // disable pes packet processing
         pluginOn = false;

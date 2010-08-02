@@ -88,7 +88,7 @@ public:
 
     // osd
     virtual cSpuDecoder *GetSpuDecoder();
-    iAudio *getAudioOutput() const      { return audioOut; }
+    iAudio *getAudioOutput() const      { return audio; }
 
     void turnPlugin(bool on);
 
@@ -120,7 +120,7 @@ private:
     cMutex mutex;
     cDecoder *decoder;
     cDxr3SpuDecoder* spuDecoder;
-    iAudio *audioOut;
+    iAudio *audio;
     bool pluginOn;
 
     em8300_bcs_t bcs;
