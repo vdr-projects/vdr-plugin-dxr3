@@ -43,7 +43,6 @@ static const int TIMESTAMPS_PREBUFFER = 4500;    // 50ms
 
 cDxr3Device::cDxr3Device() : spuDecoder(NULL), pluginOn(true), vPts(0), scrSet(false), aspectRatio(EM8300_ASPECTRATIO_4_3)
 {
-    lastVideoFrame.data = NULL;
     claimDevices();
 
     switch (cSettings::instance()->audioDriver()) {
@@ -76,9 +75,6 @@ cDxr3Device::~cDxr3Device()
 
     if (spuDecoder)
         delete spuDecoder;
-
-    if (lastVideoFrame.data)
-        delete[] lastVideoFrame.data;
 }
 
 cDxr3Device *cDxr3Device::instance()
@@ -600,23 +596,6 @@ void cDxr3Device::playVideoFrame(cDxr3PesFrame *frame, uint32_t pts)
     uint32_t len = frame->payloadSize();
 
     WriteAllOrNothing(fdVideo, data, len, 1000, 10);
-
-    // store last written video frame
-    lastVideoFrameMutex.Lock();
-
-    // make sure that there is space to store video data
-    if (!lastVideoFrame.data) {
-        lastVideoFrame.data = new uint8_t[len];
-    } else if (lastVideoFrame.size < len) {
-        delete[] lastVideoFrame.data;
-        lastVideoFrame.data = new uint8_t[len];
-    }
-
-    // update data
-    memcpy(lastVideoFrame.data, data, sizeof(uint8_t)*len);
-    lastVideoFrame.size = len;
-
-    lastVideoFrameMutex.Unlock();
 }
 
 void cDxr3Device::playBlackFrame(uint32_t pts)
